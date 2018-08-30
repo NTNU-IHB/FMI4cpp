@@ -102,7 +102,8 @@ void FmiLibrary::instantiate(const string instanceName, const fmi2Type type, con
 
 }
 
-fmi2Status FmiLibrary::setupExperiment(const bool toleranceDefined, const double tolerance, const double startTime, const double stopTime) const {
+fmi2Status FmiLibrary::setupExperiment(
+        const bool toleranceDefined, const double tolerance, const double startTime, const double stopTime) const {
 
     fmi2Boolean stopDefined = stopTime > startTime;
     return loadFunction<fmi2SetupExperimentTYPE *>("fmi2SetupExperiment")
