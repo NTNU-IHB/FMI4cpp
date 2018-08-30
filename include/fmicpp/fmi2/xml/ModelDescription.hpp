@@ -34,13 +34,15 @@
 #include "SourceFiles.hpp"
 #include "ModelVariables.hpp"
 
+using std::string;
+using std::unique_ptr;
 using boost::property_tree::ptree;
 
 namespace fmicpp::fmi2::xml {
 
     struct FmuData {
 
-        std::string modelIdentifier;
+        string modelIdentifier;
 
         bool canGetAndSetFMUstate;
         bool canSerializeFMUstate;
@@ -49,7 +51,7 @@ namespace fmicpp::fmi2::xml {
         bool canBeInstantiatedOnlyOncePerProcess;
         bool providesDirectionalDerivative;
 
-        std::unique_ptr<SourceFiles> sourceFiles = nullptr;
+        unique_ptr<SourceFiles> sourceFiles = nullptr;
 
         virtual void load(ptree &node);
 
@@ -78,25 +80,25 @@ namespace fmicpp::fmi2::xml {
 
     struct ModelDescription {
 
-        std::string guid;
-        std::string fmiVersion;
-        std::string modelName;
-        std::string description;
-        std::string version;
-        std::string author;
-        std::string license;
-        std::string copyright;
-        std:: string generationTool;
-        std::string generationDateAndTime;
+        string guid;
+        string fmiVersion;
+        string modelName;
+        string description;
+        string version;
+        string author;
+        string license;
+        string copyright;
+        string generationTool;
+        string generationDateAndTime;
 
         int numberOfEventIndicators;
 
-        std::unique_ptr<CoSimulation> coSimulation = nullptr;
-        std::unique_ptr<ModelExchange> modelExchange = nullptr;
-        std::unique_ptr<DefaultExperiment> defaultExperiment = nullptr;
-        std::unique_ptr<ModelVariables> modelVariables = nullptr;
+        unique_ptr<CoSimulation> coSimulation = nullptr;
+        unique_ptr<ModelExchange> modelExchange = nullptr;
+        unique_ptr<DefaultExperiment> defaultExperiment = nullptr;
+        unique_ptr<ModelVariables> modelVariables = nullptr;
 
-        void load(std::string fileName);
+        void load(string fileName);
 
     };
 
