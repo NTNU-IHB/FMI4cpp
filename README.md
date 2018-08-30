@@ -4,19 +4,29 @@ FMI4cpp is a cross-platform FMI 2.0 implementation written in modern C++.
 
 Looking for an easy to install, easy to use, easy to reason with, object oriented and fast FMI implementation for C++? You are in luck. FMI4cpp is all of those.
 
-## Installing dependencies
+### Why should I use this over other C/C++ FMI Libraries
 
-Install vcpkg and run
+Because this library has a much cleaner API and is significantly easier to use.
+
+
+### How do I use it in my own project?
+
+When the library is stable I will add it to vcpkg.
+
+
+### Development dependencies
+
+Install [vcpkg](https://github.com/Microsoft/vcpkg) and run
 
 ```
-./vcpkg install boost-property-tree boost-filesystem boost-system libzip
+./vcpkg install boost-property-tree boost-filesystem
 ``` 
 
-### API (in progress)
+#### API (in progress)
 
 ```cpp
 
-#include "fmicpp.hpp"
+#include <fmicpp/fmicpp.hpp>
 
 int main() {
 
@@ -25,11 +35,11 @@ int main() {
     
     slave->init();
     
-    double stop = 0;
+    double stop = 10.0;
     double stepSize = 1.0/100;
     
     double t;
-    while ( t = slave->getSimulationTime() <= stop) {
+    while ( (t = slave->getSimulationTime()) <= stop) {
     
         fmi2Status status = slave->doStep(stepSize);
         if (status != fmi2OK) {
