@@ -59,11 +59,11 @@ namespace fmicpp::fmi2::xml {
 
     struct CoSimulation: FmuData {
 
-        int maxOutputDerivativeOrder;
-
         bool canInterpolateInputs;
         bool canRunAsynchronuously;
         bool canHandleVariableCommunicationStepSize;
+
+        unsigned int maxOutputDerivativeOrder;
 
         void load(ptree &node);
 

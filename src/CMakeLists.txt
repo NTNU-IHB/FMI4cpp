@@ -4,10 +4,10 @@ include_directories(../include)
 SET(HEADERS
 
         ../include/fmicpp/fmi2/fmicpp.hpp
+        ../include/fmicpp/fmi2/fmi2Functions.h
+        ../include/fmicpp/fmi2/fmi2FunctionTypes.h
+        ../include/fmicpp/fmi2/fmi2TypesPlatform.h
 
-        ../include/fmicpp/fmi2/import/fmi2Functions.h
-        ../include/fmicpp/fmi2/import/fmi2FunctionTypes.h
-        ../include/fmicpp/fmi2/import/fmi2TypesPlatform.h
         ../include/fmicpp/fmi2/import/FmiLibrary.hpp
         ../include/fmicpp/fmi2/import/Fmu.hpp
         ../include/fmicpp/fmi2/import/CoSimulationSlaveBuilder.hpp

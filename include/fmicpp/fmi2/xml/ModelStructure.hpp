@@ -29,7 +29,6 @@
 
 using boost::property_tree::ptree;
 
-
 namespace fmicpp::fmi2::xml {
 
     class ModelStructure {
@@ -39,6 +38,5 @@ namespace fmicpp::fmi2::xml {
     };
 
 }
-
 
 #endif //FMICPP_MODELSTRUCTURE_HPP

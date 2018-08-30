@@ -26,7 +26,7 @@
 #define FMICPP_FMUINSTANCE_HPP
 
 #include <vector>
-#include "fmi2Functions.h"
+#include "../fmi2Functions.h"
 
 using std::vector;
 

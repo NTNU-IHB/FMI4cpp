@@ -47,9 +47,13 @@ void BooleanAttribute::load(ptree &node) {
     start = node.get<bool>("<xmlattr>.start", false);
 }
 
+void EnumerationAttribute::load(ptree &node) {
+    start = node.get<bool>("<xmlattr>.start", false);
+}
+
 void ScalarVariable::load(ptree &node) {
 
-    valueReference = node.get<ValueReference>("<xmlattr>.valueReference");
+    valueReference = node.get<fmi2ValueReference >("<xmlattr>.valueReference");
     name = node.get<string>("<xmlattr>.name");
     description = node.get<string>("<xmlattr>.description", "");
 
@@ -66,6 +70,9 @@ void ScalarVariable::load(ptree &node) {
         } else if (v.first == "Boolean") {
             booleanAttribute = make_unique<BooleanAttribute>(BooleanAttribute());
             booleanAttribute->load(v.second);
+        } else if (v.first == "Enumeration") {
+            enumerationAttribute = make_unique<EnumerationAttribute>(EnumerationAttribute());
+            enumerationAttribute->load(v.second);
         }
     }
 
@@ -86,6 +93,20 @@ IntegerVariable::IntegerVariable(IntegerAttribute &attribute) {
 }
 
 RealVariable::RealVariable(RealAttribute &attribute) {
+    this->min = attribute.min;
+    this->max = attribute.max;
+    this->start = attribute.start;
+}
+
+StringVariable::StringVariable(StringAttribute &attribute) {
+    this->start = attribute.start;
+}
+
+BooleanVariable::BooleanVariable(BooleanAttribute &attribute) {
+    this->start = attribute.start;
+}
+
+EnumerationVariable::EnumerationVariable(EnumerationAttribute &attribute) {
     this->min = attribute.min;
     this->max = attribute.max;
     this->start = attribute.start;

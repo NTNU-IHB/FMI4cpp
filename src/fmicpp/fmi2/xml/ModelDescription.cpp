@@ -49,7 +49,10 @@ void FmuData::load(ptree &node) {
 void CoSimulation::load(ptree &node) {
     FmuData::load(node);
 
+    maxOutputDerivativeOrder = node.get<unsigned int>("<xmlattr>.maxOutputDerivativeOrder", 0);
+
     canInterpolateInputs = node.get<bool>("<xmlattr>.canInterpolateInputs", false);
+    canRunAsynchronuously = node.get<bool>("<xmlattr>.canRunAsynchronuously", false);
     canHandleVariableCommunicationStepSize = node.get<bool>("<xmlattr>.canHandleVariableCommunicationStepSize", false);
 
 }

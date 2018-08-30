@@ -39,11 +39,10 @@ struct ModelVariables : public std::vector<std::unique_ptr<ScalarVariable>> {
         void load(ptree &node);
 
         ScalarVariable& getByName(std::string name);
-        ScalarVariable& getByValueReference(ValueReference vr);
+        ScalarVariable& getByValueReference(fmi2ValueReference vr);
 
     };
 
 }
-
 
 #endif //FMICPP_MODELVARIABLES_HPP

@@ -54,5 +54,4 @@ namespace fmicpp::fmi2::xml {
 
 }
 
-
 #endif //FMICPP_SOURCEFILES_HPP

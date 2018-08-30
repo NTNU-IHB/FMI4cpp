@@ -26,9 +26,12 @@
 #define FMICPP_FMILIBRARY_HPP
 
 #include <string>
+#include <vector>
+
 #include <stdio.h>
 #include <stdlib.h>
-#include "fmi2FunctionTypes.h"
+
+#include "../fmi2FunctionTypes.h"
 
 #if defined(_MSC_VER) || defined(WIN32) || defined(__MINGW32__)
 #include <windows.h>
@@ -44,9 +47,6 @@
 typedef void *function_ptr;
 #endif
 
-#include <string>
-#include <vector>
-#include "fmi2Functions.h"
 
 using std::string;
 using std::vector;

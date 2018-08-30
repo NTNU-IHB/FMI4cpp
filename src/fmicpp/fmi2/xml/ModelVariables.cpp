@@ -54,7 +54,7 @@ ScalarVariable& ModelVariables::getByName(string name) {
     throw runtime_error(errorMsg);
 }
 
-ScalarVariable& ModelVariables::getByValueReference(ValueReference vr) {
+ScalarVariable& ModelVariables::getByValueReference(fmi2ValueReference vr) {
 
     for (const auto& var : *this) {
         if (var->valueReference == vr) {

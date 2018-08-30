@@ -47,5 +47,4 @@ namespace fmicpp::fmi2::xml {
 
 }
 
-
 #endif //FMICPP_DEFAULTEXPERIMENT_HPP
