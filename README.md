@@ -10,3 +10,35 @@ Install vcpkg and run
 ```
 ./vcpkg install boost-property-tree boost-filesystem boost-system libzip
 ``` 
+
+### API (in progress)
+
+```cpp
+
+#include "fmicpp.hpp"
+
+int main() {
+
+    Fmu fmu("path/to/fmu.fmu");
+    auto slave = fmu.asCoSimulationFmu().newInstance();
+    
+    slave.init();
+    
+    double stop = 0;
+    double stepSize = 1.0/100;
+    
+    double t;
+    while ( t = slave.simulationTime <= stop) {
+    
+        fmi2Status status = slave.doStep(stepSize);
+        if (status != fmi2Status.OK) {
+            break;
+        }
+    
+    }
+    
+    slave.terminate();
+    
+}
+
+```
