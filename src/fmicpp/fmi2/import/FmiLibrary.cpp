@@ -198,7 +198,8 @@ CoSimulationLibrary::CoSimulationLibrary(const string lib_name) : FmiLibrary(lib
 
 fmi2Status CoSimulationLibrary::doStep(fmi2Real currentCommunicationPoint,
         fmi2Real communicationStepSize, bool noSetFMUStatePriorToCurrentPoint) const {
-    return loadFunction<fmi2DoStepTYPE *>("fmi2DoStep")(c_, currentCommunicationPoint, communicationStepSize, noSetFMUStatePriorToCurrentPoint ? 1 : 0);
+    return loadFunction<fmi2DoStepTYPE *>("fmi2DoStep")(
+            c_, currentCommunicationPoint, communicationStepSize, noSetFMUStatePriorToCurrentPoint ? 1 : 0);
 }
 
 fmi2Status CoSimulationLibrary::cancelStep() const {
