@@ -25,7 +25,6 @@
 #ifndef FMICPP_MODELDESCRIPTION_HPP
 #define FMICPP_MODELDESCRIPTION_HPP
 
-
 #include <memory>
 #include <string>
 #include <boost/property_tree/ptree.hpp>
@@ -38,7 +37,6 @@
 using boost::property_tree::ptree;
 
 namespace fmicpp::fmi2::xml {
-
 
     struct FmuData {
 
@@ -78,7 +76,6 @@ namespace fmicpp::fmi2::xml {
 
     };
 
-
     struct ModelDescription {
 
         std::string guid;
@@ -103,8 +100,6 @@ namespace fmicpp::fmi2::xml {
 
     };
 
-
 }
-
 
 #endif //FMICPP_MODELDESCRIPTION_HPP
