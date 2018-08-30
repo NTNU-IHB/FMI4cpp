@@ -28,6 +28,7 @@
 #include <string>
 #include <vector>
 #include <boost/property_tree/ptree.hpp>
+#include <ostream>
 
 using boost::property_tree::ptree;
 
@@ -39,11 +40,15 @@ namespace fmicpp::fmi2::xml {
 
         void load(ptree &node);
 
+        friend std::ostream &operator<<(std::ostream &os, const File &file);
+
     };
 
     struct SourceFiles: public std::vector<File> {
 
         void load(ptree &node);
+
+        friend std::ostream &operator<<(std::ostream &os, const SourceFiles &files);
 
     };
 

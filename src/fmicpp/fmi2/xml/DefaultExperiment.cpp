@@ -34,3 +34,9 @@ void DefaultExperiment::load(ptree &node) {
     tolerance = node.get<double>("<xmlattr>.tolerance", 0);
 
 }
+
+std::ostream &fmicpp::fmi2::xml::operator<<(std::ostream &os, const DefaultExperiment &experiment) {
+    os << "startTime: " << experiment.startTime << " stopTime: " << experiment.stopTime << " stepSize: "
+       << experiment.stepSize << " tolerance: " << experiment.tolerance;
+    return os;
+}

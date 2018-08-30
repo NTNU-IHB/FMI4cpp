@@ -26,6 +26,7 @@
 #define FMICPP_DEFAULTEXPERIMENT_HPP
 
 #include <boost/property_tree/ptree.hpp>
+#include <ostream>
 
 using boost::property_tree::ptree;
 
@@ -39,6 +40,8 @@ namespace fmicpp::fmi2::xml {
         double tolerance;
 
         void load(ptree &node);
+
+        friend std::ostream &operator<<(std::ostream &os, const DefaultExperiment &experiment);
 
     };
 
