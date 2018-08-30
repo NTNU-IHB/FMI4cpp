@@ -35,7 +35,7 @@ void DefaultExperiment::load(ptree &node) {
 
 }
 
-std::ostream &fmicpp::fmi2::xml::operator<<(std::ostream &os, const DefaultExperiment &experiment) {
+std::ostream &operator<<(std::ostream &os, const DefaultExperiment &experiment) {
     os << "startTime: " << experiment.startTime << " stopTime: " << experiment.stopTime << " stepSize: "
        << experiment.stepSize << " tolerance: " << experiment.tolerance;
     return os;
