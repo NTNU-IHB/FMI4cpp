@@ -32,7 +32,7 @@ using namespace fmicpp::fmi2::import;
 int main() {
 
     ModelDescription md;
-    md.load("/home/laht/Downloads/modelDescription.xml");
+    md.load("C:\\Users\\LarsIvar\\Downloads\\modelDescription.xml");
     cout << "fmiVersion=" << md.fmiVersion <<endl;
     cout << "modelName=" << md.modelName <<endl;
     cout << "author=" << md.author <<endl;
@@ -42,7 +42,7 @@ int main() {
     auto& var = md.modelVariables->getByValueReference(1);
     cout << "A variable is named:" << var.name << ", with start=" << var.asRealVariable().start << endl;
 
-    CoSimulationLibrary lib("/home/laht/Downloads/ControlledTemperature.so");
+    CoSimulationLibrary lib("C:\\Users\\LarsIvar\\Downloads\\ControlledTemperature.dll");
     cout << "fmi2GetVersion=" << lib.getVersion() << endl;
     cout << "fmi2GetTypesPlatform=" << lib.getTypesPlatform() << endl;
 

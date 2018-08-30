@@ -32,7 +32,7 @@
 
 #if defined(_MSC_VER) || defined(WIN32) || defined(__MINGW32__)
 #include <windows.h>
-#define DLL_HANDLE HANDLE
+#define DLL_HANDLE HMODULE
 #else
 #define DLL_HANDLE void*
 #include <dlfcn.h>
@@ -70,7 +70,7 @@ namespace fmicpp::fmi2::import {
         fmi2Status setupExperiment(const bool toleranceDefined,
                 const double tolerance, const double startTime, const double stopTime) const;
 
-        bool instantiate(const string instanceName, const fmi2Type type,
+        void instantiate(const string instanceName, const fmi2Type type,
                 const string guid, const string resourceLocation, const bool visible = false, const bool loggingOn = false);
 
         fmi2Status reset() const;
@@ -90,7 +90,6 @@ namespace fmicpp::fmi2::import {
 
         ~FmiLibrary();
 
-
     protected:
 
         DLL_HANDLE handle_ = nullptr;
@@ -99,6 +98,7 @@ namespace fmicpp::fmi2::import {
         template <class T>
         T loadFunction(const char* function_name) const;
 
+        const char* getLastError() const;
 
     };
 
@@ -122,6 +122,5 @@ namespace fmicpp::fmi2::import {
     };
 
 }
-
 
 #endif //FMICPP_FMILIBRARY_HPP

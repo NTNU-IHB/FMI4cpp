@@ -24,6 +24,7 @@
 
 #include <iostream>
 #include <fmicpp/fmi2/import/FmiLibrary.hpp>
+#include <sstream>
 
 using namespace std;
 using namespace fmicpp::fmi2::import;
@@ -48,27 +49,34 @@ namespace {
     }
 
     static const fmi2CallbackFunctions callback = {
-            .logger = logger,
-            .allocateMemory = calloc,
-            .freeMemory = free,
-            .stepFinished = NULL,
-            .componentEnvironment = NULL
+            logger,
+            calloc,
+            free,
+            NULL,
+            NULL
     };
 
 }
 
+const char *FmiLibrary::getLastError() const {
+#ifdef WIN32
+    std::ostringstream os;
+    os << GetLastError();
+    return os.str().c_str();
+#else
+    return dlerror();
+#endif
+}
 
 FmiLibrary::FmiLibrary(string lib_name) {
 #ifdef WIN32
     handle_ = LoadLibrary(lib_name.c_str());
 #else
     handle_ = dlopen(lib_name.c_str(), RTLD_NOW | RTLD_LOCAL);
-    if (!handle_) {
-        cout << dlerror() << endl;
-    }
 #endif
 
     if (!handle_) {
+        cout << getLastError() << endl;
         string msg = "Unable to load dynamic library '" + lib_name + "'!";
         throw runtime_error(msg);
     }
@@ -83,10 +91,10 @@ fmi2String FmiLibrary::getTypesPlatform() const {
     return loadFunction<fmi2GetTypesPlatformTYPE *>("fmi2GetTypesPlatform")();
 }
 
-bool FmiLibrary::instantiate(const string instanceName, const fmi2Type type, const string guid,
+void FmiLibrary::instantiate(const string instanceName, const fmi2Type type, const string guid,
                              const string resourceLocation, const bool visible, const bool loggingOn) {
-    c_ = loadFunction<fmi2InstantiateTYPE *>("fmi2Instantiate")(instanceName.c_str(), type, guid.c_str(),
-                                                                resourceLocation.c_str(), &callback, visible ? 1 : 0, loggingOn ? 1 : 0);
+    c_ = loadFunction<fmi2InstantiateTYPE *>("fmi2Instantiate")(instanceName.c_str(),
+            type, guid.c_str(), resourceLocation.c_str(), &callback, visible ? 1 : 0, loggingOn ? 1 : 0);
 
     if (c_ == nullptr) {
         throw runtime_error("Unable to instantiate FMU instance!");
@@ -161,16 +169,17 @@ FmiLibrary::~FmiLibrary() {
     }
 
    if (handle_) {
+       bool success;
 #ifdef WIN32
-       FreeLibrary(handle_)
+       success = FreeLibrary(handle_);
 #else
-       if (dlclose(handle_) != 0) {
-           cout << dlerror() << endl;
-       }
+       success = (dlclose(handle_) == 0);
 #endif
-       handle_ = nullptr;
+        if (!success) {
+            cout << getLastError() << endl;
+        }
+        handle_ = nullptr;
    }
-
 }
 
 CoSimulationLibrary::CoSimulationLibrary(const string lib_name) : FmiLibrary(lib_name) {}
