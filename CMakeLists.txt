@@ -22,9 +22,6 @@ SET(BOOST_COMPONENTS system filesystem)
 find_package(Boost 1.67 COMPONENTS ${BOOST_COMPONENTS} REQUIRED)
 include_directories(${Boost_INCLUDE_DIRS})
 
-find_package(tinyxml2 CONFIG REQUIRED)
-find_package(cereal CONFIG REQUIRED)
-
 option(BUILD_TESTS "Build tests" OFF)
 option(BUILD_EXAMPLES "Build examples" ON)
 
