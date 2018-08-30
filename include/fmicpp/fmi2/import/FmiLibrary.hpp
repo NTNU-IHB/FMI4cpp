@@ -63,25 +63,30 @@ namespace fmicpp::fmi2::import {
 
         fmi2String getTypesPlatform() const;
 
-        fmi2Status enterInitializationMode(fmi2Component c) const;
+        fmi2Status enterInitializationMode() const;
 
-        fmi2Status exitInitializationMode(fmi2Component c) const;
+        fmi2Status exitInitializationMode() const;
 
-        fmi2Status setupExperiment(fmi2Component c,
-                bool toleranceDefined, double tolerance, double startTime, double stopTime) const;
+        fmi2Status setupExperiment(const bool toleranceDefined,
+                const double tolerance, const double startTime, const double stopTime) const;
 
-        fmi2Component instantiate(const string instanceName, fmi2Type type,
-                const string guid, const string resourceLocation, bool visible = false, bool loggingOn = false);
+        bool instantiate(const string instanceName, const fmi2Type type,
+                const string guid, const string resourceLocation, const bool visible = false, const bool loggingOn = false);
 
-        fmi2Status reset(fmi2Component c) const;
+        fmi2Status reset() const;
 
-        fmi2Status terminate(fmi2Component c) const;
+        fmi2Status terminate();
 
-        fmi2Status getInteger(fmi2Component c, const vector<fmi2ValueReference> &vr, vector<fmi2Integer > values) const;
+        fmi2Status readInteger(const vector<fmi2ValueReference> &vr, vector<fmi2Integer > &ref) const;
 
-        fmi2Status getReal(fmi2Component c, const vector<fmi2ValueReference> &vr, vector<fmi2Real > values) const;
+        fmi2Status readReal(const fmi2ValueReference vr, fmi2Real &ref) const;
+        fmi2Status readReal(const vector<fmi2ValueReference> &vr, vector<fmi2Real > &ref) const;
 
-        void freeInstance(fmi2Component c) const;
+        fmi2Status readString(const vector<fmi2ValueReference> &vr, vector<fmi2String > &ref) const;
+
+        fmi2Status readBoolean(const vector<fmi2ValueReference> &vr, vector<fmi2Boolean > &ref) const;
+
+        void freeInstance();
 
         ~FmiLibrary();
 
@@ -89,6 +94,7 @@ namespace fmicpp::fmi2::import {
     protected:
 
         DLL_HANDLE handle_ = nullptr;
+        fmi2Component c_ = nullptr;
 
         template <class T>
         T loadFunction(const char* function_name) const;
@@ -100,12 +106,18 @@ namespace fmicpp::fmi2::import {
 
     public:
 
-        explicit CoSimulationLibrary(const string &lib_name);
+        explicit CoSimulationLibrary(const string lib_name);
 
-        fmi2Status doStep(fmi2Component c,
-                fmi2Real currentCommunicationPoint, fmi2Real communicationStepSize, bool noSetFMUStatePriorToCurrentPoint) const;
+        fmi2Status doStep(fmi2Real currentCommunicationPoint, fmi2Real communicationStepSize, bool noSetFMUStatePriorToCurrentPoint) const;
 
-        fmi2Status cancelStep(fmi2Component c) const;
+        fmi2Status cancelStep() const;
+
+    };
+
+    class ModelExchangeLibrary: public FmiLibrary {
+
+    public:
+        ModelExchangeLibrary(const string lib_name);
 
     };
 

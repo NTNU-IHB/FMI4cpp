@@ -27,12 +27,15 @@
 
 #include <memory>
 #include <boost/filesystem.hpp>
-
-#include <fmicpp/fmi2/xml/ModelDescription.hpp>
+#include "CoSimulationSlave.hpp"
+#include "../xml/ModelDescription.hpp"
 
 using fmicpp::fmi2::xml::ModelDescription;
 
+
 namespace fmicpp::fmi2::import {
+
+    class CoSimulationSlaveBuilder;
 
     class Fmu {
 
@@ -42,6 +45,8 @@ namespace fmicpp::fmi2::import {
         const ModelDescription &getModelDescription() const;
 
         const std::string &getModelDescriptionXml() const;
+
+        CoSimulationSlaveBuilder asCoSimulationFmu() const;
 
         ~Fmu();
 

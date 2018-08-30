@@ -10,8 +10,11 @@ SET(HEADERS
         ../include/fmicpp/fmi2/import/fmi2TypesPlatform.h
         ../include/fmicpp/fmi2/import/FmiLibrary.hpp
         ../include/fmicpp/fmi2/import/Fmu.hpp
+        ../include/fmicpp/fmi2/import/CoSimulationSlaveBuilder.hpp
         ../include/fmicpp/fmi2/import/FmuInstance.hpp
         ../include/fmicpp/fmi2/import/FmuSlave.hpp
+        ../include/fmicpp/fmi2/import/AbstractFmuInstance.hpp
+        ../include/fmicpp/fmi2/import/CoSimulationSlave.hpp
 
         ../include/fmicpp/fmi2/xml/ModelDescription.hpp
         ../include/fmicpp/fmi2/xml/ModelVariables.hpp
@@ -25,6 +28,9 @@ SET(HEADERS
 SET(SOURCES
         fmicpp/fmi2/import/Fmu.cpp
         fmicpp/fmi2/import/FmiLibrary.cpp
+        fmicpp/fmi2/import/AbstractFmuInstance.cpp
+        fmicpp/fmi2/import/CoSimulationSlave.cpp
+        fmicpp/fmi2/import/CoSimulationSlaveBuilder.cpp
 
         fmicpp/fmi2/xml/ModelDescription.cpp
         fmicpp/fmi2/xml/ModelVariables.cpp

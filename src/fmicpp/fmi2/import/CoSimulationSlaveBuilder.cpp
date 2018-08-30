@@ -22,40 +22,14 @@
  * THE SOFTWARE.
  */
 
-
-#include <fmicpp/fmi2/import/Fmu.hpp>
+#include <fmicpp/fmi2/import/CoSimulationSlaveBuilder.hpp>
 
 using namespace std;
 using namespace fmicpp::fmi2::import;
 
-namespace fs = boost::filesystem;
+CoSimulationSlaveBuilder::CoSimulationSlaveBuilder(const Fmu &fmu) : fmu(fmu) {}
 
-
-Fmu::Fmu(const std::string &fmu_path) {
-
-    this->tmp_path_ = fs::temp_directory_path() /= fs::path(fmu_path).stem();
-    create_directories(tmp_path_);
-
-    string modelDescriptionPath = tmp_path_.string() + "/modelDescription.xml";
-
-    this->modelDescription_ = make_unique<ModelDescription>(ModelDescription());
-    this->modelDescription_->load(modelDescriptionPath);
-
-    ifstream t(modelDescriptionPath);
-    this->model_description_xml_ = string((istreambuf_iterator<char>(t)),
-                                          istreambuf_iterator<char>());
-
-}
-
-const ModelDescription &Fmu::getModelDescription() const {
-    return *modelDescription_;
-}
-
-const string &Fmu::getModelDescriptionXml() const {
-    return model_description_xml_;
-}
-
-
-Fmu::~Fmu() {
-    remove_all(this->tmp_path_);
+std::unique_ptr<CoSimulationSlave> fmicpp::fmi2::import::CoSimulationSlaveBuilder::newInstance() {
+    shared_ptr<CoSimulationLibrary> lib(new CoSimulationLibrary(""));
+    return make_unique<CoSimulationSlave>(lib);
 }

@@ -34,6 +34,27 @@ namespace fmicpp::fmi2::import {
 
     class FmuInstance {
 
+    protected:
+        
+        double simulationTime = 0.0;
+
+        bool instantiated = false;
+        bool terminated = false;
+
+    public:
+
+        const double getSimulationTime() const {
+            return simulationTime;
+        }
+
+        const bool isInstantiated() const {
+            return instantiated;
+        }
+
+        const bool isTerminated() const {
+            return terminated;
+        }
+
         virtual void init(double start = 0, double stop = 0) = 0;
 
         virtual fmi2Status reset() = 0;
@@ -61,6 +82,8 @@ namespace fmicpp::fmi2::import {
                 const vector<fmi2ValueReference > &vKnownRef,
                 const vector<fmi2Real> &dvKnownRef,
                 vector<fmi2Real> &dvUnknownRef) = 0;
+
+        virtual ~FmuInstance(){};
 
     };
 

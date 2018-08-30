@@ -42,7 +42,8 @@ namespace {
         }
     }
 
-    static void logger(void* fmi2ComponentEnvironment, fmi2String instance_name, fmi2Status status, fmi2String category, fmi2String message, ...) {
+    static void logger(void* fmi2ComponentEnvironment,
+            fmi2String instance_name, fmi2Status status, fmi2String category, fmi2String message, ...) {
         printf("status = %s, instanceName = %s, category = %s: %s\n", status_to_string(status), instance_name, category, message);
     }
 
@@ -62,12 +63,14 @@ FmiLibrary::FmiLibrary(string lib_name) {
     handle_ = LoadLibrary(lib_name.c_str());
 #else
     handle_ = dlopen(lib_name.c_str(), RTLD_NOW | RTLD_LOCAL);
-    cout << dlerror() << endl;
+    if (!handle_) {
+        cout << dlerror() << endl;
+    }
 #endif
 
     if (!handle_) {
         string msg = "Unable to load dynamic library '" + lib_name + "'!";
-        throw std::runtime_error(msg);
+        throw runtime_error(msg);
     }
 
 }
@@ -80,45 +83,62 @@ fmi2String FmiLibrary::getTypesPlatform() const {
     return loadFunction<fmi2GetTypesPlatformTYPE *>("fmi2GetTypesPlatform")();
 }
 
-fmi2Status FmiLibrary::setupExperiment(fmi2Component c,
-        bool toleranceDefined, double tolerance, double startTime, double stopTime) const {
+bool FmiLibrary::instantiate(const string instanceName, const fmi2Type type, const string guid,
+                             const string resourceLocation, const bool visible, const bool loggingOn) {
+    c_ = loadFunction<fmi2InstantiateTYPE *>("fmi2Instantiate")(instanceName.c_str(), type, guid.c_str(),
+                                                                resourceLocation.c_str(), &callback, visible ? 1 : 0, loggingOn ? 1 : 0);
+
+    if (c_ == nullptr) {
+        throw runtime_error("Unable to instantiate FMU instance!");
+    }
+
+}
+
+fmi2Status FmiLibrary::setupExperiment(const bool toleranceDefined, const double tolerance, const double startTime, const double stopTime) const {
 
     fmi2Boolean stopDefined = stopTime > startTime;
-    return loadFunction<fmi2SetupExperimentTYPE *>("fmi2SetupExperiment")(c, toleranceDefined ? 1 : 0, tolerance, startTime, stopDefined, stopTime);
+    return loadFunction<fmi2SetupExperimentTYPE *>("fmi2SetupExperiment")
+            (c_, toleranceDefined ? 1 : 0, tolerance, startTime, stopDefined, stopTime);
 }
 
-fmi2Status FmiLibrary::enterInitializationMode(fmi2Component c) const {
-    return loadFunction<fmi2EnterInitializationModeTYPE *>("fmi2EnterInitializationMode")(c);
+fmi2Status FmiLibrary::enterInitializationMode() const {
+    return loadFunction<fmi2EnterInitializationModeTYPE *>("fmi2EnterInitializationMode")(c_);
 }
 
-fmi2Status FmiLibrary::exitInitializationMode(fmi2Component c) const {
-    return loadFunction<fmi2ExitInitializationModeTYPE *>("fmi2ExitInitializationMode")(c);
+fmi2Status FmiLibrary::exitInitializationMode() const {
+    return loadFunction<fmi2ExitInitializationModeTYPE *>("fmi2ExitInitializationMode")(c_);
 }
 
-fmi2Component FmiLibrary::instantiate(const string instanceName, fmi2Type type, const string guid,
-                        const string resourceLocation, bool visible, bool loggingOn) {
-    return loadFunction<fmi2InstantiateTYPE *>("fmi2Instantiate")(instanceName.c_str(), type, guid.c_str(),
-            resourceLocation.c_str(), &callback, visible ? 1 : 0, loggingOn ? 1 : 0);
+fmi2Status FmiLibrary::reset() const {
+    return loadFunction<fmi2ResetTYPE *>("fmi2Reset")(c_);
 }
 
-fmi2Status FmiLibrary::reset(fmi2Component c) const {
-    return loadFunction<fmi2ResetTYPE *>("reset")(c);
+fmi2Status FmiLibrary::terminate() {
+    return loadFunction<fmi2TerminateTYPE *>("fmi2Terminate")(c_);
 }
 
-fmi2Status FmiLibrary::terminate(fmi2Component c) const {
-    return loadFunction<fmi2TerminateTYPE *>("terminate")(c);
+fmi2Status FmiLibrary::readInteger(const vector<fmi2ValueReference> &vr, vector<fmi2Integer> &ref) const {
+    return loadFunction<fmi2GetIntegerTYPE *>("fmi2GetInteger")(c_, vr.data(), vr.size(), ref.data());
 }
 
-fmi2Status FmiLibrary::getInteger(fmi2Component c, const vector<fmi2ValueReference> &vr, vector<fmi2Integer> values) const {
-    return loadFunction<fmi2GetIntegerTYPE *>("fmi2GetInteger")(c, vr.data(), values.size(), values.data());
+fmi2Status FmiLibrary::readReal(const fmi2ValueReference vr, fmi2Real &ref) const {
+    return loadFunction<fmi2GetRealTYPE *>("fmi2GetReal")(c_, &vr, 1, &ref);
 }
 
-fmi2Status FmiLibrary::getReal(fmi2Component c, const vector<fmi2ValueReference > &vr, vector<fmi2Real> values) const {
-    return loadFunction<fmi2GetRealTYPE *>("fmi2GetReal")(c, vr.data(), values.size(), values.data());
+fmi2Status FmiLibrary::readReal(const vector<fmi2ValueReference > &vr, vector<fmi2Real> &ref) const {
+    return loadFunction<fmi2GetRealTYPE *>("fmi2GetReal")(c_, vr.data(), vr.size(), ref.data());
 }
 
-void FmiLibrary::freeInstance(fmi2Component c) const {
-    return loadFunction<fmi2FreeInstanceTYPE *>("free")(c);
+fmi2Status FmiLibrary::readString(const vector<fmi2ValueReference> &vr, vector<fmi2String > &ref) const {
+    return loadFunction<fmi2GetStringTYPE *>("fmi2GetString")(c_, vr.data(), vr.size(), ref.data());
+}
+
+fmi2Status FmiLibrary::readBoolean(const vector<fmi2ValueReference> &vr, vector<fmi2Boolean> &ref) const {
+    return loadFunction<fmi2GetBooleanTYPE *>("fmi2GetBoolean")(c_, vr.data(), vr.size(), ref.data());
+}
+
+void FmiLibrary::freeInstance() {
+    return loadFunction<fmi2FreeInstanceTYPE *>("fmi2FreeInstance")(c_);
 }
 
 template<class T>
@@ -131,6 +151,14 @@ T FmiLibrary::loadFunction(const char *function_name) const {
 }
 
 FmiLibrary::~FmiLibrary() {
+
+    cout << "FmiLibrary destructor called.." << endl;
+
+    if (c_) {
+        terminate();
+        freeInstance();
+        c_ = nullptr;
+    }
 
    if (handle_) {
 #ifdef WIN32
@@ -145,14 +173,15 @@ FmiLibrary::~FmiLibrary() {
 
 }
 
-CoSimulationLibrary::CoSimulationLibrary(const string &lib_name) : FmiLibrary(lib_name) {}
+CoSimulationLibrary::CoSimulationLibrary(const string lib_name) : FmiLibrary(lib_name) {}
 
-fmi2Status CoSimulationLibrary::doStep(
-        fmi2Component c, fmi2Real currentCommunicationPoint,
+fmi2Status CoSimulationLibrary::doStep(fmi2Real currentCommunicationPoint,
         fmi2Real communicationStepSize, bool noSetFMUStatePriorToCurrentPoint) const {
-    return loadFunction<fmi2DoStepTYPE *>("fmi2DoStep")(c, currentCommunicationPoint, communicationStepSize, noSetFMUStatePriorToCurrentPoint ? 1 : 0);
+    return loadFunction<fmi2DoStepTYPE *>("fmi2DoStep")(c_, currentCommunicationPoint, communicationStepSize, noSetFMUStatePriorToCurrentPoint ? 1 : 0);
 }
 
-fmi2Status CoSimulationLibrary::cancelStep(fmi2Component c) const {
-    return loadFunction<fmi2CancelStepTYPE *>("fmi2CancelStep")(c);
+fmi2Status CoSimulationLibrary::cancelStep() const {
+    return loadFunction<fmi2CancelStepTYPE *>("fmi2CancelStep")(c_);
 }
+
+ModelExchangeLibrary::ModelExchangeLibrary(const string lib_name) : FmiLibrary(lib_name) {}

@@ -22,40 +22,30 @@
  * THE SOFTWARE.
  */
 
+#ifndef FMICPP_COSIMULATIONSLAVEBUILDER_HPP
+#define FMICPP_COSIMULATIONSLAVEBUILDER_HPP
 
-#include <fmicpp/fmi2/import/Fmu.hpp>
+#include <memory>
+#include "Fmu.hpp"
 
-using namespace std;
-using namespace fmicpp::fmi2::import;
+namespace fmicpp::fmi2::import {
 
-namespace fs = boost::filesystem;
+    class CoSimulationSlaveBuilder {
 
+    private:
 
-Fmu::Fmu(const std::string &fmu_path) {
+        const Fmu &fmu;
 
-    this->tmp_path_ = fs::temp_directory_path() /= fs::path(fmu_path).stem();
-    create_directories(tmp_path_);
+    public:
+        CoSimulationSlaveBuilder(const Fmu &fmu);
 
-    string modelDescriptionPath = tmp_path_.string() + "/modelDescription.xml";
+    public:
 
-    this->modelDescription_ = make_unique<ModelDescription>(ModelDescription());
-    this->modelDescription_->load(modelDescriptionPath);
+        std::unique_ptr <CoSimulationSlave> newInstance();
 
-    ifstream t(modelDescriptionPath);
-    this->model_description_xml_ = string((istreambuf_iterator<char>(t)),
-                                          istreambuf_iterator<char>());
+    };
 
 }
 
-const ModelDescription &Fmu::getModelDescription() const {
-    return *modelDescription_;
-}
 
-const string &Fmu::getModelDescriptionXml() const {
-    return model_description_xml_;
-}
-
-
-Fmu::~Fmu() {
-    remove_all(this->tmp_path_);
-}
+#endif //FMICPP_COSIMULATIONSLAVEBUILDER_HPP
