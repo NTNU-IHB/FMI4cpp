@@ -77,13 +77,16 @@ namespace fmicpp::fmi2::import {
 
         fmi2Status terminate();
 
+        fmi2Status readInteger(const fmi2ValueReference vr, fmi2Integer &ref) const;
         fmi2Status readInteger(const vector<fmi2ValueReference> &vr, vector<fmi2Integer > &ref) const;
 
         fmi2Status readReal(const fmi2ValueReference vr, fmi2Real &ref) const;
         fmi2Status readReal(const vector<fmi2ValueReference> &vr, vector<fmi2Real > &ref) const;
 
+        fmi2Status readString(const fmi2ValueReference vr, fmi2String &ref) const;
         fmi2Status readString(const vector<fmi2ValueReference> &vr, vector<fmi2String > &ref) const;
 
+        fmi2Status readBoolean(const fmi2ValueReference vr, fmi2Boolean &ref) const;
         fmi2Status readBoolean(const vector<fmi2ValueReference> &vr, vector<fmi2Boolean > &ref) const;
 
         void freeInstance();

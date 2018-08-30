@@ -125,6 +125,10 @@ fmi2Status FmiLibrary::terminate() {
     return loadFunction<fmi2TerminateTYPE *>("fmi2Terminate")(c_);
 }
 
+fmi2Status FmiLibrary::readInteger(const fmi2ValueReference vr, fmi2Integer &ref) const {
+    return loadFunction<fmi2GetIntegerTYPE *>("fmi2GetInteger")(c_, &vr, 1, &ref);
+}
+
 fmi2Status FmiLibrary::readInteger(const vector<fmi2ValueReference> &vr, vector<fmi2Integer> &ref) const {
     return loadFunction<fmi2GetIntegerTYPE *>("fmi2GetInteger")(c_, vr.data(), vr.size(), ref.data());
 }
@@ -137,8 +141,16 @@ fmi2Status FmiLibrary::readReal(const vector<fmi2ValueReference > &vr, vector<fm
     return loadFunction<fmi2GetRealTYPE *>("fmi2GetReal")(c_, vr.data(), vr.size(), ref.data());
 }
 
+fmi2Status FmiLibrary::readString(const fmi2ValueReference vr, fmi2String &ref) const {
+    return loadFunction<fmi2GetStringTYPE *>("fmi2GetString")(c_, &vr, 1, &ref);
+}
+
 fmi2Status FmiLibrary::readString(const vector<fmi2ValueReference> &vr, vector<fmi2String > &ref) const {
     return loadFunction<fmi2GetStringTYPE *>("fmi2GetString")(c_, vr.data(), vr.size(), ref.data());
+}
+
+fmi2Status FmiLibrary::readBoolean(const fmi2ValueReference vr, fmi2Boolean &ref) const {
+    return loadFunction<fmi2GetBooleanTYPE *>("fmi2GetBoolean")(c_, &vr, 1, &ref);
 }
 
 fmi2Status FmiLibrary::readBoolean(const vector<fmi2ValueReference> &vr, vector<fmi2Boolean> &ref) const {
