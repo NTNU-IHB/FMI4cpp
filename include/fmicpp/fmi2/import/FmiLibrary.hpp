@@ -44,30 +44,68 @@
 typedef void *function_ptr;
 #endif
 
+#include <string>
+#include <vector>
+#include "fmi2Functions.h"
+
+using std::string;
+using std::vector;
 
 namespace fmicpp::fmi2::import {
 
     class FmiLibrary {
 
-
     public:
-        FmiLibrary(std::string lib_name);
 
-        const char* getVersion();
+        explicit FmiLibrary(const string lib_name);
 
-        const char* getTypesPlatform();
+        fmi2String getVersion() const;
 
+        fmi2String getTypesPlatform() const;
+
+        fmi2Status enterInitializationMode(fmi2Component c) const;
+
+        fmi2Status exitInitializationMode(fmi2Component c) const;
+
+        fmi2Status setupExperiment(fmi2Component c,
+                bool toleranceDefined, double tolerance, double startTime, double stopTime) const;
+
+        fmi2Component instantiate(const string instanceName, fmi2Type type,
+                const string guid, const string resourceLocation, bool visible = false, bool loggingOn = false);
+
+        fmi2Status reset(fmi2Component c) const;
+
+        fmi2Status terminate(fmi2Component c) const;
+
+        fmi2Status getInteger(fmi2Component c, const vector<fmi2ValueReference> &vr, vector<fmi2Integer > values) const;
+
+        fmi2Status getReal(fmi2Component c, const vector<fmi2ValueReference> &vr, vector<fmi2Real > values) const;
+
+        void freeInstance(fmi2Component c) const;
 
         ~FmiLibrary();
 
 
-    private:
+    protected:
 
         DLL_HANDLE handle_ = nullptr;
 
         template <class T>
-        T loadFunction(const char* function_name);
+        T loadFunction(const char* function_name) const;
 
+
+    };
+
+    class CoSimulationLibrary : public FmiLibrary {
+
+    public:
+
+        explicit CoSimulationLibrary(const string &lib_name);
+
+        fmi2Status doStep(fmi2Component c,
+                fmi2Real currentCommunicationPoint, fmi2Real communicationStepSize, bool noSetFMUStatePriorToCurrentPoint) const;
+
+        fmi2Status cancelStep(fmi2Component c) const;
 
     };
 

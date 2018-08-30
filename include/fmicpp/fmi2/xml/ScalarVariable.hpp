@@ -70,6 +70,9 @@ namespace fmicpp::fmi2::xml {
 
     };
 
+    struct IntegerVariable;
+    struct RealVariable;
+
 
     struct ScalarVariable {
         
@@ -83,6 +86,29 @@ namespace fmicpp::fmi2::xml {
         std::unique_ptr<BooleanAttribute> booleanAttribute = nullptr;
         
         void load(ptree &node);
+
+        IntegerVariable asIntegerVariable();
+        RealVariable asRealVariable();
+
+    };
+
+    struct IntegerVariable : ScalarVariable {
+
+        IntegerVariable(IntegerAttribute &attribute);
+
+        int min;
+        int max;
+        int start;
+
+    };
+
+    struct RealVariable : ScalarVariable {
+
+        RealVariable(RealAttribute &attribute);
+
+        double min;
+        double max;
+        double start;
 
     };
     

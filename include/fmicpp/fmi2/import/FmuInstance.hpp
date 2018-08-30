@@ -25,9 +25,42 @@
 #ifndef FMICPP_FMUINSTANCE_HPP
 #define FMICPP_FMUINSTANCE_HPP
 
+#include <vector>
+#include "fmi2Functions.h"
+
+using std::vector;
+
 namespace fmicpp::fmi2::import {
 
     class FmuInstance {
+
+        virtual void init(double start = 0, double stop = 0) = 0;
+
+        virtual fmi2Status reset() = 0;
+
+        virtual fmi2Status terminate() = 0;
+
+        virtual bool canGetAndSetFMUstate() const = 0;
+
+        virtual fmi2Status getFMUstate(fmi2FMUstate &state) = 0;
+
+        virtual fmi2Status setFMUstate(const fmi2FMUstate state) = 0;
+
+        virtual fmi2Status freeFMUstate(fmi2FMUstate &state) = 0;
+
+        virtual bool canSerializeFmuState() const = 0;
+
+        virtual fmi2Status serializeFMUstate(vector<fmi2Byte> &serializedState) = 0;
+
+        virtual fmi2Status deSerializeFMUstate(const vector<fmi2Byte> &serializedState, fmi2FMUstate &state) = 0;
+
+        virtual bool providesDirectionalDerivative() const = 0;
+
+        virtual fmi2Status getDirectionalDerivative(
+                const vector<fmi2ValueReference> &vUnkownRef,
+                const vector<fmi2ValueReference > &vKnownRef,
+                const vector<fmi2Real> &dvKnownRef,
+                vector<fmi2Real> &dvUnknownRef) = 0;
 
     };
 

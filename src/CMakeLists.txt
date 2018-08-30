@@ -2,6 +2,9 @@
 include_directories(../include)
 
 SET(HEADERS
+
+        ../include/fmicpp/fmi2/fmicpp.hpp
+
         ../include/fmicpp/fmi2/import/fmi2Functions.h
         ../include/fmicpp/fmi2/import/fmi2FunctionTypes.h
         ../include/fmicpp/fmi2/import/fmi2TypesPlatform.h
@@ -15,7 +18,9 @@ SET(HEADERS
         ../include/fmicpp/fmi2/xml/ScalarVariable.hpp
         ../include/fmicpp/fmi2/xml/DefaultExperiment.hpp
         ../include/fmicpp/fmi2/xml/SourceFiles.hpp
-        ../include/fmicpp/fmi2/xml/ModelStructure.hpp)
+        ../include/fmicpp/fmi2/xml/ModelStructure.hpp
+
+)
 
 SET(SOURCES
         fmicpp/fmi2/import/Fmu.cpp
@@ -29,6 +34,7 @@ SET(SOURCES
         fmicpp/fmi2/xml/ModelStructure.cpp)
 
 add_library(fmicpp ${HEADERS} ${SOURCES})
+target_link_libraries(fmicpp Boost::system Boost::filesystem)
 if (UNIX)
     target_link_libraries(fmicpp dl)
 endif()

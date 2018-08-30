@@ -23,7 +23,7 @@
  */
 
 #include <iostream>
-#include <fmicpp/fmi2/xml/ModelDescription.hpp>
+#include <fmicpp/fmi2/fmicpp.hpp>
 #include <fmicpp/fmi2/import/FmiLibrary.hpp>
 
 using namespace std;
@@ -40,11 +40,13 @@ int main() {
     cout << "modelIdentifier=" << md.coSimulation->modelIdentifier << endl;
     cout << "Default stepSize=" << md.defaultExperiment->stepSize << endl;
     cout << "A sourcefile is named:" << md.coSimulation->sourceFiles->at(0).name << endl;
-    cout << "A variable is named:" << md.modelVariables->at(0)->name << endl;
+    auto& var = md.modelVariables->getByValueReference(1);
+    cout << "A variable is named:" << var.name << ", with start=" << var.asRealVariable().start << endl;
 
     FmiLibrary lib("/home/laht/Downloads/ControlledTemperature.so");
     cout << "fmi2GetVersion=" << lib.getVersion() << endl;
     cout << "fmi2GetTypesPlatform=" << lib.getTypesPlatform() << endl;
+
 
     return 0;
 

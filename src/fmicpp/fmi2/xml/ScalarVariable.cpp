@@ -28,31 +28,23 @@ using namespace std;
 using namespace fmicpp::fmi2::xml;
 
 void IntegerAttribute::load(ptree &node) {
-
     min = node.get<int>("<xmlattr>.min", 0);
     max = node.get<int>("<xmlattr>.max", 0);
     start = node.get<int>("<xmlattr>.start", 0);
-
 }
 
 void RealAttribute::load(ptree &node) {
-
     min = node.get<double>("<xmlattr>.min", 0);
     max = node.get<double>("<xmlattr>.max", 0);
     start = node.get<double>("<xmlattr>.start", 0);
-
 }
 
 void StringAttribute::load(ptree &node) {
-
     start = node.get<string>("<xmlattr>.start", "");
-
 }
 
 void BooleanAttribute::load(ptree &node) {
-
     start = node.get<bool>("<xmlattr>.start", false);
-
 }
 
 void ScalarVariable::load(ptree &node) {
@@ -77,4 +69,24 @@ void ScalarVariable::load(ptree &node) {
         }
     }
 
+}
+
+IntegerVariable ScalarVariable::asIntegerVariable() {
+    return IntegerVariable(*integerAttribute);
+}
+
+RealVariable ScalarVariable::asRealVariable() {
+    return RealVariable(*realAttribute);
+}
+
+IntegerVariable::IntegerVariable(IntegerAttribute &attribute) {
+    this->min = attribute.min;
+    this->max = attribute.max;
+    this->start = attribute.start;
+}
+
+RealVariable::RealVariable(RealAttribute &attribute) {
+    this->min = attribute.min;
+    this->max = attribute.max;
+    this->start = attribute.start;
 }

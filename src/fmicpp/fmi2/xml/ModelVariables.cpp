@@ -41,3 +41,27 @@ void fmicpp::fmi2::xml::ModelVariables::load(ptree &node) {
     }
 
 }
+
+ScalarVariable& ModelVariables::getByName(string name) {
+
+    for (const auto& var : *this) {
+        if (var->name == name) {
+            return *var;
+        }
+    }
+
+    string errorMsg = "No such variable with name '" + name + "'!";
+    throw runtime_error(errorMsg);
+}
+
+ScalarVariable& ModelVariables::getByValueReference(ValueReference vr) {
+
+    for (const auto& var : *this) {
+        if (var->valueReference == vr) {
+            return *var;
+        }
+    }
+
+    string errorMsg = "No such variable with valueReference '" + to_string(vr) + "'!";
+    throw runtime_error(errorMsg);
+}

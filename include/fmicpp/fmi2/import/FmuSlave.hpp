@@ -25,11 +25,15 @@
 #ifndef FMICPP_FMUSLAVE_HPP
 #define FMICPP_FMUSLAVE_HPP
 
-#import "FmuInstance.hpp"
+#include "FmuInstance.hpp"
 
 namespace fmicpp::fmi2::import {
 
     class FmuSlave: public FmuInstance {
+
+        virtual fmi2Status doStep() = 0;
+
+        virtual fmi2Status cancelStep() = 0;
 
     };
 
