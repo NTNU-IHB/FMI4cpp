@@ -28,9 +28,9 @@ using namespace std;
 using namespace fmicpp::fmi2::xml;
 
 
-void fmicpp::fmi2::xml::ModelVariables::load(ptree &node) {
+void fmicpp::fmi2::xml::ModelVariables::load(const ptree &node) {
 
-    for (ptree::value_type &v : node) {
+    for (const ptree::value_type &v : node) {
 
         if (v.first == "ScalarVariable") {
             unique_ptr<ScalarVariable> var(new ScalarVariable());
@@ -42,7 +42,7 @@ void fmicpp::fmi2::xml::ModelVariables::load(ptree &node) {
 
 }
 
-ScalarVariable& ModelVariables::getByName(string name) {
+ScalarVariable& ModelVariables::getByName(const string name) {
 
     for (const auto& var : *this) {
         if (var->name == name) {
@@ -54,7 +54,7 @@ ScalarVariable& ModelVariables::getByName(string name) {
     throw runtime_error(errorMsg);
 }
 
-ScalarVariable& ModelVariables::getByValueReference(fmi2ValueReference vr) {
+ScalarVariable& ModelVariables::getByValueReference(const fmi2ValueReference vr) {
 
     for (const auto& var : *this) {
         if (var->valueReference == vr) {

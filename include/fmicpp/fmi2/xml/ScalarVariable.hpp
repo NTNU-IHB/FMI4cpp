@@ -40,31 +40,31 @@ namespace fmicpp::fmi2::xml {
         int min;
         int max;
         int start;
-        void load(ptree &node);
+        void load(const ptree &node);
     };
 
     struct RealAttribute {
         double min;
         double max;
         double start;
-        void load(ptree &node);
+        void load(const ptree &node);
     };
 
     struct StringAttribute {
         string start;
-        void load(ptree &node);
+        void load(const ptree &node);
     };
 
     struct BooleanAttribute {
         bool start;
-        void load(ptree &node);
+        void load(const ptree &node);
     };
 
     struct EnumerationAttribute {
         int min;
         int max;
         int start;
-        void load(ptree &node);
+        void load(const ptree &node);
     };
 
     //forward declarations
@@ -86,7 +86,7 @@ namespace fmicpp::fmi2::xml {
         BooleanVariable asBooleanVariable();
         EnumerationVariable asEnumerationVariable();
 
-        void load(ptree &node);
+        void load(const ptree &node);
 
     private:
         unique_ptr<IntegerAttribute> integerAttribute = nullptr;
@@ -99,47 +99,48 @@ namespace fmicpp::fmi2::xml {
 
     struct IntegerVariable : ScalarVariable {
 
-        IntegerVariable(IntegerAttribute &attribute);
-
-        int min;
-        int max;
+        const int min;
+        const int max;
         int start;
+
+        IntegerVariable(const IntegerAttribute &attribute);
+
 
     };
 
     struct RealVariable : ScalarVariable {
 
-        RealVariable(RealAttribute &attribute);
-
-        double min;
-        double max;
+        const double min;
+        const double max;
         double start;
+
+        RealVariable(const RealAttribute &attribute);
 
     };
 
     struct StringVariable : ScalarVariable {
 
-        StringVariable(StringAttribute &attribute);
-
         string start;
+
+        StringVariable(const StringAttribute &attribute);
 
     };
 
     struct BooleanVariable : ScalarVariable {
 
-        BooleanVariable(BooleanAttribute &attribute);
-
         bool start;
+
+        BooleanVariable(const BooleanAttribute &attribute);
 
     };
 
     struct EnumerationVariable : ScalarVariable {
 
-        EnumerationVariable(EnumerationAttribute &attribute);
-
-        int min;
-        int max;
+        const int min;
+        const int max;
         int start;
+
+        EnumerationVariable(const EnumerationAttribute &attribute);
 
     };
     

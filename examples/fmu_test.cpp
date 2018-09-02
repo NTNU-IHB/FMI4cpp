@@ -22,27 +22,25 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMICPP_FMUSLAVE_HPP
-#define FMICPP_FMUSLAVE_HPP
+#include <string>
+#include <fmicpp/os_util.hpp>
+#include <fmicpp/fmi2/fmicpp.hpp>
 
-#include "FmuInstance.hpp"
+using namespace fmicpp::fmi2::import;
 
-namespace fmicpp::fmi2::import {
+int main() {
 
-    class FmuSlave: public FmuInstance {
+    const string fmu_path = string(getenv("TEST_FMUs"))
+                            + "/FMI_2.0/CoSimulation/" + getOs() +
+                            "/20sim/4.6.4.8004/ControlledTemperature/ControlledTemperature.fmu";
 
-    public:
+    Fmu fmu(fmu_path);
 
-        FmuSlave();
+    auto slave = fmu.asCoSimulationFmu()->newInstance();
 
-        virtual fmi2Status doStep(const double stepSize) = 0;
+    slave.init();
 
-        virtual fmi2Status cancelStep() = 0;
+    slave.terminate();
 
-        virtual ~FmuSlave(){}
-
-    };
 
 }
-
-#endif //FMICPP_FMUSLAVE_HPP

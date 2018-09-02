@@ -22,27 +22,21 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMICPP_FMUSLAVE_HPP
-#define FMICPP_FMUSLAVE_HPP
+#ifndef FMICPP_OS_UTIL_HPP
+#define FMICPP_OS_UTIL_HPP
 
-#include "FmuInstance.hpp"
+#include <string>
 
-namespace fmicpp::fmi2::import {
-
-    class FmuSlave: public FmuInstance {
-
-    public:
-
-        FmuSlave();
-
-        virtual fmi2Status doStep(const double stepSize) = 0;
-
-        virtual fmi2Status cancelStep() = 0;
-
-        virtual ~FmuSlave(){}
-
-    };
-
+namespace {
+    std::string getOs() {
+#ifdef _WIN32
+        return "win32";
+#elif _WIN64
+        return "win64";
+#elif __linux__
+        return "linux64";
+#endif
+    }
 }
 
-#endif //FMICPP_FMUSLAVE_HPP
+#endif //FMICPP_OS_UTIL_HPP

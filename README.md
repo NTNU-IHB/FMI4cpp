@@ -19,7 +19,7 @@ When the library is stable I will add it to vcpkg.
 Install [vcpkg](https://github.com/Microsoft/vcpkg) and run
 
 ```
-./vcpkg install boost-property-tree boost-filesystem
+./vcpkg install boost-property-tree boost-filesystem libzip
 ``` 
 
 #### API (in progress)
@@ -27,6 +27,8 @@ Install [vcpkg](https://github.com/Microsoft/vcpkg) and run
 ```cpp
 
 #include <fmicpp/fmicpp.hpp>
+
+using namespace fmicpp::fmi2::import;
 
 int main() {
 

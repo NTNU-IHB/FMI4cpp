@@ -26,12 +26,16 @@
 #define FMICPP_FMU_HPP
 
 #include <memory>
+#include <vector>
 #include <boost/filesystem.hpp>
+
+#include "FmuInstance.hpp"
 #include "CoSimulationSlave.hpp"
+
 #include "../xml/ModelDescription.hpp"
 
+namespace fs = boost::filesystem;
 using fmicpp::fmi2::xml::ModelDescription;
-
 
 namespace fmicpp::fmi2::import {
 
@@ -39,22 +43,28 @@ namespace fmicpp::fmi2::import {
 
     class Fmu {
 
+        friend class CoSimulationSlaveBuilder;
+
     public:
-        explicit Fmu(const std::string &fmu_path);
+        explicit Fmu(const std::string fmu_file);
 
         const ModelDescription &getModelDescription() const;
 
         const std::string &getModelDescriptionXml() const;
 
-        CoSimulationSlaveBuilder asCoSimulationFmu() const;
+        std::unique_ptr<CoSimulationSlaveBuilder> asCoSimulationFmu();
 
         ~Fmu();
 
     private:
 
-        boost::filesystem::path tmp_path_;
+        fs::path tmp_path_;
+        const std::string fmu_file_;
         std::string model_description_xml_;
         std::unique_ptr<ModelDescription> modelDescription_;
+        std::vector<std::shared_ptr<FmuInstance>> instances_;
+
+        bool extractFmu();
 
     };
 

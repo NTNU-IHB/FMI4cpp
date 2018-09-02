@@ -26,6 +26,8 @@
 #define FMICPP_COSIMULATIONSLAVEBUILDER_HPP
 
 #include <memory>
+#include <string>
+#include <vector>
 #include "Fmu.hpp"
 
 namespace fmicpp::fmi2::import {
@@ -34,14 +36,12 @@ namespace fmicpp::fmi2::import {
 
     private:
 
-        const Fmu &fmu;
+        Fmu &fmu_;
 
     public:
-        CoSimulationSlaveBuilder(const Fmu &fmu);
+        explicit CoSimulationSlaveBuilder(Fmu &fmu);
 
-    public:
-
-        std::unique_ptr <CoSimulationSlave> newInstance();
+        CoSimulationSlave& newInstance();
 
     };
 

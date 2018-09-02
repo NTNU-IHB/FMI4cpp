@@ -22,14 +22,17 @@
  * THE SOFTWARE.
  */
 
+#include <vector>
 #include <fmicpp/fmi2/import/CoSimulationSlaveBuilder.hpp>
 
 using namespace std;
 using namespace fmicpp::fmi2::import;
 
-CoSimulationSlaveBuilder::CoSimulationSlaveBuilder(const Fmu &fmu) : fmu(fmu) {}
+CoSimulationSlaveBuilder::CoSimulationSlaveBuilder(Fmu &fmu) : fmu_(fmu) {}
 
-std::unique_ptr<CoSimulationSlave> fmicpp::fmi2::import::CoSimulationSlaveBuilder::newInstance() {
+CoSimulationSlave& fmicpp::fmi2::import::CoSimulationSlaveBuilder::newInstance() {
     shared_ptr<CoSimulationLibrary> lib(new CoSimulationLibrary(""));
-    return make_unique<CoSimulationSlave>(lib);
+    shared_ptr<CoSimulationSlave> slave(new CoSimulationSlave(lib));
+//    fmu_.instances_.emplace_back(slave);
+    return *slave;
 }

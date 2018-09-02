@@ -22,55 +22,38 @@
  * THE SOFTWARE.
  */
 
+#include <string>
+#include <iostream>
+#include <fstream>
+
 #include <zip.h>
-#include <fmicpp/fmi2/import/Fmu.hpp>
-#include <fmicpp/fmi2/import/CoSimulationSlaveBuilder.hpp>
+#include <fmicpp/os_util.hpp>
+#include <boost/filesystem.hpp>
 
+namespace fs = boost::filesystem;
 using namespace std;
-using namespace fmicpp::fmi2::import;
 
-Fmu::Fmu(const std::string fmu_file): fmu_file_(fmu_file) {
+int main() {
 
-    this->tmp_path_ = fs::temp_directory_path() /= fs::path(fmu_file).stem();
-    create_directories(tmp_path_);
+    const string fmu_path = string(getenv("TEST_FMUs"))
+                            + "/FMI_2.0/CoSimulation/" + getOs() +
+                            "/20sim/4.6.4.8004/ControlledTemperature/ControlledTemperature.fmu";
 
-    extractFmu();
-
-    string modelDescriptionPath = tmp_path_.string() + "/modelDescription.xml";
-
-    this->modelDescription_ = make_unique<ModelDescription>(ModelDescription());
-    this->modelDescription_->load(modelDescriptionPath);
-
-    ifstream t(modelDescriptionPath);
-    this->model_description_xml_ = string((istreambuf_iterator<char>(t)),
-                                          istreambuf_iterator<char>());
-
-}
-
-const ModelDescription &Fmu::getModelDescription() const {
-    return *modelDescription_;
-}
-
-const string &Fmu::getModelDescriptionXml() const {
-    return model_description_xml_;
-}
-
-unique_ptr<CoSimulationSlaveBuilder> Fmu::asCoSimulationFmu() {
-    return unique_ptr<CoSimulationSlaveBuilder>(new CoSimulationSlaveBuilder(*this));
-}
-
-
-bool Fmu::extractFmu() {
     int* err;
-    zip* za = zip_open(fmu_file_.c_str(), 0, err);
+    zip* za = zip_open(fmu_path.c_str(), 0, err);
     if (za == nullptr) {
-        return false;
+        return *err;
     }
+
+    auto tmp_path_ = fs::temp_directory_path() /= fs::path(fmu_path).stem();
+    create_directories(tmp_path_);
 
     struct zip_file *zf;
     struct zip_stat sb;
     for (int i = 0; i < zip_get_num_entries(za, 0); i++) {
         if (zip_stat_index(za, i, 0, &sb) == 0) {
+            printf("Name: [%s], ", sb.name);
+            printf("Size: [%llu], \n", sb.size);
 
             if (sb.size == 0) {
                 fs::create_directories(tmp_path_ / sb.name);
@@ -79,7 +62,7 @@ bool Fmu::extractFmu() {
                 char* contents = new char[sb.size];
                 zip_fread(zf, contents, 0);
                 if (!ofstream ((tmp_path_ / sb.name).c_str()).write(contents, sb.size)) {
-                    return false;
+                    cerr << "error" << endl;
                 }
                 zip_fclose(zf);
             }
@@ -88,17 +71,7 @@ bool Fmu::extractFmu() {
     }
 
     zip_close(za);
+    remove_all(tmp_path_);
 
-}
-
-
-Fmu::~Fmu() {
-
-    for (const shared_ptr<FmuInstance>& instance : instances_) {
-        if (!instance->isTerminated()) {
-            instance->terminate();
-        }
-    }
-
-    remove_all(this->tmp_path_);
+    return 0;
 }

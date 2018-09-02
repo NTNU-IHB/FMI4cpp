@@ -33,7 +33,7 @@ namespace fmicpp::fmi2::xml {
 
     class ModelStructure {
 
-        void load(ptree &node);
+        void load(const ptree &node);
 
     };
 

@@ -27,7 +27,8 @@
 using namespace std;
 using namespace fmicpp::fmi2::xml;
 
-void FmuData::load(ptree &node) {
+void FmuData::load(const ptree &node) {
+
     modelIdentifier = node.get<string>("<xmlattr>.modelIdentifier");
 
     needsExecutionTool = node.get<bool>("xmlattr>.needsExecutionTool", false);
@@ -37,16 +38,16 @@ void FmuData::load(ptree &node) {
     canNotUseMemoryManagementFunctions = node.get<bool>("xmlattr>.canNotUseMemoryManagementFunctions", false);
     canBeInstantiatedOnlyOncePerProcess = node.get<bool>("xmlattr>.canBeInstantiatedOnlyOncePerProcess", false);
 
-    for (ptree::value_type &v : node) {
+    for (const ptree::value_type &v : node) {
         if (v.first == "SourceFiles") {
-            sourceFiles = make_unique<SourceFiles>(SourceFiles());
+            sourceFiles = make_shared<SourceFiles>(SourceFiles());
             sourceFiles->load(v.second);
         }
     }
 
 }
 
-void CoSimulation::load(ptree &node) {
+void CoSimulationData::load(const ptree &node) {
     FmuData::load(node);
 
     maxOutputDerivativeOrder = node.get<unsigned int>("<xmlattr>.maxOutputDerivativeOrder", 0);
@@ -57,11 +58,15 @@ void CoSimulation::load(ptree &node) {
 
 }
 
-void ModelExchange::load(ptree &node) {
+void ModelExchangeData::load(const ptree &node) {
     FmuData::load(node);
+
+    numberOfEventIndicators = node.get<unsigned int>("<xmlattr>.numberOfEventIndicators", 0);
+    completedIntegratorStepNotNeeded = node.get<bool>("<xmlattr>.completedIntegratorStepNotNeeded", false);
+
 }
 
-void ModelDescription::load(string fileName) {
+void ModelDescription::load(const string fileName) {
 
     ptree tree;
     read_xml(fileName, tree);
@@ -75,17 +80,18 @@ void ModelDescription::load(string fileName) {
     author = root.get<string>("<xmlattr>.author", "");
     version = root.get<string>("<xmlattr>.version", "");
     license = root.get<string>("<xmlattr>.license", "");
+    generationTool = root.get<string>("<xmlattr>.generationTool", "");
     generationDateAndTime = root.get<string>("<xmlattr>.generationDateAndTime", "");
 
     numberOfEventIndicators = root.get<int>("<xmlattr>.numberOfEventIndicators", 0);
 
-    for (ptree::value_type &v : root) {
+    for (const ptree::value_type &v : root) {
 
         if (v.first == "CoSimulation") {
-            coSimulation = make_unique<CoSimulation>(CoSimulation{});
+            coSimulation = make_unique<CoSimulationData>(CoSimulationData{});
             coSimulation->load(v.second);
         } else if (v.first == "ModelExchange") {
-            modelExchange = make_unique<ModelExchange>(ModelExchange{});
+            modelExchange = make_unique<ModelExchangeData>(ModelExchangeData{});
             modelExchange->load(v.second);
         } else if (v.first == "DefaultExperiment") {
             defaultExperiment = make_unique<DefaultExperiment>(DefaultExperiment());
@@ -98,3 +104,26 @@ void ModelDescription::load(string fileName) {
     }
 
 }
+
+SpecificModelDescription::SpecificModelDescription(const FmuData &data)
+        : modelIdentifier(data.modelIdentifier),
+        canGetAndSetFMUstate(data.canGetAndSetFMUstate),
+        needsExecutionTool(data.needsExecutionTool),
+        canNotUseMemoryManagementFunctions(data.canNotUseMemoryManagementFunctions),
+        canBeInstantiatedOnlyOncePerProcess(data.canBeInstantiatedOnlyOncePerProcess),
+        providesDirectionalDerivative(data.providesDirectionalDerivative),
+        sourceFiles(data.sourceFiles),
+        canSerializeFMUstate(data.canSerializeFMUstate) {};
+
+
+CoSimulationModelDescription::CoSimulationModelDescription(const CoSimulationData data)
+        : SpecificModelDescription(data),
+        canInterpolateInputs(data.canInterpolateInputs),
+        canRunAsynchronuously(data.canRunAsynchronuously),
+        canHandleVariableCommunicationStepSize(data.canHandleVariableCommunicationStepSize),
+        maxOutputDerivativeOrder(data.maxOutputDerivativeOrder) {};
+
+ModelExchangeModelDescription::ModelExchangeModelDescription(const ModelExchangeData data)
+        : SpecificModelDescription(data),
+        numberOfEventIndicators(data.numberOfEventIndicators),
+        completedIntegratorStepNotNeeded(data.completedIntegratorStepNotNeeded) {};

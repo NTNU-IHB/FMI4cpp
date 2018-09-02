@@ -51,13 +51,13 @@ namespace fmicpp::fmi2::xml {
         bool canBeInstantiatedOnlyOncePerProcess;
         bool providesDirectionalDerivative;
 
-        unique_ptr<SourceFiles> sourceFiles = nullptr;
+        std::shared_ptr<SourceFiles> sourceFiles = nullptr;
 
-        virtual void load(ptree &node);
+        virtual void load(const ptree &node);
 
     };
 
-    struct CoSimulation: FmuData {
+    struct CoSimulationData: FmuData {
 
         bool canInterpolateInputs;
         bool canRunAsynchronuously;
@@ -65,18 +65,22 @@ namespace fmicpp::fmi2::xml {
 
         unsigned int maxOutputDerivativeOrder;
 
-        void load(ptree &node);
+        void load(const ptree &node);
 
     };
 
-    struct ModelExchange: FmuData {
+    struct ModelExchangeData: FmuData {
 
-        int numberOfEventIndicators;
+        unsigned int numberOfEventIndicators;
         bool completedIntegratorStepNotNeeded;
 
-        void load(ptree &node);
+        void load(const ptree &node);
 
     };
+
+
+    class CoSimulationModelDescription;
+    class ModelExchangeModelDescription;
 
     struct ModelDescription {
 
@@ -93,12 +97,55 @@ namespace fmicpp::fmi2::xml {
 
         int numberOfEventIndicators;
 
-        unique_ptr<CoSimulation> coSimulation = nullptr;
-        unique_ptr<ModelExchange> modelExchange = nullptr;
         unique_ptr<DefaultExperiment> defaultExperiment = nullptr;
         unique_ptr<ModelVariables> modelVariables = nullptr;
 
-        void load(string fileName);
+        void load(const string fileName);
+
+        CoSimulationModelDescription asCoSimulationFmu();
+        ModelExchangeModelDescription asModelExchangeFmu();
+
+    private:
+        unique_ptr<CoSimulationData> coSimulation = nullptr;
+        unique_ptr<ModelExchangeData> modelExchange = nullptr;
+
+    };
+
+    struct SpecificModelDescription: ModelDescription {
+
+        const string modelIdentifier;
+
+        const bool canGetAndSetFMUstate;
+        const bool canSerializeFMUstate;
+        const bool needsExecutionTool;
+        const bool canNotUseMemoryManagementFunctions;
+        const bool canBeInstantiatedOnlyOncePerProcess;
+        const bool providesDirectionalDerivative;
+
+        const std::shared_ptr<SourceFiles> sourceFiles = nullptr;
+
+        explicit SpecificModelDescription(const FmuData &data);
+
+    };
+
+    struct CoSimulationModelDescription : SpecificModelDescription {
+
+        const bool canInterpolateInputs;
+        const bool canRunAsynchronuously;
+        const bool canHandleVariableCommunicationStepSize;
+
+        const unsigned int maxOutputDerivativeOrder;
+
+        explicit CoSimulationModelDescription(const CoSimulationData data);
+
+    };
+
+    struct ModelExchangeModelDescription : SpecificModelDescription {
+
+        const unsigned int numberOfEventIndicators;
+        const bool completedIntegratorStepNotNeeded;
+
+        explicit ModelExchangeModelDescription(const ModelExchangeData data);
 
     };
 

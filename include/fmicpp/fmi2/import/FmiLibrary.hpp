@@ -47,7 +47,6 @@
 typedef void *function_ptr;
 #endif
 
-
 using std::string;
 using std::vector;
 

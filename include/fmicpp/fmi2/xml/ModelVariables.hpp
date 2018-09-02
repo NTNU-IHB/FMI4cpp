@@ -36,10 +36,10 @@ namespace fmicpp::fmi2::xml {
 
 struct ModelVariables : public std::vector<std::unique_ptr<ScalarVariable>> {
 
-        void load(ptree &node);
+        void load(const ptree &node);
 
-        ScalarVariable& getByName(std::string name);
-        ScalarVariable& getByValueReference(fmi2ValueReference vr);
+        ScalarVariable& getByName(const std::string name);
+        ScalarVariable& getByValueReference(const fmi2ValueReference vr);
 
     };
 

@@ -40,7 +40,7 @@ SET(SOURCES
         fmicpp/fmi2/xml/ModelStructure.cpp)
 
 add_library(fmicpp ${HEADERS} ${SOURCES})
-target_link_libraries(fmicpp Boost::system Boost::filesystem)
+target_link_libraries(fmicpp Boost::system Boost::filesystem ${LIBZIP_LIBRARIES})
 if (UNIX)
     target_link_libraries(fmicpp dl)
 endif()

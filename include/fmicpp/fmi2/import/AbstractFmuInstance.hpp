@@ -37,7 +37,7 @@ namespace fmicpp::fmi2::import {
     public:
         explicit AbstractFmuInstance(const std::shared_ptr<T> library);
 
-        void init(double start, double stop) override;
+        void init(double start = 0, double stop = 0) override;
 
         fmi2Status reset() override;
 

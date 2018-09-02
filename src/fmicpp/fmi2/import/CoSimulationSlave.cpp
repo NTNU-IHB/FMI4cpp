@@ -28,7 +28,7 @@ using namespace std;
 using namespace fmicpp::fmi2::import;
 
 CoSimulationSlave::CoSimulationSlave(const shared_ptr<CoSimulationLibrary> library)
-            : AbstractFmuInstance<CoSimulationLibrary>(library) {}
+            : AbstractFmuInstance<CoSimulationLibrary>(library), FmuSlave() {}
 
 fmi2Status CoSimulationSlave::doStep(const double stepSize) {
     return library->doStep(FmuSlave::simulationTime, stepSize, false);
@@ -39,7 +39,7 @@ fmi2Status CoSimulationSlave::cancelStep() {
 }
 
 void CoSimulationSlave::init(double start, double stop) {
-
+    AbstractFmuInstance::init(start, stop);
 }
 
 fmi2Status CoSimulationSlave::reset() {
@@ -88,6 +88,8 @@ fmi2Status CoSimulationSlave::getDirectionalDerivative(const vector<fmi2ValueRef
                                                        vector<fmi2Real> &dvUnknownRef) {
    return AbstractFmuInstance::getDirectionalDerivative(vUnkownRef, vKnownRef, dvKnownRef, dvUnknownRef);
 }
+
+
 
 
 

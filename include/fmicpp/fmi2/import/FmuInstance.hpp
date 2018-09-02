@@ -26,6 +26,7 @@
 #define FMICPP_FMUINSTANCE_HPP
 
 #include <vector>
+#include "../xml/ModelDescription.hpp"
 #include "../fmi2Functions.h"
 
 using std::vector;
@@ -41,7 +42,13 @@ namespace fmicpp::fmi2::import {
         bool instantiated = false;
         bool terminated = false;
 
+        xml::ModelDescription& modelDescription;
+
     public:
+
+        const xml::ModelDescription& getModelDescription() const {
+            return modelDescription;
+        }
 
         const double getSimulationTime() const {
             return simulationTime;

@@ -58,17 +58,8 @@ namespace {
 
 }
 
-const char *FmiLibrary::getLastError() const {
-#ifdef WIN32
-    std::ostringstream os;
-    os << GetLastError();
-    return os.str().c_str();
-#else
-    return dlerror();
-#endif
-}
 
-FmiLibrary::FmiLibrary(string lib_name) {
+FmiLibrary::FmiLibrary(const string lib_name) {
 #ifdef WIN32
     handle_ = LoadLibrary(lib_name.c_str());
 #else
@@ -81,6 +72,16 @@ FmiLibrary::FmiLibrary(string lib_name) {
         throw runtime_error(msg);
     }
 
+}
+
+const char *FmiLibrary::getLastError() const {
+#ifdef WIN32
+    std::ostringstream os;
+    os << GetLastError();
+    return os.str().c_str();
+#else
+    return dlerror();
+#endif
 }
 
 fmi2String FmiLibrary::getVersion() const {

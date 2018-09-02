@@ -39,7 +39,7 @@ namespace fmicpp::fmi2::xml {
         double stepSize;
         double tolerance;
 
-        void load(ptree &node);
+        void load(const ptree &node);
 
         friend std::ostream &operator<<(std::ostream &os, const DefaultExperiment &experiment);
 

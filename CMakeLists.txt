@@ -19,8 +19,13 @@ set(CMAKE_CXX_STANDARD 17)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
 SET(BOOST_COMPONENTS system filesystem)
+if (BUILD_TESTS)
+    SET(BOOST_COMPONENTS ${BOOST_COMPONENTS} unit_test_framework)
+endif()
 find_package(Boost 1.67 COMPONENTS ${BOOST_COMPONENTS} REQUIRED)
 include_directories(${Boost_INCLUDE_DIRS})
+
+find_package(Libzip REQUIRED)
 
 option(BUILD_TESTS "Build tests" OFF)
 option(BUILD_EXAMPLES "Build examples" ON)

@@ -26,6 +26,6 @@
 
 using namespace fmicpp::fmi2::xml;
 
-void ModelStructure::load(ptree &node) {
+void ModelStructure::load(const ptree &node) {
 
 }

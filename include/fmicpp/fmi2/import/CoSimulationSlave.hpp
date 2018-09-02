@@ -39,7 +39,7 @@ namespace fmicpp::fmi2::import {
 
         fmi2Status cancelStep() override;
 
-        void init(double start, double stop) override;
+        void init(double start = 0.0, double stop = 0.0) override;
 
         fmi2Status reset() override;
 
@@ -67,6 +67,8 @@ namespace fmicpp::fmi2::import {
                                             vector<fmi2Real> &dvUnknownRef) override;
 
     };
+
+
 
 }
 

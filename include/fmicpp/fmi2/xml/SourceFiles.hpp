@@ -38,7 +38,7 @@ namespace fmicpp::fmi2::xml {
 
         std::string name;
 
-        void load(ptree &node);
+        void load(const ptree &node);
 
         friend std::ostream &operator<<(std::ostream &os, const File &file);
 
@@ -46,7 +46,7 @@ namespace fmicpp::fmi2::xml {
 
     struct SourceFiles: public std::vector<File> {
 
-        void load(ptree &node);
+        void load(const ptree &node);
 
         friend std::ostream &operator<<(std::ostream &os, const SourceFiles &files);
 

@@ -27,37 +27,37 @@
 using namespace std;
 using namespace fmicpp::fmi2::xml;
 
-void IntegerAttribute::load(ptree &node) {
+void IntegerAttribute::load(const ptree &node) {
     min = node.get<int>("<xmlattr>.min", 0);
     max = node.get<int>("<xmlattr>.max", 0);
     start = node.get<int>("<xmlattr>.start", 0);
 }
 
-void RealAttribute::load(ptree &node) {
+void RealAttribute::load(const ptree &node) {
     min = node.get<double>("<xmlattr>.min", 0);
     max = node.get<double>("<xmlattr>.max", 0);
     start = node.get<double>("<xmlattr>.start", 0);
 }
 
-void StringAttribute::load(ptree &node) {
+void StringAttribute::load(const ptree &node) {
     start = node.get<string>("<xmlattr>.start", "");
 }
 
-void BooleanAttribute::load(ptree &node) {
+void BooleanAttribute::load(const ptree &node) {
     start = node.get<bool>("<xmlattr>.start", false);
 }
 
-void EnumerationAttribute::load(ptree &node) {
+void EnumerationAttribute::load(const ptree &node) {
     start = node.get<bool>("<xmlattr>.start", false);
 }
 
-void ScalarVariable::load(ptree &node) {
+void ScalarVariable::load(const ptree &node) {
 
     valueReference = node.get<fmi2ValueReference >("<xmlattr>.valueReference");
     name = node.get<string>("<xmlattr>.name");
     description = node.get<string>("<xmlattr>.description", "");
 
-    for (ptree::value_type &v : node) {
+    for (const ptree::value_type &v : node) {
         if (v.first == "Integer") {
             integerAttribute = make_unique<IntegerAttribute>(IntegerAttribute());
             integerAttribute->load(v.second);
@@ -86,28 +86,25 @@ RealVariable ScalarVariable::asRealVariable() {
     return RealVariable(*realAttribute);
 }
 
-IntegerVariable::IntegerVariable(IntegerAttribute &attribute) {
-    this->min = attribute.min;
-    this->max = attribute.max;
-    this->start = attribute.start;
+StringVariable ScalarVariable::asStringVariable() {
+    return StringVariable(*stringAttribute);
 }
 
-RealVariable::RealVariable(RealAttribute &attribute) {
-    this->min = attribute.min;
-    this->max = attribute.max;
-    this->start = attribute.start;
+BooleanVariable ScalarVariable::asBooleanVariable() {
+    return BooleanVariable(*booleanAttribute);
 }
 
-StringVariable::StringVariable(StringAttribute &attribute) {
-    this->start = attribute.start;
-}
+IntegerVariable::IntegerVariable(const IntegerAttribute &attribute)
+    : min(attribute.min), max(attribute.max), start(attribute.start) {};
 
-BooleanVariable::BooleanVariable(BooleanAttribute &attribute) {
-    this->start = attribute.start;
-}
+RealVariable::RealVariable(const RealAttribute &attribute)
+    : min(attribute.min), max(attribute.max), start(attribute.start) {};
 
-EnumerationVariable::EnumerationVariable(EnumerationAttribute &attribute) {
-    this->min = attribute.min;
-    this->max = attribute.max;
-    this->start = attribute.start;
-}
+StringVariable::StringVariable(const StringAttribute &attribute)
+    : start(attribute.start) {};
+
+BooleanVariable::BooleanVariable(const BooleanAttribute &attribute)
+    : start(attribute.start) {};
+
+EnumerationVariable::EnumerationVariable(const EnumerationAttribute &attribute)
+    : min(attribute.min), max(attribute.max), start(attribute.start) {};

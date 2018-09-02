@@ -38,7 +38,7 @@ namespace {
 }
 
 template<typename T>
-AbstractFmuInstance<T>::AbstractFmuInstance(const shared_ptr<T> library):library(library) {}
+AbstractFmuInstance<T>::AbstractFmuInstance(const shared_ptr<T> library): library(library) {}
 
 template<typename T>
 void AbstractFmuInstance<T>::init(double start, double stop) {
@@ -56,11 +56,9 @@ void AbstractFmuInstance<T>::init(double start, double stop) {
 
 }
 
-
-
 template<typename T>
 fmi2Status AbstractFmuInstance<T>::reset() {
-    return library->reset();
+    library->reset();
 }
 
 template<typename T>
@@ -126,4 +124,5 @@ AbstractFmuInstance<T>::~AbstractFmuInstance() {
     terminate();
     library->freeInstance();
 }
+
 
