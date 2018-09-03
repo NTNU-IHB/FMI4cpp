@@ -23,6 +23,7 @@
  */
 
 #include <vector>
+#include <iostream>
 #include <fmicpp/fmi2/import/CoSimulationSlaveBuilder.hpp>
 
 using namespace std;
@@ -31,8 +32,9 @@ using namespace fmicpp::fmi2::import;
 CoSimulationSlaveBuilder::CoSimulationSlaveBuilder(Fmu &fmu) : fmu_(fmu) {}
 
 CoSimulationSlave& fmicpp::fmi2::import::CoSimulationSlaveBuilder::newInstance() {
-    shared_ptr<CoSimulationLibrary> lib(new CoSimulationLibrary(""));
-    shared_ptr<CoSimulationSlave> slave(new CoSimulationSlave(lib));
-//    fmu_.instances_.emplace_back(slave);
+    shared_ptr<CoSimulationModelDescription> modelDescription = fmu_.getModelDescription().asCoSimulationFmu();
+    shared_ptr<CoSimulationLibrary> lib(new CoSimulationLibrary(fmu_.getAbsoluteLibraryPath(modelDescription->modelIdentifier)));
+    shared_ptr<CoSimulationSlave> slave(new CoSimulationSlave(modelDescription, lib));
+    fmu_.instances_.emplace_back(slave);
     return *slave;
 }

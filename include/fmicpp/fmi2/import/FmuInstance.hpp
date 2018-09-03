@@ -37,32 +37,28 @@ namespace fmicpp::fmi2::import {
 
     protected:
         
-        double simulationTime = 0.0;
+        double simulationTime_ = 0.0;
 
-        bool instantiated = false;
-        bool terminated = false;
-
-        xml::ModelDescription& modelDescription;
+        bool instantiated_ = false;
+        bool terminated_ = false;
 
     public:
 
-        const xml::ModelDescription& getModelDescription() const {
-            return modelDescription;
-        }
-
         const double getSimulationTime() const {
-            return simulationTime;
+            return simulationTime_;
         }
 
         const bool isInstantiated() const {
-            return instantiated;
+            return instantiated_;
         }
 
         const bool isTerminated() const {
-            return terminated;
+            return terminated_;
         }
 
-        virtual void init(double start = 0, double stop = 0) = 0;
+        virtual const xml::ModelDescription& getModelDescription() const = 0;
+
+        virtual void init(const double start = 0, const double stop = 0) = 0;
 
         virtual fmi2Status reset() = 0;
 
@@ -88,9 +84,9 @@ namespace fmicpp::fmi2::import {
                 const vector<fmi2ValueReference> &vUnkownRef,
                 const vector<fmi2ValueReference > &vKnownRef,
                 const vector<fmi2Real> &dvKnownRef,
-                vector<fmi2Real> &dvUnknownRef) = 0;
+                vector<fmi2Real> &dvUnknownRef) const = 0;
 
-        virtual ~FmuInstance(){};
+        virtual ~FmuInstance() {};
 
     };
 

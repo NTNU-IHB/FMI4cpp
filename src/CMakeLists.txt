@@ -3,6 +3,9 @@ include_directories(../include)
 
 SET(HEADERS
 
+        ../include/fmicpp/tools/os_util.hpp
+        ../include/fmicpp/tools/unzipper.hpp
+
         ../include/fmicpp/fmi2/fmicpp.hpp
         ../include/fmicpp/fmi2/fmi2Functions.h
         ../include/fmicpp/fmi2/fmi2FunctionTypes.h
@@ -16,6 +19,7 @@ SET(HEADERS
         ../include/fmicpp/fmi2/import/AbstractFmuInstance.hpp
         ../include/fmicpp/fmi2/import/CoSimulationSlave.hpp
 
+        ../include/fmicpp/fmi2/xml/FmuData.hpp
         ../include/fmicpp/fmi2/xml/ModelDescription.hpp
         ../include/fmicpp/fmi2/xml/ModelVariables.hpp
         ../include/fmicpp/fmi2/xml/ScalarVariable.hpp
@@ -32,6 +36,7 @@ SET(SOURCES
         fmicpp/fmi2/import/CoSimulationSlave.cpp
         fmicpp/fmi2/import/CoSimulationSlaveBuilder.cpp
 
+        fmicpp/fmi2/xml/FmuData.cpp
         fmicpp/fmi2/xml/ModelDescription.cpp
         fmicpp/fmi2/xml/ModelVariables.cpp
         fmicpp/fmi2/xml/ScalarVariable.cpp
@@ -41,6 +46,7 @@ SET(SOURCES
 
 add_library(fmicpp ${HEADERS} ${SOURCES})
 target_link_libraries(fmicpp Boost::system Boost::filesystem ${LIBZIP_LIBRARIES})
+target_include_directories(fmicpp PRIVATE ${LIBZIP_INCLUDE_DIRS})
 if (UNIX)
     target_link_libraries(fmicpp dl)
 endif()

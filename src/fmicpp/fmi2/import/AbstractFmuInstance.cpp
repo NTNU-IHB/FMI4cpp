@@ -22,107 +22,125 @@
  * THE SOFTWARE.
  */
 
+#include <iostream>
 #include <fmicpp/fmi2/import/AbstractFmuInstance.hpp>
 
 using namespace std;
 using namespace fmicpp::fmi2::import;
 
 namespace {
-
     void checkStatus(fmi2Status status, string function_name) {
+        cout << "status=" << status << endl;
         if (status != fmi2OK) {
             throw runtime_error(function_name + " failed with status: ");
         }
     }
-
 }
 
-template<typename T>
-AbstractFmuInstance<T>::AbstractFmuInstance(const shared_ptr<T> library): library(library) {}
+template<typename T, typename U>
+AbstractFmuInstance<T, U>::AbstractFmuInstance(const shared_ptr<U> modelDescription, const shared_ptr<T> library)
+    : modelDescription_(modelDescription), library_(library) {}
 
-template<typename T>
-void AbstractFmuInstance<T>::init(double start, double stop) {
+template<typename T, typename U>
+void AbstractFmuInstance<T, U>::init(const double start, const double stop) {
 
-    if (!instantiated) {
+    if (!instantiated_) {
 
-        checkStatus(library->setupExperiment(false, 1E-4, start, stop), "setupExperiment");
+        cout << "hello init" << endl;
 
-        checkStatus(library->enterInitializationMode(), "enterInitializationMode");
-        checkStatus(library->exitInitializationMode(), "exitInitializationMode");
+        c_ = library_->instantiate(modelDescription_->modelIdentifier, fmi2CoSimulation, modelDescription_->guid, "", false, false);
 
-        instantiated = true;
-        simulationTime = start;
+        checkStatus(library_->setupExperiment(c_, false, 1E-4, start, stop), "setupExperiment");
+
+        checkStatus(library_->enterInitializationMode(c_), "enterInitializationMode");
+        checkStatus(library_->exitInitializationMode(c_), "exitInitializationMode");
+
+        instantiated_ = true;
+        simulationTime_ = start;
     }
 
 }
 
-template<typename T>
-fmi2Status AbstractFmuInstance<T>::reset() {
-    library->reset();
+template<typename T, typename U>
+const U &AbstractFmuInstance<T, U>::getModelDescription() const {
+    return *modelDescription_;
 }
 
-template<typename T>
-fmi2Status AbstractFmuInstance<T>::terminate() {
-    if (!terminated) {
-        terminated = true;
-        return library->terminate();
+template<typename T, typename U>
+fmi2Status AbstractFmuInstance<T, U>::reset() {
+    return library_->reset(c_);
+}
+
+template<typename T, typename U>
+fmi2Status AbstractFmuInstance<T, U>::terminate() {
+    if (!terminated_) {
+        terminated_ = true;
+        return library_->terminate(c_);
     }
    return fmi2OK;
 }
 
-template<typename T>
-bool AbstractFmuInstance<T>::canGetAndSetFMUstate() const {
+template<typename T, typename U>
+bool AbstractFmuInstance<T, U>::canGetAndSetFMUstate() const {
+    return modelDescription_->canGetAndSetFMUstate;
+}
+
+template<typename T, typename U>
+fmi2Status AbstractFmuInstance<T, U>::getFMUstate(fmi2FMUstate &state) {
+    return fmi2Error;
+}
+
+template<typename T, typename U>
+fmi2Status AbstractFmuInstance<T, U>::setFMUstate(const fmi2FMUstate state) {
+    return fmi2Error;
+}
+
+template<typename T, typename U>
+fmi2Status AbstractFmuInstance<T, U>::freeFMUstate(fmi2FMUstate &state) {
+    return fmi2Error;
+}
+
+template<typename T, typename U>
+bool AbstractFmuInstance<T, U>::canSerializeFmuState() const {
+    return modelDescription_->canSerializeFMUstate;
+}
+
+template<typename T, typename U>
+fmi2Status AbstractFmuInstance<T, U>::serializeFMUstate(vector<fmi2Byte> &serializedState) {
+    return fmi2Error;
+}
+
+template<typename T, typename U>
+fmi2Status AbstractFmuInstance<T, U>::deSerializeFMUstate(const vector<fmi2Byte> &serializedState, fmi2FMUstate &state) {
+    return fmi2Error;
+}
+
+template<typename T, typename U>
+bool AbstractFmuInstance<T, U>::providesDirectionalDerivative() const {
     return false;
 }
 
-template<typename T>
-fmi2Status AbstractFmuInstance<T>::getFMUstate(fmi2FMUstate &state) {
-    return fmi2Error;
-}
-
-template<typename T>
-fmi2Status AbstractFmuInstance<T>::setFMUstate(const fmi2FMUstate state) {
-    return fmi2Error;
-}
-
-template<typename T>
-fmi2Status AbstractFmuInstance<T>::freeFMUstate(fmi2FMUstate &state) {
-    return fmi2Error;
-}
-
-template<typename T>
-bool AbstractFmuInstance<T>::canSerializeFmuState() const {
-    return false;
-}
-
-template<typename T>
-fmi2Status AbstractFmuInstance<T>::serializeFMUstate(vector<fmi2Byte> &serializedState) {
-    return fmi2Error;
-}
-
-template<typename T>
-fmi2Status AbstractFmuInstance<T>::deSerializeFMUstate(const vector<fmi2Byte> &serializedState, fmi2FMUstate &state) {
-    return fmi2Error;
-}
-
-template<typename T>
-bool AbstractFmuInstance<T>::providesDirectionalDerivative() const {
-    return false;
-}
-
-template<typename T>
-fmi2Status AbstractFmuInstance<T>::getDirectionalDerivative(const vector<fmi2ValueReference> &vUnkownRef,
+template<typename T, typename U>
+fmi2Status AbstractFmuInstance<T, U>::getDirectionalDerivative(const vector<fmi2ValueReference> &vUnkownRef,
                                                             const vector<fmi2ValueReference> &vKnownRef,
                                                             const vector<fmi2Real> &dvKnownRef,
-                                                            vector<fmi2Real> &dvUnknownRef) {
+                                                            vector<fmi2Real> &dvUnknownRef) const{
     return fmi2Error;
 }
 
 
-template<typename T>
-AbstractFmuInstance<T>::~AbstractFmuInstance() {
+template<typename T, typename U>
+AbstractFmuInstance<T, U>::~AbstractFmuInstance() {
     terminate();
-    library->freeInstance();
+    if (c_) {
+        library_->freeInstance(c_);
+        c_ = nullptr;
+    }
 }
+
+//template<typename T, typename U>
+//std::string AbstractFmuInstance<T, U>::getVersion() const {
+//    return library_->getVersion();
+//}
 
 

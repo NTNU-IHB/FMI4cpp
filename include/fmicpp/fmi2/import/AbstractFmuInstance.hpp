@@ -26,18 +26,32 @@
 #define FMICPP_ABSTRACTFMUINSTANCE_HPP
 
 #include <memory>
+#include <type_traits>
 #include "FmuInstance.hpp"
 #include "FmiLibrary.hpp"
+#include "../xml/ModelDescription.hpp"
 
 namespace fmicpp::fmi2::import {
 
-    template <typename T>
-    class AbstractFmuInstance: public FmuInstance {
+    template<typename T, typename U>
+    class AbstractFmuInstance: virtual public FmuInstance {
+
+        static_assert(std::is_base_of<FmiLibrary, T>::value, "T must derive from FmiLibrary");
+        static_assert(std::is_base_of<xml::SpecificModelDescription, U>::value, "U must derive from SpecificModelDescription");
+
+    protected:
+
+        fmi2Component c_;
+        std::shared_ptr<T> library_;
+        const std::shared_ptr<U> modelDescription_;
 
     public:
-        explicit AbstractFmuInstance(const std::shared_ptr<T> library);
 
-        void init(double start = 0, double stop = 0) override;
+        explicit AbstractFmuInstance(const std::shared_ptr<U> modelDescription, const std::shared_ptr<T> library);
+
+        void init(const double start = 0, const double stop = 0) override;
+
+        const U &getModelDescription() const override;
 
         fmi2Status reset() override;
 
@@ -62,16 +76,12 @@ namespace fmicpp::fmi2::import {
         fmi2Status getDirectionalDerivative(const vector<fmi2ValueReference> &vUnkownRef,
                                             const vector<fmi2ValueReference> &vKnownRef,
                                             const vector<fmi2Real> &dvKnownRef,
-                                            vector<fmi2Real> &dvUnknownRef) override;
+                                            vector<fmi2Real> &dvUnknownRef) const override;
 
         ~AbstractFmuInstance();
 
-    protected:
-
-        fmi2Component c;
-        std::shared_ptr<T> library;
-
     };
+
 
 }
 

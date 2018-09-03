@@ -25,10 +25,8 @@
 #ifndef FMICPP_COSIMULATIONSLAVEBUILDER_HPP
 #define FMICPP_COSIMULATIONSLAVEBUILDER_HPP
 
-#include <memory>
-#include <string>
-#include <vector>
 #include "Fmu.hpp"
+#include "CoSimulationSlave.hpp"
 
 namespace fmicpp::fmi2::import {
 
@@ -46,6 +44,5 @@ namespace fmicpp::fmi2::import {
     };
 
 }
-
 
 #endif //FMICPP_COSIMULATIONSLAVEBUILDER_HPP

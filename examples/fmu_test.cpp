@@ -23,9 +23,11 @@
  */
 
 #include <string>
-#include <fmicpp/os_util.hpp>
+#include <iostream>
+#include <fmicpp/tools/os_util.hpp>
 #include <fmicpp/fmi2/fmicpp.hpp>
 
+using namespace std;
 using namespace fmicpp::fmi2::import;
 
 int main() {
@@ -36,11 +38,19 @@ int main() {
 
     Fmu fmu(fmu_path);
 
+    auto md = fmu.getModelDescription().asCoSimulationFmu();
+    cout << md->modelIdentifier << endl;
+
     auto slave = fmu.asCoSimulationFmu()->newInstance();
 
     slave.init();
 
-    slave.terminate();
+    cout << "init ok" << endl;
+//
+    fmi2Status status = slave.terminate();
 
+    cout << "terminate with status:" << status << endl;
+
+    return 0;
 
 }

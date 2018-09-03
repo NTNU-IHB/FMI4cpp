@@ -27,16 +27,15 @@
 using namespace fmicpp::fmi2::xml;
 
 void DefaultExperiment::load(const ptree &node) {
-
     startTime = node.get<double>("<xmlattr>.startTime", 0);
     stopTime = node.get<double>("<xmlattr>.stopTime", 0);
     stepSize = node.get<double>("<xmlattr>.stepSize", 1.0/100);
     tolerance = node.get<double>("<xmlattr>.tolerance", 0);
-
 }
 
-std::ostream &operator<<(std::ostream &os, const DefaultExperiment &experiment) {
-    os << "startTime: " << experiment.startTime << " stopTime: " << experiment.stopTime << " stepSize: "
-       << experiment.stepSize << " tolerance: " << experiment.tolerance;
-    return os;
-}
+//DefaultExperiment::DefaultExperiment(const DefaultExperiment &obj)
+//    : startTime(obj.startTime),
+//    stopTime(obj.stopTime),
+//    stepSize(obj.stepSize),
+//    tolerance(obj.tolerance) {};
+

@@ -31,56 +31,19 @@
 #include <boost/property_tree/xml_parser.hpp>
 
 #include "DefaultExperiment.hpp"
-#include "SourceFiles.hpp"
+
 #include "ModelVariables.hpp"
+#include "FmuData.hpp"
 
 using std::string;
 using std::unique_ptr;
+using std::shared_ptr;
 using boost::property_tree::ptree;
 
 namespace fmicpp::fmi2::xml {
 
-    struct FmuData {
-
-        string modelIdentifier;
-
-        bool canGetAndSetFMUstate;
-        bool canSerializeFMUstate;
-        bool needsExecutionTool;
-        bool canNotUseMemoryManagementFunctions;
-        bool canBeInstantiatedOnlyOncePerProcess;
-        bool providesDirectionalDerivative;
-
-        std::shared_ptr<SourceFiles> sourceFiles = nullptr;
-
-        virtual void load(const ptree &node);
-
-    };
-
-    struct CoSimulationData: FmuData {
-
-        bool canInterpolateInputs;
-        bool canRunAsynchronuously;
-        bool canHandleVariableCommunicationStepSize;
-
-        unsigned int maxOutputDerivativeOrder;
-
-        void load(const ptree &node);
-
-    };
-
-    struct ModelExchangeData: FmuData {
-
-        unsigned int numberOfEventIndicators;
-        bool completedIntegratorStepNotNeeded;
-
-        void load(const ptree &node);
-
-    };
-
-
-    class CoSimulationModelDescription;
-    class ModelExchangeModelDescription;
+    struct CoSimulationModelDescription;
+    struct ModelExchangeModelDescription;
 
     struct ModelDescription {
 
@@ -95,19 +58,19 @@ namespace fmicpp::fmi2::xml {
         string generationTool;
         string generationDateAndTime;
 
-        int numberOfEventIndicators;
+        unsigned int numberOfEventIndicators;
 
-        unique_ptr<DefaultExperiment> defaultExperiment = nullptr;
-        unique_ptr<ModelVariables> modelVariables = nullptr;
+        shared_ptr<DefaultExperiment> defaultExperiment = nullptr;
+        shared_ptr<ModelVariables> modelVariables = nullptr;
+
+        shared_ptr<CoSimulationModelDescription> asCoSimulationFmu() const ;
+        shared_ptr<ModelExchangeModelDescription> asModelExchangeFmu() const;
 
         void load(const string fileName);
 
-        CoSimulationModelDescription asCoSimulationFmu();
-        ModelExchangeModelDescription asModelExchangeFmu();
-
     private:
-        unique_ptr<CoSimulationData> coSimulation = nullptr;
-        unique_ptr<ModelExchangeData> modelExchange = nullptr;
+        shared_ptr<CoSimulationData> coSimulation = nullptr;
+        shared_ptr<ModelExchangeData> modelExchange = nullptr;
 
     };
 
@@ -124,7 +87,7 @@ namespace fmicpp::fmi2::xml {
 
         const std::shared_ptr<SourceFiles> sourceFiles = nullptr;
 
-        explicit SpecificModelDescription(const FmuData &data);
+        explicit SpecificModelDescription(const ModelDescription modelDescription, const FmuData data);
 
     };
 
@@ -136,7 +99,7 @@ namespace fmicpp::fmi2::xml {
 
         const unsigned int maxOutputDerivativeOrder;
 
-        explicit CoSimulationModelDescription(const CoSimulationData data);
+        explicit CoSimulationModelDescription(const ModelDescription modelDescription, const CoSimulationData data);
 
     };
 
@@ -145,7 +108,7 @@ namespace fmicpp::fmi2::xml {
         const unsigned int numberOfEventIndicators;
         const bool completedIntegratorStepNotNeeded;
 
-        explicit ModelExchangeModelDescription(const ModelExchangeData data);
+        explicit ModelExchangeModelDescription(const ModelDescription modelDescription, const ModelExchangeData data);
 
     };
 

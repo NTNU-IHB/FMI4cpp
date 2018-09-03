@@ -36,9 +36,9 @@ int main() {
     cout << "fmiVersion=" << md.fmiVersion <<endl;
     cout << "modelName=" << md.modelName <<endl;
     cout << "author=" << md.author <<endl;
-    cout << "modelIdentifier=" << md.coSimulation->modelIdentifier << endl;
+    cout << "modelIdentifier=" << md.asCoSimulationFmu()->modelIdentifier << endl;
     cout << "Default stepSize=" << md.defaultExperiment->stepSize << endl;
-    cout << "A sourcefile is named:" << md.coSimulation->sourceFiles->at(0).name << endl;
+    cout << "A sourcefile is named:" << md.asCoSimulationFmu()->sourceFiles->at(0).name << endl;
     auto& var = md.modelVariables->getByValueReference(1);
     cout << "A variable is named:" << var.name << ", with start=" << var.asRealVariable().start << endl;
 
@@ -46,16 +46,18 @@ int main() {
     cout << "fmi2GetVersion=" << lib.getVersion() << endl;
     cout << "fmi2GetTypesPlatform=" << lib.getTypesPlatform() << endl;
 
-    lib.instantiate("ControlledTemperature", fmi2CoSimulation, "{06c2700b-b39c-4895-9151-304ddde28443}", "", false, false);
+    const fmi2Component c = lib.instantiate("ControlledTemperature", fmi2CoSimulation, "{06c2700b-b39c-4895-9151-304ddde28443}", "", false, false);
 
-    lib.setupExperiment(false, 1E-4, 0.0, 0.0);
-    lib.enterInitializationMode();
-    lib.exitInitializationMode();
+    lib.setupExperiment(c, false, 1E-4, 0.0, 0.0);
+    lib.enterInitializationMode(c);
+    lib.exitInitializationMode(c);
 
     double ref;
-    lib.readReal(47, ref);
+    lib.readReal(c, 47, ref);
 
     cout << "ref=" << ref << endl;
+
+    delete c;
 
     return 0;
 

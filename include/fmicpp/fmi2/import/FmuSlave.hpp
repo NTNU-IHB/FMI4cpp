@@ -29,17 +29,15 @@
 
 namespace fmicpp::fmi2::import {
 
-    class FmuSlave: public FmuInstance {
+    class FmuSlave: virtual public FmuInstance {
 
     public:
-
-        FmuSlave();
 
         virtual fmi2Status doStep(const double stepSize) = 0;
 
         virtual fmi2Status cancelStep() = 0;
 
-        virtual ~FmuSlave(){}
+        virtual ~FmuSlave() {};
 
     };
 

@@ -52,7 +52,7 @@ namespace fmicpp::fmi2::import {
 
         const std::string &getModelDescriptionXml() const;
 
-        std::unique_ptr<CoSimulationSlaveBuilder> asCoSimulationFmu();
+        unique_ptr<CoSimulationSlaveBuilder> asCoSimulationFmu();
 
         ~Fmu();
 
@@ -64,7 +64,7 @@ namespace fmicpp::fmi2::import {
         std::unique_ptr<ModelDescription> modelDescription_;
         std::vector<std::shared_ptr<FmuInstance>> instances_;
 
-        bool extractFmu();
+        std::string getAbsoluteLibraryPath(std::string modelIdentifier);
 
     };
 

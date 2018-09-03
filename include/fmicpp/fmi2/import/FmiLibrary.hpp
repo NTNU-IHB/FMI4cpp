@@ -56,51 +56,50 @@ namespace fmicpp::fmi2::import {
 
     public:
 
-        explicit FmiLibrary(const string lib_name);
+        explicit FmiLibrary(const string libName);
 
         fmi2String getVersion() const;
 
         fmi2String getTypesPlatform() const;
 
-        fmi2Status enterInitializationMode() const;
+        fmi2Component instantiate(const string instanceName, const fmi2Type type,
+                                  const string guid, const string resourceLocation, const bool visible = false, const bool loggingOn = false);
 
-        fmi2Status exitInitializationMode() const;
+        fmi2Status setupExperiment(const fmi2Component c, const bool toleranceDefined,
+                                   const double tolerance, const double startTime, const double stopTime) const;
 
-        fmi2Status setupExperiment(const bool toleranceDefined,
-                const double tolerance, const double startTime, const double stopTime) const;
+        fmi2Status enterInitializationMode(const fmi2Component c) const;
 
-        void instantiate(const string instanceName, const fmi2Type type,
-                const string guid, const string resourceLocation, const bool visible = false, const bool loggingOn = false);
+        fmi2Status exitInitializationMode(const fmi2Component c) const;
 
-        fmi2Status reset() const;
+        fmi2Status reset(const fmi2Component c) const;
 
-        fmi2Status terminate();
+        fmi2Status terminate(const fmi2Component c);
 
-        fmi2Status readInteger(const fmi2ValueReference vr, fmi2Integer &ref) const;
-        fmi2Status readInteger(const vector<fmi2ValueReference> &vr, vector<fmi2Integer > &ref) const;
+        fmi2Status readInteger(const fmi2Component c, const fmi2ValueReference vr, fmi2Integer &ref) const;
+        fmi2Status readInteger(const fmi2Component c, const vector<fmi2ValueReference> &vr, vector<fmi2Integer > &ref) const;
 
-        fmi2Status readReal(const fmi2ValueReference vr, fmi2Real &ref) const;
-        fmi2Status readReal(const vector<fmi2ValueReference> &vr, vector<fmi2Real > &ref) const;
+        fmi2Status readReal(const fmi2Component c, const fmi2ValueReference vr, fmi2Real &ref) const;
+        fmi2Status readReal(const fmi2Component c, const vector<fmi2ValueReference> &vr, vector<fmi2Real > &ref) const;
 
-        fmi2Status readString(const fmi2ValueReference vr, fmi2String &ref) const;
-        fmi2Status readString(const vector<fmi2ValueReference> &vr, vector<fmi2String > &ref) const;
+        fmi2Status readString(const fmi2Component c, const fmi2ValueReference vr, fmi2String &ref) const;
+        fmi2Status readString(const fmi2Component c, const vector<fmi2ValueReference> &vr, vector<fmi2String > &ref) const;
 
-        fmi2Status readBoolean(const fmi2ValueReference vr, fmi2Boolean &ref) const;
-        fmi2Status readBoolean(const vector<fmi2ValueReference> &vr, vector<fmi2Boolean > &ref) const;
+        fmi2Status readBoolean(const fmi2Component c, const fmi2ValueReference vr, fmi2Boolean &ref) const;
+        fmi2Status readBoolean(const fmi2Component c, const vector<fmi2ValueReference> &vr, vector<fmi2Boolean > &ref) const;
 
-        void freeInstance();
+        void freeInstance(fmi2Component c);
 
         ~FmiLibrary();
 
     protected:
 
         DLL_HANDLE handle_ = nullptr;
-        fmi2Component c_ = nullptr;
 
         template <class T>
         T loadFunction(const char* function_name) const;
 
-        const char* getLastError() const;
+        std::string getLastError() const;
 
     };
 
@@ -108,18 +107,19 @@ namespace fmicpp::fmi2::import {
 
     public:
 
-        explicit CoSimulationLibrary(const string lib_name);
+        explicit CoSimulationLibrary(const string libName);
 
-        fmi2Status doStep(fmi2Real currentCommunicationPoint, fmi2Real communicationStepSize, bool noSetFMUStatePriorToCurrentPoint) const;
+        fmi2Status doStep(const fmi2Component c, const fmi2Real currentCommunicationPoint,
+                const fmi2Real communicationStepSize, const bool noSetFMUStatePriorToCurrentPoint) const;
 
-        fmi2Status cancelStep() const;
+        fmi2Status cancelStep(const fmi2Component c) const;
 
     };
 
     class ModelExchangeLibrary: public FmiLibrary {
 
     public:
-        ModelExchangeLibrary(const string lib_name);
+        ModelExchangeLibrary(const string libName);
 
     };
 

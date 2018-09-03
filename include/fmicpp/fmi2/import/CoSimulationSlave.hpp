@@ -25,53 +25,28 @@
 #ifndef FMICPP_COSIMULATIONSLAVE_HPP
 #define FMICPP_COSIMULATIONSLAVE_HPP
 
+#include <memory>
 #include "FmuSlave.hpp"
 #include "AbstractFmuInstance.hpp"
 
+#include "../xml/ModelDescription.hpp"
+
 namespace fmicpp::fmi2::import {
 
-    class CoSimulationSlave: public AbstractFmuInstance<CoSimulationLibrary>, public FmuSlave {
+    using xml::CoSimulationModelDescription;
+
+    class CoSimulationSlave: public AbstractFmuInstance<CoSimulationLibrary, CoSimulationModelDescription>, public FmuSlave {
 
     public:
-        explicit CoSimulationSlave(const std::shared_ptr<CoSimulationLibrary> library);
+        explicit CoSimulationSlave(const std::shared_ptr<CoSimulationModelDescription> modelDescription, std::shared_ptr<CoSimulationLibrary> library);
 
-        fmi2Status doStep(const double stepSize) override;
+        fmi2Status doStep(double stepSize) override;
 
         fmi2Status cancelStep() override;
 
-        void init(double start = 0.0, double stop = 0.0) override;
-
-        fmi2Status reset() override;
-
-        fmi2Status terminate() override;
-
-        bool canGetAndSetFMUstate() const override;
-
-        fmi2Status getFMUstate(fmi2FMUstate &state) override;
-
-        fmi2Status setFMUstate(const fmi2FMUstate state) override;
-
-        fmi2Status freeFMUstate(fmi2FMUstate &state) override;
-
-        bool canSerializeFmuState() const override;
-
-        fmi2Status serializeFMUstate(vector<fmi2Byte> &serializedState) override;
-
-        fmi2Status deSerializeFMUstate(const vector<fmi2Byte> &serializedState, fmi2FMUstate &state) override;
-
-        bool providesDirectionalDerivative() const override;
-
-        fmi2Status getDirectionalDerivative(const vector<fmi2ValueReference> &vUnkownRef,
-                                            const vector<fmi2ValueReference> &vKnownRef,
-                                            const vector<fmi2Real> &dvKnownRef,
-                                            vector<fmi2Real> &dvUnknownRef) override;
-
     };
 
-
-
 }
-
 
 
 #endif //FMICPP_COSIMULATIONSLAVE_HPP

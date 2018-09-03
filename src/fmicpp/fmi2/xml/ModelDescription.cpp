@@ -27,45 +27,6 @@
 using namespace std;
 using namespace fmicpp::fmi2::xml;
 
-void FmuData::load(const ptree &node) {
-
-    modelIdentifier = node.get<string>("<xmlattr>.modelIdentifier");
-
-    needsExecutionTool = node.get<bool>("xmlattr>.needsExecutionTool", false);
-    canGetAndSetFMUstate = node.get<bool>("xmlattr>.canGetAndSetFMUstate", false);
-    canSerializeFMUstate = node.get<bool>("xmlattr>.canSerializeFMUstate", false);
-    providesDirectionalDerivative = node.get<bool>("xmlattr>.providesDirectionalDerivative", false);
-    canNotUseMemoryManagementFunctions = node.get<bool>("xmlattr>.canNotUseMemoryManagementFunctions", false);
-    canBeInstantiatedOnlyOncePerProcess = node.get<bool>("xmlattr>.canBeInstantiatedOnlyOncePerProcess", false);
-
-    for (const ptree::value_type &v : node) {
-        if (v.first == "SourceFiles") {
-            sourceFiles = make_shared<SourceFiles>(SourceFiles());
-            sourceFiles->load(v.second);
-        }
-    }
-
-}
-
-void CoSimulationData::load(const ptree &node) {
-    FmuData::load(node);
-
-    maxOutputDerivativeOrder = node.get<unsigned int>("<xmlattr>.maxOutputDerivativeOrder", 0);
-
-    canInterpolateInputs = node.get<bool>("<xmlattr>.canInterpolateInputs", false);
-    canRunAsynchronuously = node.get<bool>("<xmlattr>.canRunAsynchronuously", false);
-    canHandleVariableCommunicationStepSize = node.get<bool>("<xmlattr>.canHandleVariableCommunicationStepSize", false);
-
-}
-
-void ModelExchangeData::load(const ptree &node) {
-    FmuData::load(node);
-
-    numberOfEventIndicators = node.get<unsigned int>("<xmlattr>.numberOfEventIndicators", 0);
-    completedIntegratorStepNotNeeded = node.get<bool>("<xmlattr>.completedIntegratorStepNotNeeded", false);
-
-}
-
 void ModelDescription::load(const string fileName) {
 
     ptree tree;
@@ -83,21 +44,21 @@ void ModelDescription::load(const string fileName) {
     generationTool = root.get<string>("<xmlattr>.generationTool", "");
     generationDateAndTime = root.get<string>("<xmlattr>.generationDateAndTime", "");
 
-    numberOfEventIndicators = root.get<int>("<xmlattr>.numberOfEventIndicators", 0);
+    numberOfEventIndicators = root.get<unsigned int>("<xmlattr>.numberOfEventIndicators", 0);
 
     for (const ptree::value_type &v : root) {
 
         if (v.first == "CoSimulation") {
-            coSimulation = make_unique<CoSimulationData>(CoSimulationData{});
+            coSimulation = make_shared<CoSimulationData>(CoSimulationData{});
             coSimulation->load(v.second);
         } else if (v.first == "ModelExchange") {
-            modelExchange = make_unique<ModelExchangeData>(ModelExchangeData{});
+            modelExchange = make_shared<ModelExchangeData>(ModelExchangeData{});
             modelExchange->load(v.second);
         } else if (v.first == "DefaultExperiment") {
-            defaultExperiment = make_unique<DefaultExperiment>(DefaultExperiment());
+            defaultExperiment = make_shared<DefaultExperiment>(DefaultExperiment());
             defaultExperiment->load(v.second);
         } else if (v.first == "ModelVariables") {
-            modelVariables = make_unique<ModelVariables>(ModelVariables());
+            modelVariables = make_shared<ModelVariables>(ModelVariables());
             modelVariables->load(v.second);
         }
 
@@ -105,8 +66,17 @@ void ModelDescription::load(const string fileName) {
 
 }
 
-SpecificModelDescription::SpecificModelDescription(const FmuData &data)
-        : modelIdentifier(data.modelIdentifier),
+shared_ptr<CoSimulationModelDescription> ModelDescription::asCoSimulationFmu() const {
+    return make_shared<CoSimulationModelDescription>(*this, *coSimulation);
+}
+
+shared_ptr<ModelExchangeModelDescription> ModelDescription::asModelExchangeFmu() const {
+    return make_shared<ModelExchangeModelDescription>(*this, *modelExchange);
+}
+
+SpecificModelDescription::SpecificModelDescription(const ModelDescription md, const FmuData data)
+        : ModelDescription(md),
+        modelIdentifier(data.modelIdentifier),
         canGetAndSetFMUstate(data.canGetAndSetFMUstate),
         needsExecutionTool(data.needsExecutionTool),
         canNotUseMemoryManagementFunctions(data.canNotUseMemoryManagementFunctions),
@@ -115,15 +85,14 @@ SpecificModelDescription::SpecificModelDescription(const FmuData &data)
         sourceFiles(data.sourceFiles),
         canSerializeFMUstate(data.canSerializeFMUstate) {};
 
-
-CoSimulationModelDescription::CoSimulationModelDescription(const CoSimulationData data)
-        : SpecificModelDescription(data),
+CoSimulationModelDescription::CoSimulationModelDescription(const ModelDescription md, const CoSimulationData data)
+        : SpecificModelDescription(md, data),
         canInterpolateInputs(data.canInterpolateInputs),
         canRunAsynchronuously(data.canRunAsynchronuously),
         canHandleVariableCommunicationStepSize(data.canHandleVariableCommunicationStepSize),
         maxOutputDerivativeOrder(data.maxOutputDerivativeOrder) {};
 
-ModelExchangeModelDescription::ModelExchangeModelDescription(const ModelExchangeData data)
-        : SpecificModelDescription(data),
+ModelExchangeModelDescription::ModelExchangeModelDescription(const ModelDescription md, const ModelExchangeData data)
+        : SpecificModelDescription(md, data),
         numberOfEventIndicators(data.numberOfEventIndicators),
         completedIntegratorStepNotNeeded(data.completedIntegratorStepNotNeeded) {};

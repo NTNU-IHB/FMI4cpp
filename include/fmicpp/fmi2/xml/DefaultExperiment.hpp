@@ -41,8 +41,6 @@ namespace fmicpp::fmi2::xml {
 
         void load(const ptree &node);
 
-        friend std::ostream &operator<<(std::ostream &os, const DefaultExperiment &experiment);
-
     };
 
 }

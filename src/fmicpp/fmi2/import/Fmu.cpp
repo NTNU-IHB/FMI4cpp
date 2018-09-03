@@ -22,21 +22,26 @@
  * THE SOFTWARE.
  */
 
-#include <zip.h>
+
 #include <fmicpp/fmi2/import/Fmu.hpp>
 #include <fmicpp/fmi2/import/CoSimulationSlaveBuilder.hpp>
+
+#include <fmicpp/tools/unzipper.hpp>
+#include <fmicpp/tools/os_util.hpp>
 
 using namespace std;
 using namespace fmicpp::fmi2::import;
 
-Fmu::Fmu(const std::string fmu_file): fmu_file_(fmu_file) {
+Fmu::Fmu(const string fmu_file): fmu_file_(fmu_file) {
 
     this->tmp_path_ = fs::temp_directory_path() /= fs::path(fmu_file).stem();
     create_directories(tmp_path_);
 
-    extractFmu();
+    if (!extractContents(fmu_file, tmp_path_.string())) {
+        throw runtime_error("Failed to extract FMU!");
+    }
 
-    string modelDescriptionPath = tmp_path_.string() + "/modelDescription.xml";
+    const string modelDescriptionPath = tmp_path_.string() + "/modelDescription.xml";
 
     this->modelDescription_ = make_unique<ModelDescription>(ModelDescription());
     this->modelDescription_->load(modelDescriptionPath);
@@ -56,49 +61,22 @@ const string &Fmu::getModelDescriptionXml() const {
 }
 
 unique_ptr<CoSimulationSlaveBuilder> Fmu::asCoSimulationFmu() {
-    return unique_ptr<CoSimulationSlaveBuilder>(new CoSimulationSlaveBuilder(*this));
+    return make_unique<CoSimulationSlaveBuilder>(*this);
 }
 
-
-bool Fmu::extractFmu() {
-    int* err;
-    zip* za = zip_open(fmu_file_.c_str(), 0, err);
-    if (za == nullptr) {
-        return false;
-    }
-
-    struct zip_file *zf;
-    struct zip_stat sb;
-    for (int i = 0; i < zip_get_num_entries(za, 0); i++) {
-        if (zip_stat_index(za, i, 0, &sb) == 0) {
-
-            if (sb.size == 0) {
-                fs::create_directories(tmp_path_ / sb.name);
-            } else {
-                zf = zip_fopen_index(za, i, 0);
-                char* contents = new char[sb.size];
-                zip_fread(zf, contents, 0);
-                if (!ofstream ((tmp_path_ / sb.name).c_str()).write(contents, sb.size)) {
-                    return false;
-                }
-                zip_fclose(zf);
-            }
-
-        }
-    }
-
-    zip_close(za);
-
+string Fmu::getAbsoluteLibraryPath(string modelIdentifier) {
+    return tmp_path_.string() +  "/binaries/" + getOs() + "/" + modelIdentifier + getLibExt();
 }
-
 
 Fmu::~Fmu() {
 
-    for (const shared_ptr<FmuInstance>& instance : instances_) {
-        if (!instance->isTerminated()) {
-            instance->terminate();
-        }
-    }
+    cout << "FMU destructor called" << endl;
 
-    remove_all(this->tmp_path_);
+//    for (const auto & instance : instances_) {
+//        if (!instance->isTerminated()) {
+//            instance->terminate();
+//        }
+//    }
+    remove_all(tmp_path_);
+
 }

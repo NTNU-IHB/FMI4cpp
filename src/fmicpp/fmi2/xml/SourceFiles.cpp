@@ -31,11 +31,6 @@ void File::load(const ptree &node) {
     name = node.get<string>("<xmlattr>.name");
 }
 
-ostream &fmicpp::fmi2::xml::operator<<(ostream &os, const File &file) {
-    os << "name: " << file.name;
-    return os;
-}
-
 void SourceFiles::load(const ptree &node) {
 
     for (const ptree::value_type &v : node) {
@@ -49,4 +44,3 @@ void SourceFiles::load(const ptree &node) {
     }
 
 }
-

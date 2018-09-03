@@ -39,4 +39,14 @@ namespace {
     }
 }
 
+namespace {
+    std::string getLibExt() {
+#ifdef WIN32
+        return ".dll";
+#elif __linux__
+        return ".so";
+#endif
+    }
+}
+
 #endif //FMICPP_OS_UTIL_HPP

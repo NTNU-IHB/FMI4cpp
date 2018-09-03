@@ -27,7 +27,7 @@
 #include <fstream>
 
 #include <zip.h>
-#include <fmicpp/os_util.hpp>
+#include <fmicpp/tools/os_util.hpp>
 #include <boost/filesystem.hpp>
 
 namespace fs = boost::filesystem;
@@ -50,6 +50,10 @@ int main() {
 
     struct zip_file *zf;
     struct zip_stat sb;
+
+    const int bufferSize = 1000;
+    zip_int64_t  sum, len;
+    char contents[bufferSize];
     for (int i = 0; i < zip_get_num_entries(za, 0); i++) {
         if (zip_stat_index(za, i, 0, &sb) == 0) {
             printf("Name: [%s], ", sb.name);
@@ -59,11 +63,20 @@ int main() {
                 fs::create_directories(tmp_path_ / sb.name);
             } else {
                 zf = zip_fopen_index(za, i, 0);
-                char* contents = new char[sb.size];
-                zip_fread(zf, contents, 0);
-                if (!ofstream ((tmp_path_ / sb.name).c_str()).write(contents, sb.size)) {
-                    cerr << "error" << endl;
+
+                ofstream file;
+                file.open((tmp_path_ / sb.name).string());
+
+                sum = 0;
+                while (sum != sb.size) {
+                    len = zip_fread(zf, contents, bufferSize);
+                    file.write(contents, len);
+                    sum += len;
                 }
+
+                file.flush();
+                file.close();
+
                 zip_fclose(zf);
             }
 
