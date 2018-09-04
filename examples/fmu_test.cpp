@@ -50,8 +50,9 @@ int main() {
     double t = 0;
     double stop = 1.0;
     double stepSize = 1E-3;
-    fmi2Status status;
+
     fmi2Real v;
+    fmi2Status status;
     while ((t = slave->getSimulationTime()) <= stop) {
         status = slave->doStep(stepSize);
         if (!status == fmi2OK) {
@@ -65,7 +66,7 @@ int main() {
     }
 
     status = slave->terminate();
-    cout << "terminate with status:" << status << endl;
+    cout << "FMU '" << fmu.getModelName() <<  "' terminated with status: " << statusToString(status) << endl;
 
     return 0;
 

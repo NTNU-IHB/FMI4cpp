@@ -22,36 +22,19 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMICPP_FMICPP_HPP
-#define FMICPP_FMICPP_HPP
+#include <fmicpp/fmi2/import/CoSimulationLibrary.hpp>
 
-#include <string>
-#include "fmi2Functions.h"
+using namespace fmicpp::fmi2::import;
 
-#include "xml/ModelDescription.hpp"
+CoSimulationLibrary::CoSimulationLibrary(const string libName) : FmiLibrary(libName) {}
 
-#include "import/Fmu.hpp"
-#include "import/FmuInstance.hpp"
-#include "import/FmuSlave.hpp"
-
-#include "import/CoSimulationSlaveBuilder.hpp"
-
-namespace {
-
-    std::string statusToString(fmi2Status status) {
-
-        switch (status) {
-            case fmi2OK: return "OK";
-            case fmi2Warning: return "Warning";
-            case fmi2Discard: return "Discard";
-            case fmi2Error: return "Error";
-            case fmi2Fatal: return "Fatal";
-            case fmi2Pending: return "Pending";
-            default: throw std::runtime_error(std::string("ERROR: Not a valid status:") + std::to_string(status) + "!");
-        }
-
-    }
-
+fmi2Status CoSimulationLibrary::doStep(const fmi2Component c, const fmi2Real currentCommunicationPoint,
+                                       const fmi2Real communicationStepSize, const bool noSetFMUStatePriorToCurrentPoint) const {
+    return loadFunction<fmi2DoStepTYPE *>("fmi2DoStep")(
+            c, currentCommunicationPoint, communicationStepSize, noSetFMUStatePriorToCurrentPoint ? 1 : 0);
 }
 
-#endif //FMICPP_FMICPP_HPP
+fmi2Status CoSimulationLibrary::cancelStep(const fmi2Component c) const {
+    return loadFunction<fmi2CancelStepTYPE *>("fmi2CancelStep")(c);
+}
+

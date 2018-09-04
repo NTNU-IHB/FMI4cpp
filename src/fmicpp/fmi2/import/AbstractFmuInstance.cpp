@@ -41,6 +41,11 @@ AbstractFmuInstance<T, U>::AbstractFmuInstance(const shared_ptr<U> modelDescript
     : modelDescription_(modelDescription), library_(library) {}
 
 template<typename T, typename U>
+const U &AbstractFmuInstance<T, U>::getModelDescription() const {
+    return *modelDescription_;
+}
+
+template<typename T, typename U>
 void AbstractFmuInstance<T, U>::init(const double start, const double stop) {
 
     if (!instantiated_) {
@@ -60,10 +65,6 @@ void AbstractFmuInstance<T, U>::init(const double start, const double stop) {
 
 }
 
-template<typename T, typename U>
-const U &AbstractFmuInstance<T, U>::getModelDescription() const {
-    return *modelDescription_;
-}
 
 template<typename T, typename U>
 fmi2Status AbstractFmuInstance<T, U>::reset() {
@@ -105,13 +106,14 @@ bool AbstractFmuInstance<T, U>::canSerializeFmuState() const {
 }
 
 template<typename T, typename U>
-fmi2Status AbstractFmuInstance<T, U>::serializeFMUstate(vector<fmi2Byte> &serializedState) {
-    return fmi2Error;
+fmi2Status AbstractFmuInstance<T, U>::serializeFMUstate(const fmi2FMUstate &state, vector<fmi2Byte> &serializedState) {
+    return library_->serializeFMUstate(c_, state, serializedState);
 }
 
 template<typename T, typename U>
-fmi2Status AbstractFmuInstance<T, U>::deSerializeFMUstate(const vector<fmi2Byte> &serializedState, fmi2FMUstate &state) {
-    return fmi2Error;
+fmi2Status
+AbstractFmuInstance<T, U>::deSerializeFMUstate(fmi2FMUstate &state, const vector<fmi2Byte> &serializedState) {
+    return library_->deSerializeFMUstate(c_, state, serializedState);
 }
 
 template<typename T, typename U>
@@ -120,11 +122,10 @@ bool AbstractFmuInstance<T, U>::providesDirectionalDerivative() const {
 }
 
 template<typename T, typename U>
-fmi2Status AbstractFmuInstance<T, U>::getDirectionalDerivative(const vector<fmi2ValueReference> &vUnkownRef,
-                                                            const vector<fmi2ValueReference> &vKnownRef,
-                                                            const vector<fmi2Real> &dvKnownRef,
-                                                            vector<fmi2Real> &dvUnknownRef) const{
-    return fmi2Error;
+fmi2Status AbstractFmuInstance<T, U>::getDirectionalDerivative(
+        const vector<fmi2ValueReference> &vUnkownRef, const vector<fmi2ValueReference> &vKnownRef,
+        const vector<fmi2Real> &dvKnownRef, vector<fmi2Real> &dvUnknownRef) const{
+    return library_->getDirectionalDerivative(c_, vUnkownRef, vKnownRef, dvKnownRef, dvUnknownRef);
 }
 
 
@@ -146,6 +147,26 @@ fmi2Status AbstractFmuInstance<T, U>::readReal(const fmi2ValueReference vr, fmi2
 template<typename T, typename U>
 fmi2Status AbstractFmuInstance<T, U>::readReal(const vector<fmi2ValueReference> &vr, vector<fmi2Real> &ref) const {
     return library_->readReal(c_, vr, ref);
+}
+
+template<typename T, typename U>
+fmi2Status AbstractFmuInstance<T, U>::readString(const fmi2ValueReference vr, fmi2String &ref) const {
+    return library_->readString(c_, vr, ref);
+}
+
+template<typename T, typename U>
+fmi2Status AbstractFmuInstance<T, U>::readString(const vector<fmi2ValueReference> &vr, vector<fmi2String> &ref) const {
+    return library_->readString(c_, vr, ref);
+}
+
+template<typename T, typename U>
+fmi2Status AbstractFmuInstance<T, U>::readBoolean(const fmi2ValueReference vr, fmi2Boolean &ref) const {
+    return library_->readBoolean(c_, vr, ref);
+}
+
+template<typename T, typename U>
+fmi2Status AbstractFmuInstance<T, U>::readBoolean(const vector<fmi2ValueReference> &vr, vector<fmi2Boolean> &ref) const {
+    return library_->readBoolean(c_, vr, ref);
 }
 
 template<typename T, typename U>

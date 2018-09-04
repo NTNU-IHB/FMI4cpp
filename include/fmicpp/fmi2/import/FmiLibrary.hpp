@@ -63,17 +63,16 @@ namespace fmicpp::fmi2::import {
         fmi2String getTypesPlatform() const;
 
         fmi2Component instantiate(const string instanceName, const fmi2Type type,
-                                  const string guid, const string resourceLocation, const bool visible = false, const bool loggingOn = false);
+                                  const string guid, const string resourceLocation,
+                                  const bool visible = false, const bool loggingOn = false);
 
         fmi2Status setupExperiment(const fmi2Component c, const bool toleranceDefined,
                                    const double tolerance, const double startTime, const double stopTime) const;
 
         fmi2Status enterInitializationMode(const fmi2Component c) const;
-
         fmi2Status exitInitializationMode(const fmi2Component c) const;
 
         fmi2Status reset(const fmi2Component c) const;
-
         fmi2Status terminate(const fmi2Component c);
 
         fmi2Status readInteger(const fmi2Component c, const fmi2ValueReference vr, fmi2Integer &ref) const;
@@ -88,42 +87,35 @@ namespace fmicpp::fmi2::import {
         fmi2Status readBoolean(const fmi2Component c, const fmi2ValueReference vr, fmi2Boolean &ref) const;
         fmi2Status readBoolean(const fmi2Component c, const vector<fmi2ValueReference> &vr, vector<fmi2Boolean > &ref) const;
 
-        fmi2Status getFMUstate(const fmi2Component c, fmi2FMUstate &state);
-        fmi2Status setFMUstate(const fmi2Component c, const fmi2FMUstate state);
-        fmi2Status freeFMUstate(const fmi2Component c, fmi2FMUstate &state);
+        fmi2Status getFMUstate(const fmi2Component c, fmi2FMUstate &state) const;
+        fmi2Status setFMUstate(const fmi2Component c, const fmi2FMUstate state) const;
+        fmi2Status freeFMUstate(const fmi2Component c, fmi2FMUstate &state) const;
+
+        fmi2Status serializeFMUstate(const fmi2Component c, const fmi2FMUstate &state, vector<fmi2Byte> &serializedState) const;
+        fmi2Status deSerializeFMUstate(const fmi2Component c, fmi2FMUstate &state, const vector<fmi2Byte> &serializedState) const;
+
+        fmi2Status getDirectionalDerivative(const fmi2Component c,
+                const vector<fmi2ValueReference> &vUnkownRef, const vector<fmi2ValueReference> &vKnownRef,
+                const vector<fmi2Real> &dvKnownRef, vector<fmi2Real> &dvUnknownRef) const;
 
         void freeInstance(fmi2Component c);
 
         ~FmiLibrary();
 
-    protected:
-
+    private:
         DLL_HANDLE handle_ = nullptr;
-
-        template <class T>
-        T loadFunction(const char* function_name) const;
-
         string getLastError() const;
 
-    };
+    protected:
 
-    class CoSimulationLibrary : public FmiLibrary {
-
-    public:
-
-        explicit CoSimulationLibrary(const string libName);
-
-        fmi2Status doStep(const fmi2Component c, const fmi2Real currentCommunicationPoint,
-                const fmi2Real communicationStepSize, const bool noSetFMUStatePriorToCurrentPoint) const;
-
-        fmi2Status cancelStep(const fmi2Component c) const;
-
-    };
-
-    class ModelExchangeLibrary: public FmiLibrary {
-
-    public:
-        ModelExchangeLibrary(const string libName);
+        template<class T>
+        T loadFunction(const char *function_name) const {
+#ifdef WIN32
+            return (T) GetProcAddress(handle_, function_name);
+#else
+            return (T) dlsym(handle_, function_name);
+#endif
+        }
 
     };
 

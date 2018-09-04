@@ -29,12 +29,30 @@
 #include <fmicpp/tools/unzipper.hpp>
 #include <fmicpp/tools/os_util.hpp>
 
+#include <boost/uuid/uuid_io.hpp>
+#include <boost/uuid/uuid.hpp>
+#include <boost/uuid/uuid_generators.hpp>
+#include <boost/algorithm/string/join.hpp>
+
+
 using namespace std;
 using namespace fmicpp::fmi2::import;
 
+namespace {
+
+    const string generate_uuid() {
+        using namespace boost::uuids;
+        random_generator generator;
+        uuid uuid = generator();
+        return to_string(uuid);
+    }
+
+}
+
 Fmu::Fmu(const string fmu_file): fmu_file_(fmu_file) {
 
-    tmp_path_ = fs::temp_directory_path() /= fs::path(fmu_file).stem();
+    string fmuName = fs::path(fmu_file).stem().string();
+    tmp_path_ = fs::temp_directory_path() /= fs::path(fmuName + "_" + generate_uuid());
     create_directories(tmp_path_);
 
     if (!extractContents(fmu_file, tmp_path_.string())) {
@@ -52,12 +70,21 @@ Fmu::Fmu(const string fmu_file): fmu_file_(fmu_file) {
 
 }
 
-const ModelDescription &Fmu::getModelDescription() const {
-    return *modelDescription_;
+const string Fmu::getGuid() const {
+    return modelDescription_->guid;
+}
+
+const string Fmu::getModelName() const {
+    return modelDescription_->modelName;
 }
 
 const string &Fmu::getModelDescriptionXml() const {
     return model_description_xml_;
+}
+
+
+const ModelDescription &Fmu::getModelDescription() const {
+    return *modelDescription_;
 }
 
 unique_ptr<CoSimulationSlaveBuilder> Fmu::asCoSimulationFmu() {

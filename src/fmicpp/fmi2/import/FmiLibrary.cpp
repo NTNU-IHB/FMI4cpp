@@ -136,7 +136,8 @@ fmi2Status FmiLibrary::readInteger(const fmi2Component c, const fmi2ValueReferen
     return loadFunction<fmi2GetIntegerTYPE *>("fmi2GetInteger")(c, &vr, 1, &ref);
 }
 
-fmi2Status FmiLibrary::readInteger(const fmi2Component c, const vector<fmi2ValueReference> &vr, vector<fmi2Integer> &ref) const {
+fmi2Status FmiLibrary::readInteger(const fmi2Component c,
+        const vector<fmi2ValueReference> &vr, vector<fmi2Integer> &ref) const {
     return loadFunction<fmi2GetIntegerTYPE *>("fmi2GetInteger")(c, vr.data(), vr.size(), ref.data());
 }
 
@@ -144,7 +145,8 @@ fmi2Status FmiLibrary::readReal(const fmi2Component c, const fmi2ValueReference 
     return loadFunction<fmi2GetRealTYPE *>("fmi2GetReal")(c, &vr, 1, &ref);
 }
 
-fmi2Status FmiLibrary::readReal(const fmi2Component c, const vector<fmi2ValueReference > &vr, vector<fmi2Real> &ref) const {
+fmi2Status FmiLibrary::readReal(const fmi2Component c,
+        const vector<fmi2ValueReference > &vr, vector<fmi2Real> &ref) const {
     return loadFunction<fmi2GetRealTYPE *>("fmi2GetReal")(c, vr.data(), vr.size(), ref.data());
 }
 
@@ -152,7 +154,8 @@ fmi2Status FmiLibrary::readString(const fmi2Component c, const fmi2ValueReferenc
     return loadFunction<fmi2GetStringTYPE *>("fmi2GetString")(c, &vr, 1, &ref);
 }
 
-fmi2Status FmiLibrary::readString(const fmi2Component c, const vector<fmi2ValueReference> &vr, vector<fmi2String > &ref) const {
+fmi2Status FmiLibrary::readString(const fmi2Component c,
+        const vector<fmi2ValueReference> &vr, vector<fmi2String > &ref) const {
     return loadFunction<fmi2GetStringTYPE *>("fmi2GetString")(c, vr.data(), vr.size(), ref.data());
 }
 
@@ -160,34 +163,47 @@ fmi2Status FmiLibrary::readBoolean(const fmi2Component c, const fmi2ValueReferen
     return loadFunction<fmi2GetBooleanTYPE *>("fmi2GetBoolean")(c, &vr, 1, &ref);
 }
 
-fmi2Status FmiLibrary::readBoolean(const fmi2Component c, const vector<fmi2ValueReference> &vr, vector<fmi2Boolean> &ref) const {
+fmi2Status FmiLibrary::readBoolean(const fmi2Component c,
+        const vector<fmi2ValueReference> &vr, vector<fmi2Boolean> &ref) const {
     return loadFunction<fmi2GetBooleanTYPE *>("fmi2GetBoolean")(c, vr.data(), vr.size(), ref.data());
 }
 
-fmi2Status FmiLibrary::getFMUstate(const fmi2Component c, fmi2FMUstate& state) {
+fmi2Status FmiLibrary::getFMUstate(const fmi2Component c, fmi2FMUstate& state) const {
     return loadFunction<fmi2GetFMUstateTYPE *>("fmi2GetFMUstate")(c, &state);
 }
 
-fmi2Status FmiLibrary::setFMUstate(const fmi2Component c, const fmi2FMUstate state) {
+fmi2Status FmiLibrary::setFMUstate(const fmi2Component c, const fmi2FMUstate state) const {
     return loadFunction<fmi2SetFMUstateTYPE *>("fmi2SetFMUstate")(c, state);
 }
 
-fmi2Status FmiLibrary::freeFMUstate(const fmi2Component c, fmi2FMUstate& state) {
+fmi2Status FmiLibrary::freeFMUstate(const fmi2Component c, fmi2FMUstate& state) const {
     return loadFunction<fmi2FreeFMUstateTYPE *>("fmi2FreeFMUstate")(c, &state);
+}
+
+fmi2Status FmiLibrary::serializeFMUstate(const fmi2Component c,
+        const fmi2FMUstate &state, vector<fmi2Byte> &serializedState) const {
+    return loadFunction<fmi2SerializeFMUstateTYPE *>
+            ("fmi2SerializeFMUstate")(c, state, serializedState.data(), serializedState.size());
+}
+
+fmi2Status FmiLibrary::deSerializeFMUstate(const fmi2Component c,
+        fmi2FMUstate &state, const vector<fmi2Byte> &serializedState) const {
+    return loadFunction<fmi2DeSerializeFMUstateTYPE *>
+            ("fmi2DeSerializeFMUstate")(c, serializedState.data(), serializedState.size(), &state);
+}
+
+fmi2Status FmiLibrary::getDirectionalDerivative(const fmi2Component c,
+        const vector<fmi2ValueReference> &vUnkownRef, const vector<fmi2ValueReference> &vKnownRef,
+        const vector<fmi2Real> &dvKnownRef, vector<fmi2Real> &dvUnknownRef) const {
+    return loadFunction<fmi2GetDirectionalDerivativeTYPE *>
+            ("fmi2GetDirectionalDerivative")(c, vUnkownRef.data(), vUnkownRef.size(),
+                    vKnownRef.data(), vKnownRef.size(), dvKnownRef.data(), dvUnknownRef.data());
 }
 
 void FmiLibrary::freeInstance(const fmi2Component c) {
     loadFunction<fmi2FreeInstanceTYPE *>("fmi2FreeInstance")(c);
 }
 
-template<class T>
-T FmiLibrary::loadFunction(const char *function_name) const {
-#ifdef WIN32
-    return (T) GetProcAddress(handle_, function_name);
-#else
-    return (T) dlsym(handle_, function_name);
-#endif
-}
 
 FmiLibrary::~FmiLibrary() {
 
@@ -206,23 +222,3 @@ FmiLibrary::~FmiLibrary() {
         handle_ = nullptr;
    }
 }
-
-
-
-
-CoSimulationLibrary::CoSimulationLibrary(const string libName) : FmiLibrary(libName) {}
-
-fmi2Status CoSimulationLibrary::doStep(const fmi2Component c, const fmi2Real currentCommunicationPoint,
-        const fmi2Real communicationStepSize, const bool noSetFMUStatePriorToCurrentPoint) const {
-    return loadFunction<fmi2DoStepTYPE *>("fmi2DoStep")(
-            c, currentCommunicationPoint, communicationStepSize, noSetFMUStatePriorToCurrentPoint ? 1 : 0);
-}
-
-fmi2Status CoSimulationLibrary::cancelStep(const fmi2Component c) const {
-    return loadFunction<fmi2CancelStepTYPE *>("fmi2CancelStep")(c);
-}
-
-
-
-
-ModelExchangeLibrary::ModelExchangeLibrary(const string libName) : FmiLibrary(libName) {}

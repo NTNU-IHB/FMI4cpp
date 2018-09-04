@@ -22,36 +22,25 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMICPP_FMICPP_HPP
-#define FMICPP_FMICPP_HPP
+#ifndef FMICPP_COSIMULATIONLIBRARY_HPP
+#define FMICPP_COSIMULATIONLIBRARY_HPP
 
-#include <string>
-#include "fmi2Functions.h"
+#include "FmiLibrary.hpp"
 
-#include "xml/ModelDescription.hpp"
+using fmicpp::fmi2::import::FmiLibrary;
 
-#include "import/Fmu.hpp"
-#include "import/FmuInstance.hpp"
-#include "import/FmuSlave.hpp"
+class CoSimulationLibrary : public FmiLibrary {
 
-#include "import/CoSimulationSlaveBuilder.hpp"
+public:
 
-namespace {
+    explicit CoSimulationLibrary(const string libName);
 
-    std::string statusToString(fmi2Status status) {
+    fmi2Status doStep(const fmi2Component c, const fmi2Real currentCommunicationPoint,
+                      const fmi2Real communicationStepSize, const bool noSetFMUStatePriorToCurrentPoint) const;
 
-        switch (status) {
-            case fmi2OK: return "OK";
-            case fmi2Warning: return "Warning";
-            case fmi2Discard: return "Discard";
-            case fmi2Error: return "Error";
-            case fmi2Fatal: return "Fatal";
-            case fmi2Pending: return "Pending";
-            default: throw std::runtime_error(std::string("ERROR: Not a valid status:") + std::to_string(status) + "!");
-        }
+    fmi2Status cancelStep(const fmi2Component c) const;
 
-    }
+};
 
-}
 
-#endif //FMICPP_FMICPP_HPP
+#endif //FMICPP_COSIMULATIONLIBRARY_HPP

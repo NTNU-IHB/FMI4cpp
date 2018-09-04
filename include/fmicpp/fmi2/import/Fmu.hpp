@@ -35,6 +35,8 @@
 #include "../xml/ModelDescription.hpp"
 
 namespace fs = boost::filesystem;
+
+using std::string;
 using fmicpp::fmi2::xml::ModelDescription;
 
 namespace fmicpp::fmi2::import {
@@ -46,11 +48,12 @@ namespace fmicpp::fmi2::import {
         friend class CoSimulationSlaveBuilder;
 
     public:
-        explicit Fmu(const std::string fmu_file);
+        explicit Fmu(const string fmu_file);
 
+        const string getGuid() const;
+        const string getModelName() const;
+        const string &getModelDescriptionXml() const;
         const ModelDescription &getModelDescription() const;
-
-        const std::string &getModelDescriptionXml() const;
 
         unique_ptr<CoSimulationSlaveBuilder> asCoSimulationFmu();
 
@@ -59,11 +62,11 @@ namespace fmicpp::fmi2::import {
     private:
 
         fs::path tmp_path_;
-        const std::string fmu_file_;
-        std::string model_description_xml_;
+        const string fmu_file_;
+        string model_description_xml_;
         std::unique_ptr<ModelDescription> modelDescription_;
 
-        std::string getAbsoluteLibraryPath(std::string modelIdentifier);
+        string getAbsoluteLibraryPath(string modelIdentifier);
 
     };
 

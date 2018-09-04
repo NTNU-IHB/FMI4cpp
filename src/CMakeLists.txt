@@ -11,14 +11,16 @@ SET(HEADERS
         ../include/fmicpp/fmi2/fmi2FunctionTypes.h
         ../include/fmicpp/fmi2/fmi2TypesPlatform.h
 
-        ../include/fmicpp/fmi2/import/FmiLibrary.hpp
-        ../include/fmicpp/fmi2/import/Fmu.hpp
-        ../include/fmicpp/fmi2/import/CoSimulationSlaveBuilder.hpp
         ../include/fmicpp/fmi2/import/FmuInstance.hpp
         ../include/fmicpp/fmi2/import/FmuSlave.hpp
+
+        ../include/fmicpp/fmi2/import/Fmu.hpp
+        ../include/fmicpp/fmi2/import/FmiLibrary.hpp
+        ../include/fmicpp/fmi2/import/CoSimulationLibrary.hpp
+        ../include/fmicpp/fmi2/import/ModelExchangeLibrary.hpp
         ../include/fmicpp/fmi2/import/AbstractFmuInstance.hpp
         ../include/fmicpp/fmi2/import/CoSimulationSlave.hpp
-
+        ../include/fmicpp/fmi2/import/CoSimulationSlaveBuilder.hpp
         ../include/fmicpp/fmi2/xml/FmuData.hpp
         ../include/fmicpp/fmi2/xml/ModelDescription.hpp
         ../include/fmicpp/fmi2/xml/ModelVariables.hpp
@@ -32,6 +34,8 @@ SET(HEADERS
 SET(SOURCES
         fmicpp/fmi2/import/Fmu.cpp
         fmicpp/fmi2/import/FmiLibrary.cpp
+        fmicpp/fmi2/import/CoSimulationLibrary.cpp
+        fmicpp/fmi2/import/ModelExchangeLibrary.cpp
         fmicpp/fmi2/import/AbstractFmuInstance.cpp
         fmicpp/fmi2/import/CoSimulationSlave.cpp
         fmicpp/fmi2/import/CoSimulationSlaveBuilder.cpp
@@ -49,4 +53,6 @@ target_link_libraries(fmicpp Boost::system Boost::filesystem ${LIBZIP_LIBRARIES}
 target_include_directories(fmicpp PRIVATE ${LIBZIP_INCLUDE_DIRS})
 if (UNIX)
     target_link_libraries(fmicpp dl)
+elseif(WIN32)
+    target_link_libraries(fmicpp bcrypt)
 endif()

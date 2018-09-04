@@ -22,36 +22,19 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMICPP_FMICPP_HPP
-#define FMICPP_FMICPP_HPP
+#ifndef FMICPP_MODELEXCHANGELIBRARY_HPP
+#define FMICPP_MODELEXCHANGELIBRARY_HPP
 
-#include <string>
-#include "fmi2Functions.h"
+#include "FmiLibrary.hpp"
 
-#include "xml/ModelDescription.hpp"
+using fmicpp::fmi2::import::FmiLibrary;
 
-#include "import/Fmu.hpp"
-#include "import/FmuInstance.hpp"
-#include "import/FmuSlave.hpp"
+class ModelExchangeLibrary: public FmiLibrary {
 
-#include "import/CoSimulationSlaveBuilder.hpp"
+public:
+    ModelExchangeLibrary(const string libName);
 
-namespace {
+};
 
-    std::string statusToString(fmi2Status status) {
 
-        switch (status) {
-            case fmi2OK: return "OK";
-            case fmi2Warning: return "Warning";
-            case fmi2Discard: return "Discard";
-            case fmi2Error: return "Error";
-            case fmi2Fatal: return "Fatal";
-            case fmi2Pending: return "Pending";
-            default: throw std::runtime_error(std::string("ERROR: Not a valid status:") + std::to_string(status) + "!");
-        }
-
-    }
-
-}
-
-#endif //FMICPP_FMICPP_HPP
+#endif //FMICPP_MODELEXCHANGELIBRARY_HPP

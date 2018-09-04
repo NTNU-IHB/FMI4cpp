@@ -74,9 +74,9 @@ namespace fmicpp::fmi2::import {
 
         virtual bool canSerializeFmuState() const = 0;
 
-        virtual fmi2Status serializeFMUstate(vector<fmi2Byte> &serializedState) = 0;
+        virtual fmi2Status serializeFMUstate(const fmi2FMUstate &state, vector<fmi2Byte> &serializedState) = 0;
 
-        virtual fmi2Status deSerializeFMUstate(const vector<fmi2Byte> &serializedState, fmi2FMUstate &state) = 0;
+        virtual fmi2Status deSerializeFMUstate(fmi2FMUstate &state, const vector<fmi2Byte> &serializedState) = 0;
 
         virtual bool providesDirectionalDerivative() const = 0;
 
@@ -87,19 +87,33 @@ namespace fmicpp::fmi2::import {
                 vector<fmi2Real> &dvUnknownRef) const = 0;
 
 
-        fmi2Status readInteger(const string name, fmi2Integer &ref) {
+        fmi2Status readInteger(const string name, fmi2Integer &ref) const {
             const auto vr = getModelDescription().modelVariables->getByName(name).valueReference;
             return readInteger(vr, ref);
         }
         virtual fmi2Status readInteger(const fmi2ValueReference vr, fmi2Integer &ref) const = 0;
         virtual fmi2Status readInteger(const vector<fmi2ValueReference> &vr, vector<fmi2Integer> &ref) const = 0;
 
-        fmi2Status readReal(const string name, fmi2Real &ref) {
+        fmi2Status readReal(const string name, fmi2Real &ref) const {
             const auto vr = getModelDescription().modelVariables->getByName(name).valueReference;
             return readReal(vr, ref);
         }
         virtual fmi2Status readReal(const fmi2ValueReference vr, fmi2Real &ref) const = 0;
         virtual fmi2Status readReal(const vector<fmi2ValueReference> &vr, vector<fmi2Real> &ref) const = 0;
+
+        fmi2Status readString(const string name, fmi2String &ref) const {
+            const auto vr = getModelDescription().modelVariables->getByName(name).valueReference;
+            return readString(vr, ref);
+        }
+        virtual fmi2Status readString(const fmi2ValueReference vr, fmi2String &ref) const = 0;
+        virtual fmi2Status readString(const vector<fmi2ValueReference> &vr, vector<fmi2String> &ref) const = 0;
+
+        fmi2Status readBoolean(const string name, fmi2Boolean &ref) const {
+            const auto vr = getModelDescription().modelVariables->getByName(name).valueReference;
+            return readBoolean(vr, ref);
+        }
+        virtual fmi2Status readBoolean(const fmi2ValueReference vr, fmi2Boolean &ref) const = 0;
+        virtual fmi2Status readBoolean(const vector<fmi2ValueReference> &vr, vector<fmi2Boolean> &ref) const = 0;
 
         virtual ~FmuInstance() {};
 
