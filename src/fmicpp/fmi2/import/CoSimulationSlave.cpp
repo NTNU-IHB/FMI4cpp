@@ -32,7 +32,11 @@ CoSimulationSlave::CoSimulationSlave(const shared_ptr<CoSimulationModelDescripti
             : AbstractFmuInstance<CoSimulationLibrary, CoSimulationModelDescription>(modelDescription, library) {}
 
 fmi2Status CoSimulationSlave::doStep(const double stepSize) {
-    return library_->doStep(c_, simulationTime_, stepSize, false);
+    fmi2Status status = library_->doStep(c_, simulationTime_, stepSize, false);
+    if (status == fmi2OK) {
+        simulationTime_ += stepSize;
+    }
+    return status;
 }
 
 fmi2Status CoSimulationSlave::cancelStep() {

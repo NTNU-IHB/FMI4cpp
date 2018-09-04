@@ -62,7 +62,6 @@ namespace fmicpp::fmi2::import {
         const std::string fmu_file_;
         std::string model_description_xml_;
         std::unique_ptr<ModelDescription> modelDescription_;
-        std::vector<std::shared_ptr<FmuInstance>> instances_;
 
         std::string getAbsoluteLibraryPath(std::string modelIdentifier);
 

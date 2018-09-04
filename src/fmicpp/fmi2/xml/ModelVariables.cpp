@@ -28,7 +28,7 @@ using namespace std;
 using namespace fmicpp::fmi2::xml;
 
 
-void fmicpp::fmi2::xml::ModelVariables::load(const ptree &node) {
+void ModelVariables::load(const ptree &node) {
 
     for (const ptree::value_type &v : node) {
 

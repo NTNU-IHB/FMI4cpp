@@ -34,7 +34,7 @@ using namespace fmicpp::fmi2::import;
 
 Fmu::Fmu(const string fmu_file): fmu_file_(fmu_file) {
 
-    this->tmp_path_ = fs::temp_directory_path() /= fs::path(fmu_file).stem();
+    tmp_path_ = fs::temp_directory_path() /= fs::path(fmu_file).stem();
     create_directories(tmp_path_);
 
     if (!extractContents(fmu_file, tmp_path_.string())) {
@@ -43,11 +43,11 @@ Fmu::Fmu(const string fmu_file): fmu_file_(fmu_file) {
 
     const string modelDescriptionPath = tmp_path_.string() + "/modelDescription.xml";
 
-    this->modelDescription_ = make_unique<ModelDescription>(ModelDescription());
-    this->modelDescription_->load(modelDescriptionPath);
+    modelDescription_ = make_unique<ModelDescription>(ModelDescription());
+    modelDescription_->load(modelDescriptionPath);
 
     ifstream t(modelDescriptionPath);
-    this->model_description_xml_ = string((istreambuf_iterator<char>(t)),
+    model_description_xml_ = string((istreambuf_iterator<char>(t)),
                                           istreambuf_iterator<char>());
 
 }
@@ -71,12 +71,6 @@ string Fmu::getAbsoluteLibraryPath(string modelIdentifier) {
 Fmu::~Fmu() {
 
     cout << "FMU destructor called" << endl;
-
-//    for (const auto & instance : instances_) {
-//        if (!instance->isTerminated()) {
-//            instance->terminate();
-//        }
-//    }
     remove_all(tmp_path_);
 
 }

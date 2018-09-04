@@ -164,6 +164,18 @@ fmi2Status FmiLibrary::readBoolean(const fmi2Component c, const vector<fmi2Value
     return loadFunction<fmi2GetBooleanTYPE *>("fmi2GetBoolean")(c, vr.data(), vr.size(), ref.data());
 }
 
+fmi2Status FmiLibrary::getFMUstate(const fmi2Component c, fmi2FMUstate& state) {
+    return loadFunction<fmi2GetFMUstateTYPE *>("fmi2GetFMUstate")(c, &state);
+}
+
+fmi2Status FmiLibrary::setFMUstate(const fmi2Component c, const fmi2FMUstate state) {
+    return loadFunction<fmi2SetFMUstateTYPE *>("fmi2SetFMUstate")(c, state);
+}
+
+fmi2Status FmiLibrary::freeFMUstate(const fmi2Component c, fmi2FMUstate& state) {
+    return loadFunction<fmi2FreeFMUstateTYPE *>("fmi2FreeFMUstate")(c, &state);
+}
+
 void FmiLibrary::freeInstance(const fmi2Component c) {
     loadFunction<fmi2FreeInstanceTYPE *>("fmi2FreeInstance")(c);
 }
@@ -195,6 +207,9 @@ FmiLibrary::~FmiLibrary() {
    }
 }
 
+
+
+
 CoSimulationLibrary::CoSimulationLibrary(const string libName) : FmiLibrary(libName) {}
 
 fmi2Status CoSimulationLibrary::doStep(const fmi2Component c, const fmi2Real currentCommunicationPoint,
@@ -206,5 +221,8 @@ fmi2Status CoSimulationLibrary::doStep(const fmi2Component c, const fmi2Real cur
 fmi2Status CoSimulationLibrary::cancelStep(const fmi2Component c) const {
     return loadFunction<fmi2CancelStepTYPE *>("fmi2CancelStep")(c);
 }
+
+
+
 
 ModelExchangeLibrary::ModelExchangeLibrary(const string libName) : FmiLibrary(libName) {}

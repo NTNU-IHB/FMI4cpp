@@ -78,6 +78,14 @@ namespace fmicpp::fmi2::import {
                                             const vector<fmi2Real> &dvKnownRef,
                                             vector<fmi2Real> &dvUnknownRef) const override;
 
+        fmi2Status readInteger(const fmi2ValueReference vr, fmi2Integer &ref) const override;
+
+        fmi2Status readInteger(const vector<fmi2ValueReference> &vr, vector<fmi2Integer> &ref) const override;
+
+        fmi2Status readReal(const fmi2ValueReference vr, fmi2Real &ref) const override;
+
+        fmi2Status readReal(const vector<fmi2ValueReference> &vr, vector<fmi2Real> &ref) const override;
+
         ~AbstractFmuInstance();
 
     };

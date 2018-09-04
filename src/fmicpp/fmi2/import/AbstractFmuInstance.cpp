@@ -30,9 +30,8 @@ using namespace fmicpp::fmi2::import;
 
 namespace {
     void checkStatus(fmi2Status status, string function_name) {
-        cout << "status=" << status << endl;
         if (status != fmi2OK) {
-            throw runtime_error(function_name + " failed with status: ");
+            throw runtime_error(function_name + " failed with status: " + to_string(status));
         }
     }
 }
@@ -87,17 +86,17 @@ bool AbstractFmuInstance<T, U>::canGetAndSetFMUstate() const {
 
 template<typename T, typename U>
 fmi2Status AbstractFmuInstance<T, U>::getFMUstate(fmi2FMUstate &state) {
-    return fmi2Error;
+    return library_->getFMUstate(c_, state);
 }
 
 template<typename T, typename U>
 fmi2Status AbstractFmuInstance<T, U>::setFMUstate(const fmi2FMUstate state) {
-    return fmi2Error;
+    return library_->setFMUstate(c_, state);
 }
 
 template<typename T, typename U>
 fmi2Status AbstractFmuInstance<T, U>::freeFMUstate(fmi2FMUstate &state) {
-    return fmi2Error;
+    return library_->freeFMUstate(c_, state);
 }
 
 template<typename T, typename U>
@@ -117,7 +116,7 @@ fmi2Status AbstractFmuInstance<T, U>::deSerializeFMUstate(const vector<fmi2Byte>
 
 template<typename T, typename U>
 bool AbstractFmuInstance<T, U>::providesDirectionalDerivative() const {
-    return false;
+    return modelDescription_->providesDirectionalDerivative;
 }
 
 template<typename T, typename U>
@@ -130,6 +129,26 @@ fmi2Status AbstractFmuInstance<T, U>::getDirectionalDerivative(const vector<fmi2
 
 
 template<typename T, typename U>
+fmi2Status AbstractFmuInstance<T, U>::readInteger(const fmi2ValueReference vr, fmi2Integer &ref) const {
+    return library_->readInteger(c_, vr, ref);
+}
+
+template<typename T, typename U>
+fmi2Status AbstractFmuInstance<T, U>::readInteger(const vector<fmi2ValueReference> &vr, vector<fmi2Integer> &ref) const {
+    return library_->readInteger(c_,vr, ref);
+}
+
+template<typename T, typename U>
+fmi2Status AbstractFmuInstance<T, U>::readReal(const fmi2ValueReference vr, fmi2Real &ref) const {
+    return library_->readReal(c_,vr, ref);
+}
+
+template<typename T, typename U>
+fmi2Status AbstractFmuInstance<T, U>::readReal(const vector<fmi2ValueReference> &vr, vector<fmi2Real> &ref) const {
+    return library_->readReal(c_, vr, ref);
+}
+
+template<typename T, typename U>
 AbstractFmuInstance<T, U>::~AbstractFmuInstance() {
     terminate();
     if (c_) {
@@ -137,10 +156,3 @@ AbstractFmuInstance<T, U>::~AbstractFmuInstance() {
         c_ = nullptr;
     }
 }
-
-//template<typename T, typename U>
-//std::string AbstractFmuInstance<T, U>::getVersion() const {
-//    return library_->getVersion();
-//}
-
-

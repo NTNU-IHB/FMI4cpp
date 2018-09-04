@@ -26,6 +26,10 @@
 
 using namespace fmicpp::fmi2::xml;
 
+void Unknown::load(const ptree &node) {
+    name = node.get<std::string>("<xmlattr>.name");
+}
+
 void ModelStructure::load(const ptree &node) {
 
 }

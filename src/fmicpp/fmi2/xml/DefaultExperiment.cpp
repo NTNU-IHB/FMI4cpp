@@ -32,10 +32,3 @@ void DefaultExperiment::load(const ptree &node) {
     stepSize = node.get<double>("<xmlattr>.stepSize", 1.0/100);
     tolerance = node.get<double>("<xmlattr>.tolerance", 0);
 }
-
-//DefaultExperiment::DefaultExperiment(const DefaultExperiment &obj)
-//    : startTime(obj.startTime),
-//    stopTime(obj.stopTime),
-//    stepSize(obj.stepSize),
-//    tolerance(obj.tolerance) {};
-

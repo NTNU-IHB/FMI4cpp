@@ -86,6 +86,21 @@ namespace fmicpp::fmi2::import {
                 const vector<fmi2Real> &dvKnownRef,
                 vector<fmi2Real> &dvUnknownRef) const = 0;
 
+
+        fmi2Status readInteger(const string name, fmi2Integer &ref) {
+            const auto vr = getModelDescription().modelVariables->getByName(name).valueReference;
+            return readInteger(vr, ref);
+        }
+        virtual fmi2Status readInteger(const fmi2ValueReference vr, fmi2Integer &ref) const = 0;
+        virtual fmi2Status readInteger(const vector<fmi2ValueReference> &vr, vector<fmi2Integer> &ref) const = 0;
+
+        fmi2Status readReal(const string name, fmi2Real &ref) {
+            const auto vr = getModelDescription().modelVariables->getByName(name).valueReference;
+            return readReal(vr, ref);
+        }
+        virtual fmi2Status readReal(const fmi2ValueReference vr, fmi2Real &ref) const = 0;
+        virtual fmi2Status readReal(const vector<fmi2ValueReference> &vr, vector<fmi2Real> &ref) const = 0;
+
         virtual ~FmuInstance() {};
 
     };

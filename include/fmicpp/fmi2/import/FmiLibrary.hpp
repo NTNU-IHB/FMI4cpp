@@ -88,6 +88,10 @@ namespace fmicpp::fmi2::import {
         fmi2Status readBoolean(const fmi2Component c, const fmi2ValueReference vr, fmi2Boolean &ref) const;
         fmi2Status readBoolean(const fmi2Component c, const vector<fmi2ValueReference> &vr, vector<fmi2Boolean > &ref) const;
 
+        fmi2Status getFMUstate(const fmi2Component c, fmi2FMUstate &state);
+        fmi2Status setFMUstate(const fmi2Component c, const fmi2FMUstate state);
+        fmi2Status freeFMUstate(const fmi2Component c, fmi2FMUstate &state);
+
         void freeInstance(fmi2Component c);
 
         ~FmiLibrary();
@@ -99,7 +103,7 @@ namespace fmicpp::fmi2::import {
         template <class T>
         T loadFunction(const char* function_name) const;
 
-        std::string getLastError() const;
+        string getLastError() const;
 
     };
 

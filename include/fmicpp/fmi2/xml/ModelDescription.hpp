@@ -63,7 +63,7 @@ namespace fmicpp::fmi2::xml {
         shared_ptr<DefaultExperiment> defaultExperiment = nullptr;
         shared_ptr<ModelVariables> modelVariables = nullptr;
 
-        shared_ptr<CoSimulationModelDescription> asCoSimulationFmu() const ;
+        shared_ptr<CoSimulationModelDescription> asCoSimulationFmu() const;
         shared_ptr<ModelExchangeModelDescription> asModelExchangeFmu() const;
 
         void load(const string fileName);

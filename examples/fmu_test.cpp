@@ -28,6 +28,7 @@
 #include <fmicpp/fmi2/fmicpp.hpp>
 
 using namespace std;
+using namespace fmicpp::fmi2::xml;
 using namespace fmicpp::fmi2::import;
 
 int main() {
@@ -39,16 +40,31 @@ int main() {
     Fmu fmu(fmu_path);
 
     auto md = fmu.getModelDescription().asCoSimulationFmu();
-    cout << md->modelIdentifier << endl;
+    cout << "modelIdentifier=" << md->modelIdentifier << endl;
 
     auto slave = fmu.asCoSimulationFmu()->newInstance();
+    slave->init();
 
-    slave.init();
+    ScalarVariable& var = md->modelVariables->getByValueReference(47);
 
-    cout << "init ok" << endl;
-//
-    fmi2Status status = slave.terminate();
+    double t = 0;
+    double stop = 1.0;
+    double stepSize = 1E-3;
+    fmi2Status status;
+    fmi2Real v;
+    while ((t = slave->getSimulationTime()) <= stop) {
+        status = slave->doStep(stepSize);
+        if (!status == fmi2OK) {
+            break;
+        }
+        status = slave->readReal(var.valueReference, v);
+        if (status != fmi2OK) {
+            break;
+        }
+        cout << "t=" << t << ", " << var.name << "=" << v << endl;
+    }
 
+    status = slave->terminate();
     cout << "terminate with status:" << status << endl;
 
     return 0;

@@ -25,13 +25,22 @@
 #ifndef FMICPP_MODELSTRUCTURE_HPP
 #define FMICPP_MODELSTRUCTURE_HPP
 
+#include <string>
 #include <boost/property_tree/ptree.hpp>
 
 using boost::property_tree::ptree;
 
 namespace fmicpp::fmi2::xml {
 
-    class ModelStructure {
+    struct Unknown {
+
+        std::string name;
+
+        void load(const ptree &node);
+
+    };
+
+    struct ModelStructure {
 
         void load(const ptree &node);
 
