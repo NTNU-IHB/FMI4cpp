@@ -28,16 +28,15 @@
 #include <fmicpp/fmi2/fmicpp.hpp>
 
 using namespace std;
-using namespace fmicpp::fmi2::xml;
-using namespace fmicpp::fmi2::import;
+using namespace fmicpp::fmi2;
 
 int main() {
 
-    const string fmu_path = string(getenv("TEST_FMUs"))
+    const string fmuPath = string(getenv("TEST_FMUs"))
                             + "/FMI_2.0/CoSimulation/" + getOs() +
                             "/20sim/4.6.4.8004/ControlledTemperature/ControlledTemperature.fmu";
 
-    Fmu fmu(fmu_path);
+    import::Fmu fmu(fmuPath);
 
     auto md = fmu.getModelDescription().asCoSimulationFmu();
     cout << "modelIdentifier=" << md->modelIdentifier << endl;
@@ -45,7 +44,7 @@ int main() {
     auto slave = fmu.asCoSimulationFmu()->newInstance();
     slave->init();
 
-    ScalarVariable& var = md->modelVariables->getByValueReference(47);
+    xml::ScalarVariable& var = md->modelVariables->getByValueReference(47);
 
     double t = 0;
     double stop = 1.0;
