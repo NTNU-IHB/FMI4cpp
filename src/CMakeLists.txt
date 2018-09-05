@@ -24,5 +24,5 @@ target_include_directories(fmicpp PRIVATE ${LIBZIP_INCLUDE_DIRS})
 if (UNIX)
     target_link_libraries(fmicpp dl)
 elseif(WIN32)
-    target_link_libraries(fmicpp bcrypt)
+    target_link_libraries(fmicpp bcrypt) # required by boost::uuids
 endif()
