@@ -44,7 +44,7 @@ int main() {
     auto slave = fmu.asCoSimulationFmu().newInstance();
     slave->init();
 
-    xml::ScalarVariable& var = md->modelVariables->getByValueReference(47);
+    xml::ScalarVariable& var = md->getVariableByValueReference(47);
 
     double t = 0;
     double stop = 1.0;

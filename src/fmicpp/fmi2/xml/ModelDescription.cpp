@@ -74,6 +74,14 @@ shared_ptr<ModelExchangeModelDescription> ModelDescription::asModelExchangeFmu()
     return make_shared<ModelExchangeModelDescription>(*this, *modelExchange);
 }
 
+ScalarVariable &ModelDescription::getVariableByName(const string &name) {
+    return modelVariables->getByName(name);
+}
+
+ScalarVariable &ModelDescription::getVariableByValueReference(const fmi2ValueReference vr) {
+    return modelVariables->getByValueReference(vr);
+}
+
 SpecificModelDescription::SpecificModelDescription(const ModelDescription md, const FmuData data)
         : ModelDescription(md),
         modelIdentifier(data.modelIdentifier),
