@@ -40,6 +40,22 @@ public:
 
     fmi2Status cancelStep(const fmi2Component c) const;
 
+    fmi2Status setRealInputDerivatives(const fmi2Component c,
+            const vector<fmi2ValueReference> &vr, const vector<fmi2Integer> &order, const vector<fmi2Real> &value) const;
+
+    fmi2Status getRealOutputDerivatives(const fmi2Component c,
+            const vector<fmi2ValueReference> &vr, const vector<fmi2Integer> &order, vector<fmi2Real> &value) const;
+
+    fmi2Status getStatus(const fmi2Component c, const fmi2StatusKind s, fmi2Status &value) const;
+
+    fmi2Status getRealStatus(const fmi2Component c, const fmi2StatusKind s, fmi2Real &value) const;
+
+    fmi2Status getIntegerStatus(const fmi2Component c, const fmi2StatusKind s, fmi2Integer &value) const;
+
+    fmi2Status getBooleanStatus(const fmi2Component c, const fmi2StatusKind s, fmi2Boolean &value) const;
+
+    fmi2Status getStringStatus(const fmi2Component c, const fmi2StatusKind s, fmi2String &value) const;
+
 };
 
 
