@@ -55,7 +55,7 @@ namespace fmicpp::fmi2::import {
         const string &getModelDescriptionXml() const;
         const ModelDescription &getModelDescription() const;
 
-        unique_ptr<CoSimulationSlaveBuilder> asCoSimulationFmu();
+        CoSimulationSlaveBuilder asCoSimulationFmu();
 
         ~Fmu();
 
@@ -66,7 +66,7 @@ namespace fmicpp::fmi2::import {
         string model_description_xml_;
         std::unique_ptr<ModelDescription> modelDescription_;
 
-        string getAbsoluteLibraryPath(string modelIdentifier);
+        const string getAbsoluteLibraryPath(string modelIdentifier) const;
 
     };
 

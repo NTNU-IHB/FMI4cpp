@@ -41,7 +41,7 @@ int main() {
     auto md = fmu.getModelDescription().asCoSimulationFmu();
     cout << "modelIdentifier=" << md->modelIdentifier << endl;
 
-    auto slave = fmu.asCoSimulationFmu()->newInstance();
+    auto slave = fmu.asCoSimulationFmu().newInstance();
     slave->init();
 
     xml::ScalarVariable& var = md->modelVariables->getByValueReference(47);

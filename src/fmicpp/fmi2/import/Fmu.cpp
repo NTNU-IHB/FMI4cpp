@@ -50,7 +50,7 @@ namespace {
 
 Fmu::Fmu(const string fmu_file): fmu_file_(fmu_file) {
 
-    string fmuName = fs::path(fmu_file).stem().string();
+    const string fmuName = fs::path(fmu_file).stem().string();
     tmp_path_ = fs::temp_directory_path() /= fs::path(fmuName + "_" + generate_uuid());
     create_directories(tmp_path_);
 
@@ -81,17 +81,16 @@ const string &Fmu::getModelDescriptionXml() const {
     return model_description_xml_;
 }
 
-
 const ModelDescription &Fmu::getModelDescription() const {
     return *modelDescription_;
 }
 
-unique_ptr<CoSimulationSlaveBuilder> Fmu::asCoSimulationFmu() {
-    return make_unique<CoSimulationSlaveBuilder>(*this);
+CoSimulationSlaveBuilder Fmu::asCoSimulationFmu() {
+    return CoSimulationSlaveBuilder(*this);
 }
 
-string Fmu::getAbsoluteLibraryPath(string modelIdentifier) {
-    return tmp_path_.string() +  "/binaries/" + getOs() + "/" + modelIdentifier + getLibExt();
+const string Fmu::getAbsoluteLibraryPath(string modelIdentifier) const {
+    return tmp_path_.string() + "/binaries/" + getOs() + "/" + modelIdentifier + getLibExt();
 }
 
 Fmu::~Fmu() {
