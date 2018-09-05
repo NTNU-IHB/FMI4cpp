@@ -29,62 +29,13 @@
 #include <boost/property_tree/ptree.hpp>
 
 #include "../fmi2Functions.h"
+#include "ScalarVariableAttributes.hpp"
 
 using std::string;
 using std::unique_ptr;
 using boost::property_tree::ptree;
 
 namespace fmicpp::fmi2::xml {
-    
-    struct IntegerAttribute {
-        int min;
-        int max;
-        int start;
-
-        string quantity;
-
-        void load(const ptree &node);
-    };
-
-    struct RealAttribute {
-        double min;
-        double max;
-        double start;
-        double nominal;
-
-        bool reinit;
-        bool unbounded;
-        bool relativeQuantity;
-
-        string quantity;
-        string unit;
-        string displayUnit;
-
-        unsigned int derivative;
-
-        void load(const ptree &node);
-    };
-
-    struct StringAttribute {
-        string start;
-        void load(const ptree &node);
-    };
-
-    struct BooleanAttribute {
-        bool start;
-        void load(const ptree &node);
-    };
-
-    struct EnumerationAttribute {
-        int min;
-        int max;
-        int start;
-
-        string quantity;
-        string description;
-
-        void load(const ptree &node);
-    };
 
     //forward declarations
     struct IntegerVariable;
@@ -123,8 +74,9 @@ namespace fmicpp::fmi2::xml {
         const int max;
         int start;
 
-        IntegerVariable(const IntegerAttribute &attribute);
+        const string quantity;
 
+        IntegerVariable(const IntegerAttribute &attribute);
 
     };
 
@@ -133,6 +85,17 @@ namespace fmicpp::fmi2::xml {
         const double min;
         const double max;
         double start;
+        const double nominal;
+
+        const bool reinit;
+        const bool unbounded;
+        const bool relativeQuantity;
+
+        const string quantity;
+        const string unit;
+        const string displayUnit;
+
+        const unsigned int derivative;
 
         RealVariable(const RealAttribute &attribute);
 
@@ -159,6 +122,8 @@ namespace fmicpp::fmi2::xml {
         const int min;
         const int max;
         int start;
+
+        const string quantity;
 
         EnumerationVariable(const EnumerationAttribute &attribute);
 

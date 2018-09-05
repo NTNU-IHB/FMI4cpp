@@ -27,44 +27,7 @@
 using namespace std;
 using namespace fmicpp::fmi2::xml;
 
-void IntegerAttribute::load(const ptree &node) {
-    min = node.get<int>("<xmlattr>.min", 0);
-    max = node.get<int>("<xmlattr>.max", 0);
-    start = node.get<int>("<xmlattr>.start", 0);
-    quantity = node.get<string>("<xmlattr>.quantity", "");
-}
 
-void RealAttribute::load(const ptree &node) {
-    min = node.get<double>("<xmlattr>.min", 0);
-    max = node.get<double>("<xmlattr>.max", 0);
-    start = node.get<double>("<xmlattr>.start", 0);
-    nominal = node.get<double>("<xmlattr>.nominal", 0);
-
-    quantity = node.get<string>("<xmlattr>.quantity", "");
-    unit = node.get<string>("<xmlattr>.unit", "");
-    displayUnit = node.get<string>("<xmlattr>.displayUnit", "");
-
-    reinit = node.get<bool>("<xmlattr>.reinit", false);
-    unbounded = node.get<bool>("<xmlattr>.unbounded", false);
-    relativeQuantity = node.get<bool>("<xmlattr>.relativeQuantity", false);
-
-    derivative = node.get<unsigned int>("<xmlattr>.reinit", -1);
-}
-
-void StringAttribute::load(const ptree &node) {
-    start = node.get<string>("<xmlattr>.start", "");
-}
-
-void BooleanAttribute::load(const ptree &node) {
-    start = node.get<bool>("<xmlattr>.start", false);
-}
-
-void EnumerationAttribute::load(const ptree &node) {
-    min = node.get<int>("<xmlattr>.min", 0);
-    max = node.get<int>("<xmlattr>.max", 0);
-    start = node.get<int>("<xmlattr>.start", 0);
-    quantity = node.get<string>("<xmlattr>.quantity", "");
-}
 
 void ScalarVariable::load(const ptree &node) {
 
@@ -114,17 +77,19 @@ EnumerationVariable ScalarVariable::asEnumerationVariable() {
     return EnumerationVariable(*enumerationAttribute);
 }
 
-IntegerVariable::IntegerVariable(const IntegerAttribute &attribute)
-    : min(attribute.min), max(attribute.max), start(attribute.start) {};
+IntegerVariable::IntegerVariable(const IntegerAttribute &attr)
+    : min(attr.min), max(attr.max), start(attr.start), quantity(attr.quantity) {};
 
-RealVariable::RealVariable(const RealAttribute &attribute)
-    : min(attribute.min), max(attribute.max), start(attribute.start) {};
+RealVariable::RealVariable(const RealAttribute &attr)
+    : min(attr.min), max(attr.max), start(attr.start), nominal(attr.nominal),
+    reinit(attr.nominal), unbounded(attr.unbounded), relativeQuantity(attr.relativeQuantity),
+    quantity(attr.quantity), unit(attr.unit), displayUnit(attr.displayUnit), derivative(attr.derivative) {};
 
-StringVariable::StringVariable(const StringAttribute &attribute)
-    : start(attribute.start) {};
+StringVariable::StringVariable(const StringAttribute &attr)
+    : start(attr.start) {};
 
-BooleanVariable::BooleanVariable(const BooleanAttribute &attribute)
-    : start(attribute.start) {};
+BooleanVariable::BooleanVariable(const BooleanAttribute &attr)
+    : start(attr.start) {};
 
-EnumerationVariable::EnumerationVariable(const EnumerationAttribute &attribute)
-    : min(attribute.min), max(attribute.max), start(attribute.start) {};
+EnumerationVariable::EnumerationVariable(const EnumerationAttribute &attr)
+    : min(attr.min), max(attr.max), start(attr.start), quantity(attr.quantity) {};

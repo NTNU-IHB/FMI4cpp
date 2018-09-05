@@ -25,6 +25,7 @@ SET(HEADERS
         ../include/fmicpp/fmi2/xml/ModelDescription.hpp
         ../include/fmicpp/fmi2/xml/ModelVariables.hpp
         ../include/fmicpp/fmi2/xml/ScalarVariable.hpp
+        ../include/fmicpp/fmi2/xml/ScalarVariableAttributes.hpp
         ../include/fmicpp/fmi2/xml/DefaultExperiment.hpp
         ../include/fmicpp/fmi2/xml/SourceFiles.hpp
         ../include/fmicpp/fmi2/xml/ModelStructure.hpp
@@ -43,6 +44,7 @@ SET(SOURCES
         fmicpp/fmi2/xml/ModelDescription.cpp
         fmicpp/fmi2/xml/ModelVariables.cpp
         fmicpp/fmi2/xml/ScalarVariable.cpp
+        fmicpp/fmi2/xml/ScalarVariableAttributes.cpp
         fmicpp/fmi2/xml/DefaultExperiment.cpp
         fmicpp/fmi2/xml/SourceFiles.cpp
         fmicpp/fmi2/xml/ModelStructure.cpp)
