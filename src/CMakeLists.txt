@@ -36,7 +36,6 @@ SET(SOURCES
         fmicpp/fmi2/import/FmiLibrary.cpp
         fmicpp/fmi2/import/CoSimulationLibrary.cpp
         fmicpp/fmi2/import/ModelExchangeLibrary.cpp
-        fmicpp/fmi2/import/AbstractFmuInstance.cpp
         fmicpp/fmi2/import/CoSimulationSlave.cpp
         fmicpp/fmi2/import/CoSimulationSlaveBuilder.cpp
 

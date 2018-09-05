@@ -25,11 +25,18 @@
 #ifndef FMICPP_ABSTRACTFMUINSTANCE_HPP
 #define FMICPP_ABSTRACTFMUINSTANCE_HPP
 
-#include <memory>
 #include <type_traits>
 #include "FmuInstance.hpp"
 #include "FmiLibrary.hpp"
 #include "../xml/ModelDescription.hpp"
+
+namespace {
+    void checkStatus(fmi2Status status, string function_name) {
+        if (status != fmi2OK) {
+            throw std::runtime_error(function_name + " failed with status: " + std::to_string(status));
+        }
+    }
+}
 
 namespace fmicpp::fmi2::import {
 
@@ -47,45 +54,124 @@ namespace fmicpp::fmi2::import {
 
     public:
 
-        explicit AbstractFmuInstance(const std::shared_ptr<U> modelDescription, const std::shared_ptr<T> library);
+        AbstractFmuInstance(const shared_ptr<U> modelDescription, const shared_ptr<T> library)
+                : modelDescription_(modelDescription), library_(library) {}
 
-        const U &getModelDescription() const override;
 
-        void init(const double start = 0, const double stop = 0) override;
-        fmi2Status reset() override;
-        fmi2Status terminate() override;
+        const U &getModelDescription() const override {
+            return *modelDescription_;
+        }
 
-        bool canGetAndSetFMUstate() const override;
-        fmi2Status getFMUstate(fmi2FMUstate &state) override;
-        fmi2Status setFMUstate(const fmi2FMUstate state) override;
-        fmi2Status freeFMUstate(fmi2FMUstate &state) override;
+        void init(const double start = 0, const double stop = 0) override {
 
-        bool canSerializeFmuState() const override;
-        fmi2Status serializeFMUstate(const fmi2FMUstate &state, vector<fmi2Byte> &serializedState) override;
-        fmi2Status deSerializeFMUstate(fmi2FMUstate &state, const vector<fmi2Byte> &serializedState) override;
+            if (!instantiated_) {
 
-        bool providesDirectionalDerivative() const override;
-        fmi2Status getDirectionalDerivative(const vector<fmi2ValueReference> &vUnkownRef,
-                                            const vector<fmi2ValueReference> &vKnownRef,
-                                            const vector<fmi2Real> &dvKnownRef,
-                                            vector<fmi2Real> &dvUnknownRef) const override;
+                c_ = library_->instantiate(modelDescription_->modelIdentifier,
+                        fmi2CoSimulation, modelDescription_->guid, "", false, false);
 
-        fmi2Status readInteger(const fmi2ValueReference vr, fmi2Integer &ref) const override;
-        fmi2Status readInteger(const vector<fmi2ValueReference> &vr, vector<fmi2Integer> &ref) const override;
+                checkStatus(library_->setupExperiment(c_, false, 1E-4, start, stop), "setupExperiment");
 
-        fmi2Status readReal(const fmi2ValueReference vr, fmi2Real &ref) const override;
-        fmi2Status readReal(const vector<fmi2ValueReference> &vr, vector<fmi2Real> &ref) const override;
+                checkStatus(library_->enterInitializationMode(c_), "enterInitializationMode");
+                checkStatus(library_->exitInitializationMode(c_), "exitInitializationMode");
 
-        fmi2Status readString(const fmi2ValueReference vr, fmi2String &ref) const override;
-        fmi2Status readString(const vector<fmi2ValueReference> &vr, vector<fmi2String> &ref) const override;
+                instantiated_ = true;
+                simulationTime_ = start;
+            }
 
-        fmi2Status readBoolean(const fmi2ValueReference vr, fmi2Boolean &ref) const override;
-        fmi2Status readBoolean(const vector<fmi2ValueReference> &vr, vector<fmi2Boolean> &ref) const override;
+        }
 
-        ~AbstractFmuInstance();
+        fmi2Status reset() override {
+            return library_->reset(c_);
+        }
+
+        fmi2Status terminate() override {
+            if (!terminated_) {
+                terminated_ = true;
+                return library_->terminate(c_);
+            }
+            return fmi2OK;
+        }
+
+        bool canGetAndSetFMUstate() const override {
+            return modelDescription_->canGetAndSetFMUstate;
+        }
+
+        fmi2Status getFMUstate(fmi2FMUstate &state) override {
+            return library_->getFMUstate(c_, state);
+        }
+
+        fmi2Status setFMUstate(const fmi2FMUstate state) override {
+            return library_->setFMUstate(c_, state);
+        }
+
+        fmi2Status freeFMUstate(fmi2FMUstate &state) override {
+            return library_->freeFMUstate(c_, state);
+        }
+
+        bool canSerializeFmuState() const override {
+            return modelDescription_->canSerializeFMUstate;
+        }
+
+        fmi2Status serializeFMUstate(const fmi2FMUstate &state, vector<fmi2Byte> &serializedState) override {
+            return library_->serializeFMUstate(c_, state, serializedState);
+        }
+
+        fmi2Status
+        deSerializeFMUstate(fmi2FMUstate &state, const vector<fmi2Byte> &serializedState) override {
+            return library_->deSerializeFMUstate(c_, state, serializedState);
+        }
+
+        bool providesDirectionalDerivative() const override {
+            return modelDescription_->providesDirectionalDerivative;
+        }
+
+        fmi2Status getDirectionalDerivative(
+                const vector<fmi2ValueReference> &vUnkownRef, const vector<fmi2ValueReference> &vKnownRef,
+                const vector<fmi2Real> &dvKnownRef, vector<fmi2Real> &dvUnknownRef) const override {
+            return library_->getDirectionalDerivative(c_, vUnkownRef, vKnownRef, dvKnownRef, dvUnknownRef);
+        }
+
+        fmi2Status readInteger(const fmi2ValueReference vr, fmi2Integer &ref) const override {
+            return library_->readInteger(c_, vr, ref);
+        }
+
+        fmi2Status readInteger(const vector<fmi2ValueReference> &vr, vector<fmi2Integer> &ref) const override {
+            return library_->readInteger(c_,vr, ref);
+        }
+
+        fmi2Status readReal(const fmi2ValueReference vr, fmi2Real &ref) const override {
+            return library_->readReal(c_,vr, ref);
+        }
+
+        fmi2Status readReal(const vector<fmi2ValueReference> &vr, vector<fmi2Real> &ref) const override {
+            return library_->readReal(c_, vr, ref);
+        }
+
+        fmi2Status readString(const fmi2ValueReference vr, fmi2String &ref) const override {
+            return library_->readString(c_, vr, ref);
+        }
+
+        fmi2Status readString(const vector<fmi2ValueReference> &vr, vector<fmi2String> &ref) const override {
+            return library_->readString(c_, vr, ref);
+        }
+
+        fmi2Status readBoolean(const fmi2ValueReference vr, fmi2Boolean &ref) const override {
+            return library_->readBoolean(c_, vr, ref);
+        }
+
+        fmi2Status readBoolean(const vector<fmi2ValueReference> &vr, vector<fmi2Boolean> &ref) const override {
+            return library_->readBoolean(c_, vr, ref);
+        }
+
+        ~AbstractFmuInstance() {
+            terminate();
+            if (c_) {
+                library_->freeInstance(c_);
+                c_ = nullptr;
+            }
+        }
 
     };
-
 
 }
 
