@@ -75,3 +75,10 @@ int main() {
     
 }
 ```
+
+***
+
+#### Running examples/tests
+
+In order to run any code refrencing an actual FMU, a system variable named __TEST_FMUs__ must be present on your system. 
+This variable should point to the location of the content found [here](https://github.com/markaren/TEST_FMUs).
