@@ -204,11 +204,8 @@ void FmiLibrary::freeInstance(const fmi2Component c) {
     loadFunction<fmi2FreeInstanceTYPE *>("fmi2FreeInstance")(c);
 }
 
-
 FmiLibrary::~FmiLibrary() {
 
-    cout << "FmiLibrary destructor called.." << endl;
-    
    if (handle_) {
        bool success;
 #ifdef WIN32

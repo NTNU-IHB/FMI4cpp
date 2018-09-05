@@ -29,10 +29,9 @@
 #include <fmicpp/tools/unzipper.hpp>
 #include <fmicpp/tools/os_util.hpp>
 
-#include <boost/uuid/uuid_io.hpp>
 #include <boost/uuid/uuid.hpp>
+#include <boost/uuid/uuid_io.hpp>
 #include <boost/uuid/uuid_generators.hpp>
-#include <boost/algorithm/string/join.hpp>
 
 
 using namespace std;
@@ -96,8 +95,5 @@ string Fmu::getAbsoluteLibraryPath(string modelIdentifier) {
 }
 
 Fmu::~Fmu() {
-
-    cout << "FMU destructor called" << endl;
     remove_all(tmp_path_);
-
 }
