@@ -35,10 +35,11 @@ using namespace fmicpp::fmi2;
 int main() {
 
     import::Fmu fmu("path/to/fmu.fmu");
-    auto slave = fmu.asCoSimulationFmu().newInstance();
     
+    auto md = fmu.getModelDescription().asCoSimulationFmu();
     xml::ScalarVariable& var = md->getVariableByName("my_var");
     
+    auto slave = fmu.asCoSimulationFmu().newInstance();
     slave->init();
     
     double stop = 10.0;
@@ -67,5 +68,4 @@ int main() {
     slave->terminate();
     
 }
-
 ```
