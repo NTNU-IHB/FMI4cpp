@@ -66,7 +66,7 @@ FmiLibrary::FmiLibrary(const string libName) {
 #ifdef WIN32
     handle_ = LoadLibrary(libName.c_str());
 #else
-    handle_ = dlopen(lib_name.cstr(), RTLD_NOW | RTLD_LOCAL);
+    handle_ = dlopen(libName.c_str(), RTLD_NOW | RTLD_LOCAL);
 #endif
 
     if (!handle_) {
