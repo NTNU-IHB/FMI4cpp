@@ -17,10 +17,16 @@ When the library is stable I will add it to vcpkg.
 
 ### Development dependencies
 
-Install [vcpkg](https://github.com/Microsoft/vcpkg) and run
+Install [vcpkg](https://github.com/Microsoft/vcpkg) and run:
 
 ```
 ./vcpkg install boost-property-tree boost-filesystem libzip
+``` 
+
+On linux you might also need to install some additional libraries:
+
+```
+./vcpkg install zlib bzip2 openssl
 ``` 
 
 #### API
