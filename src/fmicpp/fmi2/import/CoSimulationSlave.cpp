@@ -23,7 +23,6 @@
  */
 
 #include <fmicpp/fmi2/import/CoSimulationSlave.hpp>
-#include "AbstractFmuInstance.cpp"
 
 using namespace std;
 using namespace fmicpp::fmi2::import;
