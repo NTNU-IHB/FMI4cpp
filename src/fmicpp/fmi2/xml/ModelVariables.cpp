@@ -42,7 +42,7 @@ void ModelVariables::load(const ptree &node) {
 
 }
 
-ScalarVariable& ModelVariables::getByName(const string name) {
+ScalarVariable& ModelVariables::getByName(const string &name) const {
 
     for (const auto& var : *this) {
         if (var->name == name) {
@@ -54,7 +54,7 @@ ScalarVariable& ModelVariables::getByName(const string name) {
     throw runtime_error(errorMsg);
 }
 
-ScalarVariable& ModelVariables::getByValueReference(const fmi2ValueReference vr) {
+ScalarVariable& ModelVariables::getByValueReference(const fmi2ValueReference vr) const {
 
     for (const auto& var : *this) {
         if (var->valueReference == vr) {

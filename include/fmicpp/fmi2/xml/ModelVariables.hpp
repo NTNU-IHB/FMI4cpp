@@ -38,8 +38,8 @@ namespace fmicpp::fmi2::xml {
 
         void load(const ptree &node);
 
-        ScalarVariable& getByName(const std::string name);
-        ScalarVariable& getByValueReference(const fmi2ValueReference vr);
+        ScalarVariable& getByName(const std::string &name) const;
+        ScalarVariable& getByValueReference(const fmi2ValueReference vr) const;
 
     };
 
