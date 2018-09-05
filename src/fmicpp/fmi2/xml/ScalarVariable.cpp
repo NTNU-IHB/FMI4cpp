@@ -31,12 +31,24 @@ void IntegerAttribute::load(const ptree &node) {
     min = node.get<int>("<xmlattr>.min", 0);
     max = node.get<int>("<xmlattr>.max", 0);
     start = node.get<int>("<xmlattr>.start", 0);
+    quantity = node.get<string>("<xmlattr>.quantity", "");
 }
 
 void RealAttribute::load(const ptree &node) {
     min = node.get<double>("<xmlattr>.min", 0);
     max = node.get<double>("<xmlattr>.max", 0);
     start = node.get<double>("<xmlattr>.start", 0);
+    nominal = node.get<double>("<xmlattr>.nominal", 0);
+
+    quantity = node.get<string>("<xmlattr>.quantity", "");
+    unit = node.get<string>("<xmlattr>.unit", "");
+    displayUnit = node.get<string>("<xmlattr>.displayUnit", "");
+
+    reinit = node.get<bool>("<xmlattr>.reinit", false);
+    unbounded = node.get<bool>("<xmlattr>.unbounded", false);
+    relativeQuantity = node.get<bool>("<xmlattr>.relativeQuantity", false);
+
+    derivative = node.get<unsigned int>("<xmlattr>.reinit", -1);
 }
 
 void StringAttribute::load(const ptree &node) {
@@ -48,7 +60,10 @@ void BooleanAttribute::load(const ptree &node) {
 }
 
 void EnumerationAttribute::load(const ptree &node) {
-    start = node.get<bool>("<xmlattr>.start", false);
+    min = node.get<int>("<xmlattr>.min", 0);
+    max = node.get<int>("<xmlattr>.max", 0);
+    start = node.get<int>("<xmlattr>.start", 0);
+    quantity = node.get<string>("<xmlattr>.quantity", "");
 }
 
 void ScalarVariable::load(const ptree &node) {
@@ -56,6 +71,7 @@ void ScalarVariable::load(const ptree &node) {
     valueReference = node.get<fmi2ValueReference >("<xmlattr>.valueReference");
     name = node.get<string>("<xmlattr>.name");
     description = node.get<string>("<xmlattr>.description", "");
+    canHandleMultipleSetPerTimelnstant = node.get<bool>("<xmlattr>.canHandleMultipleSetPerTimelnstant", false);
 
     for (const ptree::value_type &v : node) {
         if (v.first == "Integer") {
@@ -92,6 +108,10 @@ StringVariable ScalarVariable::asStringVariable() {
 
 BooleanVariable ScalarVariable::asBooleanVariable() {
     return BooleanVariable(*booleanAttribute);
+}
+
+EnumerationVariable ScalarVariable::asEnumerationVariable() {
+    return EnumerationVariable(*enumerationAttribute);
 }
 
 IntegerVariable::IntegerVariable(const IntegerAttribute &attribute)

@@ -40,6 +40,9 @@ namespace fmicpp::fmi2::xml {
         int min;
         int max;
         int start;
+
+        string quantity;
+
         void load(const ptree &node);
     };
 
@@ -47,6 +50,18 @@ namespace fmicpp::fmi2::xml {
         double min;
         double max;
         double start;
+        double nominal;
+
+        bool reinit;
+        bool unbounded;
+        bool relativeQuantity;
+
+        string quantity;
+        string unit;
+        string displayUnit;
+
+        unsigned int derivative;
+
         void load(const ptree &node);
     };
 
@@ -64,6 +79,10 @@ namespace fmicpp::fmi2::xml {
         int min;
         int max;
         int start;
+
+        string quantity;
+        string description;
+
         void load(const ptree &node);
     };
 
@@ -79,6 +98,7 @@ namespace fmicpp::fmi2::xml {
         fmi2ValueReference valueReference;
         string name;
         string description;
+        bool canHandleMultipleSetPerTimelnstant;
 
         IntegerVariable asIntegerVariable();
         RealVariable asRealVariable();
