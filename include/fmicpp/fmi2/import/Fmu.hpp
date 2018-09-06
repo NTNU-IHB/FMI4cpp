@@ -55,6 +55,9 @@ namespace fmicpp::fmi2::import {
         const string &getModelDescriptionXml() const;
         const ModelDescription &getModelDescription() const;
 
+        const bool supportsModelExchange() const;
+        const bool supportsCoSimulation() const;
+
         CoSimulationSlaveBuilder asCoSimulationFmu();
 
         ~Fmu();

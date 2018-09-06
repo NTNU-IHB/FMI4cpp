@@ -38,6 +38,9 @@ int main() {
 
     import::Fmu fmu(fmuPath);
 
+    cout << "Supports CoSimulation=" << fmu.supportsCoSimulation() << endl;
+    cout << "Supports ModelExchange=" << fmu.supportsModelExchange() << endl;
+
     auto md = fmu.getModelDescription().asCoSimulationFmu();
     cout << "modelIdentifier=" << md->modelIdentifier << endl;
 

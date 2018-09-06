@@ -85,6 +85,14 @@ const ModelDescription &Fmu::getModelDescription() const {
     return *modelDescription_;
 }
 
+const bool Fmu::supportsModelExchange() const {
+    return modelDescription_->supportsModelExchange;
+}
+
+const bool Fmu::supportsCoSimulation() const {
+    return modelDescription_->supportsCoSimulation;
+}
+
 CoSimulationSlaveBuilder Fmu::asCoSimulationFmu() {
     return CoSimulationSlaveBuilder(*this);
 }
