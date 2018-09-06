@@ -9,7 +9,7 @@ SET(SOURCES
         fmicpp/fmi2/import/CoSimulationSlave.cpp
         fmicpp/fmi2/import/CoSimulationSlaveBuilder.cpp
 
-        fmicpp/fmi2/xml/FmuData.cpp
+        fmicpp/fmi2/xml/FmuTypeAttributes.cpp
         fmicpp/fmi2/xml/ModelDescription.cpp
         fmicpp/fmi2/xml/ModelVariables.cpp
         fmicpp/fmi2/xml/ScalarVariable.cpp
