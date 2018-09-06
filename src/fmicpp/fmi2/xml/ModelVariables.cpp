@@ -33,7 +33,7 @@ void ModelVariables::load(const ptree &node) {
     for (const ptree::value_type &v : node) {
 
         if (v.first == "ScalarVariable") {
-            unique_ptr<ScalarVariable> var(new ScalarVariable());
+            auto var = make_shared<ScalarVariable>();
             var->load(v.second);
             push_back(move(var));
         }

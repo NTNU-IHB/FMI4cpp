@@ -41,7 +41,7 @@ fmi2Status fmicpp::fmi2::import::ModelExchangeInstance::setTime(const double tim
 }
 
 fmi2Status fmicpp::fmi2::import::ModelExchangeInstance::setContinuousStates(const vector<fmi2Real> &x) const {
-    return library_->getContinuousStates(c_, x);
+    return library_->setContinuousStates(c_, x);
 }
 
 fmi2Status fmicpp::fmi2::import::ModelExchangeInstance::getDerivatives(vector<fmi2Real> &derivatives) const {

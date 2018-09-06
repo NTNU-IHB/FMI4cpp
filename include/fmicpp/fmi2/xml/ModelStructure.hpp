@@ -26,7 +26,11 @@
 #define FMICPP_MODELSTRUCTURE_HPP
 
 #include <string>
+#include <vector>
+#include <memory>
 #include <boost/property_tree/ptree.hpp>
+
+#include "../fmi2TypesPlatform.h"
 
 using boost::property_tree::ptree;
 
@@ -34,13 +38,19 @@ namespace fmicpp::fmi2::xml {
 
     struct Unknown {
 
-        std::string name;
+        unsigned int index;
+        std::string dependencyKind;
+        std::shared_ptr<std::vector<unsigned int >> dependencies;
 
         void load(const ptree &node);
 
     };
 
     struct ModelStructure {
+
+        std::vector<Unknown> outputs;
+        std::vector<Unknown> derivatives;
+        std::vector<Unknown> initialUnknowns;
 
         void load(const ptree &node);
 

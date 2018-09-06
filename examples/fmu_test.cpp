@@ -43,6 +43,7 @@ int main() {
 
     auto md = fmu.getModelDescription().asCoSimulationFmu();
     cout << "modelIdentifier=" << md->modelIdentifier << endl;
+    cout << "Default stopTime=" << md->defaultExperiment.stopTime << endl;
 
     auto slave = fmu.asCoSimulationFmu().newInstance();
     slave->init();

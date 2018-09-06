@@ -54,42 +54,42 @@ namespace {
 
     }
 
-    std::string to_string(fmicpp::fmi2::xml::Causality causality) {
+    std::string to_string(fmicpp::fmi2::xml::fmi2Causality causality) {
 
-        using fmicpp::fmi2::xml::Causality;
+        using fmicpp::fmi2::xml::fmi2Causality;
 
         switch (causality) {
-            case  Causality::calculatedParameter: return "Warning";
-            case  Causality::input: return "input";
-            case  Causality::output: return "output";
-            case  Causality::local: return "local";
-            case  Causality::independent: return "independent";
+            case  fmi2Causality::calculatedParameter: return "Warning";
+            case  fmi2Causality::input: return "input";
+            case  fmi2Causality::output: return "output";
+            case  fmi2Causality::local: return "local";
+            case  fmi2Causality::independent: return "independent";
         }
 
     }
 
-    std::string to_string(fmicpp::fmi2::xml::Variability variability) {
+    std::string to_string(fmicpp::fmi2::xml::fmi2Variability variability) {
 
-        using fmicpp::fmi2::xml::Variability;
+        using fmicpp::fmi2::xml::fmi2Variability;
 
         switch (variability) {
-            case  Variability::constant: return "constant";
-            case  Variability::fixed: return "fixed";
-            case  Variability::tunable: return "tunable";
-            case  Variability::discrete: return "discrete";
-            case  Variability::continuous: return "continuous";
+            case  fmi2Variability::constant: return "constant";
+            case  fmi2Variability::fixed: return "fixed";
+            case  fmi2Variability::tunable: return "tunable";
+            case  fmi2Variability::discrete: return "discrete";
+            case  fmi2Variability::continuous: return "continuous";
         }
 
     }
 
-    std::string to_string(fmicpp::fmi2::xml::Initial initial) {
+    std::string to_string(fmicpp::fmi2::xml::fmi2Initial initial) {
 
-        using fmicpp::fmi2::xml::Initial;
+        using fmicpp::fmi2::xml::fmi2Initial;
 
         switch (initial) {
-            case  Initial::exact: return "exact";
-            case  Initial::approx: return "approx";
-            case  Initial::calculated: return "calculated";
+            case  fmi2Initial::exact: return "exact";
+            case  fmi2Initial::approx: return "approx";
+            case  fmi2Initial::calculated: return "calculated";
         }
 
     }

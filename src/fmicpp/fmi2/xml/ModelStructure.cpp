@@ -22,14 +22,43 @@
  * THE SOFTWARE.
  */
 
+#include <boost/optional.hpp>
 #include <fmicpp/fmi2/xml/ModelStructure.hpp>
 
+
+using namespace std;
 using namespace fmicpp::fmi2::xml;
 
+namespace {
+
+    void loadUnkowns(const ptree &node, vector<Unknown> &vector) {
+
+        for (const ptree::value_type &v : node) {
+            if (v.first == "Unknown") {
+                Unknown unknown;
+                unknown.load(v.second);
+                vector.push_back(unknown);
+            }
+        }
+
+    }
+
+}
+
 void Unknown::load(const ptree &node) {
-    name = node.get<std::string>("<xmlattr>.name");
+    index = node.get<unsigned int>("<xmlattr>.index");
 }
 
 void ModelStructure::load(const ptree &node) {
+
+    for (const ptree::value_type &v : node) {
+        if (v.first == "Outputs") {
+            loadUnkowns(v.second, outputs);
+        } else if (v.first == "Derivatives") {
+            loadUnkowns(v.second, derivatives);
+        } else if (v.first == "InitialUnknowns") {
+            loadUnkowns(v.second, initialUnknowns);
+        }
+    }
 
 }

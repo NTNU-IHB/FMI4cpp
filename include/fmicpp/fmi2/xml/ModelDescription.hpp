@@ -30,9 +30,9 @@
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 
-#include "DefaultExperiment.hpp"
-
+#include "ModelStructure.hpp"
 #include "ModelVariables.hpp"
+#include "DefaultExperiment.hpp"
 #include "FmuTypeAttributes.hpp"
 
 using std::string;
@@ -59,18 +59,20 @@ namespace fmicpp::fmi2::xml {
         string generationDateAndTime;
 
         unsigned int numberOfEventIndicators;
+        unsigned int numberOfContinuousStates;
 
-        shared_ptr<DefaultExperiment> defaultExperiment = nullptr;
-        shared_ptr<ModelVariables> modelVariables = nullptr;
+        bool supportsModelExchange;
+        bool supportsCoSimulation;
+
+        ModelVariables modelVariables;
+        ModelStructure modelStructure;
+        DefaultExperiment defaultExperiment;
 
         shared_ptr<CoSimulationModelDescription> asCoSimulationFmu() const;
         shared_ptr<ModelExchangeModelDescription> asModelExchangeFmu() const;
 
         ScalarVariable &getVariableByName(const string &name) const;
         ScalarVariable &getVariableByValueReference(const fmi2ValueReference vr) const;
-
-        bool supportsModelExchange;
-        bool supportsCoSimulation;
 
         void load(const string fileName);
 
@@ -91,7 +93,7 @@ namespace fmicpp::fmi2::xml {
         const bool canBeInstantiatedOnlyOncePerProcess;
         const bool providesDirectionalDerivative;
 
-        const std::shared_ptr<SourceFiles> sourceFiles = nullptr;
+        const SourceFiles sourceFiles;
 
         explicit SpecificModelDescription(const ModelDescription modelDescription, const FmuTypeAttributes data);
 
@@ -111,7 +113,6 @@ namespace fmicpp::fmi2::xml {
 
     struct ModelExchangeModelDescription : SpecificModelDescription {
 
-        const unsigned int numberOfEventIndicators;
         const bool completedIntegratorStepNotNeeded;
 
         explicit ModelExchangeModelDescription(const ModelDescription modelDescription, const ModelExchangeAttributes data);

@@ -44,7 +44,7 @@ namespace fmicpp::fmi2::xml {
     struct BooleanVariable;
     struct EnumerationVariable;
 
-    enum class Causality {
+    enum class fmi2Causality {
         parameter,
         calculatedParameter,
         input,
@@ -53,7 +53,7 @@ namespace fmicpp::fmi2::xml {
         independent
     };
 
-    enum class Variability {
+    enum class fmi2Variability {
         constant,
         fixed,
         tunable,
@@ -61,10 +61,9 @@ namespace fmicpp::fmi2::xml {
         continuous
     };
 
-    enum class Initial {
+    enum class fmi2Initial {
         exact,
         approx,
-        tunable,
         calculated
     };
     
@@ -75,9 +74,9 @@ namespace fmicpp::fmi2::xml {
         string description;
         bool canHandleMultipleSetPerTimelnstant;
 
-        Causality causality;
-        Variability variability;
-        Initial initial;
+        fmi2Causality causality;
+        fmi2Variability variability;
+        unique_ptr<fmi2Initial> initial;
 
         IntegerVariable asIntegerVariable();
         RealVariable asRealVariable();
@@ -88,11 +87,11 @@ namespace fmicpp::fmi2::xml {
         void load(const ptree &node);
 
     private:
-        unique_ptr<IntegerAttribute> integerAttribute = nullptr;
-        unique_ptr<RealAttribute> realAttribute = nullptr;
-        unique_ptr<StringAttribute> stringAttribute = nullptr;
-        unique_ptr<BooleanAttribute> booleanAttribute = nullptr;
-        unique_ptr<EnumerationAttribute> enumerationAttribute = nullptr;
+        unique_ptr<IntegerAttribute> integerAttribute;
+        unique_ptr<RealAttribute> realAttribute;
+        unique_ptr<StringAttribute> stringAttribute;
+        unique_ptr<BooleanAttribute> booleanAttribute;
+        unique_ptr<EnumerationAttribute> enumerationAttribute;
 
     };
 

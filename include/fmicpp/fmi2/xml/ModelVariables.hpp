@@ -34,7 +34,7 @@ using boost::property_tree::ptree;
 
 namespace fmicpp::fmi2::xml {
 
-    struct ModelVariables : public std::vector<std::unique_ptr<ScalarVariable>> {
+struct ModelVariables : public std::vector<std::shared_ptr<ScalarVariable>> {
 
         void load(const ptree &node);
 

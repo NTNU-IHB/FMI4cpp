@@ -60,7 +60,7 @@ Fmu::Fmu(const string fmu_file): fmu_file_(fmu_file) {
 
     const string modelDescriptionPath = tmp_path_.string() + "/modelDescription.xml";
 
-    modelDescription_ = make_unique<ModelDescription>(ModelDescription());
+    modelDescription_ = make_unique<ModelDescription>();
     modelDescription_->load(modelDescriptionPath);
 
     ifstream t(modelDescriptionPath);

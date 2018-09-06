@@ -44,27 +44,28 @@ void ModelDescription::load(const string fileName) {
     generationTool = root.get<string>("<xmlattr>.generationTool", "");
     generationDateAndTime = root.get<string>("<xmlattr>.generationDateAndTime", "");
 
-    numberOfEventIndicators = root.get<unsigned int>("<xmlattr>.numberOfEventIndicators", 0);
-
     for (const ptree::value_type &v : root) {
 
         if (v.first == "CoSimulation") {
-            coSimulation = make_shared<CoSimulationAttributes>(CoSimulationAttributes{});
+            coSimulation = make_shared<CoSimulationAttributes>();
             coSimulation->load(v.second);
             supportsCoSimulation = true;
         } else if (v.first == "ModelExchange") {
-            modelExchange = make_shared<ModelExchangeAttributes>(ModelExchangeAttributes{});
+            modelExchange = make_shared<ModelExchangeAttributes>();
             modelExchange->load(v.second);
             supportsModelExchange = true;
         } else if (v.first == "DefaultExperiment") {
-            defaultExperiment = make_shared<DefaultExperiment>(DefaultExperiment());
-            defaultExperiment->load(v.second);
+            defaultExperiment.load(v.second);
         } else if (v.first == "ModelVariables") {
-            modelVariables = make_shared<ModelVariables>(ModelVariables());
-            modelVariables->load(v.second);
+            modelVariables.load(v.second);
+        } else if (v.first == "ModelStructure") {
+            modelStructure.load(v.second);
         }
 
     }
+
+    numberOfContinuousStates = modelStructure.derivatives.size();
+    numberOfEventIndicators = root.get<unsigned int>("<xmlattr>.numberOfEventIndicators", 0);
 
 }
 
@@ -77,11 +78,11 @@ shared_ptr<ModelExchangeModelDescription> ModelDescription::asModelExchangeFmu()
 }
 
 ScalarVariable &ModelDescription::getVariableByName(const string &name) const {
-    return modelVariables->getByName(name);
+    return modelVariables.getByName(name);
 }
 
 ScalarVariable &ModelDescription::getVariableByValueReference(const fmi2ValueReference vr) const {
-    return modelVariables->getByValueReference(vr);
+    return modelVariables.getByValueReference(vr);
 }
 
 SpecificModelDescription::SpecificModelDescription(const ModelDescription md, const FmuTypeAttributes data)
@@ -104,5 +105,4 @@ CoSimulationModelDescription::CoSimulationModelDescription(const ModelDescriptio
 
 ModelExchangeModelDescription::ModelExchangeModelDescription(const ModelDescription md, const ModelExchangeAttributes data)
         : SpecificModelDescription(md, data),
-        numberOfEventIndicators(data.numberOfEventIndicators),
         completedIntegratorStepNotNeeded(data.completedIntegratorStepNotNeeded) {};

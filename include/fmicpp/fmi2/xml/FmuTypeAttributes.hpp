@@ -21,8 +21,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#ifndef FMICPP_FMUDATA_HPP
-#define FMICPP_FMUDATA_HPP
+#ifndef FMICPP_FMUTYPESATTRIBUTE_HPP
+#define FMICPP_FMUTYPESATTRIBUTE_HPP
 
 #include <string>
 #include <boost/property_tree/ptree.hpp>
@@ -44,7 +44,7 @@ namespace fmicpp::fmi2::xml {
         bool canBeInstantiatedOnlyOncePerProcess;
         bool providesDirectionalDerivative;
 
-        std::shared_ptr<SourceFiles> sourceFiles = nullptr;
+        SourceFiles sourceFiles;
 
         virtual void load(const ptree &node);
 
@@ -64,7 +64,6 @@ namespace fmicpp::fmi2::xml {
 
     struct ModelExchangeAttributes: FmuTypeAttributes {
 
-        unsigned int numberOfEventIndicators;
         bool completedIntegratorStepNotNeeded;
 
         void load(const ptree &node);
@@ -73,4 +72,4 @@ namespace fmicpp::fmi2::xml {
 
 }
 
-#endif //FMICPP_FMUDATA_HPP
+#endif //FMICPP_FMUTYPESATTRIBUTE_HPP

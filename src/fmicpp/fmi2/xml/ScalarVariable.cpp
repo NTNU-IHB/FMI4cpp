@@ -22,6 +22,7 @@
  * THE SOFTWARE.
  */
 
+#include <boost/optional.hpp>
 #include <fmicpp/fmi2/xml/ScalarVariable.hpp>
 
 using namespace std;
@@ -29,37 +30,47 @@ using namespace fmicpp::fmi2::xml;
 
 namespace {
 
-    Causality parseCausality(string str) {
+    fmi2Causality parseCausality(string str) {
         if (str == "calculatedParameter") {
-            return Causality::calculatedParameter;
+            return fmi2Causality::calculatedParameter;
         } else if (str == "parameter") {
-            return Causality::parameter;
+            return fmi2Causality::parameter;
         } else if (str == "input") {
-            return Causality::input;
+            return fmi2Causality::input;
         } else if (str == "output") {
-            return Causality::output;
+            return fmi2Causality::output;
         } else if (str == "local") {
-            return Causality::local;
+            return fmi2Causality::local;
         } else if (str == "independent") {
-            return Causality::independent;
+            return fmi2Causality::independent;
         } else {
-            return Causality::local;
+            return fmi2Causality::local;
         }
     }
 
-    Variability parseVariability(string str) {
+    fmi2Variability parseVariability(string str) {
         if (str == "constant") {
-            return Variability::constant;
+            return fmi2Variability::constant;
         } else if (str == "fixed") {
-            return Variability::fixed;
+            return fmi2Variability::fixed;
         } else if (str == "tunable") {
-            return Variability::tunable;
+            return fmi2Variability::tunable;
         } else if (str == "discrete") {
-            return Variability::discrete;
+            return fmi2Variability::discrete;
         } else if (str == "continuous") {
-            return Variability::continuous;
+            return fmi2Variability::continuous;
         } else {
-            return Variability ::continuous;
+            return fmi2Variability ::continuous;
+        }
+    }
+
+    fmi2Initial parseInitial(string str) {
+        if (str == "exact") {
+            return fmi2Initial::exact;
+        } else if (str == "approx") {
+            return fmi2Initial::approx;
+        } else if (str == "calculated") {
+            return fmi2Initial ::calculated;
         }
     }
 
@@ -74,6 +85,11 @@ void ScalarVariable::load(const ptree &node) {
 
     causality = parseCausality(node.get<string >("<xmlattr>.causality", ""));
     variability = parseVariability(node.get<string >("<xmlattr>.variability", ""));
+
+    auto o_initial = node.get_optional<string>("<xmlattr>.initial");
+    if (o_initial) {
+        initial = make_unique<fmi2Initial >(parseInitial(*o_initial));
+    }
 
     for (const ptree::value_type &v : node) {
         if (v.first == "Integer") {

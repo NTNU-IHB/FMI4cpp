@@ -40,8 +40,7 @@ void FmuTypeAttributes::load(const ptree &node) {
 
     for (const ptree::value_type &v : node) {
         if (v.first == "SourceFiles") {
-            sourceFiles = make_shared<SourceFiles>(SourceFiles());
-            sourceFiles->load(v.second);
+            sourceFiles.load(v.second);
         }
     }
 
@@ -61,7 +60,6 @@ void CoSimulationAttributes::load(const ptree &node) {
 void ModelExchangeAttributes::load(const ptree &node) {
     FmuTypeAttributes::load(node);
 
-    numberOfEventIndicators = node.get<unsigned int>("<xmlattr>.numberOfEventIndicators", 0);
     completedIntegratorStepNotNeeded = node.get<bool>("<xmlattr>.completedIntegratorStepNotNeeded", false);
 
 }
