@@ -22,12 +22,12 @@
  * THE SOFTWARE.
  */
 
-#include <fmicpp/fmi2/xml/FmuData.hpp>
+#include <fmicpp/fmi2/xml/FmuTypeAttributes.hpp>
 
 using namespace std;
 using namespace fmicpp::fmi2::xml;
 
-void FmuData::load(const ptree &node) {
+void FmuTypeAttributes::load(const ptree &node) {
 
     modelIdentifier = node.get<string>("<xmlattr>.modelIdentifier");
 
@@ -47,8 +47,8 @@ void FmuData::load(const ptree &node) {
 
 }
 
-void CoSimulationData::load(const ptree &node) {
-    FmuData::load(node);
+void CoSimulationAttributes::load(const ptree &node) {
+    FmuTypeAttributes::load(node);
 
     maxOutputDerivativeOrder = node.get<unsigned int>("<xmlattr>.maxOutputDerivativeOrder", 0);
 
@@ -58,8 +58,8 @@ void CoSimulationData::load(const ptree &node) {
 
 }
 
-void ModelExchangeData::load(const ptree &node) {
-    FmuData::load(node);
+void ModelExchangeAttributes::load(const ptree &node) {
+    FmuTypeAttributes::load(node);
 
     numberOfEventIndicators = node.get<unsigned int>("<xmlattr>.numberOfEventIndicators", 0);
     completedIntegratorStepNotNeeded = node.get<bool>("<xmlattr>.completedIntegratorStepNotNeeded", false);

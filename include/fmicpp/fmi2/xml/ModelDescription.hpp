@@ -33,7 +33,7 @@
 #include "DefaultExperiment.hpp"
 
 #include "ModelVariables.hpp"
-#include "FmuData.hpp"
+#include "FmuTypeAttributes.hpp"
 
 using std::string;
 using std::unique_ptr;
@@ -72,8 +72,8 @@ namespace fmicpp::fmi2::xml {
         void load(const string fileName);
 
     private:
-        shared_ptr<CoSimulationData> coSimulation = nullptr;
-        shared_ptr<ModelExchangeData> modelExchange = nullptr;
+        shared_ptr<CoSimulationAttributes> coSimulation = nullptr;
+        shared_ptr<ModelExchangeAttributes> modelExchange = nullptr;
 
     };
 
@@ -90,7 +90,7 @@ namespace fmicpp::fmi2::xml {
 
         const std::shared_ptr<SourceFiles> sourceFiles = nullptr;
 
-        explicit SpecificModelDescription(const ModelDescription modelDescription, const FmuData data);
+        explicit SpecificModelDescription(const ModelDescription modelDescription, const FmuTypeAttributes data);
 
     };
 
@@ -102,7 +102,7 @@ namespace fmicpp::fmi2::xml {
 
         const unsigned int maxOutputDerivativeOrder;
 
-        explicit CoSimulationModelDescription(const ModelDescription modelDescription, const CoSimulationData data);
+        explicit CoSimulationModelDescription(const ModelDescription modelDescription, const CoSimulationAttributes data);
 
     };
 
@@ -111,7 +111,7 @@ namespace fmicpp::fmi2::xml {
         const unsigned int numberOfEventIndicators;
         const bool completedIntegratorStepNotNeeded;
 
-        explicit ModelExchangeModelDescription(const ModelDescription modelDescription, const ModelExchangeData data);
+        explicit ModelExchangeModelDescription(const ModelDescription modelDescription, const ModelExchangeAttributes data);
 
     };
 

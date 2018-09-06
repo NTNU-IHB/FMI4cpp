@@ -33,7 +33,7 @@ using std::string;
 
 namespace fmicpp::fmi2::xml {
 
-    struct FmuData {
+    struct FmuTypeAttributes {
 
         string modelIdentifier;
 
@@ -50,7 +50,7 @@ namespace fmicpp::fmi2::xml {
 
     };
 
-    struct CoSimulationData: FmuData {
+    struct CoSimulationAttributes: FmuTypeAttributes {
 
         bool canInterpolateInputs;
         bool canRunAsynchronuously;
@@ -62,7 +62,7 @@ namespace fmicpp::fmi2::xml {
 
     };
 
-    struct ModelExchangeData: FmuData {
+    struct ModelExchangeAttributes: FmuTypeAttributes {
 
         unsigned int numberOfEventIndicators;
         bool completedIntegratorStepNotNeeded;

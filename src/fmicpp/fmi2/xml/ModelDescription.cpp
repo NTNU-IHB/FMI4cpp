@@ -49,10 +49,10 @@ void ModelDescription::load(const string fileName) {
     for (const ptree::value_type &v : root) {
 
         if (v.first == "CoSimulation") {
-            coSimulation = make_shared<CoSimulationData>(CoSimulationData{});
+            coSimulation = make_shared<CoSimulationAttributes>(CoSimulationAttributes{});
             coSimulation->load(v.second);
         } else if (v.first == "ModelExchange") {
-            modelExchange = make_shared<ModelExchangeData>(ModelExchangeData{});
+            modelExchange = make_shared<ModelExchangeAttributes>(ModelExchangeAttributes{});
             modelExchange->load(v.second);
         } else if (v.first == "DefaultExperiment") {
             defaultExperiment = make_shared<DefaultExperiment>(DefaultExperiment());
@@ -82,7 +82,7 @@ ScalarVariable &ModelDescription::getVariableByValueReference(const fmi2ValueRef
     return modelVariables->getByValueReference(vr);
 }
 
-SpecificModelDescription::SpecificModelDescription(const ModelDescription md, const FmuData data)
+SpecificModelDescription::SpecificModelDescription(const ModelDescription md, const FmuTypeAttributes data)
         : ModelDescription(md),
         modelIdentifier(data.modelIdentifier),
         canGetAndSetFMUstate(data.canGetAndSetFMUstate),
@@ -93,14 +93,14 @@ SpecificModelDescription::SpecificModelDescription(const ModelDescription md, co
         sourceFiles(data.sourceFiles),
         canSerializeFMUstate(data.canSerializeFMUstate) {};
 
-CoSimulationModelDescription::CoSimulationModelDescription(const ModelDescription md, const CoSimulationData data)
+CoSimulationModelDescription::CoSimulationModelDescription(const ModelDescription md, const CoSimulationAttributes data)
         : SpecificModelDescription(md, data),
         canInterpolateInputs(data.canInterpolateInputs),
         canRunAsynchronuously(data.canRunAsynchronuously),
         canHandleVariableCommunicationStepSize(data.canHandleVariableCommunicationStepSize),
         maxOutputDerivativeOrder(data.maxOutputDerivativeOrder) {};
 
-ModelExchangeModelDescription::ModelExchangeModelDescription(const ModelDescription md, const ModelExchangeData data)
+ModelExchangeModelDescription::ModelExchangeModelDescription(const ModelDescription md, const ModelExchangeAttributes data)
         : SpecificModelDescription(md, data),
         numberOfEventIndicators(data.numberOfEventIndicators),
         completedIntegratorStepNotNeeded(data.completedIntegratorStepNotNeeded) {};
