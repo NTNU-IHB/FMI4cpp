@@ -66,8 +66,11 @@ namespace fmicpp::fmi2::xml {
         shared_ptr<CoSimulationModelDescription> asCoSimulationFmu() const;
         shared_ptr<ModelExchangeModelDescription> asModelExchangeFmu() const;
 
-        ScalarVariable &getVariableByName(const string &name);
-        ScalarVariable &getVariableByValueReference(const fmi2ValueReference vr);
+        ScalarVariable &getVariableByName(const string &name) const;
+        ScalarVariable &getVariableByValueReference(const fmi2ValueReference vr) const;
+
+        bool supportsModelExchange;
+        bool supportsCoSimulation;
 
         void load(const string fileName);
 

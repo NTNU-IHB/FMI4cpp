@@ -51,9 +51,11 @@ void ModelDescription::load(const string fileName) {
         if (v.first == "CoSimulation") {
             coSimulation = make_shared<CoSimulationAttributes>(CoSimulationAttributes{});
             coSimulation->load(v.second);
+            supportsCoSimulation = true;
         } else if (v.first == "ModelExchange") {
             modelExchange = make_shared<ModelExchangeAttributes>(ModelExchangeAttributes{});
             modelExchange->load(v.second);
+            supportsModelExchange = true;
         } else if (v.first == "DefaultExperiment") {
             defaultExperiment = make_shared<DefaultExperiment>(DefaultExperiment());
             defaultExperiment->load(v.second);
@@ -74,11 +76,11 @@ shared_ptr<ModelExchangeModelDescription> ModelDescription::asModelExchangeFmu()
     return make_shared<ModelExchangeModelDescription>(*this, *modelExchange);
 }
 
-ScalarVariable &ModelDescription::getVariableByName(const string &name) {
+ScalarVariable &ModelDescription::getVariableByName(const string &name) const {
     return modelVariables->getByName(name);
 }
 
-ScalarVariable &ModelDescription::getVariableByValueReference(const fmi2ValueReference vr) {
+ScalarVariable &ModelDescription::getVariableByValueReference(const fmi2ValueReference vr) const {
     return modelVariables->getByValueReference(vr);
 }
 
