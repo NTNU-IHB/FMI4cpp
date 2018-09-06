@@ -20,7 +20,7 @@ SET(HEADERS
         ../include/fmicpp/fmi2/import/CoSimulationSlave.hpp
         ../include/fmicpp/fmi2/import/CoSimulationSlaveBuilder.hpp
         ../include/fmicpp/fmi2/import/ModelExchangeInstance.hpp
-        ../include/fmicpp/fmi2/xml/FmuTypeAttributes.hpp.hpp
+        ../include/fmicpp/fmi2/xml/FmuTypeAttributes.hpp
         ../include/fmicpp/fmi2/xml/ModelDescription.hpp
         ../include/fmicpp/fmi2/xml/ModelVariables.hpp
         ../include/fmicpp/fmi2/xml/ScalarVariable.hpp
@@ -49,7 +49,7 @@ SET(SOURCES
         fmicpp/fmi2/xml/SourceFiles.cpp
         fmicpp/fmi2/xml/ModelStructure.cpp)
 
-add_library(fmicpp ${SOURCES})
+add_library(fmicpp ${HEADERS} ${SOURCES})
 target_link_libraries(fmicpp Boost::system Boost::filesystem ${LIBZIP_LIBRARIES})
 target_include_directories(fmicpp PRIVATE ${LIBZIP_INCLUDE_DIRS})
 if (UNIX)
