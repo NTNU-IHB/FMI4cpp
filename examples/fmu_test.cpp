@@ -45,6 +45,7 @@ int main() {
     slave->init();
 
     xml::ScalarVariable& var = md->getVariableByValueReference(47);
+    cout << "Causality=" << to_string(var.causality) << ", variability=" << to_string(var.variability) << endl;
 
     double t = 0;
     double stop = 1.0;
@@ -65,7 +66,7 @@ int main() {
     }
 
     status = slave->terminate();
-    cout << "FMU '" << fmu.getModelName() <<  "' terminated with status: " << statusToString(status) << endl;
+    cout << "FMU '" << fmu.getModelName() <<  "' terminated with status: " << to_string(status) << endl;
 
     return 0;
 
