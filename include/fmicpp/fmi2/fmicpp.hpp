@@ -37,6 +37,7 @@
 
 #include "import/CoSimulationSlaveBuilder.hpp"
 
+
 namespace {
 
     std::string to_string(fmi2Status status) {
@@ -77,6 +78,18 @@ namespace {
             case  Variability::tunable: return "tunable";
             case  Variability::discrete: return "discrete";
             case  Variability::continuous: return "continuous";
+        }
+
+    }
+
+    std::string to_string(fmicpp::fmi2::xml::Initial initial) {
+
+        using fmicpp::fmi2::xml::Initial;
+
+        switch (initial) {
+            case  Initial::exact: return "exact";
+            case  Initial::approx: return "approx";
+            case  Initial::calculated: return "calculated";
         }
 
     }
