@@ -43,6 +43,30 @@ namespace fmicpp::fmi2::xml {
     struct StringVariable;
     struct BooleanVariable;
     struct EnumerationVariable;
+
+    enum class Causality {
+        parameter,
+        calculatedParameter,
+        input,
+        output,
+        local,
+        independent
+    };
+
+    enum class Variability {
+        constant,
+        fixed,
+        tunable,
+        discrete,
+        continuous
+    };
+
+    enum class Initial {
+        exact,
+        approx,
+        tunable,
+        calculated
+    };
     
     struct ScalarVariable {
         
@@ -50,6 +74,10 @@ namespace fmicpp::fmi2::xml {
         string name;
         string description;
         bool canHandleMultipleSetPerTimelnstant;
+
+        Causality causality;
+        Variability variability;
+        Initial initial;
 
         IntegerVariable asIntegerVariable();
         RealVariable asRealVariable();

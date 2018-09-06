@@ -27,7 +27,43 @@
 using namespace std;
 using namespace fmicpp::fmi2::xml;
 
+namespace {
 
+    Causality parseCausality(string str) {
+        if (str == "calculatedParameter") {
+            return Causality::calculatedParameter;
+        } else if (str == "parameter") {
+            return Causality::parameter;
+        } else if (str == "input") {
+            return Causality::input;
+        } else if (str == "output") {
+            return Causality::output;
+        } else if (str == "local") {
+            return Causality::local;
+        } else if (str == "independent") {
+            return Causality::independent;
+        } else {
+            return Causality::local;
+        }
+    }
+
+    Variability parseVariability(string str) {
+        if (str == "constant") {
+            return Variability::constant;
+        } else if (str == "fixed") {
+            return Variability::fixed;
+        } else if (str == "tunable") {
+            return Variability::tunable;
+        } else if (str == "discrete") {
+            return Variability::discrete;
+        } else if (str == "continuous") {
+            return Variability::continuous;
+        } else {
+            return Variability ::continuous;
+        }
+    }
+
+}
 
 void ScalarVariable::load(const ptree &node) {
 
@@ -35,6 +71,9 @@ void ScalarVariable::load(const ptree &node) {
     name = node.get<string>("<xmlattr>.name");
     description = node.get<string>("<xmlattr>.description", "");
     canHandleMultipleSetPerTimelnstant = node.get<bool>("<xmlattr>.canHandleMultipleSetPerTimelnstant", false);
+
+    causality = parseCausality(node.get<string >("<xmlattr>.causality", ""));
+    variability = parseVariability(node.get<string >("<xmlattr>.variability", ""));
 
     for (const ptree::value_type &v : node) {
         if (v.first == "Integer") {
