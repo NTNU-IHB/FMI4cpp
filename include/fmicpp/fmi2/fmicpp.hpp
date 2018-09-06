@@ -29,6 +29,7 @@
 #include "fmi2Functions.h"
 
 #include "xml/ModelDescription.hpp"
+#include "xml/ScalarVariable.hpp"
 
 #include "import/Fmu.hpp"
 #include "import/FmuInstance.hpp"
@@ -38,7 +39,7 @@
 
 namespace {
 
-    std::string statusToString(fmi2Status status) {
+    std::string to_string(fmi2Status status) {
 
         switch (status) {
             case fmi2OK: return "OK";
@@ -48,6 +49,34 @@ namespace {
             case fmi2Fatal: return "Fatal";
             case fmi2Pending: return "Pending";
             default: throw std::runtime_error(std::string("ERROR: Not a valid status:") + std::to_string(status) + "!");
+        }
+
+    }
+
+    std::string to_string(fmicpp::fmi2::xml::Causality causality) {
+
+        using fmicpp::fmi2::xml::Causality;
+
+        switch (causality) {
+            case  Causality::calculatedParameter: return "Warning";
+            case  Causality::input: return "input";
+            case  Causality::output: return "output";
+            case  Causality::local: return "local";
+            case  Causality::independent: return "independent";
+        }
+
+    }
+
+    std::string to_string(fmicpp::fmi2::xml::Variability variability) {
+
+        using fmicpp::fmi2::xml::Variability;
+
+        switch (variability) {
+            case  Variability::constant: return "constant";
+            case  Variability::fixed: return "fixed";
+            case  Variability::tunable: return "tunable";
+            case  Variability::discrete: return "discrete";
+            case  Variability::continuous: return "continuous";
         }
 
     }
