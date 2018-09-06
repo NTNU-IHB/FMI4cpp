@@ -1,4 +1,6 @@
 
+include_directories(../include)
+
 SET(HEADERS
 
         ../include/fmicpp/tools/os_util.hpp
