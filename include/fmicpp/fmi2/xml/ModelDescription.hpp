@@ -68,8 +68,8 @@ namespace fmicpp::fmi2::xml {
         ModelStructure modelStructure;
         DefaultExperiment defaultExperiment;
 
-        shared_ptr<CoSimulationModelDescription> asCoSimulationFmu() const;
-        shared_ptr<ModelExchangeModelDescription> asModelExchangeFmu() const;
+        shared_ptr<CoSimulationModelDescription> asCoSimulationModelDescription() const;
+        shared_ptr<ModelExchangeModelDescription> asModelExchangeModelDescription() const;
 
         ScalarVariable getVariableByName(const string &name) const;
         ScalarVariable getVariableByValueReference(const fmi2ValueReference vr) const;

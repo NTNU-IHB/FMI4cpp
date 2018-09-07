@@ -69,11 +69,11 @@ void ModelDescription::load(const string fileName) {
 
 }
 
-shared_ptr<CoSimulationModelDescription> ModelDescription::asCoSimulationFmu() const {
+shared_ptr<CoSimulationModelDescription> ModelDescription::asCoSimulationModelDescription() const {
     return make_shared<CoSimulationModelDescription>(*this, *coSimulation);
 }
 
-shared_ptr<ModelExchangeModelDescription> ModelDescription::asModelExchangeFmu() const {
+shared_ptr<ModelExchangeModelDescription> ModelDescription::asModelExchangeModelDescription() const {
     return make_shared<ModelExchangeModelDescription>(*this, *modelExchange);
 }
 

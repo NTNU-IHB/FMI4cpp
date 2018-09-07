@@ -29,7 +29,7 @@ using namespace fmicpp::fmi2::import;
 ModelExchangeInstanceBuilder::ModelExchangeInstanceBuilder(Fmu &fmu): fmu_(fmu) {}
 
 unique_ptr<ModelExchangeInstance> ModelExchangeInstanceBuilder::newInstance(const bool visible, const bool loggingOn) const {
-    shared_ptr<ModelExchangeModelDescription> modelDescription = fmu_.getModelDescription().asModelExchangeFmu();
+    shared_ptr<ModelExchangeModelDescription> modelDescription = fmu_.getModelDescription().asModelExchangeModelDescription();
     shared_ptr<ModelExchangeLibrary> lib(new ModelExchangeLibrary(fmu_.getAbsoluteLibraryPath(modelDescription->modelIdentifier)));
     fmi2Component c = lib->instantiate(modelDescription->modelIdentifier,
                                        fmi2ModelExchange, modelDescription->guid, fmu_.getResourcePath(), visible, loggingOn);

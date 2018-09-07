@@ -41,7 +41,7 @@ int main() {
     cout << "Supports CoSimulation=" << fmu.supportsCoSimulation() << endl;
     cout << "Supports ModelExchange=" << fmu.supportsModelExchange() << endl;
 
-    auto md = fmu.getModelDescription().asCoSimulationFmu();
+    auto md = fmu.getModelDescription().asCoSimulationModelDescription();
     cout << "modelIdentifier=" << md->modelIdentifier << endl;
     cout << "Default stopTime=" << md->defaultExperiment.stopTime << endl;
 
