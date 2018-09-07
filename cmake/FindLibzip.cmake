@@ -6,8 +6,6 @@
 #   LIBZIP_LIBRARIES      - List of libraries to link when using libzip.
 #   LIBZIP_FOUND          - True if libzip found.
 
-cmake_minimum_required (VERSION ${CMAKE_MINIMUM_REQUIRED_VERSION})
-
 find_path(LIBZIP_INCLUDE_DIR NAMES zip.h)
 mark_as_advanced(LIBZIP_INCLUDE_DIR)
 
