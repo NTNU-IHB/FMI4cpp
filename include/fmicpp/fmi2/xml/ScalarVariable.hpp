@@ -32,7 +32,7 @@
 #include "ScalarVariableAttributes.hpp"
 
 using std::string;
-using std::unique_ptr;
+using std::shared_ptr;
 using boost::property_tree::ptree;
 
 namespace fmicpp::fmi2::xml {
@@ -76,7 +76,7 @@ namespace fmicpp::fmi2::xml {
 
         fmi2Causality causality;
         fmi2Variability variability;
-        unique_ptr<fmi2Initial> initial;
+        shared_ptr<fmi2Initial> initial;
 
         IntegerVariable asIntegerVariable();
         RealVariable asRealVariable();
@@ -87,11 +87,11 @@ namespace fmicpp::fmi2::xml {
         void load(const ptree &node);
 
     private:
-        unique_ptr<IntegerAttribute> integerAttribute;
-        unique_ptr<RealAttribute> realAttribute;
-        unique_ptr<StringAttribute> stringAttribute;
-        unique_ptr<BooleanAttribute> booleanAttribute;
-        unique_ptr<EnumerationAttribute> enumerationAttribute;
+        shared_ptr<IntegerAttribute> integerAttribute;
+        shared_ptr<RealAttribute> realAttribute;
+        shared_ptr<StringAttribute> stringAttribute;
+        shared_ptr<BooleanAttribute> booleanAttribute;
+        shared_ptr<EnumerationAttribute> enumerationAttribute;
 
     };
 

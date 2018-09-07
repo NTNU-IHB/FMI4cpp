@@ -48,7 +48,7 @@ int main() {
     auto slave = fmu.asCoSimulationFmu().newInstance();
     slave->init();
 
-    xml::ScalarVariable& var = md->getVariableByValueReference(47);
+    xml::ScalarVariable var = md->getVariableByValueReference(47);
     cout << "Causality=" << to_string(var.causality) << ", variability=" << to_string(var.variability) << endl;
 
     double t = 0;

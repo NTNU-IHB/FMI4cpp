@@ -34,12 +34,12 @@ using boost::property_tree::ptree;
 
 namespace fmicpp::fmi2::xml {
 
-struct ModelVariables : public std::vector<std::shared_ptr<ScalarVariable>> {
+struct ModelVariables : public std::vector<ScalarVariable> {
 
         void load(const ptree &node);
 
-        ScalarVariable& getByName(const std::string &name) const;
-        ScalarVariable& getByValueReference(const fmi2ValueReference vr) const;
+        ScalarVariable getByName(const std::string &name) const;
+        ScalarVariable getByValueReference(const fmi2ValueReference vr) const;
 
     };
 

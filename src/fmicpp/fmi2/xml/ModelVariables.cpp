@@ -33,20 +33,20 @@ void ModelVariables::load(const ptree &node) {
     for (const ptree::value_type &v : node) {
 
         if (v.first == "ScalarVariable") {
-            auto var = make_shared<ScalarVariable>();
-            var->load(v.second);
-            push_back(move(var));
+            ScalarVariable var;
+            var.load(v.second);
+            push_back(var);
         }
 
     }
 
 }
 
-ScalarVariable& ModelVariables::getByName(const string &name) const {
+ScalarVariable ModelVariables::getByName(const string &name) const {
 
     for (const auto& var : *this) {
-        if (var->name == name) {
-            return *var;
+        if (var.name == name) {
+            return var;
         }
     }
 
@@ -54,11 +54,11 @@ ScalarVariable& ModelVariables::getByName(const string &name) const {
     throw runtime_error(errorMsg);
 }
 
-ScalarVariable& ModelVariables::getByValueReference(const fmi2ValueReference vr) const {
+ScalarVariable ModelVariables::getByValueReference(const fmi2ValueReference vr) const {
 
     for (const auto& var : *this) {
-        if (var->valueReference == vr) {
-            return *var;
+        if (var.valueReference == vr) {
+            return var;
         }
     }
 

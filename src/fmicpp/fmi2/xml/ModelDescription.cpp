@@ -77,11 +77,11 @@ shared_ptr<ModelExchangeModelDescription> ModelDescription::asModelExchangeFmu()
     return make_shared<ModelExchangeModelDescription>(*this, *modelExchange);
 }
 
-ScalarVariable &ModelDescription::getVariableByName(const string &name) const {
+ScalarVariable ModelDescription::getVariableByName(const string &name) const {
     return modelVariables.getByName(name);
 }
 
-ScalarVariable &ModelDescription::getVariableByValueReference(const fmi2ValueReference vr) const {
+ScalarVariable ModelDescription::getVariableByValueReference(const fmi2ValueReference vr) const {
     return modelVariables.getByValueReference(vr);
 }
 
