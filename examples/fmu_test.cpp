@@ -41,15 +41,15 @@ int main() {
     cout << "Supports CoSimulation=" << fmu.supportsCoSimulation() << endl;
     cout << "Supports ModelExchange=" << fmu.supportsModelExchange() << endl;
 
-    auto md = fmu.getModelDescription().asCoSimulationModelDescription();
-    cout << "modelIdentifier=" << md->modelIdentifier << endl;
-    cout << "Default stopTime=" << md->defaultExperiment.stopTime << endl;
+    auto md = fmu.getModelDescription();
+    xml::ScalarVariable var = md.getVariableByValueReference(47);
+    cout << "Causality=" << to_string(var.causality) << ", variability=" << to_string(var.variability) << endl;
+
+    auto md_cs = md.asCoSimulationModelDescription();
+    cout << "modelIdentifier=" << md_cs->modelIdentifier << endl;
 
     auto slave = fmu.asCoSimulationFmu().newInstance();
     slave->init();
-
-    xml::ScalarVariable var = md->getVariableByValueReference(47);
-    cout << "Causality=" << to_string(var.causality) << ", variability=" << to_string(var.variability) << endl;
 
     double t = 0;
     double stop = 1.0;
