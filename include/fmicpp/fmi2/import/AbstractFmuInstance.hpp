@@ -54,8 +54,8 @@ namespace fmicpp::fmi2::import {
 
     public:
 
-        AbstractFmuInstance(const shared_ptr<U> modelDescription, const shared_ptr<T> library)
-                : modelDescription_(modelDescription), library_(library) {}
+        AbstractFmuInstance(const fmi2Component c, const shared_ptr<U> modelDescription, const shared_ptr<T> library)
+                : c_(c), modelDescription_(modelDescription), library_(library) {}
 
 
         const U &getModelDescription() const override {
@@ -65,9 +65,6 @@ namespace fmicpp::fmi2::import {
         void init(const double start = 0, const double stop = 0) override {
 
             if (!instantiated_) {
-
-                c_ = library_->instantiate(modelDescription_->modelIdentifier,
-                        fmi2CoSimulation, modelDescription_->guid, "", false, false);
 
                 checkStatus(library_->setupExperiment(c_, false, 1E-4, start, stop), "setupExperiment");
 

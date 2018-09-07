@@ -37,8 +37,9 @@ namespace fmicpp::fmi2::import {
     class ModelExchangeInstance: public AbstractFmuInstance<ModelExchangeLibrary, ModelExchangeModelDescription> {
 
     public:
-        ModelExchangeInstance(const shared_ptr<ModelExchangeModelDescription> &modelDescription,
-                              const shared_ptr<ModelExchangeLibrary> &library);
+        ModelExchangeInstance(const fmi2Component c,
+                const shared_ptr<ModelExchangeModelDescription> &modelDescription,
+                const shared_ptr<ModelExchangeLibrary> &library);
 
 
         fmi2Status enterEventMode() const;

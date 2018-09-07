@@ -25,6 +25,7 @@
 
 #include <fmicpp/fmi2/import/Fmu.hpp>
 #include <fmicpp/fmi2/import/CoSimulationSlaveBuilder.hpp>
+#include <fmicpp/fmi2/import/ModelExchangeInstanceBuilder.hpp>
 
 #include <fmicpp/tools/unzipper.hpp>
 #include <fmicpp/tools/os_util.hpp>
@@ -97,8 +98,16 @@ CoSimulationSlaveBuilder Fmu::asCoSimulationFmu() {
     return CoSimulationSlaveBuilder(*this);
 }
 
+ModelExchangeInstanceBuilder Fmu::asModelExchangeFmu() {
+    return ModelExchangeInstanceBuilder(*this);
+}
+
 const string Fmu::getAbsoluteLibraryPath(string modelIdentifier) const {
     return tmp_path_.string() + "/binaries/" + getOs() + "/" + modelIdentifier + getLibExt();
+}
+
+const string Fmu::getResourcePath() const {
+    return "file:/" + tmp_path_.string() + "/resources/" + getOs() + "/" + getLibExt();
 }
 
 Fmu::~Fmu() {

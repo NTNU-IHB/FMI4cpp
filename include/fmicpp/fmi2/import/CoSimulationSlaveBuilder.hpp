@@ -40,7 +40,8 @@ namespace fmicpp::fmi2::import {
     public:
         explicit CoSimulationSlaveBuilder(Fmu &fmu);
 
-        std::unique_ptr<CoSimulationSlave> newInstance();
+        std::unique_ptr<CoSimulationSlave> newInstance(
+                const bool visible = false, const bool loggingOn = false) const;
 
     };
 

@@ -30,9 +30,10 @@ using namespace fmicpp::fmi2::import;
 
 CoSimulationSlaveBuilder::CoSimulationSlaveBuilder(Fmu &fmu) : fmu_(fmu) {}
 
-unique_ptr<CoSimulationSlave> fmicpp::fmi2::import::CoSimulationSlaveBuilder::newInstance() {
+unique_ptr<CoSimulationSlave> fmicpp::fmi2::import::CoSimulationSlaveBuilder::newInstance(const bool visible, const bool loggingOn) const {
     shared_ptr<CoSimulationModelDescription> modelDescription = fmu_.getModelDescription().asCoSimulationFmu();
     shared_ptr<CoSimulationLibrary> lib(new CoSimulationLibrary(fmu_.getAbsoluteLibraryPath(modelDescription->modelIdentifier)));
-    unique_ptr<CoSimulationSlave> slave(new CoSimulationSlave(modelDescription, lib));
-    return slave;
+    fmi2Component c = lib->instantiate(modelDescription->modelIdentifier,
+                               fmi2CoSimulation, modelDescription->guid, fmu_.getResourcePath(), visible, loggingOn);
+    return make_unique<CoSimulationSlave>(c, modelDescription, lib);
 }

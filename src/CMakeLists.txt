@@ -22,6 +22,7 @@ SET(HEADERS
         ../include/fmicpp/fmi2/import/CoSimulationSlave.hpp
         ../include/fmicpp/fmi2/import/CoSimulationSlaveBuilder.hpp
         ../include/fmicpp/fmi2/import/ModelExchangeInstance.hpp
+        ../include/fmicpp/fmi2/import/ModelExchangeInstanceBuilder.hpp
         ../include/fmicpp/fmi2/xml/FmuTypeAttributes.hpp
         ../include/fmicpp/fmi2/xml/ModelDescription.hpp
         ../include/fmicpp/fmi2/xml/ModelVariables.hpp
@@ -41,6 +42,7 @@ SET(SOURCES
         fmicpp/fmi2/import/CoSimulationSlave.cpp
         fmicpp/fmi2/import/CoSimulationSlaveBuilder.cpp
         fmicpp/fmi2/import/ModelExchangeInstance.cpp
+        fmicpp/fmi2/import/ModelExchangeInstanceBuilder.cpp
 
         fmicpp/fmi2/xml/FmuTypeAttributes.cpp
         fmicpp/fmi2/xml/ModelDescription.cpp

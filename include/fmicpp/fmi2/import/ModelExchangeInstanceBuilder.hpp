@@ -22,23 +22,29 @@
  * THE SOFTWARE.
  */
 
-#include <fmicpp/fmi2/import/CoSimulationSlave.hpp>
+#ifndef FMICPP_MODELEXCHANGEINSTANCEBUILDER_HPP
+#define FMICPP_MODELEXCHANGEINSTANCEBUILDER_HPP
 
-using namespace std;
-using namespace fmicpp::fmi2::import;
+#include <memory>
+#include "Fmu.hpp"
+#include "ModelExchangeInstance.hpp"
 
-CoSimulationSlave::CoSimulationSlave(const fmi2Component c,
-        const shared_ptr<CoSimulationModelDescription> modelDescription, const shared_ptr<CoSimulationLibrary> library)
-            : AbstractFmuInstance<CoSimulationLibrary, CoSimulationModelDescription>(c, modelDescription, library) {}
+namespace fmicpp::fmi2::import {
 
-fmi2Status CoSimulationSlave::doStep(const double stepSize) {
-    fmi2Status status = library_->doStep(c_, simulationTime_, stepSize, false);
-    if (status == fmi2OK) {
-        simulationTime_ += stepSize;
-    }
-    return status;
+    class ModelExchangeInstanceBuilder {
+
+    private:
+
+        Fmu &fmu_;
+
+    public:
+        explicit ModelExchangeInstanceBuilder(Fmu &fmu);
+
+        std::unique_ptr<ModelExchangeInstance> newInstance(
+                const bool visible = false, const bool loggingOn = false) const;
+
+    };
+
 }
 
-fmi2Status CoSimulationSlave::cancelStep() {
-    return library_->cancelStep(c_);
-}
+#endif //FMICPP_MODELEXCHANGEINSTANCEBUILDER_HPP

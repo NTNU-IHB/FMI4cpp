@@ -36,10 +36,13 @@ namespace fmicpp::fmi2::import {
 
     using xml::CoSimulationModelDescription;
 
-    class CoSimulationSlave: public AbstractFmuInstance<CoSimulationLibrary, CoSimulationModelDescription>, public FmuSlave {
+    class CoSimulationSlave: public FmuSlave,
+            public AbstractFmuInstance<CoSimulationLibrary, CoSimulationModelDescription>  {
 
     public:
-        explicit CoSimulationSlave(const std::shared_ptr<CoSimulationModelDescription> modelDescription, std::shared_ptr<CoSimulationLibrary> library);
+        explicit CoSimulationSlave(const fmi2Component c,
+                const std::shared_ptr<CoSimulationModelDescription> modelDescription,
+                std::shared_ptr<CoSimulationLibrary> library);
 
         fmi2Status doStep(const double stepSize) override;
 

@@ -29,9 +29,6 @@
 #include <vector>
 #include <boost/filesystem.hpp>
 
-#include "FmuInstance.hpp"
-#include "CoSimulationSlave.hpp"
-
 #include "../xml/ModelDescription.hpp"
 
 namespace fs = boost::filesystem;
@@ -42,10 +39,12 @@ using fmicpp::fmi2::xml::ModelDescription;
 namespace fmicpp::fmi2::import {
 
     class CoSimulationSlaveBuilder;
+    class ModelExchangeInstanceBuilder;
 
     class Fmu {
 
         friend class CoSimulationSlaveBuilder;
+        friend class ModelExchangeInstanceBuilder;
 
     public:
         explicit Fmu(const string fmu_file);
@@ -59,6 +58,7 @@ namespace fmicpp::fmi2::import {
         const bool supportsCoSimulation() const;
 
         CoSimulationSlaveBuilder asCoSimulationFmu();
+        ModelExchangeInstanceBuilder asModelExchangeFmu();
 
         ~Fmu();
 
@@ -69,6 +69,7 @@ namespace fmicpp::fmi2::import {
         string model_description_xml_;
         std::unique_ptr<ModelDescription> modelDescription_;
 
+        const string getResourcePath() const;
         const string getAbsoluteLibraryPath(string modelIdentifier) const;
 
     };

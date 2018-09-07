@@ -24,50 +24,51 @@
 
 #include <fmicpp/fmi2/import/ModelExchangeInstance.hpp>
 
-fmicpp::fmi2::import::ModelExchangeInstance::ModelExchangeInstance(
-        const shared_ptr<fmicpp::fmi2::xml::ModelExchangeModelDescription> &modelDescription,
-        const shared_ptr<ModelExchangeLibrary> &library) : AbstractFmuInstance(modelDescription, library) {}
+using namespace fmicpp::fmi2::import;
 
-fmi2Status fmicpp::fmi2::import::ModelExchangeInstance::enterEventMode() const {
+ModelExchangeInstance::ModelExchangeInstance(const fmi2Component c,
+        const shared_ptr<fmicpp::fmi2::xml::ModelExchangeModelDescription> &modelDescription,
+        const shared_ptr<ModelExchangeLibrary> &library) : AbstractFmuInstance(c, modelDescription, library) {}
+
+fmi2Status ModelExchangeInstance::enterEventMode() const {
     return library_->enterEventMode(c_);
 }
 
-fmi2Status fmicpp::fmi2::import::ModelExchangeInstance::enterContinuousTimeMode() const {
+fmi2Status ModelExchangeInstance::enterContinuousTimeMode() const {
     return library_->enterContinuousTimeMode(c_);
 }
 
-fmi2Status fmicpp::fmi2::import::ModelExchangeInstance::setTime(const double time) const {
+fmi2Status ModelExchangeInstance::setTime(const double time) const {
     return library_->setTime(c_, time);
 }
 
-fmi2Status fmicpp::fmi2::import::ModelExchangeInstance::setContinuousStates(const vector<fmi2Real> &x) const {
+fmi2Status ModelExchangeInstance::setContinuousStates(const vector<fmi2Real> &x) const {
     return library_->setContinuousStates(c_, x);
 }
 
-fmi2Status fmicpp::fmi2::import::ModelExchangeInstance::getDerivatives(vector<fmi2Real> &derivatives) const {
+fmi2Status ModelExchangeInstance::getDerivatives(vector<fmi2Real> &derivatives) const {
     return library_->getDerivatives(c_, derivatives);
 }
 
-fmi2Status fmicpp::fmi2::import::ModelExchangeInstance::getEventIndicators(vector<fmi2Real> &eventIndicators) const {
+fmi2Status ModelExchangeInstance::getEventIndicators(vector<fmi2Real> &eventIndicators) const {
     return library_->getEventIndicators(c_, eventIndicators);
 }
 
-fmi2Status fmicpp::fmi2::import::ModelExchangeInstance::getContinuousStates(vector<fmi2Real> &x) const {
+fmi2Status ModelExchangeInstance::getContinuousStates(vector<fmi2Real> &x) const {
     return library_->getContinuousStates(c_, x);
 }
 
-fmi2Status
-fmicpp::fmi2::import::ModelExchangeInstance::getNominalsOfContinuousStates(vector<fmi2Real> &x_nominal) const {
+fmi2Status ModelExchangeInstance::getNominalsOfContinuousStates(vector<fmi2Real> &x_nominal) const {
     return library_->getNominalsOfContinuousStates(c_, x_nominal);
 }
 
-fmi2Status fmicpp::fmi2::import::ModelExchangeInstance::completedIntegratorStep(
+fmi2Status ModelExchangeInstance::completedIntegratorStep(
         fmi2Boolean noSetFMUStatePriorToCurrentPoint,
         fmi2Boolean &enterEventMode,
         fmi2Boolean &terminateSimulation) const {
     return library_->completedIntegratorStep(c_, noSetFMUStatePriorToCurrentPoint, enterEventMode, terminateSimulation);
 }
 
-fmi2Status fmicpp::fmi2::import::ModelExchangeInstance::newDiscreteStates(fmi2EventInfo &eventInfo) const {
+fmi2Status ModelExchangeInstance::newDiscreteStates(fmi2EventInfo &eventInfo) const {
     return library_->newDiscreteStates(c_, eventInfo);
 }

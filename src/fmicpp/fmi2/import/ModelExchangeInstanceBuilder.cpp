@@ -22,23 +22,16 @@
  * THE SOFTWARE.
  */
 
-#include <fmicpp/fmi2/import/CoSimulationSlave.hpp>
+#include <fmicpp/fmi2/import/ModelExchangeInstanceBuilder.hpp>
 
-using namespace std;
 using namespace fmicpp::fmi2::import;
 
-CoSimulationSlave::CoSimulationSlave(const fmi2Component c,
-        const shared_ptr<CoSimulationModelDescription> modelDescription, const shared_ptr<CoSimulationLibrary> library)
-            : AbstractFmuInstance<CoSimulationLibrary, CoSimulationModelDescription>(c, modelDescription, library) {}
+ModelExchangeInstanceBuilder::ModelExchangeInstanceBuilder(Fmu &fmu): fmu_(fmu) {}
 
-fmi2Status CoSimulationSlave::doStep(const double stepSize) {
-    fmi2Status status = library_->doStep(c_, simulationTime_, stepSize, false);
-    if (status == fmi2OK) {
-        simulationTime_ += stepSize;
-    }
-    return status;
-}
-
-fmi2Status CoSimulationSlave::cancelStep() {
-    return library_->cancelStep(c_);
+unique_ptr<ModelExchangeInstance> ModelExchangeInstanceBuilder::newInstance(const bool visible, const bool loggingOn) const {
+    shared_ptr<ModelExchangeModelDescription> modelDescription = fmu_.getModelDescription().asModelExchangeFmu();
+    shared_ptr<ModelExchangeLibrary> lib(new ModelExchangeLibrary(fmu_.getAbsoluteLibraryPath(modelDescription->modelIdentifier)));
+    fmi2Component c = lib->instantiate(modelDescription->modelIdentifier,
+                                       fmi2ModelExchange, modelDescription->guid, fmu_.getResourcePath(), visible, loggingOn);
+    return std::make_unique<ModelExchangeInstance>(c, modelDescription, lib);
 }

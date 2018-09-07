@@ -29,7 +29,7 @@ using namespace fmicpp::fmi2::import;
 CoSimulationLibrary::CoSimulationLibrary(const string libName) : FmiLibrary(libName) {}
 
 fmi2Status CoSimulationLibrary::doStep(const fmi2Component c, const fmi2Real currentCommunicationPoint,
-                                       const fmi2Real communicationStepSize, const bool noSetFMUStatePriorToCurrentPoint) const {
+        const fmi2Real communicationStepSize, const bool noSetFMUStatePriorToCurrentPoint) const {
     return loadFunction<fmi2DoStepTYPE *>("fmi2DoStep")
             (c, currentCommunicationPoint, communicationStepSize, noSetFMUStatePriorToCurrentPoint ? 1 : 0);
 }
