@@ -42,8 +42,8 @@ int main() {
 
     import::Fmu fmu("path/to/fmu.fmu");
     
-    auto md = fmu.getModelDescription().asCoSimulationFmu();
-    xml::ScalarVariable& var = md->getVariableByName("my_var");
+    auto md = fmu.getModelDescription().asCoSimulationModelDescription();
+    xml::ScalarVariable var = md->getVariableByName("my_var");
     
     auto slave = fmu.asCoSimulationFmu().newInstance();
     slave->init();
