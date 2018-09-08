@@ -59,14 +59,8 @@ Fmu::Fmu(const string fmu_file): fmu_file_(fmu_file) {
         throw runtime_error("Failed to extract FMU!");
     }
 
-    const string modelDescriptionPath = tmp_path_.string() + "/modelDescription.xml";
-
     modelDescription_ = make_unique<ModelDescription>();
-    modelDescription_->load(modelDescriptionPath);
-
-    ifstream t(modelDescriptionPath);
-    model_description_xml_ = string((istreambuf_iterator<char>(t)),
-                                          istreambuf_iterator<char>());
+    modelDescription_->load(getModelDescriptionPath());
 
 }
 
@@ -78,8 +72,10 @@ const string Fmu::getModelName() const {
     return modelDescription_->modelName;
 }
 
-const string &Fmu::getModelDescriptionXml() const {
-    return model_description_xml_;
+const string Fmu::getModelDescriptionXml() const {
+    ifstream stream(getModelDescriptionPath());
+    const string xml = string((istreambuf_iterator<char>(stream)), istreambuf_iterator<char>());
+    return xml;
 }
 
 const ModelDescription &Fmu::getModelDescription() const {
@@ -108,6 +104,10 @@ const string Fmu::getAbsoluteLibraryPath(string modelIdentifier) const {
 
 const string Fmu::getResourcePath() const {
     return "file:/" + tmp_path_.string() + "/resources/" + getOs() + "/" + getLibExt();
+}
+
+const string Fmu::getModelDescriptionPath() const {
+    return tmp_path_.string() + "/modelDescription.xml";
 }
 
 Fmu::~Fmu() {

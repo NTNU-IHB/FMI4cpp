@@ -51,7 +51,7 @@ namespace fmicpp::fmi2::import {
 
         const string getGuid() const;
         const string getModelName() const;
-        const string &getModelDescriptionXml() const;
+        const string getModelDescriptionXml() const;
         const ModelDescription &getModelDescription() const;
 
         const bool supportsModelExchange() const;
@@ -66,9 +66,9 @@ namespace fmicpp::fmi2::import {
 
         fs::path tmp_path_;
         const string fmu_file_;
-        string model_description_xml_;
         std::unique_ptr<ModelDescription> modelDescription_;
 
+        const string getModelDescriptionPath() const;
         const string getResourcePath() const;
         const string getAbsoluteLibraryPath(string modelIdentifier) const;
 
