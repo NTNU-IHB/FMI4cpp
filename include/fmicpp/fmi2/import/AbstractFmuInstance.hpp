@@ -46,6 +46,9 @@ namespace fmicpp::fmi2::import {
         static_assert(std::is_base_of<FmiLibrary, T>::value, "T must derive from FmiLibrary");
         static_assert(std::is_base_of<xml::SpecificModelDescription, U>::value, "U must derive from SpecificModelDescription");
 
+    private:
+        bool instanceFreed;
+
     protected:
 
         fmi2Component c_;
@@ -82,11 +85,27 @@ namespace fmicpp::fmi2::import {
         }
 
         fmi2Status terminate() override {
+            return terminate(true);
+        }
+
+        fmi2Status terminate(bool freeInstance) {
             if (!terminated_) {
                 terminated_ = true;
-                return library_->terminate(c_);
+                fmi2Status status = library_->terminate(c_);
+                if (freeInstance) {
+                    this->freeInstance();
+                }
+                return status;
             }
             return fmi2OK;
+        }
+
+        void freeInstance() {
+           if (!instanceFreed) {
+               instanceFreed = true;
+               library_->freeInstance(c_);
+               c_ = nullptr;
+           }
         }
 
         bool canGetAndSetFMUstate() const override {
@@ -162,10 +181,7 @@ namespace fmicpp::fmi2::import {
 
         ~AbstractFmuInstance() {
             terminate();
-            if (c_) {
-                library_->freeInstance(c_);
-                c_ = nullptr;
-            }
+            freeInstance();
         }
 
     };

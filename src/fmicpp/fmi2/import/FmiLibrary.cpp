@@ -200,7 +200,7 @@ fmi2Status FmiLibrary::getDirectionalDerivative(const fmi2Component c,
                     vKnownRef.data(), vKnownRef.size(), dvKnownRef.data(), dvUnknownRef.data());
 }
 
-void FmiLibrary::freeInstance(const fmi2Component c) {
+void FmiLibrary::freeInstance(fmi2Component c) {
     loadFunction<fmi2FreeInstanceTYPE *>("fmi2FreeInstance")(c);
 }
 
