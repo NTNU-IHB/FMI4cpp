@@ -48,8 +48,11 @@ int main() {
     auto md_cs = md.asCoSimulationModelDescription();
     cout << "modelIdentifier=" << md_cs->modelIdentifier << endl;
 
-    auto slave = fmu.asCoSimulationFmu().newInstance();
-    slave->init();
+    auto slave1 = fmu.asCoSimulationFmu().newInstance();
+    auto slave2 = fmu.asCoSimulationFmu().newInstance();
+
+    slave1->init();
+    slave2->init();
 
     double t = 0;
     double stop = 1.0;
@@ -57,19 +60,22 @@ int main() {
 
     fmi2Real v;
     fmi2Status status;
-    while ((t = slave->getSimulationTime()) <= stop) {
-        status = slave->doStep(stepSize);
+    while ((t = slave1->getSimulationTime()) <= stop) {
+        status = slave1->doStep(stepSize);
         if (!status == fmi2OK) {
             break;
         }
-        status = slave->readReal(var.valueReference, v);
+        status = slave1->readReal(var.valueReference, v);
         if (status != fmi2OK) {
             break;
         }
         cout << "t=" << t << ", " << var.name << "=" << v << endl;
     }
 
-    status = slave->terminate();
+    status = slave1->terminate();
+    cout << "FMU '" << fmu.getModelName() <<  "' terminated with status: " << to_string(status) << endl;
+
+    status = slave2->terminate();
     cout << "FMU '" << fmu.getModelName() <<  "' terminated with status: " << to_string(status) << endl;
 
     return 0;

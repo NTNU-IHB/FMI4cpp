@@ -42,7 +42,7 @@ namespace fmicpp::fmi2::import {
     public:
         explicit CoSimulationSlave(const fmi2Component c,
                 const std::shared_ptr<CoSimulationModelDescription> modelDescription,
-                std::shared_ptr<CoSimulationLibrary> library);
+                const std::shared_ptr<CoSimulationLibrary> library);
 
         fmi2Status doStep(const double stepSize) override;
 

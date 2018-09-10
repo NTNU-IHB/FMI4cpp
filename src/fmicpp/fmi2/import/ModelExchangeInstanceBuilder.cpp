@@ -24,14 +24,24 @@
 
 #include <fmicpp/fmi2/import/ModelExchangeInstanceBuilder.hpp>
 
+using std::make_unique;
+using std::make_shared;
 using namespace fmicpp::fmi2::import;
 
-ModelExchangeInstanceBuilder::ModelExchangeInstanceBuilder(Fmu &fmu): fmu_(fmu) {}
+ModelExchangeInstanceBuilder::ModelExchangeInstanceBuilder(Fmu &fmu): InstanceBuilder(fmu) {}
 
-unique_ptr<ModelExchangeInstance> ModelExchangeInstanceBuilder::newInstance(const bool visible, const bool loggingOn) const {
+unique_ptr<ModelExchangeInstance> ModelExchangeInstanceBuilder::newInstance(const bool visible, const bool loggingOn) {
     shared_ptr<ModelExchangeModelDescription> modelDescription = fmu_.getModelDescription().asModelExchangeModelDescription();
-    shared_ptr<ModelExchangeLibrary> lib(new ModelExchangeLibrary(fmu_.getAbsoluteLibraryPath(modelDescription->modelIdentifier)));
+    shared_ptr<ModelExchangeLibrary> lib = nullptr;
+    if (modelDescription->canBeInstantiatedOnlyOncePerProcess) {
+        lib = make_shared<ModelExchangeLibrary>(fmu_.getAbsoluteLibraryPath(modelDescription->modelIdentifier));
+    } else {
+        if (lib_ == nullptr) {
+            lib_ = make_shared<ModelExchangeLibrary>(fmu_.getAbsoluteLibraryPath(modelDescription->modelIdentifier));
+        }
+        lib = lib_;
+    }
     fmi2Component c = lib->instantiate(modelDescription->modelIdentifier,
                                        fmi2ModelExchange, modelDescription->guid, fmu_.getResourcePath(), visible, loggingOn);
-    return std::make_unique<ModelExchangeInstance>(c, modelDescription, lib);
+    return make_unique<ModelExchangeInstance>(c, modelDescription, lib);
 }

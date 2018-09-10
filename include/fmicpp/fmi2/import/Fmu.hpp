@@ -34,6 +34,7 @@
 namespace fs = boost::filesystem;
 
 using std::string;
+using std::unique_ptr;
 using fmicpp::fmi2::xml::ModelDescription;
 
 namespace fmicpp::fmi2::import {
@@ -57,8 +58,8 @@ namespace fmicpp::fmi2::import {
         const bool supportsModelExchange() const;
         const bool supportsCoSimulation() const;
 
-        CoSimulationSlaveBuilder asCoSimulationFmu();
-        ModelExchangeInstanceBuilder asModelExchangeFmu();
+        CoSimulationSlaveBuilder &asCoSimulationFmu();
+        ModelExchangeInstanceBuilder &asModelExchangeFmu();
 
         ~Fmu();
 
@@ -66,7 +67,9 @@ namespace fmicpp::fmi2::import {
 
         fs::path tmp_path_;
         const string fmu_file_;
-        std::unique_ptr<ModelDescription> modelDescription_;
+        unique_ptr<ModelDescription> modelDescription_;
+        unique_ptr<CoSimulationSlaveBuilder> csBuilder_;
+        unique_ptr<ModelExchangeInstanceBuilder> meBuilder_;
 
         const string getModelDescriptionPath() const;
         const string getResourcePath() const;

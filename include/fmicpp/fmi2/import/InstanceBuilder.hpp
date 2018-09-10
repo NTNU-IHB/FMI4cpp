@@ -22,23 +22,31 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMICPP_COSIMULATIONSLAVEBUILDER_HPP
-#define FMICPP_COSIMULATIONSLAVEBUILDER_HPP
+#ifndef FMICPP_INSTANCEBUILDER_HPP
+#define FMICPP_INSTANCEBUILDER_HPP
 
-#include "InstanceBuilder.hpp"
-#include "CoSimulationSlave.hpp"
+#include <memory>
+#include "Fmu.hpp"
 
 namespace fmicpp::fmi2::import {
 
-    class CoSimulationSlaveBuilder: private InstanceBuilder<CoSimulationLibrary, CoSimulationSlave> {
+    template <class T, class U>
+    class InstanceBuilder {
+
+    protected:
+
+        Fmu &fmu_;
+        std::shared_ptr<T> lib_;
 
     public:
-        explicit CoSimulationSlaveBuilder(Fmu &fmu);
+        explicit InstanceBuilder(Fmu &fmu_) : fmu_(fmu_) {}
 
-        std::unique_ptr<CoSimulationSlave> newInstance(const bool visible = false, const bool loggingOn = false) override;
+        virtual std::unique_ptr<U> newInstance(const bool visible, const bool loggingOn) = 0;
+
+        ~InstanceBuilder() {}
 
     };
 
 }
 
-#endif //FMICPP_COSIMULATIONSLAVEBUILDER_HPP
+#endif //FMICPP_INSTANCEBUILDER_HPP

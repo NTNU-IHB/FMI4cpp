@@ -25,23 +25,17 @@
 #ifndef FMICPP_MODELEXCHANGEINSTANCEBUILDER_HPP
 #define FMICPP_MODELEXCHANGEINSTANCEBUILDER_HPP
 
-#include <memory>
-#include "Fmu.hpp"
+#include "InstanceBuilder.hpp"
 #include "ModelExchangeInstance.hpp"
 
 namespace fmicpp::fmi2::import {
 
-    class ModelExchangeInstanceBuilder {
-
-    private:
-
-        Fmu &fmu_;
+    class ModelExchangeInstanceBuilder: private InstanceBuilder<ModelExchangeLibrary, ModelExchangeInstance> {
 
     public:
         explicit ModelExchangeInstanceBuilder(Fmu &fmu);
 
-        std::unique_ptr<ModelExchangeInstance> newInstance(
-                const bool visible = false, const bool loggingOn = false) const;
+        std::unique_ptr<ModelExchangeInstance> newInstance(const bool visible = false, const bool loggingOn = false) override;
 
     };
 

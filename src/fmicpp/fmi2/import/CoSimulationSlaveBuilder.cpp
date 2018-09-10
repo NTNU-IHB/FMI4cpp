@@ -25,15 +25,25 @@
 
 #include <fmicpp/fmi2/import/CoSimulationSlaveBuilder.hpp>
 
-using namespace std;
+using std::make_unique;
+using std::make_shared;
 using namespace fmicpp::fmi2::import;
 
-CoSimulationSlaveBuilder::CoSimulationSlaveBuilder(Fmu &fmu) : fmu_(fmu) {}
+CoSimulationSlaveBuilder::CoSimulationSlaveBuilder(Fmu &fmu) : InstanceBuilder(fmu) {}
 
-unique_ptr<CoSimulationSlave> fmicpp::fmi2::import::CoSimulationSlaveBuilder::newInstance(const bool visible, const bool loggingOn) const {
+unique_ptr<CoSimulationSlave> CoSimulationSlaveBuilder::newInstance(const bool visible, const bool loggingOn) {
     shared_ptr<CoSimulationModelDescription> modelDescription = fmu_.getModelDescription().asCoSimulationModelDescription();
-    shared_ptr<CoSimulationLibrary> lib(new CoSimulationLibrary(fmu_.getAbsoluteLibraryPath(modelDescription->modelIdentifier)));
+    shared_ptr<CoSimulationLibrary> lib = nullptr;
+    if (modelDescription->canBeInstantiatedOnlyOncePerProcess) {
+        lib = make_shared<CoSimulationLibrary>(fmu_.getAbsoluteLibraryPath(modelDescription->modelIdentifier));
+    } else {
+        if (lib_ == nullptr) {
+            lib_ = make_shared<CoSimulationLibrary>(fmu_.getAbsoluteLibraryPath(modelDescription->modelIdentifier));
+        }
+       lib = lib_;
+    }
     fmi2Component c = lib->instantiate(modelDescription->modelIdentifier,
                                fmi2CoSimulation, modelDescription->guid, fmu_.getResourcePath(), visible, loggingOn);
     return make_unique<CoSimulationSlave>(c, modelDescription, lib);
 }
+

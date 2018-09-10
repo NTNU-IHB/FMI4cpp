@@ -13,6 +13,7 @@ SET(HEADERS
 
         ../include/fmicpp/fmi2/import/FmuInstance.hpp
         ../include/fmicpp/fmi2/import/FmuSlave.hpp
+        ../include/fmicpp/fmi2/import/InstanceBuilder.hpp
 
         ../include/fmicpp/fmi2/import/Fmu.hpp
         ../include/fmicpp/fmi2/import/FmiLibrary.hpp

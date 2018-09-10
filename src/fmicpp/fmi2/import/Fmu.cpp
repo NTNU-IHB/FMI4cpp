@@ -90,12 +90,18 @@ const bool Fmu::supportsCoSimulation() const {
     return modelDescription_->supportsCoSimulation;
 }
 
-CoSimulationSlaveBuilder Fmu::asCoSimulationFmu() {
-    return CoSimulationSlaveBuilder(*this);
+CoSimulationSlaveBuilder &Fmu::asCoSimulationFmu() {
+    if (csBuilder_ == nullptr) {
+        csBuilder_ = make_unique<CoSimulationSlaveBuilder>(*this);
+    }
+    return *csBuilder_;
 }
 
-ModelExchangeInstanceBuilder Fmu::asModelExchangeFmu() {
-    return ModelExchangeInstanceBuilder(*this);
+ModelExchangeInstanceBuilder &Fmu::asModelExchangeFmu() {
+    if (meBuilder_ == nullptr) {
+        meBuilder_ = make_unique<ModelExchangeInstanceBuilder>(*this);
+    }
+    return *meBuilder_;
 }
 
 const string Fmu::getAbsoluteLibraryPath(string modelIdentifier) const {
@@ -111,5 +117,7 @@ const string Fmu::getModelDescriptionPath() const {
 }
 
 Fmu::~Fmu() {
+    meBuilder_ = nullptr;
+    csBuilder_ = nullptr;
     remove_all(tmp_path_);
 }
