@@ -37,9 +37,7 @@ namespace {
         return "linux64";
 #endif
     }
-}
 
-namespace {
     std::string getLibExt() {
 #ifdef WIN32
         return ".dll";
