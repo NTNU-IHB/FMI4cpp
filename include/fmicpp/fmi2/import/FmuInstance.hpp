@@ -26,6 +26,7 @@
 #define FMICPP_FMUINSTANCE_HPP
 
 #include <vector>
+#include <string>
 #include "../xml/ModelDescription.hpp"
 #include "../fmi2Functions.h"
 
@@ -54,6 +55,10 @@ namespace fmicpp::fmi2::import {
 
         const bool isTerminated() const {
             return terminated_;
+        }
+
+        const fmi2ValueReference getValueReference(const std::string &name) const {
+            return getModelDescription().getVariableByName(name).valueReference;
         }
 
         virtual const xml::ModelDescription& getModelDescription() const = 0;
