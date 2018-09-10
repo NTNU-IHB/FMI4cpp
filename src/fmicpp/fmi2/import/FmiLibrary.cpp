@@ -61,8 +61,6 @@ namespace {
 
 FmiLibrary::FmiLibrary(const string libName) {
 
-    cout << string("loading FMI library ") + libName << endl;
-
 #ifdef WIN32
     handle_ = LoadLibrary(libName.c_str());
 #else
