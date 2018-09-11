@@ -37,10 +37,11 @@
 
 #include "import/CoSimulationSlaveBuilder.hpp"
 
+using std::string;
 
 namespace {
 
-    std::string to_string(fmi2Status status) {
+    string to_string(fmi2Status status) {
 
         switch (status) {
             case fmi2OK: return "OK";
@@ -49,12 +50,12 @@ namespace {
             case fmi2Error: return "Error";
             case fmi2Fatal: return "Fatal";
             case fmi2Pending: return "Pending";
-            default: throw std::runtime_error(std::string("ERROR: Not a valid status:") + std::to_string(status) + "!");
+            default: throw std::runtime_error(string("ERROR: Not a valid status:") + to_string(status) + "!");
         }
 
     }
 
-    std::string to_string(fmicpp::fmi2::xml::fmi2Causality causality) {
+    string to_string(fmicpp::fmi2::xml::fmi2Causality causality) {
 
         using fmicpp::fmi2::xml::fmi2Causality;
 
@@ -64,11 +65,12 @@ namespace {
             case  fmi2Causality::output: return "output";
             case  fmi2Causality::local: return "local";
             case  fmi2Causality::independent: return "independent";
+            default: throw std::runtime_error("Invalid Causality encountered");
         }
 
     }
 
-    std::string to_string(fmicpp::fmi2::xml::fmi2Variability variability) {
+    string to_string(fmicpp::fmi2::xml::fmi2Variability variability) {
 
         using fmicpp::fmi2::xml::fmi2Variability;
 
@@ -78,11 +80,12 @@ namespace {
             case  fmi2Variability::tunable: return "tunable";
             case  fmi2Variability::discrete: return "discrete";
             case  fmi2Variability::continuous: return "continuous";
+            default: throw std::runtime_error("Invalid Variability encountered");
         }
 
     }
 
-    std::string to_string(fmicpp::fmi2::xml::fmi2Initial initial) {
+    string to_string(fmicpp::fmi2::xml::fmi2Initial initial) {
 
         using fmicpp::fmi2::xml::fmi2Initial;
 
@@ -90,6 +93,7 @@ namespace {
             case  fmi2Initial::exact: return "exact";
             case  fmi2Initial::approx: return "approx";
             case  fmi2Initial::calculated: return "calculated";
+            default: throw std::runtime_error("Invalid Initial encountered");
         }
 
     }
