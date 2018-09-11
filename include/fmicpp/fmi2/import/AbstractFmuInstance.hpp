@@ -31,7 +31,7 @@
 #include "../xml/SpecificModelDescription.hpp"
 
 namespace {
-    void checkStatus(fmi2Status status, string function_name) {
+    void checkStatus(const fmi2Status status, const string &function_name) {
         if (status != fmi2OK) {
             throw std::runtime_error(function_name + " failed with status: " + std::to_string(status));
         }
