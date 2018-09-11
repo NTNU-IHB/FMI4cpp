@@ -23,6 +23,7 @@
  */
 
 #include <fmicpp/fmi2/xml/ModelDescription.hpp>
+#include <fmicpp/fmi2/xml/SpecificModelDescription.hpp>
 
 using namespace std;
 using namespace fmicpp::fmi2::xml;
@@ -84,25 +85,3 @@ ScalarVariable ModelDescription::getVariableByName(const string &name) const {
 ScalarVariable ModelDescription::getVariableByValueReference(const fmi2ValueReference vr) const {
     return modelVariables.getByValueReference(vr);
 }
-
-SpecificModelDescription::SpecificModelDescription(const ModelDescription md, const FmuTypeAttributes data)
-        : ModelDescription(md),
-        modelIdentifier(data.modelIdentifier),
-        canGetAndSetFMUstate(data.canGetAndSetFMUstate),
-        needsExecutionTool(data.needsExecutionTool),
-        canNotUseMemoryManagementFunctions(data.canNotUseMemoryManagementFunctions),
-        canBeInstantiatedOnlyOncePerProcess(data.canBeInstantiatedOnlyOncePerProcess),
-        providesDirectionalDerivative(data.providesDirectionalDerivative),
-        sourceFiles(data.sourceFiles),
-        canSerializeFMUstate(data.canSerializeFMUstate) {};
-
-CoSimulationModelDescription::CoSimulationModelDescription(const ModelDescription md, const CoSimulationAttributes data)
-        : SpecificModelDescription(md, data),
-        canInterpolateInputs(data.canInterpolateInputs),
-        canRunAsynchronuously(data.canRunAsynchronuously),
-        canHandleVariableCommunicationStepSize(data.canHandleVariableCommunicationStepSize),
-        maxOutputDerivativeOrder(data.maxOutputDerivativeOrder) {};
-
-ModelExchangeModelDescription::ModelExchangeModelDescription(const ModelDescription md, const ModelExchangeAttributes data)
-        : SpecificModelDescription(md, data),
-        completedIntegratorStepNotNeeded(data.completedIntegratorStepNotNeeded) {};

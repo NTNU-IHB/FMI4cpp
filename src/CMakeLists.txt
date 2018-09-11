@@ -26,6 +26,7 @@ SET(HEADERS
         ../include/fmicpp/fmi2/import/ModelExchangeInstanceBuilder.hpp
         ../include/fmicpp/fmi2/xml/FmuTypeAttributes.hpp
         ../include/fmicpp/fmi2/xml/ModelDescription.hpp
+        ../include/fmicpp/fmi2/xml/SpecificModelDescription.hpp
         ../include/fmicpp/fmi2/xml/ModelVariables.hpp
         ../include/fmicpp/fmi2/xml/ScalarVariable.hpp
         ../include/fmicpp/fmi2/xml/ScalarVariableAttributes.hpp
@@ -47,6 +48,7 @@ SET(SOURCES
 
         fmicpp/fmi2/xml/FmuTypeAttributes.cpp
         fmicpp/fmi2/xml/ModelDescription.cpp
+        fmicpp/fmi2/xml/SpecificModelDescription.cpp
         fmicpp/fmi2/xml/ModelVariables.cpp
         fmicpp/fmi2/xml/ScalarVariable.cpp
         fmicpp/fmi2/xml/ScalarVariableAttributes.cpp

@@ -28,7 +28,7 @@
 #include <type_traits>
 #include "FmuInstance.hpp"
 #include "FmiLibrary.hpp"
-#include "../xml/ModelDescription.hpp"
+#include "../xml/SpecificModelDescription.hpp"
 
 namespace {
     void checkStatus(fmi2Status status, string function_name) {
