@@ -50,7 +50,7 @@ namespace fmicpp::fmi2::import {
 
         const CoSimulationModelDescription &getModelDescription() const override;
 
-        void init(const double start, const double stop) override;
+        void init(const double start = 0, const double stop = 0) override;
 
         fmi2Status reset() override;
 
