@@ -48,6 +48,51 @@ namespace fmicpp::fmi2::import {
 
         fmi2Status cancelStep() override;
 
+        const CoSimulationModelDescription &getModelDescription() const override;
+
+        void init(const double start, const double stop) override;
+
+        fmi2Status reset() override;
+
+        fmi2Status terminate() override;
+
+        bool canGetAndSetFMUstate() const override;
+
+        fmi2Status getFMUstate(fmi2FMUstate &state) override;
+
+        fmi2Status setFMUstate(const fmi2FMUstate state) override;
+
+        fmi2Status freeFMUstate(fmi2FMUstate &state) override;
+
+        bool canSerializeFmuState() const override;
+
+        fmi2Status serializeFMUstate(const fmi2FMUstate &state, vector<fmi2Byte> &serializedState) override;
+
+        fmi2Status deSerializeFMUstate(fmi2FMUstate &state, const vector<fmi2Byte> &serializedState) override;
+
+        bool providesDirectionalDerivative() const override;
+
+        fmi2Status getDirectionalDerivative(const vector<fmi2ValueReference> &vUnkownRef,
+                                            const vector<fmi2ValueReference> &vKnownRef,
+                                            const vector<fmi2Real> &dvKnownRef,
+                                            vector<fmi2Real> &dvUnknownRef) const override;
+
+        fmi2Status readInteger(const fmi2ValueReference vr, fmi2Integer &ref) const override;
+
+        fmi2Status readInteger(const vector<fmi2ValueReference> &vr, vector<fmi2Integer> &ref) const override;
+
+        fmi2Status readReal(const fmi2ValueReference vr, fmi2Real &ref) const override;
+
+        fmi2Status readReal(const vector<fmi2ValueReference> &vr, vector<fmi2Real> &ref) const override;
+
+        fmi2Status readString(const fmi2ValueReference vr, fmi2String &ref) const override;
+
+        fmi2Status readString(const vector<fmi2ValueReference> &vr, vector<fmi2String> &ref) const override;
+
+        fmi2Status readBoolean(const fmi2ValueReference vr, fmi2Boolean &ref) const override;
+
+        fmi2Status readBoolean(const vector<fmi2ValueReference> &vr, vector<fmi2Boolean> &ref) const override;
+
     };
 
 }
