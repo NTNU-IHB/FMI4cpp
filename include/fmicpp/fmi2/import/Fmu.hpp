@@ -48,7 +48,7 @@ namespace fmicpp::fmi2::import {
         friend class ModelExchangeInstanceBuilder;
 
     public:
-        explicit Fmu(const string fmu_file);
+        explicit Fmu(const string &fmu_file);
 
         const string getGuid() const;
         const string getModelName() const;

@@ -52,7 +52,7 @@ namespace {
 
 }
 
-Fmu::Fmu(const string fmu_file): fmu_file_(fmu_file) {
+Fmu::Fmu(const string &fmu_file): fmu_file_(fmu_file) {
 
     const string fmuName = fs::path(fmu_file).stem().string();
     tmp_path_ = fs::temp_directory_path() /= fs::path(fmuName + "_" + generate_uuid());
