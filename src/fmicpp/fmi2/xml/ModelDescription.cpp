@@ -28,7 +28,7 @@
 using namespace std;
 using namespace fmicpp::fmi2::xml;
 
-void ModelDescription::load(const string fileName) {
+void ModelDescription::load(const string &fileName) {
 
     ptree tree;
     read_xml(fileName, tree);

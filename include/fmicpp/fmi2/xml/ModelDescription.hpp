@@ -74,7 +74,7 @@ namespace fmicpp::fmi2::xml {
         ScalarVariable getVariableByName(const string &name) const;
         ScalarVariable getVariableByValueReference(const fmi2ValueReference vr) const;
 
-        void load(const string fileName);
+        void load(const string &fileName);
 
     private:
         shared_ptr<CoSimulationAttributes> coSimulation = nullptr;
