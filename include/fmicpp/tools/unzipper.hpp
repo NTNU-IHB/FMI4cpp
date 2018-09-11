@@ -37,7 +37,7 @@ namespace {
 
     bool extractContents(std::string zip_file, std::string tmp_path) {
 
-        int* err;
+        int* err = 0;
         zip* za = zip_open(zip_file.c_str(), 0, err);
         if (za == nullptr) {
             return false;
