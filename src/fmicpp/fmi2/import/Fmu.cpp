@@ -22,6 +22,9 @@
  * THE SOFTWARE.
  */
 
+#ifndef NDEBUG
+#include <iostream>
+#endif
 
 #include <fmicpp/fmi2/import/Fmu.hpp>
 #include <fmicpp/fmi2/import/CoSimulationSlaveBuilder.hpp>
@@ -120,4 +123,9 @@ Fmu::~Fmu() {
     meBuilder_ = nullptr;
     csBuilder_ = nullptr;
     remove_all(tmp_path_);
+
+#ifndef NDEBUG
+    cout << "Fmu '" << getModelName()  << "' disposed.." << endl;
+#endif
+
 }
