@@ -31,7 +31,7 @@ using namespace fmicpp::fmi2::xml;
 
 namespace {
 
-    void loadUnkowns(const ptree &node, vector<Unknown> &vector) {
+    void loadUnknowns(const ptree &node, vector<Unknown> &vector) {
 
         for (const ptree::value_type &v : node) {
             if (v.first == "Unknown") {
@@ -53,11 +53,11 @@ void ModelStructure::load(const ptree &node) {
 
     for (const ptree::value_type &v : node) {
         if (v.first == "Outputs") {
-            loadUnkowns(v.second, outputs);
+            loadUnknowns(v.second, outputs);
         } else if (v.first == "Derivatives") {
-            loadUnkowns(v.second, derivatives);
+            loadUnknowns(v.second, derivatives);
         } else if (v.first == "InitialUnknowns") {
-            loadUnkowns(v.second, initialUnknowns);
+            loadUnknowns(v.second, initialUnknowns);
         }
     }
 
