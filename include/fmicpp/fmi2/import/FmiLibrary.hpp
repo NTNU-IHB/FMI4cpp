@@ -62,6 +62,12 @@ namespace fmicpp::fmi2::import {
         fmi2GetTypesPlatformTYPE * fmi2GetTypesPlatform_;
 
         fmi2InstantiateTYPE * fmi2Instantiate_;
+        fmi2SetupExperimentTYPE * fmi2SetupExperiment_;
+        fmi2EnterInitializationModeTYPE * fmi2EnterInitializationMode_;
+        fmi2ExitInitializationModeTYPE * fmi2ExitInitializationMode_;
+
+        fmi2ResetTYPE * fmi2Reset_;
+        fmi2TerminateTYPE * fmi2Terminate_;
 
         fmi2GetIntegerTYPE * fmi2GetInteger_;
         fmi2GetRealTYPE * fmi2GetReal_;
@@ -72,6 +78,14 @@ namespace fmicpp::fmi2::import {
         fmi2SetRealTYPE * fmi2SetReal_;
         fmi2SetStringTYPE * fmi2SetString_;
         fmi2SetBooleanTYPE * fmi2SetBoolean_;
+
+        fmi2GetFMUstateTYPE * fmi2GetFMUstate_;
+        fmi2SetFMUstateTYPE * fmi2SetFMUstate_;
+        fmi2FreeFMUstateTYPE * fmi2FreeFMUstate_;
+        fmi2SerializeFMUstateTYPE * fmi2SerializeFMUstate_;
+        fmi2DeSerializeFMUstateTYPE * fmi2DeSerializeFMUstate_;
+
+        fmi2GetDirectionalDerivativeTYPE * fmi2GetDirectionalDerivative_;
 
         fmi2FreeInstanceTYPE * fmi2FreeInstance_;
 

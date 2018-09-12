@@ -31,6 +31,19 @@ using fmicpp::fmi2::import::FmiLibrary;
 
 class ModelExchangeLibrary: public FmiLibrary {
 
+private:
+
+    fmi2EnterEventModeTYPE * fmi2EnterEventMode_;
+    fmi2EnterContinuousTimeModeTYPE * fmi2EnterContinuousTimeMode_;
+    fmi2SetTimeTYPE * fmi2SetTime_;
+    fmi2SetContinuousStatesTYPE * fmi2SetContinuousStates_;
+    fmi2GetDerivativesTYPE * fmi2GetDerivatives_;
+    fmi2GetEventIndicatorsTYPE * fmi2GetEventIndicators_;
+    fmi2GetContinuousStatesTYPE * fmi2GetContinuousStates_;
+    fmi2GetNominalsOfContinuousStatesTYPE * fmi2GetNominalsOfContinuousStates_;
+    fmi2CompletedIntegratorStepTYPE * fmi2CompletedIntegratorStep_;
+    fmi2NewDiscreteStatesTYPE * fmi2NewDiscreteStates_;
+
 public:
     explicit ModelExchangeLibrary(const string &libName);
 
