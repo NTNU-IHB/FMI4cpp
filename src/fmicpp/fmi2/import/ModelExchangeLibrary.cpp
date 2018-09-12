@@ -25,7 +25,7 @@
 #include <fmicpp/fmi2/import/ModelExchangeLibrary.hpp>
 
 
-ModelExchangeLibrary::ModelExchangeLibrary(const string libName) : FmiLibrary(libName) {}
+ModelExchangeLibrary::ModelExchangeLibrary(const string &libName) : FmiLibrary(libName) {}
 
 fmi2Status ModelExchangeLibrary::enterEventMode(const fmi2Component c) const {
     return loadFunction<fmi2EnterEventModeTYPE *>("fmi2EnterEventMode")(c);

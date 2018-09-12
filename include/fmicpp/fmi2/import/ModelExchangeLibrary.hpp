@@ -32,7 +32,7 @@ using fmicpp::fmi2::import::FmiLibrary;
 class ModelExchangeLibrary: public FmiLibrary {
 
 public:
-    explicit ModelExchangeLibrary(const string libName);
+    explicit ModelExchangeLibrary(const string &libName);
 
     fmi2Status enterEventMode(const fmi2Component c) const;
 
