@@ -33,7 +33,7 @@ class CoSimulationLibrary : public FmiLibrary {
 
 public:
 
-    explicit CoSimulationLibrary(const string libName);
+    explicit CoSimulationLibrary(const string &libName);
 
     fmi2Status doStep(const fmi2Component c, const fmi2Real currentCommunicationPoint,
                       const fmi2Real communicationStepSize, const bool noSetFMUStatePriorToCurrentPoint) const;
