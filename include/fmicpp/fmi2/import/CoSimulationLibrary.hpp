@@ -31,6 +31,20 @@ using fmicpp::fmi2::import::FmiLibrary;
 
 class CoSimulationLibrary : public FmiLibrary {
 
+private:
+
+    fmi2SetRealInputDerivativesTYPE* fmi2SetRealInputDerivatives_;
+    fmi2GetRealOutputDerivativesTYPE* fmi2GetRealOutputDerivatives_;
+
+    fmi2DoStepTYPE* fmi2DoStep_;
+    fmi2CancelStepTYPE* fmi2CancelStep_;
+
+    fmi2GetStatusTYPE* fmi2GetStatus_;
+    fmi2GetRealStatusTYPE* fmi2GetRealStatus_;
+    fmi2GetIntegerStatusTYPE* fmi2GetIntegerStatus_;
+    fmi2GetBooleanStatusTYPE* fmi2GetBooleanStatus_;
+    fmi2GetStringStatusTYPE* fmi2GetStringStatus_;
+
 public:
 
     explicit CoSimulationLibrary(const string &libName);

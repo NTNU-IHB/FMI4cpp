@@ -26,49 +26,60 @@
 
 using namespace fmicpp::fmi2::import;
 
-CoSimulationLibrary::CoSimulationLibrary(const string &libName) : FmiLibrary(libName) {}
+CoSimulationLibrary::CoSimulationLibrary(const string &libName) : FmiLibrary(libName) {
+
+    fmi2SetRealInputDerivatives_ = loadFunction<fmi2SetRealInputDerivativesTYPE *>("fmi2SetRealInputDerivatives");
+    fmi2GetRealOutputDerivatives_ = loadFunction<fmi2GetRealOutputDerivativesTYPE *>("fmi2GetRealOutputDerivatives");
+
+    fmi2DoStep_ = loadFunction<fmi2DoStepTYPE *>("fmi2DoStep");
+    fmi2CancelStep_ = loadFunction<fmi2CancelStepTYPE *>("fmi2CancelStep");
+
+    fmi2GetStatus_ = loadFunction<fmi2GetStatusTYPE *>("fmi2GetStatusTYPE");
+    fmi2GetRealStatus_ = loadFunction<fmi2GetRealStatusTYPE *>("fmi2GetRealStatusTYPE");
+    fmi2GetIntegerStatus_ = loadFunction<fmi2GetIntegerStatusTYPE *>("fmi2GetIntegerStatusTYPE");
+    fmi2GetBooleanStatus_ = loadFunction<fmi2GetBooleanStatusTYPE *>("fmi2GetBooleanStatusTYPE");
+    fmi2GetStringStatus_ = loadFunction<fmi2GetStringStatusTYPE *>("fmi2GetStringStatusTYPE");
+
+}
 
 fmi2Status CoSimulationLibrary::doStep(const fmi2Component c, const fmi2Real currentCommunicationPoint,
         const fmi2Real communicationStepSize, const bool noSetFMUStatePriorToCurrentPoint) const {
-    return loadFunction<fmi2DoStepTYPE *>("fmi2DoStep")
-            (c, currentCommunicationPoint, communicationStepSize, noSetFMUStatePriorToCurrentPoint ? 1 : 0);
+    return fmi2DoStep_(c, currentCommunicationPoint, communicationStepSize, noSetFMUStatePriorToCurrentPoint ? 1 : 0);
 }
 
 fmi2Status CoSimulationLibrary::cancelStep(const fmi2Component c) const {
-    return loadFunction<fmi2CancelStepTYPE *>("fmi2CancelStep")(c);
+    return fmi2CancelStep_(c);
 }
 
 fmi2Status CoSimulationLibrary::setRealInputDerivatives(const fmi2Component c,
         const vector<fmi2ValueReference> &vr, const vector<fmi2Integer> &order, const vector<fmi2Real> &value) const {
-    return loadFunction<fmi2SetRealInputDerivativesTYPE *>("fmi2SetRealInputDerivatives")
-            (c, vr.data(), vr.size(), order.data(), value.data());
+    return fmi2SetRealInputDerivatives_(c, vr.data(), vr.size(), order.data(), value.data());
 }
 
 fmi2Status CoSimulationLibrary::getRealOutputDerivatives(const fmi2Component c,
         const vector<fmi2ValueReference> &vr,const vector<fmi2Integer> &order, vector<fmi2Real> &value) const {
-    return loadFunction<fmi2GetRealOutputDerivativesTYPE *>("fmi2GetRealOutputDerivatives")
-            (c, vr.data(), vr.size(), order.data(), value.data());
+    return fmi2GetRealOutputDerivatives_(c, vr.data(), vr.size(), order.data(), value.data());
 }
 
 fmi2Status CoSimulationLibrary::getStatus(const fmi2Component c, const fmi2StatusKind s, fmi2Status &value) const {
-    return loadFunction<fmi2GetStatusTYPE *>("fmi2GetStatusTYPE")(c, s, &value);
+    return fmi2GetStatus_(c, s, &value);
 }
 
 fmi2Status CoSimulationLibrary::getRealStatus(const fmi2Component c, const fmi2StatusKind s, fmi2Real &value) const {
-    return loadFunction<fmi2GetRealStatusTYPE *>("fmi2GetRealStatusTYPE")(c, s, &value);
+    return fmi2GetRealStatus_(c, s, &value);
 }
 
 fmi2Status
 CoSimulationLibrary::getIntegerStatus(const fmi2Component c, const fmi2StatusKind s, fmi2Integer &value) const {
-    return loadFunction<fmi2GetIntegerStatusTYPE *>("fmi2GetIntegerStatusTYPE")(c, s, &value);
+    return fmi2GetIntegerStatus_(c, s, &value);
 }
 
 fmi2Status
 CoSimulationLibrary::getBooleanStatus(const fmi2Component c, const fmi2StatusKind s, fmi2Boolean &value) const {
-    return loadFunction<fmi2GetBooleanStatusTYPE *>("fmi2GetBooleanStatusTYPE")(c, s, &value);
+    return fmi2GetBooleanStatus_(c, s, &value);
 }
 
 fmi2Status
 CoSimulationLibrary::getStringStatus(const fmi2Component c, const fmi2StatusKind s, fmi2String &value) const {
-    return loadFunction<fmi2GetStringStatusTYPE *>("fmi2GetStringStatusTYPE")(c, s, &value);
+    return fmi2GetStringStatus_(c, s, &value);
 }
