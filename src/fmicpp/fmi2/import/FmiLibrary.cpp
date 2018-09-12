@@ -28,7 +28,7 @@
 #include <fmicpp/fmi2/import/FmiLibrary.hpp>
 
 using namespace std;
-using namespace fmicpp::fmi2::import;
+using fmicpp::fmi2::import::FmiLibrary;
 
 namespace {
 
@@ -164,6 +164,45 @@ fmi2Status FmiLibrary::readBoolean(const fmi2Component c, const fmi2ValueReferen
 fmi2Status FmiLibrary::readBoolean(const fmi2Component c,
         const vector<fmi2ValueReference> &vr, vector<fmi2Boolean> &ref) const {
     return fmi2GetBoolean_(c, vr.data(), vr.size(), ref.data());
+}
+
+fmi2Status FmiLibrary::writeInteger(const fmi2Component c, const fmi2ValueReference vr,
+                                                          fmi2Integer &value) const {
+    return fmi2SetInteger_(c, &vr, 1, &value);
+}
+
+fmi2Status FmiLibrary::writeInteger(const fmi2Component c, const vector<fmi2ValueReference> &vr,
+                                                          const vector<fmi2Integer> &values) const {
+    return fmi2SetInteger_(c, vr.data(), vr.size(), values.data());
+}
+
+fmi2Status FmiLibrary::writeReal(const fmi2Component c, const fmi2ValueReference vr, fmi2Real &value) const {
+    return fmi2SetReal_(c, &vr, 1, &value);
+}
+
+fmi2Status FmiLibrary::writeReal(const fmi2Component c, const vector<fmi2ValueReference> &vr,
+                                                       const vector<fmi2Real> &values) const {
+    return  fmi2SetReal_(c, vr.data(), vr.size(), values.data());
+}
+
+fmi2Status FmiLibrary::writeString(const fmi2Component c, const fmi2ValueReference vr,
+                                                         fmi2String &value) const {
+    return fmi2SetString_(c, &vr, 1, &value);
+}
+
+fmi2Status FmiLibrary::writeString(const fmi2Component c, const vector<fmi2ValueReference> &vr,
+                                                         const vector<fmi2String> &values) const {
+    return  fmi2SetString_(c, vr.data(), vr.size(), values.data());
+}
+
+fmi2Status FmiLibrary::writeBoolean(const fmi2Component c, const fmi2ValueReference vr,
+                                                          const fmi2Boolean &value) const {
+    return fmi2SetBoolean_(c, &vr, 1, &value);
+}
+
+fmi2Status FmiLibrary::writeBoolean(const fmi2Component c, const vector<fmi2ValueReference> &vr,
+                                                          const vector<fmi2Boolean> &values) const {
+    return fmi2SetBoolean_(c, vr.data(), vr.size(), values.data());
 }
 
 fmi2Status FmiLibrary::getFMUstate(const fmi2Component c, fmi2FMUstate& state) const {
