@@ -66,30 +66,37 @@ FmiLibrary::FmiLibrary(const string &libName) {
         throw runtime_error(msg);
     }
 
-}
+    fmi2GetVersion_ = loadFunction<fmi2GetVersionTYPE *>("fmi2GetVersion");
+    fmi2GetTypesPlatform_ = loadFunction<fmi2GetTypesPlatformTYPE *>("fmi2GetTypesPlatform");
 
-string FmiLibrary::getLastError() const {
-#ifdef WIN32
-    std::ostringstream os;
-    os << GetLastError();
-    return os.str();
-#else
-    return dlerror();
-#endif
+    fmi2Instantiate_ = loadFunction<fmi2InstantiateTYPE *>("fmi2Instantiate");
+
+    fmi2GetInteger_ = loadFunction<fmi2GetIntegerTYPE *>("fmi2GetInteger");
+    fmi2GetReal_ = loadFunction<fmi2GetRealTYPE *>("fmi2GetReal");
+    fmi2GetString_ = loadFunction<fmi2GetStringTYPE *>("fmi2GetString");
+    fmi2GetBoolean_ = loadFunction<fmi2GetBooleanTYPE *>("fmi2GetBoolean");
+
+    fmi2SetInteger_ = loadFunction<fmi2SetIntegerTYPE *>("fmi2SetInteger");
+    fmi2SetReal_ = loadFunction<fmi2SetRealTYPE *>("fmi2SetReal");
+    fmi2SetString_ = loadFunction<fmi2SetStringTYPE *>("fmi2SetString");
+    fmi2SetBoolean_ = loadFunction<fmi2SetBooleanTYPE *>("fmi2SetBoolean");
+
+    fmi2FreeInstance_ = loadFunction<fmi2FreeInstanceTYPE *>("fmi2FreeInstance");
+
 }
 
 fmi2String FmiLibrary::getVersion() const {
-    return loadFunction<fmi2GetVersionTYPE *>("fmi2GetVersion")();
+    return fmi2GetVersion_();
 }
 
 fmi2String FmiLibrary::getTypesPlatform() const {
-    return loadFunction<fmi2GetTypesPlatformTYPE *>("fmi2GetTypesPlatform")();
+    return fmi2GetTypesPlatform_();
 }
 
 fmi2Component FmiLibrary::instantiate(const string instanceName, const fmi2Type type,
         const string guid, const string resourceLocation, const bool visible, const bool loggingOn) {
-    fmi2Component c = loadFunction<fmi2InstantiateTYPE *>("fmi2Instantiate")(instanceName.c_str(),
-            type, guid.c_str(), resourceLocation.c_str(), &callback, visible ? 1 : 0, loggingOn ? 1 : 0);
+    fmi2Component c = fmi2Instantiate_(instanceName.c_str(), type, guid.c_str(),
+            resourceLocation.c_str(), &callback, visible ? 1 : 0, loggingOn ? 1 : 0);
 
     if (c == nullptr) {
         throw runtime_error("Unable to instantiate FMU instance!");
@@ -124,39 +131,39 @@ fmi2Status FmiLibrary::terminate(const fmi2Component c) {
 }
 
 fmi2Status FmiLibrary::readInteger(const fmi2Component c, const fmi2ValueReference vr, fmi2Integer &ref) const {
-    return loadFunction<fmi2GetIntegerTYPE *>("fmi2GetInteger")(c, &vr, 1, &ref);
+    return fmi2GetInteger_(c, &vr, 1, &ref);
 }
 
 fmi2Status FmiLibrary::readInteger(const fmi2Component c,
         const vector<fmi2ValueReference> &vr, vector<fmi2Integer> &ref) const {
-    return loadFunction<fmi2GetIntegerTYPE *>("fmi2GetInteger")(c, vr.data(), vr.size(), ref.data());
+    return fmi2GetInteger_(c, vr.data(), vr.size(), ref.data());
 }
 
 fmi2Status FmiLibrary::readReal(const fmi2Component c, const fmi2ValueReference vr, fmi2Real &ref) const {
-    return loadFunction<fmi2GetRealTYPE *>("fmi2GetReal")(c, &vr, 1, &ref);
+    return fmi2GetReal_(c, &vr, 1, &ref);
 }
 
 fmi2Status FmiLibrary::readReal(const fmi2Component c,
         const vector<fmi2ValueReference > &vr, vector<fmi2Real> &ref) const {
-    return loadFunction<fmi2GetRealTYPE *>("fmi2GetReal")(c, vr.data(), vr.size(), ref.data());
+    return fmi2GetReal_(c, vr.data(), vr.size(), ref.data());
 }
 
 fmi2Status FmiLibrary::readString(const fmi2Component c, const fmi2ValueReference vr, fmi2String &ref) const {
-    return loadFunction<fmi2GetStringTYPE *>("fmi2GetString")(c, &vr, 1, &ref);
+    return fmi2GetString_(c, &vr, 1, &ref);
 }
 
 fmi2Status FmiLibrary::readString(const fmi2Component c,
-        const vector<fmi2ValueReference> &vr, vector<fmi2String > &ref) const {
-    return loadFunction<fmi2GetStringTYPE *>("fmi2GetString")(c, vr.data(), vr.size(), ref.data());
+const vector<fmi2ValueReference> &vr, vector<fmi2String > &ref) const {
+    return fmi2GetString_(c, vr.data(), vr.size(), ref.data());
 }
 
 fmi2Status FmiLibrary::readBoolean(const fmi2Component c, const fmi2ValueReference vr, fmi2Boolean &ref) const {
-    return loadFunction<fmi2GetBooleanTYPE *>("fmi2GetBoolean")(c, &vr, 1, &ref);
+    return fmi2GetBoolean_(c, &vr, 1, &ref);
 }
 
 fmi2Status FmiLibrary::readBoolean(const fmi2Component c,
         const vector<fmi2ValueReference> &vr, vector<fmi2Boolean> &ref) const {
-    return loadFunction<fmi2GetBooleanTYPE *>("fmi2GetBoolean")(c, vr.data(), vr.size(), ref.data());
+    return fmi2GetBoolean_(c, vr.data(), vr.size(), ref.data());
 }
 
 fmi2Status FmiLibrary::getFMUstate(const fmi2Component c, fmi2FMUstate& state) const {
@@ -192,7 +199,17 @@ fmi2Status FmiLibrary::getDirectionalDerivative(const fmi2Component c,
 }
 
 void FmiLibrary::freeInstance(fmi2Component c) {
-    loadFunction<fmi2FreeInstanceTYPE *>("fmi2FreeInstance")(c);
+    fmi2FreeInstance_(c);
+}
+
+string FmiLibrary::getLastError() const {
+#ifdef WIN32
+    std::ostringstream os;
+    os << GetLastError();
+    return os.str();
+#else
+    return dlerror();
+#endif
 }
 
 FmiLibrary::~FmiLibrary() {

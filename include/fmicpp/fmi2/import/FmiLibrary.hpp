@@ -54,6 +54,38 @@ namespace fmicpp::fmi2::import {
 
     class FmiLibrary {
 
+    private:
+        DLL_HANDLE handle_ = nullptr;
+        string getLastError() const;
+
+        fmi2GetVersionTYPE * fmi2GetVersion_;
+        fmi2GetTypesPlatformTYPE * fmi2GetTypesPlatform_;
+
+        fmi2InstantiateTYPE * fmi2Instantiate_;
+
+        fmi2GetIntegerTYPE * fmi2GetInteger_;
+        fmi2GetRealTYPE * fmi2GetReal_;
+        fmi2GetStringTYPE * fmi2GetString_;
+        fmi2GetBooleanTYPE * fmi2GetBoolean_;
+
+        fmi2SetIntegerTYPE * fmi2SetInteger_;
+        fmi2SetRealTYPE * fmi2SetReal_;
+        fmi2SetStringTYPE * fmi2SetString_;
+        fmi2SetBooleanTYPE * fmi2SetBoolean_;
+
+        fmi2FreeInstanceTYPE * fmi2FreeInstance_;
+
+    protected:
+
+        template<class T>
+        T loadFunction(const char *function_name) const {
+#ifdef WIN32
+            return (T) GetProcAddress(handle_, function_name);
+#else
+            return (T) dlsym(handle_, function_name);
+#endif
+        }
+
     public:
 
         explicit FmiLibrary(const string &libName);
@@ -101,21 +133,6 @@ namespace fmicpp::fmi2::import {
         void freeInstance(fmi2Component c);
 
         ~FmiLibrary();
-
-    private:
-        DLL_HANDLE handle_ = nullptr;
-        string getLastError() const;
-
-    protected:
-
-        template<class T>
-        T loadFunction(const char *function_name) const {
-#ifdef WIN32
-            return (T) GetProcAddress(handle_, function_name);
-#else
-            return (T) dlsym(handle_, function_name);
-#endif
-        }
 
     };
 
