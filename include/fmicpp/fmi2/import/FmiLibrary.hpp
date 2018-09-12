@@ -56,7 +56,7 @@ namespace fmicpp::fmi2::import {
 
     public:
 
-        explicit FmiLibrary(const string libName);
+        explicit FmiLibrary(const string &libName);
 
         fmi2String getVersion() const;
 

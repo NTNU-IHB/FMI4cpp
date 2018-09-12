@@ -22,33 +22,22 @@
  * THE SOFTWARE.
  */
 
-#include <iostream>
-#include <fmicpp/fmi2/import/FmiLibrary.hpp>
 #include <sstream>
+#include <iostream>
+#include <fmicpp/fmi2/enumsToString.hpp>
+#include <fmicpp/fmi2/import/FmiLibrary.hpp>
 
 using namespace std;
 using namespace fmicpp::fmi2::import;
 
 namespace {
 
-    static const char* status_to_string(fmi2Status status) {
-        switch (status){
-            case 0: return "OK";
-            case 1: return "Warning";
-            case 2: return "Discard";
-            case 3: return "Error";
-            case 4: return "Fatal";
-            case 5: return "Pending";
-            default: return "Unknown";
-        }
-    }
-
-    static void logger(void* fmi2ComponentEnvironment,
+    void logger(void* fmi2ComponentEnvironment,
             fmi2String instance_name, fmi2Status status, fmi2String category, fmi2String message, ...) {
-        printf("status = %s, instanceName = %s, category = %s: %s\n", status_to_string(status), instance_name, category, message);
+        printf("status = %s, instanceName = %s, category = %s: %s\n", to_string(status).c_str(), instance_name, category, message);
     }
 
-    static const fmi2CallbackFunctions callback = {
+    const fmi2CallbackFunctions callback = {
             logger,
             calloc,
             free,
@@ -59,7 +48,11 @@ namespace {
 }
 
 
-FmiLibrary::FmiLibrary(const string libName) {
+FmiLibrary::FmiLibrary(const string &libName) {
+
+#ifndef NDEBUG
+    cout << "Loading shared library '" << libName << "'" << endl;
+#endif
 
 #ifdef WIN32
     handle_ = LoadLibrary(libName.c_str());

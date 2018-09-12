@@ -71,6 +71,8 @@ namespace {
             return fmi2Initial::approx;
         } else if (str == "calculated") {
             return fmi2Initial ::calculated;
+        } else {
+            //TODO Not implemented yet!
         }
     }
 

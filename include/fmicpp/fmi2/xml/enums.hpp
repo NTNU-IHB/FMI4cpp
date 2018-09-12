@@ -22,20 +22,34 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMICPP_FMICPP_HPP
-#define FMICPP_FMICPP_HPP
+#ifndef FMICPP_ENUMS_HPP
+#define FMICPP_ENUMS_HPP
 
-#include <string>
-#include "fmi2Functions.h"
-#include "enumsToString.hpp"
+namespace fmicpp::fmi2::xml {
 
-#include "xml/ModelDescription.hpp"
-#include "xml/ScalarVariable.hpp"
+    enum class fmi2Causality {
+        parameter,
+        calculatedParameter,
+        input,
+        output,
+        local,
+        independent
+    };
 
-#include "import/Fmu.hpp"
-#include "import/FmuInstance.hpp"
-#include "import/FmuSlave.hpp"
+    enum class fmi2Variability {
+        constant,
+        fixed,
+        tunable,
+        discrete,
+        continuous
+    };
 
-#include "import/CoSimulationSlaveBuilder.hpp"
+    enum class fmi2Initial {
+        exact,
+        approx,
+        calculated
+    };
 
-#endif //FMICPP_FMICPP_HPP
+}
+
+#endif //FMICPP_ENUMS_HPP

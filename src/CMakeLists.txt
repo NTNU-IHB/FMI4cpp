@@ -10,6 +10,7 @@ SET(HEADERS
         ../include/fmicpp/fmi2/fmi2Functions.h
         ../include/fmicpp/fmi2/fmi2FunctionTypes.h
         ../include/fmicpp/fmi2/fmi2TypesPlatform.h
+        ../include/fmicpp/fmi2/enumsToString.hpp
 
         ../include/fmicpp/fmi2/import/FmuInstance.hpp
         ../include/fmicpp/fmi2/import/FmuSlave.hpp
@@ -24,6 +25,8 @@ SET(HEADERS
         ../include/fmicpp/fmi2/import/CoSimulationSlaveBuilder.hpp
         ../include/fmicpp/fmi2/import/ModelExchangeInstance.hpp
         ../include/fmicpp/fmi2/import/ModelExchangeInstanceBuilder.hpp
+
+        ../include/fmicpp/fmi2/xml/enums.hpp
         ../include/fmicpp/fmi2/xml/FmuTypeAttributes.hpp
         ../include/fmicpp/fmi2/xml/ModelDescription.hpp
         ../include/fmicpp/fmi2/xml/SpecificModelDescription.hpp

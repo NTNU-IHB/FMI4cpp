@@ -28,6 +28,7 @@
 #include <memory>
 #include <boost/property_tree/ptree.hpp>
 
+#include "enums.hpp"
 #include "../fmi2Functions.h"
 #include "ScalarVariableAttributes.hpp"
 
@@ -44,29 +45,6 @@ namespace fmicpp::fmi2::xml {
     struct BooleanVariable;
     struct EnumerationVariable;
 
-    enum class fmi2Causality {
-        parameter,
-        calculatedParameter,
-        input,
-        output,
-        local,
-        independent
-    };
-
-    enum class fmi2Variability {
-        constant,
-        fixed,
-        tunable,
-        discrete,
-        continuous
-    };
-
-    enum class fmi2Initial {
-        exact,
-        approx,
-        calculated
-    };
-    
     struct ScalarVariable {
         
         fmi2ValueReference valueReference;
