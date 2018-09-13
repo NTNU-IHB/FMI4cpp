@@ -27,7 +27,7 @@
 #include <fmicpp/tools/os_util.hpp>
 
 using namespace std;
-using namespace fmicpp::fmi2::import;
+using namespace fmicpp::fmi2;
 
 const double stop = 10.0;
 const double step_size = 1E-4;
@@ -38,7 +38,7 @@ int main() {
                             + "/FMI_2.0/CoSimulation/" + getOs() +
                             "/20sim/4.6.4.8004/ControlledTemperature/ControlledTemperature.fmu";
 
-    Fmu fmu(fmu_path);
+    import::Fmu fmu(fmu_path);
     const auto slave = fmu.asCoSimulationFmu().newInstance();
     slave->init();
 
