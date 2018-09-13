@@ -2,8 +2,7 @@
 
 FMI4cpp is a cross-platform FMI 2.0 implementation written in modern C++.
 
-Looking for an easy to install, easy to use, easy to reason with, object oriented and fast FMI implementation for C++? 
-
+Looking for an easy to install, easy to use, easy to reason with, object oriented and fast FMI implementation for C++?    
 You are in luck. FMI4cpp is all of those.
 
 ### Why should I use this over other C/C++ FMI Libraries
