@@ -51,4 +51,6 @@ BOOST_AUTO_TEST_CASE(test_equals) {
     BOOST_CHECK_EQUAL(true, md.supportsCoSimulation());
     BOOST_CHECK_EQUAL(false, md.supportsModelExchange());
 
+    BOOST_CHECK_EQUAL(120, md.modelVariables().size());
+
 }
