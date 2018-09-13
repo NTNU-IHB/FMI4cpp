@@ -27,6 +27,9 @@
 using namespace std;
 using namespace fmicpp::fmi2::xml;
 
+const unsigned int ModelVariables::size() const {
+    return vector::size();
+}
 
 void ModelVariables::load(const ptree &node) {
 
