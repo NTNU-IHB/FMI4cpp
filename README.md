@@ -56,11 +56,10 @@ int main() {
     auto slave = fmu.asCoSimulationFmu().newInstance();
     slave->init();
    
+    double t;
     fmi2Real value;
+    fmi2Status status;
     fmi2ValueReference vr = var.getValueReference();
-    
-     double t;
-     fmi2Status status;
     while ( (t = slave->getSimulationTime()) <= stop) {
     
         status = slave->doStep(stepSize);
@@ -87,5 +86,8 @@ int main() {
 
 #### Running examples/tests
 
-In order to run any code referencing an actual FMU, a system variable named __TEST_FMUs__ must be present on your system. 
+In order to run the example/test code, a system variable named __TEST_FMUs__ must be present on your system. 
 This variable should point to the location of the content found [here](https://github.com/markaren/TEST_FMUs).
+
+To build the examples pass ```-DBUILD_EXAMPLES``` to CMmake.
+Similarly, to build the tests, pass ```-DBUILD_TESTS``` to CMake.
