@@ -109,7 +109,7 @@ namespace fmicpp::fmi2::import {
         }
 
         bool canGetAndSetFMUstate() const override {
-            return modelDescription_->canGetAndSetFMUstate;
+            return modelDescription_->canGetAndSetFMUstate();
         }
 
         fmi2Status getFMUstate(fmi2FMUstate &state) override {
@@ -125,7 +125,7 @@ namespace fmicpp::fmi2::import {
         }
 
         bool canSerializeFmuState() const override {
-            return modelDescription_->canSerializeFMUstate;
+            return modelDescription_->canSerializeFMUstate();
         }
 
         fmi2Status serializeFMUstate(const fmi2FMUstate &state, vector<fmi2Byte> &serializedState) override {
@@ -138,7 +138,7 @@ namespace fmicpp::fmi2::import {
         }
 
         bool providesDirectionalDerivative() const override {
-            return modelDescription_->providesDirectionalDerivative;
+            return modelDescription_->providesDirectionalDerivative();
         }
 
         fmi2Status getDirectionalDerivative(

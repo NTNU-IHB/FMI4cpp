@@ -42,31 +42,54 @@ using boost::property_tree::ptree;
 
 namespace fmicpp::fmi2::xml {
 
-    struct CoSimulationModelDescription;
-    struct ModelExchangeModelDescription;
+    class CoSimulationModelDescription;
+    class ModelExchangeModelDescription;
 
-    struct ModelDescription {
+    class ModelDescription {
 
-        string guid;
-        string fmiVersion;
-        string modelName;
-        string description;
-        string version;
-        string author;
-        string license;
-        string copyright;
-        string generationTool;
-        string generationDateAndTime;
+    private:
+        string guid_;
+        string fmiVersion_;
+        string modelName_;
+        string description_;
+        string version_;
+        string author_;
+        string license_;
+        string copyright_;
+        string generationTool_;
+        string generationDateAndTime_;
 
-        unsigned int numberOfEventIndicators;
-        unsigned int numberOfContinuousStates;
+        unsigned int numberOfEventIndicators_;
 
-        bool supportsModelExchange;
-        bool supportsCoSimulation;
+        ModelVariables modelVariables_;
+        ModelStructure modelStructure_;
+        DefaultExperiment defaultExperiment_;
 
-        ModelVariables modelVariables;
-        ModelStructure modelStructure;
-        DefaultExperiment defaultExperiment;
+        shared_ptr<CoSimulationAttributes> coSimulation_ = nullptr;
+        shared_ptr<ModelExchangeAttributes> modelExchange_ = nullptr;
+
+    public:
+
+        string guid() const;
+        string fmiVersion() const;
+        string modelName() const;
+        string description() const;
+        string version() const;
+        string author() const;
+        string license() const;
+        string copyright() const;
+        string generationTool() const;
+        string generationDateAndTime() const;
+
+        unsigned int numberOfEventIndicators() const;
+        unsigned int numberOfContinuousStates() const;
+
+        const ModelVariables &modelVariables() const;
+        const ModelStructure &modelStructure() const;
+        const DefaultExperiment &defaultExperiment() const;
+
+        bool supportsModelExchange() const;
+        bool supportsCoSimulation() const;
 
         shared_ptr<CoSimulationModelDescription> asCoSimulationModelDescription() const;
         shared_ptr<ModelExchangeModelDescription> asModelExchangeModelDescription() const;
@@ -75,10 +98,6 @@ namespace fmicpp::fmi2::xml {
         ScalarVariable getVariableByValueReference(const fmi2ValueReference vr) const;
 
         void load(const string &fileName);
-
-    private:
-        shared_ptr<CoSimulationAttributes> coSimulation = nullptr;
-        shared_ptr<ModelExchangeAttributes> modelExchange = nullptr;
 
     };
 

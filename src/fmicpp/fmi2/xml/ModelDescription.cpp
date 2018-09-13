@@ -35,53 +35,117 @@ void ModelDescription::load(const string &fileName) {
 
     ptree root = tree.get_child("fmiModelDescription");
 
-    guid = root.get<string>("<xmlattr>.guid");
-    fmiVersion = root.get<string>("<xmlattr>.fmiVersion");
-    modelName = root.get<string>("<xmlattr>.modelName");
-    description = root.get<string>("<xmlattr>.description", "");
-    author = root.get<string>("<xmlattr>.author", "");
-    version = root.get<string>("<xmlattr>.version", "");
-    license = root.get<string>("<xmlattr>.license", "");
-    generationTool = root.get<string>("<xmlattr>.generationTool", "");
-    generationDateAndTime = root.get<string>("<xmlattr>.generationDateAndTime", "");
+    guid_ = root.get<string>("<xmlattr>.guid");
+    fmiVersion_ = root.get<string>("<xmlattr>.fmiVersion");
+    modelName_ = root.get<string>("<xmlattr>.modelName");
+    description_ = root.get<string>("<xmlattr>.description", "");
+    author_ = root.get<string>("<xmlattr>.author", "");
+    version_ = root.get<string>("<xmlattr>.version", "");
+    license_ = root.get<string>("<xmlattr>.license", "");
+    generationTool_ = root.get<string>("<xmlattr>.generationTool", "");
+    generationDateAndTime_ = root.get<string>("<xmlattr>.generationDateAndTime", "");
+    numberOfEventIndicators_ = root.get<unsigned int>("<xmlattr>.numberOfEventIndicators", 0);
 
     for (const ptree::value_type &v : root) {
 
         if (v.first == "CoSimulation") {
-            coSimulation = make_shared<CoSimulationAttributes>();
-            coSimulation->load(v.second);
-            supportsCoSimulation = true;
+            coSimulation_ = make_shared<CoSimulationAttributes>();
+            coSimulation_->load(v.second);
         } else if (v.first == "ModelExchange") {
-            modelExchange = make_shared<ModelExchangeAttributes>();
-            modelExchange->load(v.second);
-            supportsModelExchange = true;
+            modelExchange_ = make_shared<ModelExchangeAttributes>();
+            modelExchange_->load(v.second);
         } else if (v.first == "DefaultExperiment") {
-            defaultExperiment.load(v.second);
+            defaultExperiment_.load(v.second);
         } else if (v.first == "ModelVariables") {
-            modelVariables.load(v.second);
+            modelVariables_.load(v.second);
         } else if (v.first == "ModelStructure") {
-            modelStructure.load(v.second);
+            modelStructure_.load(v.second);
         }
 
     }
 
-    numberOfContinuousStates = modelStructure.derivatives.size();
-    numberOfEventIndicators = root.get<unsigned int>("<xmlattr>.numberOfEventIndicators", 0);
+}
 
+string ModelDescription::guid() const {
+    return guid_;
+}
+
+string ModelDescription::fmiVersion() const {
+    return fmiVersion_;
+}
+
+string ModelDescription::modelName() const {
+    return modelName_;
+}
+
+string ModelDescription::description() const {
+    return description_;
+}
+
+string ModelDescription::version() const {
+    return version_;
+}
+
+string ModelDescription::author() const {
+    return author_;
+}
+
+string ModelDescription::license() const {
+    return license_;
+}
+
+string ModelDescription::copyright() const {
+    return copyright_;
+}
+
+string ModelDescription::generationTool() const {
+    return generationTool_;
+}
+
+string ModelDescription::generationDateAndTime() const {
+    return generationDateAndTime_;
+}
+
+unsigned int ModelDescription::numberOfEventIndicators() const {
+    return numberOfEventIndicators_;
+}
+
+unsigned int ModelDescription::numberOfContinuousStates() const {
+    return modelStructure_.derivatives.size();
+}
+
+const ModelVariables &ModelDescription::modelVariables() const {
+    return modelVariables_;
+}
+
+const ModelStructure &ModelDescription::modelStructure() const {
+    return modelStructure_;
+}
+
+const DefaultExperiment &ModelDescription::defaultExperiment() const {
+    return defaultExperiment_;
+}
+
+bool ModelDescription::supportsModelExchange() const {
+    return modelExchange_ != nullptr;
+}
+
+bool ModelDescription::supportsCoSimulation() const {
+    return coSimulation_ != nullptr;
 }
 
 shared_ptr<CoSimulationModelDescription> ModelDescription::asCoSimulationModelDescription() const {
-    return make_shared<CoSimulationModelDescription>(*this, *coSimulation);
+    return make_shared<CoSimulationModelDescription>(*this, *coSimulation_);
 }
 
 shared_ptr<ModelExchangeModelDescription> ModelDescription::asModelExchangeModelDescription() const {
-    return make_shared<ModelExchangeModelDescription>(*this, *modelExchange);
+    return make_shared<ModelExchangeModelDescription>(*this, *modelExchange_);
 }
 
 ScalarVariable ModelDescription::getVariableByName(const string &name) const {
-    return modelVariables.getByName(name);
+    return modelVariables_.getByName(name);
 }
 
 ScalarVariable ModelDescription::getVariableByValueReference(const fmi2ValueReference vr) const {
-    return modelVariables.getByValueReference(vr);
+    return modelVariables_.getByValueReference(vr);
 }

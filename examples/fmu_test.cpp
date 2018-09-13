@@ -46,7 +46,7 @@ int main() {
     cout << "Causality=" << to_string(var.causality) << ", variability=" << to_string(var.variability) << endl;
 
     auto md_cs = md.asCoSimulationModelDescription();
-    cout << "modelIdentifier=" << md_cs->modelIdentifier << endl;
+    cout << "modelIdentifier=" << md_cs->modelIdentifier() << endl;
 
     auto slave1 = fmu.asCoSimulationFmu().newInstance();
     auto slave2 = fmu.asCoSimulationFmu().newInstance();

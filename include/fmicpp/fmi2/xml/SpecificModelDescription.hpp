@@ -30,40 +30,64 @@
 
 namespace fmicpp::fmi2::xml {
 
-    struct SpecificModelDescription: ModelDescription {
+    class SpecificModelDescription: public ModelDescription {
 
-        const string modelIdentifier;
+    private:
+        const string modelIdentifier_;
 
-        const bool canGetAndSetFMUstate;
-        const bool canSerializeFMUstate;
-        const bool needsExecutionTool;
-        const bool canNotUseMemoryManagementFunctions;
-        const bool canBeInstantiatedOnlyOncePerProcess;
-        const bool providesDirectionalDerivative;
+        const bool canGetAndSetFMUstate_;
+        const bool canSerializeFMUstate_;
+        const bool needsExecutionTool_;
+        const bool canNotUseMemoryManagementFunctions_;
+        const bool canBeInstantiatedOnlyOncePerProcess_;
+        const bool providesDirectionalDerivative_;
 
-        const SourceFiles sourceFiles;
+        const SourceFiles sourceFiles_;
+
+    public:
 
         explicit SpecificModelDescription(const ModelDescription modelDescription, const FmuTypeAttributes data);
 
+        string modelIdentifier() const;
+        bool canGetAndSetFMUstate() const;
+        bool canSerializeFMUstate() const;
+        bool needsExecutionTool() const;
+        bool canNotUseMemoryManagementFunctions() const;
+        bool canBeInstantiatedOnlyOncePerProcess() const;
+        bool providesDirectionalDerivative() const;
+        SourceFiles sourceFiles() const;
+
     };
 
-    struct CoSimulationModelDescription : SpecificModelDescription {
+    class CoSimulationModelDescription : public SpecificModelDescription {
 
-        const bool canInterpolateInputs;
-        const bool canRunAsynchronuously;
-        const bool canHandleVariableCommunicationStepSize;
+    private:
+        const bool canInterpolateInputs_;
+        const bool canRunAsynchronuously_;
+        const bool canHandleVariableCommunicationStepSize_;
 
-        const unsigned int maxOutputDerivativeOrder;
+        const unsigned int maxOutputDerivativeOrder_;
+
+    public:
 
         explicit CoSimulationModelDescription(const ModelDescription modelDescription, const CoSimulationAttributes data);
 
+        bool canInterpolateInputs() const;
+        bool canRunAsynchronuously() const;
+        bool canHandleVariableCommunicationStepSize() const;
+        const unsigned int maxOutputDerivativeOrder() const;
+
     };
 
-    struct ModelExchangeModelDescription : SpecificModelDescription {
+    class ModelExchangeModelDescription : public SpecificModelDescription {
 
-        const bool completedIntegratorStepNotNeeded;
+    private:
+        const bool completedIntegratorStepNotNeeded_;
 
+    public:
         explicit ModelExchangeModelDescription(const ModelDescription modelDescription, const ModelExchangeAttributes data);
+
+        bool completedIntegratorStepNotNeeded() const;
 
     };
 

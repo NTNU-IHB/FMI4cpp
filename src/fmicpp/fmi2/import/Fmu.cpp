@@ -68,11 +68,11 @@ Fmu::Fmu(const string &fmu_file): fmu_file_(fmu_file) {
 }
 
 const string Fmu::getGuid() const {
-    return modelDescription_->guid;
+    return modelDescription_->guid();
 }
 
 const string Fmu::getModelName() const {
-    return modelDescription_->modelName;
+    return modelDescription_->modelName();
 }
 
 const string Fmu::getModelDescriptionXml() const {
@@ -86,11 +86,11 @@ const ModelDescription &Fmu::getModelDescription() const {
 }
 
 const bool Fmu::supportsModelExchange() const {
-    return modelDescription_->supportsModelExchange;
+    return modelDescription_->supportsModelExchange();
 }
 
 const bool Fmu::supportsCoSimulation() const {
-    return modelDescription_->supportsCoSimulation;
+    return modelDescription_->supportsCoSimulation();
 }
 
 CoSimulationSlaveBuilder &Fmu::asCoSimulationFmu() {

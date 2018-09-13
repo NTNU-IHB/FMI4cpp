@@ -34,16 +34,17 @@ CoSimulationSlaveBuilder::CoSimulationSlaveBuilder(Fmu &fmu) : InstanceBuilder(f
 unique_ptr<CoSimulationSlave> CoSimulationSlaveBuilder::newInstance(const bool visible, const bool loggingOn) {
     shared_ptr<CoSimulationModelDescription> modelDescription = fmu_.getModelDescription().asCoSimulationModelDescription();
     shared_ptr<CoSimulationLibrary> lib = nullptr;
-    if (modelDescription->canBeInstantiatedOnlyOncePerProcess) {
-        lib = make_shared<CoSimulationLibrary>(fmu_.getAbsoluteLibraryPath(modelDescription->modelIdentifier));
+    string modelIdentifier = modelDescription->modelIdentifier();
+    if (modelDescription->canBeInstantiatedOnlyOncePerProcess()) {
+        lib = make_shared<CoSimulationLibrary>(fmu_.getAbsoluteLibraryPath(modelIdentifier));
     } else {
         if (lib_ == nullptr) {
-            lib_ = make_shared<CoSimulationLibrary>(fmu_.getAbsoluteLibraryPath(modelDescription->modelIdentifier));
+            lib_ = make_shared<CoSimulationLibrary>(fmu_.getAbsoluteLibraryPath(modelIdentifier));
         }
        lib = lib_;
     }
-    fmi2Component c = lib->instantiate(modelDescription->modelIdentifier,
-                               fmi2CoSimulation, modelDescription->guid, fmu_.getResourcePath(), visible, loggingOn);
+    fmi2Component c = lib->instantiate(modelIdentifier, fmi2CoSimulation, modelDescription->guid(),
+            fmu_.getResourcePath(), visible, loggingOn);
     return make_unique<CoSimulationSlave>(c, modelDescription, lib);
 }
 

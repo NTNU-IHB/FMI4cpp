@@ -33,15 +33,16 @@ ModelExchangeInstanceBuilder::ModelExchangeInstanceBuilder(Fmu &fmu): InstanceBu
 unique_ptr<ModelExchangeInstance> ModelExchangeInstanceBuilder::newInstance(const bool visible, const bool loggingOn) {
     shared_ptr<ModelExchangeModelDescription> modelDescription = fmu_.getModelDescription().asModelExchangeModelDescription();
     shared_ptr<ModelExchangeLibrary> lib = nullptr;
-    if (modelDescription->canBeInstantiatedOnlyOncePerProcess) {
-        lib = make_shared<ModelExchangeLibrary>(fmu_.getAbsoluteLibraryPath(modelDescription->modelIdentifier));
+    string modelIdentifier = modelDescription->modelIdentifier();
+    if (modelDescription->canBeInstantiatedOnlyOncePerProcess()) {
+        lib = make_shared<ModelExchangeLibrary>(fmu_.getAbsoluteLibraryPath(modelIdentifier));
     } else {
         if (lib_ == nullptr) {
-            lib_ = make_shared<ModelExchangeLibrary>(fmu_.getAbsoluteLibraryPath(modelDescription->modelIdentifier));
+            lib_ = make_shared<ModelExchangeLibrary>(fmu_.getAbsoluteLibraryPath(modelIdentifier));
         }
         lib = lib_;
     }
-    fmi2Component c = lib->instantiate(modelDescription->modelIdentifier,
-                                       fmi2ModelExchange, modelDescription->guid, fmu_.getResourcePath(), visible, loggingOn);
+    fmi2Component c = lib->instantiate(modelIdentifier, fmi2ModelExchange, modelDescription->guid(),
+            fmu_.getResourcePath(), visible, loggingOn);
     return make_unique<ModelExchangeInstance>(c, modelDescription, lib);
 }
