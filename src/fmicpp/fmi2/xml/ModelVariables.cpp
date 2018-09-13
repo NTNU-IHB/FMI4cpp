@@ -45,6 +45,10 @@ void ModelVariables::load(const ptree &node) {
 
 }
 
+ScalarVariable ModelVariables::getByIndex(const size_type index) const {
+    return vector::at(index);
+}
+
 ScalarVariable ModelVariables::getByName(const string &name) const {
 
     for (const auto& var : *this) {
