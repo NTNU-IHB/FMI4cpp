@@ -37,5 +37,6 @@
 #include "import/FmuSlave.hpp"
 
 #include "import/CoSimulationSlaveBuilder.hpp"
+#include "import/ModelExchangeInstanceBuilder.hpp"
 
 #endif //FMICPP_FMICPP_HPP
