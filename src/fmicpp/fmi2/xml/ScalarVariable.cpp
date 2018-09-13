@@ -172,6 +172,10 @@ int IntegerVariable::getStart() const {
     return attribute_.start;
 }
 
+void IntegerVariable::setStart(const int start) {
+    attribute_.start = start;
+}
+
 string IntegerVariable::getQuantity() const {
     return attribute_.quantity;
 }
@@ -232,7 +236,7 @@ string StringVariable::getStart() const {
     return attribute_.start;
 }
 
-void StringVariable::setStart(string start) {
+void StringVariable::setStart(const string start) {
     attribute_.start = start;
 }
 
@@ -260,7 +264,7 @@ int EnumerationVariable::getStart() const {
     return attribute_.start;
 }
 
-void EnumerationVariable::setStart(int start) {
+void EnumerationVariable::setStart(const int start) {
     attribute_.start = start;
 }
 

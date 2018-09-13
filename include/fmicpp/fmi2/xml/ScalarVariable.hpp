@@ -95,6 +95,7 @@ namespace fmicpp::fmi2::xml {
         int getMin() const;
         int getMax() const;
         int getStart() const;
+        void setStart(const int start);
 
         string getQuantity() const;
 
@@ -112,7 +113,7 @@ namespace fmicpp::fmi2::xml {
         double getMax() const;
 
         double getStart() const;
-        void setStart(double start);
+        void setStart(const double start);
 
         double getNominal() const;
 
@@ -138,7 +139,7 @@ namespace fmicpp::fmi2::xml {
 
         string getStart() const;
 
-        void setStart(string start);
+        void setStart(const string start);
 
     };
 
@@ -152,7 +153,7 @@ namespace fmicpp::fmi2::xml {
 
         bool getStart() const;
 
-        void setStart(bool start);
+        void setStart(const bool start);
 
     };
 
@@ -167,7 +168,7 @@ namespace fmicpp::fmi2::xml {
         int getMin() const;
         int getMax() const;
         int getStart() const;
-        void setStart(int start);
+        void setStart(const int start);
 
         string getQuantity() const;
 
