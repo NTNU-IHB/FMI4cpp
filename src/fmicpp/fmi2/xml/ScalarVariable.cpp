@@ -72,7 +72,7 @@ namespace {
         } else if (str == "calculated") {
             return fmi2Initial ::calculated;
         } else {
-            //TODO Not implemented yet!
+            return fmi2Initial::unknown;
         }
     }
 
@@ -80,73 +80,190 @@ namespace {
 
 void ScalarVariable::load(const ptree &node) {
 
-    valueReference = node.get<fmi2ValueReference >("<xmlattr>.valueReference");
-    name = node.get<string>("<xmlattr>.name");
-    description = node.get<string>("<xmlattr>.description", "");
-    canHandleMultipleSetPerTimelnstant = node.get<bool>("<xmlattr>.canHandleMultipleSetPerTimelnstant", false);
+    name_ = node.get<string>("<xmlattr>.name");
+    description_ = node.get<string>("<xmlattr>.description", "");
+    valueReference_ = node.get<fmi2ValueReference >("<xmlattr>.valueReference");
+    canHandleMultipleSetPerTimelnstant_ = node.get<bool>("<xmlattr>.canHandleMultipleSetPerTimelnstant", false);
 
-    causality = parseCausality(node.get<string >("<xmlattr>.causality", ""));
-    variability = parseVariability(node.get<string >("<xmlattr>.variability", ""));
-
-    auto o_initial = node.get_optional<string>("<xmlattr>.initial");
-    if (o_initial) {
-        initial = make_unique<fmi2Initial >(parseInitial(*o_initial));
-    }
+    causality_ = parseCausality(node.get<string >("<xmlattr>.causality", ""));
+    variability_ = parseVariability(node.get<string >("<xmlattr>.variability", ""));
+    initial_ =  parseInitial(node.get<string>("<xmlattr>.initial", ""));
 
     for (const ptree::value_type &v : node) {
         if (v.first == "Integer") {
-            integerAttribute = make_unique<IntegerAttribute>(IntegerAttribute());
-            integerAttribute->load(v.second);
+            integerAttribute_ = make_unique<IntegerAttribute>(IntegerAttribute());
+            integerAttribute_->load(v.second);
         } else if (v.first == "Real") {
-            realAttribute = make_unique<RealAttribute>(RealAttribute());
-            realAttribute->load(v.second);
+            realAttribute_ = make_unique<RealAttribute>(RealAttribute());
+            realAttribute_->load(v.second);
         } else if (v.first == "String") {
-            stringAttribute = make_unique<StringAttribute>(StringAttribute());
-            stringAttribute->load(v.second);
+            stringAttribute_ = make_unique<StringAttribute>(StringAttribute());
+            stringAttribute_->load(v.second);
         } else if (v.first == "Boolean") {
-            booleanAttribute = make_unique<BooleanAttribute>(BooleanAttribute());
-            booleanAttribute->load(v.second);
+            booleanAttribute_ = make_unique<BooleanAttribute>(BooleanAttribute());
+            booleanAttribute_->load(v.second);
         } else if (v.first == "Enumeration") {
-            enumerationAttribute = make_unique<EnumerationAttribute>(EnumerationAttribute());
-            enumerationAttribute->load(v.second);
+            enumerationAttribute_ = make_unique<EnumerationAttribute>(EnumerationAttribute());
+            enumerationAttribute_->load(v.second);
         }
     }
 
 }
 
 IntegerVariable ScalarVariable::asIntegerVariable() {
-    return IntegerVariable(*integerAttribute);
+    return IntegerVariable(*integerAttribute_);
 }
 
 RealVariable ScalarVariable::asRealVariable() {
-    return RealVariable(*realAttribute);
+    return RealVariable(*realAttribute_);
 }
 
 StringVariable ScalarVariable::asStringVariable() {
-    return StringVariable(*stringAttribute);
+    return StringVariable(*stringAttribute_);
 }
 
 BooleanVariable ScalarVariable::asBooleanVariable() {
-    return BooleanVariable(*booleanAttribute);
+    return BooleanVariable(*booleanAttribute_);
 }
 
 EnumerationVariable ScalarVariable::asEnumerationVariable() {
-    return EnumerationVariable(*enumerationAttribute);
+    return EnumerationVariable(*enumerationAttribute_);
 }
 
-IntegerVariable::IntegerVariable(const IntegerAttribute &attr)
-    : min(attr.min), max(attr.max), start(attr.start), quantity(attr.quantity) {};
+string ScalarVariable::getName() const {
+    return name_;
+}
 
-RealVariable::RealVariable(const RealAttribute &attr)
-    : min(attr.min), max(attr.max), start(attr.start), nominal(attr.nominal),
-    reinit(attr.nominal), unbounded(attr.unbounded), relativeQuantity(attr.relativeQuantity),
-    quantity(attr.quantity), unit(attr.unit), displayUnit(attr.displayUnit), derivative(attr.derivative) {};
+string ScalarVariable::getDescription() const {
+    return description_;
+}
 
-StringVariable::StringVariable(const StringAttribute &attr)
-    : start(attr.start) {};
+fmi2ValueReference ScalarVariable::getValueReference() const {
+    return valueReference_;
+}
 
-BooleanVariable::BooleanVariable(const BooleanAttribute &attr)
-    : start(attr.start) {};
+bool ScalarVariable::canHandleMultipleSetPerTimelnstant() const {
+    return canHandleMultipleSetPerTimelnstant_;
+}
 
-EnumerationVariable::EnumerationVariable(const EnumerationAttribute &attr)
-    : min(attr.min), max(attr.max), start(attr.start), quantity(attr.quantity) {};
+fmi2Causality ScalarVariable::getCausality() const {
+    return causality_;
+}
+
+fmi2Variability ScalarVariable::getVariability() const {
+    return variability_;
+}
+
+fmi2Initial ScalarVariable::getInitial() const {
+    return initial_;
+}
+
+IntegerVariable::IntegerVariable(const IntegerAttribute attribute): attribute_(attribute) {}
+
+int IntegerVariable::getMin() const {
+    return attribute_.min;
+}
+
+int IntegerVariable::getMax() const {
+    return attribute_.max;
+}
+
+int IntegerVariable::getStart() const {
+    return attribute_.start;
+}
+
+string IntegerVariable::getQuantity() const {
+    return attribute_.quantity;
+}
+
+RealVariable::RealVariable(const RealAttribute attribute): attribute_(attribute) {}
+
+double RealVariable::getMin() const {
+    return attribute_.min;
+}
+
+double RealVariable::getMax() const {
+    return attribute_.max;
+}
+
+double RealVariable::getStart() const {
+    return attribute_.start;
+}
+
+void RealVariable::setStart(const double start) {
+    attribute_.start = start;
+}
+
+double RealVariable::getNominal() const {
+    return attribute_.nominal;
+}
+
+bool RealVariable::getReinit() const {
+    return attribute_.reinit;
+}
+
+bool RealVariable::getUnbounded() const {
+    return attribute_.unbounded;
+}
+
+bool RealVariable::getRelativeQuantity() const {
+    return attribute_.relativeQuantity;
+}
+
+string RealVariable::getQuantity() const {
+    return attribute_.quantity;
+}
+
+string RealVariable::getUnit() const {
+    return attribute_.unit;
+}
+
+string RealVariable::getDisplayUnit() const {
+    return attribute_.displayUnit;
+}
+
+unsigned int RealVariable::getDerivative() const {
+    return attribute_.derivative;
+}
+
+StringVariable::StringVariable(const StringAttribute attribute): attribute_(attribute) {}
+
+string StringVariable::getStart() const {
+    return attribute_.start;
+}
+
+void StringVariable::setStart(string start) {
+    attribute_.start = start;
+}
+
+BooleanVariable::BooleanVariable(const BooleanAttribute attribute): attribute_(attribute) {}
+
+bool BooleanVariable::getStart() const {
+    return attribute_.start;
+}
+
+void BooleanVariable::setStart(bool start) {
+    attribute_.start = start;
+}
+
+EnumerationVariable::EnumerationVariable(const EnumerationAttribute attribute): attribute_(attribute) {}
+
+int EnumerationVariable::getMin() const {
+    return attribute_.min;
+}
+
+int EnumerationVariable::getMax() const {
+    return attribute_.max;
+}
+
+int EnumerationVariable::getStart() const {
+    return attribute_.start;
+}
+
+void EnumerationVariable::setStart(int start) {
+    attribute_.start = start;
+}
+
+string EnumerationVariable::getQuantity() const {
+    return attribute_.quantity;
+}

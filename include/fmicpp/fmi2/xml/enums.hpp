@@ -47,7 +47,8 @@ namespace fmicpp::fmi2::xml {
     enum class fmi2Initial {
         exact,
         approx,
-        calculated
+        calculated,
+        unknown
     };
 
 }

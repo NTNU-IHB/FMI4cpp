@@ -39,22 +39,40 @@ using boost::property_tree::ptree;
 namespace fmicpp::fmi2::xml {
 
     //forward declarations
-    struct IntegerVariable;
-    struct RealVariable;
-    struct StringVariable;
-    struct BooleanVariable;
-    struct EnumerationVariable;
+    class IntegerVariable;
+    class RealVariable;
+    class StringVariable;
+    class BooleanVariable;
+    class EnumerationVariable;
 
-    struct ScalarVariable {
-        
-        fmi2ValueReference valueReference;
-        string name;
-        string description;
-        bool canHandleMultipleSetPerTimelnstant;
+    class ScalarVariable {
 
-        fmi2Causality causality;
-        fmi2Variability variability;
-        shared_ptr<fmi2Initial> initial;
+    private:
+        string name_;
+        string description_;
+        fmi2ValueReference valueReference_;
+        bool canHandleMultipleSetPerTimelnstant_;
+
+        fmi2Causality causality_;
+        fmi2Variability variability_;
+        fmi2Initial initial_;
+
+        shared_ptr<IntegerAttribute> integerAttribute_;
+        shared_ptr<RealAttribute> realAttribute_;
+        shared_ptr<StringAttribute> stringAttribute_;
+        shared_ptr<BooleanAttribute> booleanAttribute_;
+        shared_ptr<EnumerationAttribute> enumerationAttribute_;
+
+    public:
+
+        string getName() const;
+        string getDescription() const;
+        fmi2ValueReference getValueReference() const;
+        bool canHandleMultipleSetPerTimelnstant() const;
+
+        fmi2Causality getCausality() const;
+        fmi2Variability getVariability() const;
+        fmi2Initial getInitial() const;
 
         IntegerVariable asIntegerVariable();
         RealVariable asRealVariable();
@@ -64,73 +82,94 @@ namespace fmicpp::fmi2::xml {
 
         void load(const ptree &node);
 
+    };
+
+    class IntegerVariable : public ScalarVariable {
+
     private:
-        shared_ptr<IntegerAttribute> integerAttribute;
-        shared_ptr<RealAttribute> realAttribute;
-        shared_ptr<StringAttribute> stringAttribute;
-        shared_ptr<BooleanAttribute> booleanAttribute;
-        shared_ptr<EnumerationAttribute> enumerationAttribute;
+        IntegerAttribute attribute_;
+
+    public:
+        IntegerVariable(const IntegerAttribute attribute);
+
+        int getMin() const;
+        int getMax() const;
+        int getStart() const;
+
+        string getQuantity() const;
 
     };
 
-    struct IntegerVariable : ScalarVariable {
+    class RealVariable : public ScalarVariable {
 
-        const int min;
-        const int max;
-        int start;
+    private:
+        RealAttribute attribute_;
 
-        const string quantity;
+    public:
+        RealVariable(const RealAttribute attribute);
 
-        IntegerVariable(const IntegerAttribute &attribute);
+        double getMin() const;
+        double getMax() const;
 
-    };
+        double getStart() const;
+        void setStart(double start);
 
-    struct RealVariable : ScalarVariable {
+        double getNominal() const;
 
-        const double min;
-        const double max;
-        double start;
-        const double nominal;
+        bool getReinit() const;
+        bool getUnbounded() const;
+        bool getRelativeQuantity() const;
 
-        const bool reinit;
-        const bool unbounded;
-        const bool relativeQuantity;
+        string getQuantity() const;
+        string getUnit() const;
+        string getDisplayUnit() const;
 
-        const string quantity;
-        const string unit;
-        const string displayUnit;
-
-        const unsigned int derivative;
-
-        RealVariable(const RealAttribute &attribute);
+        unsigned int getDerivative() const;
 
     };
 
-    struct StringVariable : ScalarVariable {
+    class StringVariable : public ScalarVariable {
 
-        string start;
+    private:
+        StringAttribute attribute_;
 
-        StringVariable(const StringAttribute &attribute);
+    public:
+        StringVariable(const StringAttribute attribute);
 
-    };
+        string getStart() const;
 
-    struct BooleanVariable : ScalarVariable {
-
-        bool start;
-
-        BooleanVariable(const BooleanAttribute &attribute);
+        void setStart(string start);
 
     };
 
-    struct EnumerationVariable : ScalarVariable {
+    class BooleanVariable : public ScalarVariable {
 
-        const int min;
-        const int max;
-        int start;
+    private:
+         BooleanAttribute attribute_;
 
-        const string quantity;
+    public:
+        BooleanVariable(const BooleanAttribute attribute);
 
-        EnumerationVariable(const EnumerationAttribute &attribute);
+        bool getStart() const;
+
+        void setStart(bool start);
+
+    };
+
+    class EnumerationVariable : public ScalarVariable {
+
+    private:
+        EnumerationAttribute attribute_;
+
+    public:
+        EnumerationVariable(const EnumerationAttribute attribute);
+
+        int getMin() const;
+        int getMax() const;
+        int getStart() const;
+        void setStart(int start);
+
+        string getQuantity() const;
 
     };
     
