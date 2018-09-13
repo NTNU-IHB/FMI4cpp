@@ -45,19 +45,44 @@ namespace {
 
 }
 
+unsigned int Unknown::index() const {
+    return index_;
+}
+
+std::string Unknown::dependencyKind() const {
+    return dependencyKind_;
+}
+
+const std::vector<unsigned int > &Unknown::dependencies() const {
+    return *dependencies_;
+}
+
 void Unknown::load(const ptree &node) {
-    index = node.get<unsigned int>("<xmlattr>.index");
+    index_ = node.get<unsigned int>("<xmlattr>.index");
+}
+
+
+const std::vector<Unknown> &ModelStructure::outputs() const {
+    return outputs_;
+}
+
+const std::vector<Unknown> &ModelStructure::derivatives() const {
+    return derivatives_;
+}
+
+const std::vector<Unknown> &ModelStructure::initialUnknowns() const {
+    return initialUnknowns_;
 }
 
 void ModelStructure::load(const ptree &node) {
 
     for (const ptree::value_type &v : node) {
         if (v.first == "Outputs") {
-            loadUnknowns(v.second, outputs);
+            loadUnknowns(v.second, outputs_);
         } else if (v.first == "Derivatives") {
-            loadUnknowns(v.second, derivatives);
+            loadUnknowns(v.second, derivatives_);
         } else if (v.first == "InitialUnknowns") {
-            loadUnknowns(v.second, initialUnknowns);
+            loadUnknowns(v.second, initialUnknowns_);
         }
     }
 

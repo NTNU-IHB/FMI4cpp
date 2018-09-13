@@ -111,7 +111,7 @@ unsigned int ModelDescription::numberOfEventIndicators() const {
 }
 
 unsigned int ModelDescription::numberOfContinuousStates() const {
-    return modelStructure_.derivatives.size();
+    return modelStructure_.derivatives().size();
 }
 
 const ModelVariables &ModelDescription::modelVariables() const {

@@ -36,21 +36,34 @@ using boost::property_tree::ptree;
 
 namespace fmicpp::fmi2::xml {
 
-    struct Unknown {
+    class Unknown {
 
-        unsigned int index;
-        std::string dependencyKind;
-        std::shared_ptr<std::vector<unsigned int >> dependencies;
+    private:
+        unsigned int index_;
+        std::string dependencyKind_;
+        std::shared_ptr<std::vector<unsigned int >> dependencies_;
+
+    public:
+        unsigned int index() const;
+        std::string dependencyKind() const;
+        const std::vector<unsigned int > &dependencies() const;
 
         void load(const ptree &node);
 
     };
 
-    struct ModelStructure {
+    class ModelStructure {
 
-        std::vector<Unknown> outputs;
-        std::vector<Unknown> derivatives;
-        std::vector<Unknown> initialUnknowns;
+    private:
+        std::vector<Unknown> outputs_;
+        std::vector<Unknown> derivatives_;
+        std::vector<Unknown> initialUnknowns_;
+
+    public:
+
+        const std::vector<Unknown> &outputs() const;
+        const std::vector<Unknown> &derivatives() const;
+        const std::vector<Unknown> &initialUnknowns() const;
 
         void load(const ptree &node);
 
