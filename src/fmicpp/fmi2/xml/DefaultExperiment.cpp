@@ -27,8 +27,24 @@
 using namespace fmicpp::fmi2::xml;
 
 void DefaultExperiment::load(const ptree &node) {
-    startTime = node.get<double>("<xmlattr>.startTime", 0);
-    stopTime = node.get<double>("<xmlattr>.stopTime", 0);
-    stepSize = node.get<double>("<xmlattr>.stepSize", 1E-2);
-    tolerance = node.get<double>("<xmlattr>.tolerance", 1E-4);
+    startTime_ = node.get<double>("<xmlattr>.startTime", 0);
+    stopTime_ = node.get<double>("<xmlattr>.stopTime", 0);
+    stepSize_ = node.get<double>("<xmlattr>.stepSize", 1E-2);
+    tolerance_ = node.get<double>("<xmlattr>.tolerance", 1E-4);
+}
+
+double DefaultExperiment::startTime() const {
+    return startTime_;
+}
+
+double DefaultExperiment::stopTime() const {
+    return stopTime_;
+}
+
+double DefaultExperiment::stepSize() const {
+    return stepSize_;
+}
+
+double DefaultExperiment::tolerance() const {
+    return tolerance_;
 }

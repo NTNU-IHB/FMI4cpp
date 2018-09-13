@@ -32,12 +32,19 @@ using boost::property_tree::ptree;
 
 namespace fmicpp::fmi2::xml {
 
-    struct DefaultExperiment {
+    class DefaultExperiment {
 
-        double startTime;
-        double stopTime;
-        double stepSize;
-        double tolerance;
+    private:
+        double startTime_;
+        double stopTime_;
+        double stepSize_;
+        double tolerance_;
+
+    public:
+        double startTime() const;
+        double stopTime() const;
+        double stepSize() const;
+        double tolerance() const;
 
         void load(const ptree &node);
 
