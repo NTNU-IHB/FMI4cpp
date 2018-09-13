@@ -37,7 +37,6 @@
 #include <boost/uuid/uuid_io.hpp>
 #include <boost/uuid/uuid_generators.hpp>
 
-
 using namespace std;
 using namespace fmicpp::fmi2::import;
 
@@ -56,7 +55,13 @@ Fmu::Fmu(const string &fmu_file): fmu_file_(fmu_file) {
 
     const string fmuName = fs::path(fmu_file).stem().string();
     tmp_path_ = fs::temp_directory_path() /= fs::path(fmuName + "_" + generate_uuid());
-    create_directories(tmp_path_);
+
+    if (!create_directories(tmp_path_)) {
+        throw runtime_error("Failed to create temporary directory!");
+    }
+#ifndef NDEBUG
+        cout << "Created temporary directory '" << tmp_path_.string() << "'" << endl;
+#endif
 
     if (!extractContents(fmu_file, tmp_path_.string())) {
         throw runtime_error("Failed to extract FMU!");
