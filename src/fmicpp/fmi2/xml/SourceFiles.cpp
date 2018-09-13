@@ -39,6 +39,10 @@ const size_t SourceFiles::size() const {
     return vector::size();
 }
 
+File SourceFiles::at(const size_type index) const {
+    return vector::at(index);
+}
+
 void SourceFiles::load(const ptree &node) {
 
     for (const ptree::value_type &v : node) {

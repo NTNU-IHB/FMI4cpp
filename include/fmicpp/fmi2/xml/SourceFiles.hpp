@@ -52,6 +52,8 @@ namespace fmicpp::fmi2::xml {
     public:
 
         const size_t size() const;
+        
+        File at(const size_type index) const;
 
         void load(const ptree &node);
 
