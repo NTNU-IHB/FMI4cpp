@@ -24,11 +24,19 @@
 #include <fmicpp/fmi2/xml/SourceFiles.hpp>
 #include <iostream>
 
-using namespace std;
+using std::string;
 using namespace fmicpp::fmi2::xml;
 
 void File::load(const ptree &node) {
-    name = node.get<string>("<xmlattr>.name");
+    name_ = node.get<string>("<xmlattr>.name");
+}
+
+std::string File::name() const {
+    return name_;
+}
+
+const size_t SourceFiles::size() const {
+    return vector::size();
 }
 
 void SourceFiles::load(const ptree &node) {
