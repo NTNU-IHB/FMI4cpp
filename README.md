@@ -3,6 +3,7 @@
 FMI4cpp is a cross-platform FMI 2.0 implementation written in modern C++.
 
 Looking for an easy to install, easy to use, easy to reason with, object oriented and fast FMI implementation for C++? 
+
 You are in luck. FMI4cpp is all of those.
 
 ### Why should I use this over other C/C++ FMI Libraries
@@ -23,11 +24,13 @@ Install [vcpkg](https://github.com/Microsoft/vcpkg) and run:
 ./vcpkg install boost-property-tree boost-filesystem libzip
 ``` 
 
-On linux you might also need to install some additional libraries:
+On linux you _might_ also need to install some additional libraries:
 
 ```
 ./vcpkg install zlib bzip2 openssl
 ``` 
+
+These can probably also be installed through the native package handler. 
 
 #### API
 
@@ -38,6 +41,9 @@ On linux you might also need to install some additional libraries:
 
 using namespace fmicpp::fmi2;
 
+const double stop = 10.0;
+const double stepSize = 1.0/100;
+
 int main() {
 
     import::Fmu fmu("path/to/fmu.fmu");
@@ -46,17 +52,16 @@ int main() {
     xml::ScalarVariable var = md.getVariableByName("my_var");
     
     auto md_cs = md.asCoSimulationModelDescription();
-    std::cout << "modelIdentifier=" << md_cs->modelIdentifier << std::endl;
+    std::cout << "modelIdentifier=" << md_cs->modelIdentifier() << std::endl;
     
     auto slave = fmu.asCoSimulationFmu().newInstance();
     slave->init();
-    
-    double stop = 10.0;
-    double stepSize = 1.0/100;
-    
-    double t;
-    fmi2Status status;
+   
     fmi2Real value;
+    fmi2ValueReference vr = var.getValueReference();
+    
+     double t;
+     fmi2Status status;
     while ( (t = slave->getSimulationTime()) <= stop) {
     
         status = slave->doStep(stepSize);
@@ -65,12 +70,12 @@ int main() {
             break;
         }
         
-        status = slave->readReal(var.valueReference, value);
+        status = slave->readReal(vr, value);
         if (status != fmi2OK) {
             //error handling
             break;
         }
-        std::cout << "t=" << t << ", " << var.name << "=" << value << std::endl;
+        std::cout << "t=" << t << ", " << var.getName() << "=" << value << std::endl;
      
     }
     
