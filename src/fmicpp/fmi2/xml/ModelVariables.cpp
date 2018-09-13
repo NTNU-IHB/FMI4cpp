@@ -27,7 +27,7 @@
 using namespace std;
 using namespace fmicpp::fmi2::xml;
 
-const unsigned int ModelVariables::size() const {
+const size_t ModelVariables::size() const {
     return vector::size();
 }
 
