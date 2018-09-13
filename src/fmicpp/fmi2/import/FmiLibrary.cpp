@@ -22,6 +22,11 @@
  * THE SOFTWARE.
  */
 
+#ifndef NDEBUG
+#include <boost/filesystem.hpp>
+namespace fs = boost::filesystem;
+#endif
+
 #include <sstream>
 #include <iostream>
 #include <fmicpp/fmi2/enumsToString.hpp>
@@ -51,7 +56,7 @@ namespace {
 FmiLibrary::FmiLibrary(const string &libName) {
 
 #ifndef NDEBUG
-    cout << "Loading shared library '" << libName << "'" << endl;
+    cout << "Loading shared library " << fs::path(libName).stem() << endl;
 #endif
 
 #ifdef WIN32
