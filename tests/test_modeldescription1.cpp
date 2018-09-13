@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-#define BOOST_TEST_MODULE MyTest
+#define BOOST_TEST_MODULE ControlledTemperature_Modeldescription_Test
 
 #include <string>
 #include <boost/test/unit_test.hpp>
@@ -40,11 +40,13 @@ const string fmu_path = string(getenv("TEST_FMUs"))
 
 import::Fmu fmu(fmu_path);
 auto md = fmu.getModelDescription();
+auto md_cs = md.asCoSimulationModelDescription();
 
-BOOST_AUTO_TEST_CASE(test_equals) {
+BOOST_AUTO_TEST_CASE(test1) {
 
     BOOST_CHECK_EQUAL("2.0", md.fmiVersion());
     BOOST_CHECK_EQUAL("ControlledTemperature", md.modelName());
+
     BOOST_CHECK_EQUAL("{06c2700b-b39c-4895-9151-304ddde28443}", md.guid());
     BOOST_CHECK_EQUAL("20-sim", md.generationTool());
 
@@ -53,6 +55,8 @@ BOOST_AUTO_TEST_CASE(test_equals) {
 
     BOOST_CHECK_EQUAL(120, md.modelVariables().size());
 
-    BOOST_CHECK_EQUAL("EulerAngles.c", md.asCoSimulationModelDescription()->sourceFiles().at(0).name());
+    BOOST_CHECK_EQUAL("ControlledTemperature", md_cs->modelIdentifier());
+    BOOST_CHECK_EQUAL(10, md_cs->sourceFiles().size());
+    BOOST_CHECK_EQUAL("EulerAngles.c", md_cs->sourceFiles().at(0).name());
 
 }
