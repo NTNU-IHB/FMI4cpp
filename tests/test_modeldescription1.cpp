@@ -53,4 +53,6 @@ BOOST_AUTO_TEST_CASE(test_equals) {
 
     BOOST_CHECK_EQUAL(120, md.modelVariables().size());
 
+    BOOST_CHECK_EQUAL("EulerAngles.c", md.asCoSimulationModelDescription()->sourceFiles().at(0).name());
+
 }
