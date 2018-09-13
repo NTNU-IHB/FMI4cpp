@@ -25,6 +25,8 @@
 #ifndef FMICPP_SPECIFICMODELDESCRIPTION_HPP
 #define FMICPP_SPECIFICMODELDESCRIPTION_HPP
 
+#include "ModelDescription.hpp"
+#include "SourceFiles.hpp"
 
 namespace fmicpp::fmi2::xml {
 
