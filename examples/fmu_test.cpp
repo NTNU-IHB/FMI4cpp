@@ -43,7 +43,7 @@ int main() {
 
     auto md = fmu.getModelDescription();
     xml::ScalarVariable var = md.getVariableByValueReference(47);
-    cout << "Causality=" << to_string(var.getCausality) << ", variability=" << to_string(var.getVariability) << endl;
+    cout << "Causality=" << to_string(var.getCausality()) << ", variability=" << to_string(var.getVariability()) << endl;
 
     auto md_cs = md.asCoSimulationModelDescription();
     cout << "modelIdentifier=" << md_cs->modelIdentifier() << endl;
@@ -65,11 +65,11 @@ int main() {
         if (!status == fmi2OK) {
             break;
         }
-        status = slave1->readReal(var.getValueReference, v);
+        status = slave1->readReal(var.getValueReference(), v);
         if (status != fmi2OK) {
             break;
         }
-        cout << "t=" << t << ", " << var.getName << "=" << v << endl;
+        cout << "t=" << t << ", " << var.getName() << "=" << v << endl;
     }
 
     status = slave1->terminate();
