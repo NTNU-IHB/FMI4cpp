@@ -38,11 +38,11 @@ const string fmu_path = string(getenv("TEST_FMUs"))
                         "/20sim/4.6.4.8004/ControlledTemperature/ControlledTemperature.fmu";
 
 
-import::Fmu fmu(fmu_path);
-auto md = fmu.getModelDescription();
-auto md_cs = md.asCoSimulationModelDescription();
-
 BOOST_AUTO_TEST_CASE(test1) {
+
+    import::Fmu fmu(fmu_path);
+    auto md = fmu.getModelDescription();
+    auto md_cs = md.asCoSimulationModelDescription();
 
     BOOST_CHECK_EQUAL("2.0", md.fmiVersion());
     BOOST_CHECK_EQUAL("ControlledTemperature", md.modelName());
