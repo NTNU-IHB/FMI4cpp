@@ -61,22 +61,37 @@ void ScalarVariable::load(const ptree &node) {
 }
 
 IntegerVariable ScalarVariable::asIntegerVariable() {
+    if (integerAttribute_ == nullptr) {
+        throw runtime_error(getName() + "is not of type Integer!");
+    }
     return IntegerVariable(*this, *integerAttribute_);
 }
 
 RealVariable ScalarVariable::asRealVariable() {
+    if (realAttribute_ == nullptr) {
+        throw runtime_error(getName() + "is not of type Real!");
+    }
     return RealVariable(*this, *realAttribute_);
 }
 
 StringVariable ScalarVariable::asStringVariable() {
+    if (stringAttribute_ == nullptr) {
+        throw runtime_error(getName() + "is not of type String!");
+    }
     return StringVariable(*this, *stringAttribute_);
 }
 
 BooleanVariable ScalarVariable::asBooleanVariable() {
+    if (booleanAttribute_ == nullptr) {
+        throw runtime_error(getName() + "is not of type Boolean!");
+    }
     return BooleanVariable(*this, *booleanAttribute_);
 }
 
 EnumerationVariable ScalarVariable::asEnumerationVariable() {
+    if (enumerationAttribute_ == nullptr) {
+        throw runtime_error(getName() + "is not of type Enumeration!");
+    }
     return EnumerationVariable(*this, *enumerationAttribute_);
 }
 
@@ -108,7 +123,7 @@ fmi2Initial ScalarVariable::getInitial() const {
     return initial_;
 }
 
-IntegerVariable::IntegerVariable(ScalarVariable &var, IntegerAttribute &attribute)
+IntegerVariable::IntegerVariable(const ScalarVariable &var, IntegerAttribute &attribute)
     : ScalarVariable(var), attribute_(attribute) {}
 
 shared_ptr<int> IntegerVariable::getMin() const {
@@ -131,7 +146,7 @@ shared_ptr<string> IntegerVariable::getQuantity() const {
     return attribute_.quantity;
 }
 
-RealVariable::RealVariable(ScalarVariable &var, RealAttribute &attribute)
+RealVariable::RealVariable(const ScalarVariable &var, RealAttribute &attribute)
     : ScalarVariable(var), attribute_(attribute) {}
 
 shared_ptr<double> RealVariable::getMin() const {
@@ -182,29 +197,30 @@ shared_ptr<unsigned int> RealVariable::getDerivative() const {
     return attribute_.derivative;
 }
 
-StringVariable::StringVariable(ScalarVariable &var, StringAttribute &attribute)
+StringVariable::StringVariable(const ScalarVariable &var, StringAttribute &attribute)
     : ScalarVariable(var), attribute_(attribute) {}
 
 shared_ptr<string> StringVariable::getStart() const {
     return attribute_.start;
 }
 
-void StringVariable::setStart(shared_ptr<string> start) {
-    attribute_.start = start;
+void StringVariable::setStart(const string &start) {
+    attribute_.start = make_shared<string>(start);
 }
 
-BooleanVariable::BooleanVariable(ScalarVariable &var, BooleanAttribute &attribute)
+BooleanVariable::BooleanVariable(const ScalarVariable &var, BooleanAttribute &attribute)
     : ScalarVariable(var), attribute_(attribute) {}
 
 shared_ptr<bool> BooleanVariable::getStart() const {
     return attribute_.start;
 }
 
-void BooleanVariable::setStart(bool start) {
+void BooleanVariable::setStart(const bool start) {
     attribute_.start = make_shared<bool>(start);
 }
 
-EnumerationVariable::EnumerationVariable(ScalarVariable &var, EnumerationAttribute &attribute): attribute_(attribute) {}
+EnumerationVariable::EnumerationVariable(const ScalarVariable &var, EnumerationAttribute &attribute)
+    : ScalarVariable(var), attribute_(attribute) {}
 
 shared_ptr<int> EnumerationVariable::getMin() const {
     return attribute_.min;

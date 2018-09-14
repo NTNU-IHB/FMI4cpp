@@ -90,7 +90,7 @@ namespace fmicpp::fmi2::xml {
         IntegerAttribute &attribute_;
 
     public:
-        IntegerVariable(ScalarVariable &var, IntegerAttribute &attribute);
+        IntegerVariable(const ScalarVariable &var, IntegerAttribute &attribute);
 
         shared_ptr<int> getMin() const;
         shared_ptr<int> getMax() const;
@@ -108,7 +108,7 @@ namespace fmicpp::fmi2::xml {
         RealAttribute &attribute_;
 
     public:
-        RealVariable(ScalarVariable &var, RealAttribute &attribute);
+        RealVariable(const ScalarVariable &var, RealAttribute &attribute);
 
         shared_ptr<double> getMin() const;
         shared_ptr<double> getMax() const;
@@ -136,11 +136,11 @@ namespace fmicpp::fmi2::xml {
         StringAttribute attribute_;
 
     public:
-        StringVariable(ScalarVariable &var, StringAttribute &attribute);
+        StringVariable(const ScalarVariable &var, StringAttribute &attribute);
 
         shared_ptr<string> getStart() const;
 
-        void setStart(shared_ptr<string> start);
+        void setStart(const string &start);
 
     };
 
@@ -150,7 +150,7 @@ namespace fmicpp::fmi2::xml {
          BooleanAttribute attribute_;
 
     public:
-        BooleanVariable(ScalarVariable &var, BooleanAttribute &attribute);
+        BooleanVariable(const ScalarVariable &var, BooleanAttribute &attribute);
 
         shared_ptr<bool> getStart() const;
 
@@ -164,7 +164,7 @@ namespace fmicpp::fmi2::xml {
         EnumerationAttribute attribute_;
 
     public:
-        EnumerationVariable(ScalarVariable &var, EnumerationAttribute &attribute);
+        EnumerationVariable(const ScalarVariable &var, EnumerationAttribute &attribute);
 
         shared_ptr<int> getMin() const;
         shared_ptr<int> getMax() const;
