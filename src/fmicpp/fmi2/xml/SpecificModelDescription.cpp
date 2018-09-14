@@ -27,7 +27,7 @@
 
 using namespace fmicpp::fmi2::xml;
 
-SpecificModelDescription::SpecificModelDescription(const ModelDescription md, const FmuTypeAttributes data)
+SpecificModelDescription::SpecificModelDescription(const ModelDescription &md, const FmuTypeAttributes &data)
         : ModelDescription(md),
           modelIdentifier_(data.modelIdentifier),
           canGetAndSetFMUstate_(data.canGetAndSetFMUstate),
@@ -70,7 +70,7 @@ SourceFiles SpecificModelDescription::sourceFiles() const {
     return sourceFiles_;
 }
 
-CoSimulationModelDescription::CoSimulationModelDescription(const ModelDescription md, const CoSimulationAttributes data)
+CoSimulationModelDescription::CoSimulationModelDescription(const ModelDescription &md, const CoSimulationAttributes &data)
         : SpecificModelDescription(md, data),
           canInterpolateInputs_(data.canInterpolateInputs),
           canRunAsynchronuously_(data.canRunAsynchronuously),
@@ -93,7 +93,7 @@ const unsigned int CoSimulationModelDescription::maxOutputDerivativeOrder() cons
     return maxOutputDerivativeOrder_;
 }
 
-ModelExchangeModelDescription::ModelExchangeModelDescription(const ModelDescription md, const ModelExchangeAttributes data)
+ModelExchangeModelDescription::ModelExchangeModelDescription(const ModelDescription &md, const ModelExchangeAttributes &data)
         : SpecificModelDescription(md, data),
           completedIntegratorStepNotNeeded_(data.completedIntegratorStepNotNeeded) {};
 

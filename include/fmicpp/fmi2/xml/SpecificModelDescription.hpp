@@ -46,7 +46,9 @@ namespace fmicpp::fmi2::xml {
 
     public:
 
-        explicit SpecificModelDescription(const ModelDescription modelDescription, const FmuTypeAttributes data);
+        explicit SpecificModelDescription(
+                const ModelDescription &modelDescription, 
+                const FmuTypeAttributes &data);
 
         string modelIdentifier() const;
         bool canGetAndSetFMUstate() const;
@@ -70,7 +72,9 @@ namespace fmicpp::fmi2::xml {
 
     public:
 
-        explicit CoSimulationModelDescription(const ModelDescription modelDescription, const CoSimulationAttributes data);
+        explicit CoSimulationModelDescription(
+                const ModelDescription &modelDescription, 
+                const CoSimulationAttributes &data);
 
         bool canInterpolateInputs() const;
         bool canRunAsynchronuously() const;
@@ -85,7 +89,9 @@ namespace fmicpp::fmi2::xml {
         const bool completedIntegratorStepNotNeeded_;
 
     public:
-        explicit ModelExchangeModelDescription(const ModelDescription modelDescription, const ModelExchangeAttributes data);
+        explicit ModelExchangeModelDescription(
+                const ModelDescription &modelDescription, 
+                const ModelExchangeAttributes &data);
 
         bool completedIntegratorStepNotNeeded() const;
 
