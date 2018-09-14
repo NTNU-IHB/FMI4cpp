@@ -25,61 +25,63 @@
 #ifndef FMICPP_SCALARVARIBALEATTRIBUTES_HPP
 #define FMICPP_SCALARVARIBALEATTRIBUTES_HPP
 
-#include <string>
+#include <memory>
 #include <boost/property_tree/ptree.hpp>
 
 using std::string;
+using std::shared_ptr;
 using boost::property_tree::ptree;
 
 namespace fmicpp::fmi2::xml {
 
     struct IntegerAttribute {
-        int min;
-        int max;
-        int start;
 
-        string quantity;
+        shared_ptr<int> min;
+        shared_ptr<int> max;
+        shared_ptr<int> start;
+
+        shared_ptr<string> quantity;
 
         void load(const ptree &node);
     };
 
     struct RealAttribute {
-        double min;
-        double max;
-        double start;
-        double nominal;
+        shared_ptr<double> min;
+        shared_ptr<double> max;
+        shared_ptr<double> start;
+        shared_ptr<double> nominal;
+
+        shared_ptr<string> quantity;
+        shared_ptr<string> unit;
+        shared_ptr<string> displayUnit;
+
+        shared_ptr<unsigned int> derivative;
 
         bool reinit;
         bool unbounded;
         bool relativeQuantity;
 
-        string quantity;
-        string unit;
-        string displayUnit;
-
-        unsigned int derivative;
-
         void load(const ptree &node);
     };
 
     struct StringAttribute {
-        string start;
+        shared_ptr<string> start;
 
         void load(const ptree &node);
     };
 
     struct BooleanAttribute {
-        bool start;
+        shared_ptr<bool> start;
 
         void load(const ptree &node);
     };
 
     struct EnumerationAttribute {
-        int min;
-        int max;
-        int start;
+        shared_ptr<int> min;
+        shared_ptr<int> max;
+        shared_ptr<int> start;
 
-        string quantity;
+        shared_ptr<string> quantity;
 
         void load(const ptree &node);
     };

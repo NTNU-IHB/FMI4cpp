@@ -22,7 +22,6 @@
  * THE SOFTWARE.
  */
 
-#include <boost/optional.hpp>
 #include <fmicpp/fmi2/xml/ScalarVariable.hpp>
 
 using namespace std;
@@ -62,23 +61,23 @@ void ScalarVariable::load(const ptree &node) {
 }
 
 IntegerVariable ScalarVariable::asIntegerVariable() {
-    return IntegerVariable(*integerAttribute_);
+    return IntegerVariable(*this, *integerAttribute_);
 }
 
 RealVariable ScalarVariable::asRealVariable() {
-    return RealVariable(*realAttribute_);
+    return RealVariable(*this, *realAttribute_);
 }
 
 StringVariable ScalarVariable::asStringVariable() {
-    return StringVariable(*stringAttribute_);
+    return StringVariable(*this, *stringAttribute_);
 }
 
 BooleanVariable ScalarVariable::asBooleanVariable() {
-    return BooleanVariable(*booleanAttribute_);
+    return BooleanVariable(*this, *booleanAttribute_);
 }
 
 EnumerationVariable ScalarVariable::asEnumerationVariable() {
-    return EnumerationVariable(*enumerationAttribute_);
+    return EnumerationVariable(*this, *enumerationAttribute_);
 }
 
 string ScalarVariable::getName() const {
@@ -109,47 +108,49 @@ fmi2Initial ScalarVariable::getInitial() const {
     return initial_;
 }
 
-IntegerVariable::IntegerVariable(const IntegerAttribute attribute): attribute_(attribute) {}
+IntegerVariable::IntegerVariable(ScalarVariable &var, IntegerAttribute &attribute)
+    : ScalarVariable(var), attribute_(attribute) {}
 
-int IntegerVariable::getMin() const {
+shared_ptr<int> IntegerVariable::getMin() const {
     return attribute_.min;
 }
 
-int IntegerVariable::getMax() const {
+shared_ptr<int> IntegerVariable::getMax() const {
     return attribute_.max;
 }
 
-int IntegerVariable::getStart() const {
+shared_ptr<int> IntegerVariable::getStart() const {
     return attribute_.start;
 }
 
 void IntegerVariable::setStart(const int start) {
-    attribute_.start = start;
+    attribute_.start = make_shared<int>(start);
 }
 
-string IntegerVariable::getQuantity() const {
+shared_ptr<string> IntegerVariable::getQuantity() const {
     return attribute_.quantity;
 }
 
-RealVariable::RealVariable(const RealAttribute attribute): attribute_(attribute) {}
+RealVariable::RealVariable(ScalarVariable &var, RealAttribute &attribute)
+    : ScalarVariable(var), attribute_(attribute) {}
 
-double RealVariable::getMin() const {
+shared_ptr<double> RealVariable::getMin() const {
     return attribute_.min;
 }
 
-double RealVariable::getMax() const {
+shared_ptr<double> RealVariable::getMax() const {
     return attribute_.max;
 }
 
-double RealVariable::getStart() const {
+shared_ptr<double> RealVariable::getStart() const {
     return attribute_.start;
 }
 
 void RealVariable::setStart(const double start) {
-    attribute_.start = start;
+    attribute_.start = make_shared<double>(start);
 }
 
-double RealVariable::getNominal() const {
+shared_ptr<double> RealVariable::getNominal() const {
     return attribute_.nominal;
 }
 
@@ -165,60 +166,62 @@ bool RealVariable::getRelativeQuantity() const {
     return attribute_.relativeQuantity;
 }
 
-string RealVariable::getQuantity() const {
+shared_ptr<string> RealVariable::getQuantity() const {
     return attribute_.quantity;
 }
 
-string RealVariable::getUnit() const {
+shared_ptr<string> RealVariable::getUnit() const {
     return attribute_.unit;
 }
 
-string RealVariable::getDisplayUnit() const {
+shared_ptr<string> RealVariable::getDisplayUnit() const {
     return attribute_.displayUnit;
 }
 
-unsigned int RealVariable::getDerivative() const {
+shared_ptr<unsigned int> RealVariable::getDerivative() const {
     return attribute_.derivative;
 }
 
-StringVariable::StringVariable(const StringAttribute attribute): attribute_(attribute) {}
+StringVariable::StringVariable(ScalarVariable &var, StringAttribute &attribute)
+    : ScalarVariable(var), attribute_(attribute) {}
 
-string StringVariable::getStart() const {
+shared_ptr<string> StringVariable::getStart() const {
     return attribute_.start;
 }
 
-void StringVariable::setStart(const string start) {
+void StringVariable::setStart(shared_ptr<string> start) {
     attribute_.start = start;
 }
 
-BooleanVariable::BooleanVariable(const BooleanAttribute attribute): attribute_(attribute) {}
+BooleanVariable::BooleanVariable(ScalarVariable &var, BooleanAttribute &attribute)
+    : ScalarVariable(var), attribute_(attribute) {}
 
-bool BooleanVariable::getStart() const {
+shared_ptr<bool> BooleanVariable::getStart() const {
     return attribute_.start;
 }
 
 void BooleanVariable::setStart(bool start) {
-    attribute_.start = start;
+    attribute_.start = make_shared<bool>(start);
 }
 
-EnumerationVariable::EnumerationVariable(const EnumerationAttribute attribute): attribute_(attribute) {}
+EnumerationVariable::EnumerationVariable(ScalarVariable &var, EnumerationAttribute &attribute): attribute_(attribute) {}
 
-int EnumerationVariable::getMin() const {
+shared_ptr<int> EnumerationVariable::getMin() const {
     return attribute_.min;
 }
 
-int EnumerationVariable::getMax() const {
+shared_ptr<int> EnumerationVariable::getMax() const {
     return attribute_.max;
 }
 
-int EnumerationVariable::getStart() const {
+shared_ptr<int> EnumerationVariable::getStart() const {
     return attribute_.start;
 }
 
 void EnumerationVariable::setStart(const int start) {
-    attribute_.start = start;
+    attribute_.start = make_shared<int>(start);
 }
 
-string EnumerationVariable::getQuantity() const {
+shared_ptr<string> EnumerationVariable::getQuantity() const {
     return attribute_.quantity;
 }

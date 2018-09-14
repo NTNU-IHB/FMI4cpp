@@ -24,43 +24,100 @@
 
 #include <fmicpp/fmi2/xml/ScalarVariableAttributes.hpp>
 
+using namespace std;
 using namespace fmicpp::fmi2::xml;
 
 void IntegerAttribute::load(const ptree &node) {
-    min = node.get<int>("<xmlattr>.min", 0);
-    max = node.get<int>("<xmlattr>.max", 0);
-    start = node.get<int>("<xmlattr>.start", 0);
-    quantity = node.get<string>("<xmlattr>.quantity", "");
+    auto min_optional = node.get_optional<int>("<xmlattr>.min");
+    if (min_optional) {
+        min = make_shared<int>(*min_optional);
+    }
+    auto max_optional = node.get_optional<int>("<xmlattr>.max");
+    if (max_optional) {
+        max = make_shared<int>(*max_optional);
+    }
+    auto start_optional = node.get_optional<int>("<xmlattr>.start");
+    if (start_optional) {
+        start = make_shared<int>(*start_optional);
+    }
+    auto quantity_optional = node.get_optional<string>("<xmlattr>.quantity");
+    if (quantity_optional) {
+        quantity = make_shared<string>(*quantity_optional);
+    }
+    
 }
 
 void RealAttribute::load(const ptree &node) {
-    min = node.get<double>("<xmlattr>.min", 0);
-    max = node.get<double>("<xmlattr>.max", 0);
-    start = node.get<double>("<xmlattr>.start", 0);
-    nominal = node.get<double>("<xmlattr>.nominal", 0);
+    auto min_optional = node.get_optional<double>("<xmlattr>.min");
+    if (min_optional) {
+        min = make_shared<double>(*min_optional);
+    }
+    auto max_optional = node.get_optional<double>("<xmlattr>.max");
+    if (max_optional) {
+        max = make_shared<double>(*max_optional);
+    }
+    auto start_optional = node.get_optional<double>("<xmlattr>.start");
+    if (start_optional) {
+        start = make_shared<double>(*start_optional);
+    }
+    auto nominal_optional = node.get_optional<double>("<xmlattr>.nominal");
+    if (nominal_optional) {
+        nominal = make_shared<double>(*nominal_optional);
+    }
 
-    quantity = node.get<string>("<xmlattr>.quantity", "");
-    unit = node.get<string>("<xmlattr>.unit", "");
-    displayUnit = node.get<string>("<xmlattr>.displayUnit", "");
+    auto quantity_optional = node.get_optional<string>("<xmlattr>.quantity");
+    if (quantity_optional) {
+        quantity = make_shared<string>(*quantity_optional);
+    }
+    auto unit_optional = node.get_optional<string>("<xmlattr>.unit");
+    if (unit_optional) {
+        unit = make_shared<string>(*unit_optional);
+    }
+    auto displayUnit_optional = node.get_optional<string>("<xmlattr>.displayUnit");
+    if (displayUnit_optional) {
+        displayUnit = make_shared<string>(*displayUnit_optional);
+    }
 
+    auto derivative_optional = node.get_optional<unsigned int>("<xmlattr>.derivative");
+    if (derivative_optional) {
+        derivative = make_shared<unsigned int>(*derivative_optional);
+    }
+    
     reinit = node.get<bool>("<xmlattr>.reinit", false);
     unbounded = node.get<bool>("<xmlattr>.unbounded", false);
     relativeQuantity = node.get<bool>("<xmlattr>.relativeQuantity", false);
-
-    derivative = node.get<unsigned int>("<xmlattr>.reinit", -1);
+    
 }
 
 void StringAttribute::load(const ptree &node) {
-    start = node.get<string>("<xmlattr>.start", "");
+    auto start_optional = node.get_optional<string>("<xmlattr>.start");
+    if (start_optional) {
+        start = make_shared<string>(*start_optional);
+    }
 }
 
 void BooleanAttribute::load(const ptree &node) {
-    start = node.get<bool>("<xmlattr>.start", false);
+    auto start_optional = node.get_optional<bool>("<xmlattr>.start");
+    if (start_optional) {
+        start = make_shared<bool>(*start_optional);
+    }
 }
 
 void EnumerationAttribute::load(const ptree &node) {
-    min = node.get<int>("<xmlattr>.min", 0);
-    max = node.get<int>("<xmlattr>.max", 0);
-    start = node.get<int>("<xmlattr>.start", 0);
-    quantity = node.get<string>("<xmlattr>.quantity", "");
+    auto min_optional = node.get_optional<int>("<xmlattr>.min");
+    if (min_optional) {
+        min = make_shared<int>(*min_optional);
+    }
+    auto max_optional = node.get_optional<int>("<xmlattr>.max");
+    if (max_optional) {
+        max = make_shared<int>(*max_optional);
+    }
+    auto start_optional = node.get_optional<int>("<xmlattr>.start");
+    if (start_optional) {
+        start = make_shared<int>(*start_optional);
+    }
+    auto quantity_optional = node.get_optional<string>("<xmlattr>.quantity");
+    if (quantity_optional) {
+        quantity = make_shared<string>(*quantity_optional);
+    }
 }
