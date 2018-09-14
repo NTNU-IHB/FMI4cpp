@@ -80,4 +80,11 @@ BOOST_AUTO_TEST_CASE(test1) {
     BOOST_CHECK_EQUAL(115, outputs[0].index());
     BOOST_CHECK_EQUAL(116, outputs[1].index());
 
+    auto de = md.defaultExperiment();
+    BOOST_CHECK(de != nullptr);
+    BOOST_CHECK_EQUAL(0.0, *de->startTime());
+    BOOST_CHECK_EQUAL(20.0, *de->stopTime());
+    BOOST_CHECK_EQUAL(1E-4, *de->stepSize());
+    BOOST_CHECK_EQUAL(nullptr, de->tolerance());
+
 }
