@@ -45,18 +45,18 @@ void DefaultExperiment::load(const ptree &node) {
     }
 }
 
-std::shared_ptr<double> DefaultExperiment::getStartTime() const {
+std::shared_ptr<double> DefaultExperiment::startTime() const {
     return startTime_;
 }
 
-std::shared_ptr<double> DefaultExperiment::getStopTime() const {
+std::shared_ptr<double> DefaultExperiment::stopTime() const {
     return stopTime_;
 }
 
-std::shared_ptr<double> DefaultExperiment::getStepSize() const {
+std::shared_ptr<double> DefaultExperiment::stepSize() const {
     return stepSize_;
 }
 
-std::shared_ptr<double> DefaultExperiment::getTolerance() const {
+std::shared_ptr<double> DefaultExperiment::tolerance() const {
     return tolerance_;
 }

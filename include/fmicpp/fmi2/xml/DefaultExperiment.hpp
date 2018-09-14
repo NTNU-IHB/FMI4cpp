@@ -33,7 +33,7 @@ using boost::property_tree::ptree;
 
 namespace fmicpp::fmi2::xml {
 
-    class DefaultExperiment {
+    struct DefaultExperiment {
 
     private:
         std::shared_ptr<double> startTime_;
@@ -42,13 +42,13 @@ namespace fmicpp::fmi2::xml {
         std::shared_ptr<double> tolerance_;
 
     public:
-        std::shared_ptr<double> getStartTime() const;
+        std::shared_ptr<double> startTime() const;
 
-        std::shared_ptr<double> getStopTime() const;
+        std::shared_ptr<double> stopTime() const;
 
-        std::shared_ptr<double> getStepSize() const;
+        std::shared_ptr<double> stepSize() const;
 
-        std::shared_ptr<double> getTolerance() const;
+        std::shared_ptr<double> tolerance() const;
 
         void load(const ptree &node);
 
