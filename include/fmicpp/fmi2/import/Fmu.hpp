@@ -39,6 +39,9 @@ using fmicpp::fmi2::xml::ModelDescription;
 
 namespace fmicpp::fmi2::import {
 
+    class CoSimulationSlaveBuilder;
+    class ModelExchangeInstanceBuilder;
+
     class Fmu {
 
         friend class CoSimulationSlaveBuilder;
