@@ -58,13 +58,13 @@ BOOST_AUTO_TEST_CASE(test1) {
     BOOST_CHECK_EQUAL(120, md.modelVariables().size());
     BOOST_CHECK_EQUAL(120, md_cs->modelVariables().size());
 
-    auto heatCapatacity1 = md.getVariableByName("HeatCapacity1.T0").asRealVariable();
-    BOOST_CHECK_EQUAL(1, heatCapatacity1.getValueReference());
-    BOOST_CHECK_EQUAL(nullptr, heatCapatacity1.getMin());
-    BOOST_CHECK_EQUAL(nullptr, heatCapatacity1.getMax());
-    BOOST_CHECK_EQUAL(298.0, *heatCapatacity1.getStart());
-    BOOST_CHECK_EQUAL("starting temperature", heatCapatacity1.getDescription());
-    BOOST_CHECK_EQUAL(nullptr, heatCapatacity1.getQuantity());
+    auto heatCapacity1 = md.getVariableByName("HeatCapacity1.T0").asRealVariable();
+    BOOST_CHECK_EQUAL(1, heatCapacity1.getValueReference());
+    BOOST_CHECK_EQUAL(nullptr, heatCapacity1.getMin());
+    BOOST_CHECK_EQUAL(nullptr, heatCapacity1.getMax());
+    BOOST_CHECK_EQUAL(298.0, *heatCapacity1.getStart());
+    BOOST_CHECK_EQUAL("starting temperature", heatCapacity1.getDescription());
+    BOOST_CHECK_EQUAL(nullptr, heatCapacity1.getQuantity());
 
     auto thermalConductor = md.getVariableByValueReference(12);
     BOOST_CHECK_EQUAL("TemperatureSource.T", thermalConductor.getName());
