@@ -25,6 +25,8 @@
 #ifndef FMICPP_ENUMS_HPP
 #define FMICPP_ENUMS_HPP
 
+#include <string>
+
 namespace fmicpp::fmi2::xml {
 
     enum class fmi2Causality {
@@ -50,6 +52,12 @@ namespace fmicpp::fmi2::xml {
         calculated,
         unknown
     };
+
+    fmi2Causality parseCausality(std::string str);
+
+    fmi2Variability parseVariability(std::string str);
+
+    fmi2Initial parseInitial(std::string str);
 
 }
 

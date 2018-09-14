@@ -49,6 +49,7 @@ SET(SOURCES
         fmicpp/fmi2/import/ModelExchangeInstance.cpp
         fmicpp/fmi2/import/ModelExchangeInstanceBuilder.cpp
 
+        fmicpp/fmi2/xml/enums.cpp
         fmicpp/fmi2/xml/FmuTypeAttributes.cpp
         fmicpp/fmi2/xml/ModelDescription.cpp
         fmicpp/fmi2/xml/SpecificModelDescription.cpp

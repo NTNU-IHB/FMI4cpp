@@ -28,55 +28,6 @@
 using namespace std;
 using namespace fmicpp::fmi2::xml;
 
-namespace {
-
-    fmi2Causality parseCausality(string str) {
-        if (str == "calculatedParameter") {
-            return fmi2Causality::calculatedParameter;
-        } else if (str == "parameter") {
-            return fmi2Causality::parameter;
-        } else if (str == "input") {
-            return fmi2Causality::input;
-        } else if (str == "output") {
-            return fmi2Causality::output;
-        } else if (str == "local") {
-            return fmi2Causality::local;
-        } else if (str == "independent") {
-            return fmi2Causality::independent;
-        } else {
-            return fmi2Causality::local;
-        }
-    }
-
-    fmi2Variability parseVariability(string str) {
-        if (str == "constant") {
-            return fmi2Variability::constant;
-        } else if (str == "fixed") {
-            return fmi2Variability::fixed;
-        } else if (str == "tunable") {
-            return fmi2Variability::tunable;
-        } else if (str == "discrete") {
-            return fmi2Variability::discrete;
-        } else if (str == "continuous") {
-            return fmi2Variability::continuous;
-        } else {
-            return fmi2Variability ::continuous;
-        }
-    }
-
-    fmi2Initial parseInitial(string str) {
-        if (str == "exact") {
-            return fmi2Initial::exact;
-        } else if (str == "approx") {
-            return fmi2Initial::approx;
-        } else if (str == "calculated") {
-            return fmi2Initial ::calculated;
-        } else {
-            return fmi2Initial::unknown;
-        }
-    }
-
-}
 
 void ScalarVariable::load(const ptree &node) {
 
