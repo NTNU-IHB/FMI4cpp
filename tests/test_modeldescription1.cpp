@@ -25,7 +25,6 @@
 #define BOOST_TEST_MODULE ControlledTemperature_Modeldescription_Test
 
 #include <string>
-#include <iostream>
 #include <boost/test/unit_test.hpp>
 #include <fmicpp/tools/os_util.hpp>
 #include <fmicpp/fmi2/fmicpp.hpp>
@@ -60,7 +59,6 @@ BOOST_AUTO_TEST_CASE(test1) {
     BOOST_CHECK_EQUAL(120, md_cs->modelVariables().size());
 
     auto heatCapatacity1 = md.getVariableByName("HeatCapacity1.T0").asRealVariable();
-    cout << heatCapatacity1.getValueReference() << endl;
     BOOST_CHECK_EQUAL(1, heatCapatacity1.getValueReference());
     BOOST_CHECK_EQUAL(nullptr, heatCapatacity1.getMin());
     BOOST_CHECK_EQUAL(nullptr, heatCapatacity1.getMax());
