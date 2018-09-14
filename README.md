@@ -2,17 +2,17 @@
 
 FMI4cpp is a cross-platform FMI 2.0 implementation written in modern C++.
 
-Looking for an easy to install, easy to use, easy to reason with, object oriented and fast FMI implementation for C++?    
-You are in luck. FMI4cpp is all of those.
+Influenced by it's name brother [FMI4j](https://github.com/SFI-Mechatronics/FMI4j), it aims to be
+an easy to install, easy to use, object oriented and fast FMI implementation for C++.    
 
 ### Why should I use this over other C/C++ FMI Libraries
 
-Because this library has a much cleaner API and is significantly easier to use.
+Because this library provides a clean API, is easy to install (through vcpkg) and is easy to use.
 
 
 ### How do I use it in my own project?
 
-When the library is stable I will add it to vcpkg.
+When the library is stable it will be added to the vcpkg package manager.
 
 
 ### Development dependencies
@@ -26,7 +26,7 @@ Install [vcpkg](https://github.com/Microsoft/vcpkg) and run:
 On linux you _might_ also need to install some additional libraries:
 
 ```
-./vcpkg install zlib bzip2 openssl
+./vcpkg install bzip2 openssl
 ``` 
 
 These can probably also be installed through the native package handler. 
@@ -91,3 +91,9 @@ This variable should point to the location of the content found [here](https://g
 
 The examples are built by default. To change this pass ```-DBUILD_EXAMPLES=OFF``` to CMmake.
 Test are on the other hand _not_ built by default. To change this pass ```-DBUILD_TESTS=ON``` to CMake.
+
+To run the tests you will need an additional dependency:
+
+```
+./vcpkg install boost-test
+``` 
