@@ -30,7 +30,7 @@
 
 namespace fmicpp::fmi2::xml {
 
-    class SpecificModelDescription: public ModelDescription {
+    class SpecificModelDescription : public ModelDescription {
 
     private:
         const string modelIdentifier_;
@@ -47,16 +47,23 @@ namespace fmicpp::fmi2::xml {
     public:
 
         explicit SpecificModelDescription(
-                const ModelDescription &modelDescription, 
+                const ModelDescription &modelDescription,
                 const FmuTypeAttributes &data);
 
         string modelIdentifier() const;
+
         bool canGetAndSetFMUstate() const;
+
         bool canSerializeFMUstate() const;
+
         bool needsExecutionTool() const;
+
         bool canNotUseMemoryManagementFunctions() const;
+
         bool canBeInstantiatedOnlyOncePerProcess() const;
+
         bool providesDirectionalDerivative() const;
+
         SourceFiles sourceFiles() const;
 
     };
@@ -73,12 +80,15 @@ namespace fmicpp::fmi2::xml {
     public:
 
         explicit CoSimulationModelDescription(
-                const ModelDescription &modelDescription, 
+                const ModelDescription &modelDescription,
                 const CoSimulationAttributes &data);
 
         bool canInterpolateInputs() const;
+
         bool canRunAsynchronuously() const;
+
         bool canHandleVariableCommunicationStepSize() const;
+
         const unsigned int maxOutputDerivativeOrder() const;
 
     };
@@ -90,7 +100,7 @@ namespace fmicpp::fmi2::xml {
 
     public:
         explicit ModelExchangeModelDescription(
-                const ModelDescription &modelDescription, 
+                const ModelDescription &modelDescription,
                 const ModelExchangeAttributes &data);
 
         bool completedIntegratorStepNotNeeded() const;

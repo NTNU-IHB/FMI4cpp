@@ -42,7 +42,9 @@ namespace fmicpp::fmi2::xml {
         const size_t size() const;
 
         ScalarVariable getByIndex(const size_type index) const;
+
         ScalarVariable getByName(const std::string &name) const;
+
         ScalarVariable getByValueReference(const fmi2ValueReference vr) const;
 
     };

@@ -30,7 +30,7 @@
 
 namespace fmicpp::fmi2::import {
 
-    template <class T, class U>
+    template<class T, class U>
     class InstanceBuilder {
 
     protected:

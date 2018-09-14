@@ -23,7 +23,9 @@
  */
 
 #ifndef NDEBUG
+
 #include <iostream>
+
 #endif
 
 #include <fmicpp/fmi2/import/Fmu.hpp>
@@ -51,7 +53,7 @@ namespace {
 
 }
 
-Fmu::Fmu(const string &fmu_file): fmu_file_(fmu_file) {
+Fmu::Fmu(const string &fmu_file) : fmu_file_(fmu_file) {
 
     const string fmuName = fs::path(fmu_file).stem().string();
     tmp_path_ = fs::temp_directory_path() /= fs::path(fmuName + "_" + generate_uuid());
@@ -60,7 +62,7 @@ Fmu::Fmu(const string &fmu_file): fmu_file_(fmu_file) {
         throw runtime_error("Failed to create temporary directory!");
     }
 #ifndef NDEBUG
-        cout << "Created temporary directory '" << tmp_path_.string() << "'" << endl;
+    cout << "Created temporary directory '" << tmp_path_.string() << "'" << endl;
 #endif
 
     if (!extractContents(fmu_file, tmp_path_.string())) {
@@ -130,7 +132,7 @@ Fmu::~Fmu() {
     remove_all(tmp_path_);
 
 #ifndef NDEBUG
-    cout << "Fmu '" << getModelName()  << "' disposed.." << endl;
+    cout << "Fmu '" << getModelName() << "' disposed.." << endl;
 #endif
 
 }

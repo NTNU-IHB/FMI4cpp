@@ -43,6 +43,7 @@ using boost::property_tree::ptree;
 namespace fmicpp::fmi2::xml {
 
     class CoSimulationModelDescription;
+
     class ModelExchangeModelDescription;
 
     class ModelDescription {
@@ -71,30 +72,45 @@ namespace fmicpp::fmi2::xml {
     public:
 
         string guid() const;
+
         string fmiVersion() const;
+
         string modelName() const;
+
         string description() const;
+
         string version() const;
+
         string author() const;
+
         string license() const;
+
         string copyright() const;
+
         string generationTool() const;
+
         string generationDateAndTime() const;
 
         unsigned int numberOfEventIndicators() const;
+
         unsigned int numberOfContinuousStates() const;
 
         const ModelVariables &modelVariables() const;
+
         const ModelStructure &modelStructure() const;
+
         const DefaultExperiment &defaultExperiment() const;
 
         bool supportsModelExchange() const;
+
         bool supportsCoSimulation() const;
 
         shared_ptr<CoSimulationModelDescription> asCoSimulationModelDescription() const;
+
         shared_ptr<ModelExchangeModelDescription> asModelExchangeModelDescription() const;
 
         ScalarVariable getVariableByName(const string &name) const;
+
         ScalarVariable getVariableByValueReference(const fmi2ValueReference vr) const;
 
         void load(const string &fileName);

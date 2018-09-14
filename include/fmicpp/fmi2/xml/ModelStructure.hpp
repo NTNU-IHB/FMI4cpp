@@ -45,8 +45,10 @@ namespace fmicpp::fmi2::xml {
 
     public:
         unsigned int index() const;
+
         std::string dependencyKind() const;
-        const std::vector<unsigned int > &dependencies() const;
+
+        const std::vector<unsigned int> &dependencies() const;
 
         void load(const ptree &node);
 
@@ -62,7 +64,9 @@ namespace fmicpp::fmi2::xml {
     public:
 
         const std::vector<Unknown> &outputs() const;
+
         const std::vector<Unknown> &derivatives() const;
+
         const std::vector<Unknown> &initialUnknowns() const;
 
         void load(const ptree &node);

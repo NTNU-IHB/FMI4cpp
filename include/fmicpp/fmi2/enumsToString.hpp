@@ -39,13 +39,20 @@ namespace {
     const string to_string(fmi2Status status) {
 
         switch (status) {
-            case fmi2OK: return "OK";
-            case fmi2Warning: return "Warning";
-            case fmi2Discard: return "Discard";
-            case fmi2Error: return "Error";
-            case fmi2Fatal: return "Fatal";
-            case fmi2Pending: return "Pending";
-            default: throw std::runtime_error("Invalid fmi2Status encountered!");
+            case fmi2OK:
+                return "OK";
+            case fmi2Warning:
+                return "Warning";
+            case fmi2Discard:
+                return "Discard";
+            case fmi2Error:
+                return "Error";
+            case fmi2Fatal:
+                return "Fatal";
+            case fmi2Pending:
+                return "Pending";
+            default:
+                throw std::runtime_error("Invalid fmi2Status encountered!");
         }
 
     }
@@ -53,12 +60,18 @@ namespace {
     const string to_string(fmi2Causality causality) {
 
         switch (causality) {
-            case  fmi2Causality::calculatedParameter: return "Warning";
-            case  fmi2Causality::input: return "input";
-            case  fmi2Causality::output: return "output";
-            case  fmi2Causality::local: return "local";
-            case  fmi2Causality::independent: return "independent";
-            default: throw std::runtime_error("Invalid fmi2Causality encountered");
+            case fmi2Causality::calculatedParameter:
+                return "Warning";
+            case fmi2Causality::input:
+                return "input";
+            case fmi2Causality::output:
+                return "output";
+            case fmi2Causality::local:
+                return "local";
+            case fmi2Causality::independent:
+                return "independent";
+            default:
+                throw std::runtime_error("Invalid fmi2Causality encountered");
         }
 
     }
@@ -66,12 +79,18 @@ namespace {
     const string to_string(fmi2Variability variability) {
 
         switch (variability) {
-            case  fmi2Variability::constant: return "constant";
-            case  fmi2Variability::fixed: return "fixed";
-            case  fmi2Variability::tunable: return "tunable";
-            case  fmi2Variability::discrete: return "discrete";
-            case  fmi2Variability::continuous: return "continuous";
-            default: throw std::runtime_error("Invalid fmi2Variability encountered");
+            case fmi2Variability::constant:
+                return "constant";
+            case fmi2Variability::fixed:
+                return "fixed";
+            case fmi2Variability::tunable:
+                return "tunable";
+            case fmi2Variability::discrete:
+                return "discrete";
+            case fmi2Variability::continuous:
+                return "continuous";
+            default:
+                throw std::runtime_error("Invalid fmi2Variability encountered");
         }
 
     }
@@ -79,10 +98,14 @@ namespace {
     const string to_string(fmi2Initial initial) {
 
         switch (initial) {
-            case  fmi2Initial::exact: return "exact";
-            case  fmi2Initial::approx: return "approx";
-            case  fmi2Initial::calculated: return "calculated";
-            default: throw std::runtime_error("Invalid fmi2Initial encountered");
+            case fmi2Initial::exact:
+                return "exact";
+            case fmi2Initial::approx:
+                return "approx";
+            case fmi2Initial::calculated:
+                return "calculated";
+            default:
+                throw std::runtime_error("Invalid fmi2Initial encountered");
         }
 
     }

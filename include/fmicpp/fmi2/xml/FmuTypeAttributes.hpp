@@ -50,7 +50,7 @@ namespace fmicpp::fmi2::xml {
 
     };
 
-    struct CoSimulationAttributes: FmuTypeAttributes {
+    struct CoSimulationAttributes : FmuTypeAttributes {
 
         bool canInterpolateInputs;
         bool canRunAsynchronuously;
@@ -62,7 +62,7 @@ namespace fmicpp::fmi2::xml {
 
     };
 
-    struct ModelExchangeAttributes: FmuTypeAttributes {
+    struct ModelExchangeAttributes : FmuTypeAttributes {
 
         bool completedIntegratorStepNotNeeded;
 

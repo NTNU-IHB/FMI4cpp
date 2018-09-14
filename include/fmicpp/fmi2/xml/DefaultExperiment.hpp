@@ -42,8 +42,11 @@ namespace fmicpp::fmi2::xml {
 
     public:
         double startTime() const;
+
         double stopTime() const;
+
         double stepSize() const;
+
         double tolerance() const;
 
         void load(const ptree &node);

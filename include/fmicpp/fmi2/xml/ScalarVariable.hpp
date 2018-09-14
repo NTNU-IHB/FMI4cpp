@@ -40,9 +40,13 @@ namespace fmicpp::fmi2::xml {
 
     //forward declarations
     class IntegerVariable;
+
     class RealVariable;
+
     class StringVariable;
+
     class BooleanVariable;
+
     class EnumerationVariable;
 
     class ScalarVariable {
@@ -66,18 +70,27 @@ namespace fmicpp::fmi2::xml {
     public:
 
         string getName() const;
+
         string getDescription() const;
+
         fmi2ValueReference getValueReference() const;
+
         bool canHandleMultipleSetPerTimelnstant() const;
 
         fmi2Causality getCausality() const;
+
         fmi2Variability getVariability() const;
+
         fmi2Initial getInitial() const;
 
         IntegerVariable asIntegerVariable();
+
         RealVariable asRealVariable();
+
         StringVariable asStringVariable();
+
         BooleanVariable asBooleanVariable();
+
         EnumerationVariable asEnumerationVariable();
 
         void load(const ptree &node);
@@ -93,9 +106,11 @@ namespace fmicpp::fmi2::xml {
         IntegerVariable(const ScalarVariable &var, IntegerAttribute &attribute);
 
         shared_ptr<int> getMin() const;
+
         shared_ptr<int> getMax() const;
 
         shared_ptr<int> getStart() const;
+
         void setStart(const int start);
 
         shared_ptr<string> getQuantity() const;
@@ -111,19 +126,25 @@ namespace fmicpp::fmi2::xml {
         RealVariable(const ScalarVariable &var, RealAttribute &attribute);
 
         shared_ptr<double> getMin() const;
+
         shared_ptr<double> getMax() const;
 
         shared_ptr<double> getStart() const;
+
         void setStart(const double start);
 
         shared_ptr<double> getNominal() const;
 
         bool getReinit() const;
+
         bool getUnbounded() const;
+
         bool getRelativeQuantity() const;
 
         shared_ptr<string> getQuantity() const;
+
         shared_ptr<string> getUnit() const;
+
         shared_ptr<string> getDisplayUnit() const;
 
         shared_ptr<unsigned int> getDerivative() const;
@@ -147,7 +168,7 @@ namespace fmicpp::fmi2::xml {
     class BooleanVariable : public ScalarVariable {
 
     private:
-         BooleanAttribute attribute_;
+        BooleanAttribute attribute_;
 
     public:
         BooleanVariable(const ScalarVariable &var, BooleanAttribute &attribute);
@@ -167,14 +188,17 @@ namespace fmicpp::fmi2::xml {
         EnumerationVariable(const ScalarVariable &var, EnumerationAttribute &attribute);
 
         shared_ptr<int> getMin() const;
+
         shared_ptr<int> getMax() const;
+
         shared_ptr<int> getStart() const;
+
         void setStart(const int start);
 
         shared_ptr<string> getQuantity() const;
 
     };
-    
+
 }
 
 #endif //FMICPP_SCALARVARIABLE_HPP

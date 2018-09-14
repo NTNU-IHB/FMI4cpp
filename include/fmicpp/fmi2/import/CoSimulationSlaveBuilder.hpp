@@ -30,12 +30,13 @@
 
 namespace fmicpp::fmi2::import {
 
-    class CoSimulationSlaveBuilder: private InstanceBuilder<CoSimulationLibrary, CoSimulationSlave> {
+    class CoSimulationSlaveBuilder : private InstanceBuilder<CoSimulationLibrary, CoSimulationSlave> {
 
     public:
         explicit CoSimulationSlaveBuilder(Fmu &fmu);
 
-        std::unique_ptr<CoSimulationSlave> newInstance(const bool visible = false, const bool loggingOn = false) override;
+        std::unique_ptr<CoSimulationSlave>
+        newInstance(const bool visible = false, const bool loggingOn = false) override;
 
     };
 

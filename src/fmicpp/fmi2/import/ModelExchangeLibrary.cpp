@@ -29,14 +29,15 @@ ModelExchangeLibrary::ModelExchangeLibrary(const string &libName) : FmiLibrary(l
 
     fmi2EnterEventMode_ = loadFunction<fmi2EnterEventModeTYPE *>("fmi2EnterEventMode");
     fmi2EnterContinuousTimeMode_ = loadFunction<fmi2EnterContinuousTimeModeTYPE *>("fmi2EnterContinuousTimeMode");
-    fmi2SetTime_= loadFunction<fmi2SetTimeTYPE *>("fmi2SetTime");
-    fmi2SetContinuousStates_= loadFunction<fmi2SetContinuousStatesTYPE *>("fmi2SetContinuousStates");
-    fmi2GetDerivatives_= loadFunction<fmi2GetDerivativesTYPE *>("fmi2GetDerivatives");
-    fmi2GetEventIndicators_= loadFunction<fmi2GetEventIndicatorsTYPE *>("fmi2GetEventIndicators");
-    fmi2GetContinuousStates_= loadFunction<fmi2GetContinuousStatesTYPE *>("fmi2GetContinuousStates");
-    fmi2GetNominalsOfContinuousStates_= loadFunction<fmi2GetNominalsOfContinuousStatesTYPE *>("fmi2GetNominalsOfContinuousStates");
-    fmi2CompletedIntegratorStep_= loadFunction<fmi2CompletedIntegratorStepTYPE *>("fmi2CompletedIntegratorStep");
-    fmi2NewDiscreteStates_= loadFunction<fmi2NewDiscreteStatesTYPE *>("fmi2NewDiscreteStates");
+    fmi2SetTime_ = loadFunction<fmi2SetTimeTYPE *>("fmi2SetTime");
+    fmi2SetContinuousStates_ = loadFunction<fmi2SetContinuousStatesTYPE *>("fmi2SetContinuousStates");
+    fmi2GetDerivatives_ = loadFunction<fmi2GetDerivativesTYPE *>("fmi2GetDerivatives");
+    fmi2GetEventIndicators_ = loadFunction<fmi2GetEventIndicatorsTYPE *>("fmi2GetEventIndicators");
+    fmi2GetContinuousStates_ = loadFunction<fmi2GetContinuousStatesTYPE *>("fmi2GetContinuousStates");
+    fmi2GetNominalsOfContinuousStates_ = loadFunction<fmi2GetNominalsOfContinuousStatesTYPE *>(
+            "fmi2GetNominalsOfContinuousStates");
+    fmi2CompletedIntegratorStep_ = loadFunction<fmi2CompletedIntegratorStepTYPE *>("fmi2CompletedIntegratorStep");
+    fmi2NewDiscreteStates_ = loadFunction<fmi2NewDiscreteStatesTYPE *>("fmi2NewDiscreteStates");
 
 }
 
@@ -74,7 +75,9 @@ ModelExchangeLibrary::getNominalsOfContinuousStates(const fmi2Component c, vecto
 }
 
 fmi2Status ModelExchangeLibrary::completedIntegratorStep(const fmi2Component c,
-        fmi2Boolean noSetFMUStatePriorToCurrentPoint, fmi2Boolean &enterEventMode, fmi2Boolean &terminateSimulation) const {
+                                                         fmi2Boolean noSetFMUStatePriorToCurrentPoint,
+                                                         fmi2Boolean &enterEventMode,
+                                                         fmi2Boolean &terminateSimulation) const {
     return fmi2CompletedIntegratorStep_(c, noSetFMUStatePriorToCurrentPoint, &enterEventMode, &terminateSimulation);
 }
 

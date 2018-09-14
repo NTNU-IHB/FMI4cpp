@@ -33,17 +33,17 @@ class CoSimulationLibrary : public FmiLibrary {
 
 private:
 
-    fmi2SetRealInputDerivativesTYPE* fmi2SetRealInputDerivatives_;
-    fmi2GetRealOutputDerivativesTYPE* fmi2GetRealOutputDerivatives_;
+    fmi2SetRealInputDerivativesTYPE *fmi2SetRealInputDerivatives_;
+    fmi2GetRealOutputDerivativesTYPE *fmi2GetRealOutputDerivatives_;
 
-    fmi2DoStepTYPE* fmi2DoStep_;
-    fmi2CancelStepTYPE* fmi2CancelStep_;
+    fmi2DoStepTYPE *fmi2DoStep_;
+    fmi2CancelStepTYPE *fmi2CancelStep_;
 
-    fmi2GetStatusTYPE* fmi2GetStatus_;
-    fmi2GetRealStatusTYPE* fmi2GetRealStatus_;
-    fmi2GetIntegerStatusTYPE* fmi2GetIntegerStatus_;
-    fmi2GetBooleanStatusTYPE* fmi2GetBooleanStatus_;
-    fmi2GetStringStatusTYPE* fmi2GetStringStatus_;
+    fmi2GetStatusTYPE *fmi2GetStatus_;
+    fmi2GetRealStatusTYPE *fmi2GetRealStatus_;
+    fmi2GetIntegerStatusTYPE *fmi2GetIntegerStatus_;
+    fmi2GetBooleanStatusTYPE *fmi2GetBooleanStatus_;
+    fmi2GetStringStatusTYPE *fmi2GetStringStatus_;
 
 public:
 
@@ -55,10 +55,12 @@ public:
     fmi2Status cancelStep(const fmi2Component c) const;
 
     fmi2Status setRealInputDerivatives(const fmi2Component c,
-            const vector<fmi2ValueReference> &vr, const vector<fmi2Integer> &order, const vector<fmi2Real> &value) const;
+                                       const vector<fmi2ValueReference> &vr, const vector<fmi2Integer> &order,
+                                       const vector<fmi2Real> &value) const;
 
     fmi2Status getRealOutputDerivatives(const fmi2Component c,
-            const vector<fmi2ValueReference> &vr, const vector<fmi2Integer> &order, vector<fmi2Real> &value) const;
+                                        const vector<fmi2ValueReference> &vr, const vector<fmi2Integer> &order,
+                                        vector<fmi2Real> &value) const;
 
     fmi2Status getStatus(const fmi2Component c, const fmi2StatusKind s, fmi2Status &value) const;
 

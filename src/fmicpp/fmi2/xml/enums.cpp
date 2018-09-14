@@ -25,8 +25,8 @@
 #include <fmicpp/fmi2/xml/enums.hpp>
 
 using fmicpp::fmi2::xml::fmi2Causality;
-using fmicpp::fmi2::xml::fmi2Variability ;
-using fmicpp::fmi2::xml::fmi2Initial ;
+using fmicpp::fmi2::xml::fmi2Variability;
+using fmicpp::fmi2::xml::fmi2Initial;
 
 fmi2Causality fmicpp::fmi2::xml::parseCausality(std::string str) {
     if (str == "calculatedParameter") {
@@ -58,7 +58,7 @@ fmi2Variability fmicpp::fmi2::xml::parseVariability(std::string str) {
     } else if (str == "continuous") {
         return fmi2Variability::continuous;
     } else {
-        return fmi2Variability ::continuous;
+        return fmi2Variability::continuous;
     }
 }
 
@@ -68,7 +68,7 @@ fmi2Initial fmicpp::fmi2::xml::parseInitial(std::string str) {
     } else if (str == "approx") {
         return fmi2Initial::approx;
     } else if (str == "calculated") {
-        return fmi2Initial ::calculated;
+        return fmi2Initial::calculated;
     } else {
         return fmi2Initial::unknown;
     }

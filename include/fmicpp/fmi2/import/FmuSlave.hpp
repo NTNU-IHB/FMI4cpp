@@ -29,7 +29,7 @@
 
 namespace fmicpp::fmi2::import {
 
-    class FmuSlave: virtual public FmuInstance {
+    class FmuSlave : virtual public FmuInstance {
 
     public:
 

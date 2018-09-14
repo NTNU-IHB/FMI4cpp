@@ -30,12 +30,13 @@
 
 namespace fmicpp::fmi2::import {
 
-    class ModelExchangeInstanceBuilder: private InstanceBuilder<ModelExchangeLibrary, ModelExchangeInstance> {
+    class ModelExchangeInstanceBuilder : private InstanceBuilder<ModelExchangeLibrary, ModelExchangeInstance> {
 
     public:
         explicit ModelExchangeInstanceBuilder(Fmu &fmu);
 
-        std::unique_ptr<ModelExchangeInstance> newInstance(const bool visible = false, const bool loggingOn = false) override;
+        std::unique_ptr<ModelExchangeInstance>
+        newInstance(const bool visible = false, const bool loggingOn = false) override;
 
     };
 

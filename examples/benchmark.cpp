@@ -44,25 +44,24 @@ int main() {
 
     clock_t begin = clock();
 
-    vector<fmi2Real > ref(2);
-    vector<fmi2ValueReference > vr = {slave->getValueReference("Temperature_Reference"),
-                                         slave->getValueReference("Temperature_Room")};
+    vector<fmi2Real> ref(2);
+    vector<fmi2ValueReference> vr = {slave->getValueReference("Temperature_Reference"),
+                                     slave->getValueReference("Temperature_Room")};
 
 
     double t;
-    while ( (t = slave->getSimulationTime() ) <= (stop-step_size) ) {
+    while ((t = slave->getSimulationTime()) <= (stop - step_size)) {
         fmi2Status status = slave->doStep(step_size);
         if (status != fmi2OK) {
             cout << "Error! step returned with status: " << to_string(status) << endl;
             break;
         }
         slave->readReal(vr, ref);
-//        cout << "t=" << t << ", Temperature_Reference=" << ref[0] << ", Temperature_Room=" << ref[1] << endl;
     }
 
     clock_t end = clock();
 
-    double elapsed_secs = double(end-begin) / CLOCKS_PER_SEC;
+    double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
     cout << "elapsed=" << elapsed_secs << "s" << endl;
 
     slave->terminate();

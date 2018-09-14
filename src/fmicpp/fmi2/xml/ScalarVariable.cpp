@@ -32,12 +32,12 @@ void ScalarVariable::load(const ptree &node) {
 
     name_ = node.get<string>("<xmlattr>.name");
     description_ = node.get<string>("<xmlattr>.description", "");
-    valueReference_ = node.get<fmi2ValueReference >("<xmlattr>.valueReference");
+    valueReference_ = node.get<fmi2ValueReference>("<xmlattr>.valueReference");
     canHandleMultipleSetPerTimelnstant_ = node.get<bool>("<xmlattr>.canHandleMultipleSetPerTimelnstant", false);
 
-    causality_ = parseCausality(node.get<string >("<xmlattr>.causality", ""));
-    variability_ = parseVariability(node.get<string >("<xmlattr>.variability", ""));
-    initial_ =  parseInitial(node.get<string>("<xmlattr>.initial", ""));
+    causality_ = parseCausality(node.get<string>("<xmlattr>.causality", ""));
+    variability_ = parseVariability(node.get<string>("<xmlattr>.variability", ""));
+    initial_ = parseInitial(node.get<string>("<xmlattr>.initial", ""));
 
     for (const ptree::value_type &v : node) {
         if (v.first == "Integer") {
@@ -124,7 +124,7 @@ fmi2Initial ScalarVariable::getInitial() const {
 }
 
 IntegerVariable::IntegerVariable(const ScalarVariable &var, IntegerAttribute &attribute)
-    : ScalarVariable(var), attribute_(attribute) {}
+        : ScalarVariable(var), attribute_(attribute) {}
 
 shared_ptr<int> IntegerVariable::getMin() const {
     return attribute_.min;
@@ -147,7 +147,7 @@ shared_ptr<string> IntegerVariable::getQuantity() const {
 }
 
 RealVariable::RealVariable(const ScalarVariable &var, RealAttribute &attribute)
-    : ScalarVariable(var), attribute_(attribute) {}
+        : ScalarVariable(var), attribute_(attribute) {}
 
 shared_ptr<double> RealVariable::getMin() const {
     return attribute_.min;
@@ -198,7 +198,7 @@ shared_ptr<unsigned int> RealVariable::getDerivative() const {
 }
 
 StringVariable::StringVariable(const ScalarVariable &var, StringAttribute &attribute)
-    : ScalarVariable(var), attribute_(attribute) {}
+        : ScalarVariable(var), attribute_(attribute) {}
 
 shared_ptr<string> StringVariable::getStart() const {
     return attribute_.start;
@@ -209,7 +209,7 @@ void StringVariable::setStart(const string &start) {
 }
 
 BooleanVariable::BooleanVariable(const ScalarVariable &var, BooleanAttribute &attribute)
-    : ScalarVariable(var), attribute_(attribute) {}
+        : ScalarVariable(var), attribute_(attribute) {}
 
 shared_ptr<bool> BooleanVariable::getStart() const {
     return attribute_.start;
@@ -220,7 +220,7 @@ void BooleanVariable::setStart(const bool start) {
 }
 
 EnumerationVariable::EnumerationVariable(const ScalarVariable &var, EnumerationAttribute &attribute)
-    : ScalarVariable(var), attribute_(attribute) {}
+        : ScalarVariable(var), attribute_(attribute) {}
 
 shared_ptr<int> EnumerationVariable::getMin() const {
     return attribute_.min;

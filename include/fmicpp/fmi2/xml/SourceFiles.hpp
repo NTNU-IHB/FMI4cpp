@@ -47,12 +47,12 @@ namespace fmicpp::fmi2::xml {
 
     };
 
-    class SourceFiles: private std::vector<File> {
+    class SourceFiles : private std::vector<File> {
 
     public:
 
         const size_t size() const;
-        
+
         File at(const size_type index) const;
 
         void load(const ptree &node);

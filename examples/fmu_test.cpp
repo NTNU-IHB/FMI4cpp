@@ -33,8 +33,8 @@ using namespace fmicpp::fmi2;
 int main() {
 
     const string fmuPath = string(getenv("TEST_FMUs"))
-                            + "/FMI_2.0/CoSimulation/" + getOs() +
-                            "/20sim/4.6.4.8004/ControlledTemperature/ControlledTemperature.fmu";
+                           + "/FMI_2.0/CoSimulation/" + getOs() +
+                           "/20sim/4.6.4.8004/ControlledTemperature/ControlledTemperature.fmu";
 
     import::Fmu fmu(fmuPath);
 
@@ -43,7 +43,8 @@ int main() {
 
     auto md = fmu.getModelDescription();
     xml::ScalarVariable var = md.getVariableByValueReference(47);
-    cout << "Causality=" << to_string(var.getCausality()) << ", variability=" << to_string(var.getVariability()) << endl;
+    cout << "Causality=" << to_string(var.getCausality()) << ", variability=" << to_string(var.getVariability())
+         << endl;
 
     auto md_cs = md.asCoSimulationModelDescription();
     cout << "modelIdentifier=" << md_cs->modelIdentifier() << endl;
@@ -73,10 +74,10 @@ int main() {
     }
 
     status = slave1->terminate();
-    cout << "FMU '" << fmu.getModelName() <<  "' terminated with status: " << to_string(status) << endl;
+    cout << "FMU '" << fmu.getModelName() << "' terminated with status: " << to_string(status) << endl;
 
     status = slave2->terminate();
-    cout << "FMU '" << fmu.getModelName() <<  "' terminated with status: " << to_string(status) << endl;
+    cout << "FMU '" << fmu.getModelName() << "' terminated with status: " << to_string(status) << endl;
 
     return 0;
 

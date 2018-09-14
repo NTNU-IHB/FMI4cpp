@@ -40,25 +40,32 @@ using fmicpp::fmi2::xml::ModelDescription;
 namespace fmicpp::fmi2::import {
 
     class CoSimulationSlaveBuilder;
+
     class ModelExchangeInstanceBuilder;
 
     class Fmu {
 
         friend class CoSimulationSlaveBuilder;
+
         friend class ModelExchangeInstanceBuilder;
 
     public:
         explicit Fmu(const string &fmu_file);
 
         const string getGuid() const;
+
         const string getModelName() const;
+
         const string getModelDescriptionXml() const;
+
         const ModelDescription &getModelDescription() const;
 
         const bool supportsModelExchange() const;
+
         const bool supportsCoSimulation() const;
 
         CoSimulationSlaveBuilder &asCoSimulationFmu();
+
         ModelExchangeInstanceBuilder &asModelExchangeFmu();
 
         ~Fmu();
@@ -72,7 +79,9 @@ namespace fmicpp::fmi2::import {
         unique_ptr<ModelExchangeInstanceBuilder> meBuilder_;
 
         const string getResourcePath() const;
+
         const string getModelDescriptionPath() const;
+
         const string getAbsoluteLibraryPath(const string modelIdentifier) const;
 
     };

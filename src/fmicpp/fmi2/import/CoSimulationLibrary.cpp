@@ -43,7 +43,8 @@ CoSimulationLibrary::CoSimulationLibrary(const string &libName) : FmiLibrary(lib
 }
 
 fmi2Status CoSimulationLibrary::doStep(const fmi2Component c, const fmi2Real currentCommunicationPoint,
-        const fmi2Real communicationStepSize, const bool noSetFMUStatePriorToCurrentPoint) const {
+                                       const fmi2Real communicationStepSize,
+                                       const bool noSetFMUStatePriorToCurrentPoint) const {
     return fmi2DoStep_(c, currentCommunicationPoint, communicationStepSize, noSetFMUStatePriorToCurrentPoint ? 1 : 0);
 }
 
@@ -52,12 +53,16 @@ fmi2Status CoSimulationLibrary::cancelStep(const fmi2Component c) const {
 }
 
 fmi2Status CoSimulationLibrary::setRealInputDerivatives(const fmi2Component c,
-        const vector<fmi2ValueReference> &vr, const vector<fmi2Integer> &order, const vector<fmi2Real> &value) const {
+                                                        const vector<fmi2ValueReference> &vr,
+                                                        const vector<fmi2Integer> &order,
+                                                        const vector<fmi2Real> &value) const {
     return fmi2SetRealInputDerivatives_(c, vr.data(), vr.size(), order.data(), value.data());
 }
 
 fmi2Status CoSimulationLibrary::getRealOutputDerivatives(const fmi2Component c,
-        const vector<fmi2ValueReference> &vr,const vector<fmi2Integer> &order, vector<fmi2Real> &value) const {
+                                                         const vector<fmi2ValueReference> &vr,
+                                                         const vector<fmi2Integer> &order,
+                                                         vector<fmi2Real> &value) const {
     return fmi2GetRealOutputDerivatives_(c, vr.data(), vr.size(), order.data(), value.data());
 }
 

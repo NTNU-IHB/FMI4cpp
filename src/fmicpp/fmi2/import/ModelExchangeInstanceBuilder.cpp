@@ -28,10 +28,11 @@ using std::make_unique;
 using std::make_shared;
 using namespace fmicpp::fmi2::import;
 
-ModelExchangeInstanceBuilder::ModelExchangeInstanceBuilder(Fmu &fmu): InstanceBuilder(fmu) {}
+ModelExchangeInstanceBuilder::ModelExchangeInstanceBuilder(Fmu &fmu) : InstanceBuilder(fmu) {}
 
 unique_ptr<ModelExchangeInstance> ModelExchangeInstanceBuilder::newInstance(const bool visible, const bool loggingOn) {
-    shared_ptr<ModelExchangeModelDescription> modelDescription = fmu_.getModelDescription().asModelExchangeModelDescription();
+    shared_ptr<ModelExchangeModelDescription> modelDescription
+            = fmu_.getModelDescription().asModelExchangeModelDescription();
     shared_ptr<ModelExchangeLibrary> lib = nullptr;
     string modelIdentifier = modelDescription->modelIdentifier();
     if (modelDescription->canBeInstantiatedOnlyOncePerProcess()) {
@@ -43,6 +44,6 @@ unique_ptr<ModelExchangeInstance> ModelExchangeInstanceBuilder::newInstance(cons
         lib = lib_;
     }
     fmi2Component c = lib->instantiate(modelIdentifier, fmi2ModelExchange, modelDescription->guid(),
-            fmu_.getResourcePath(), visible, loggingOn);
+                                       fmu_.getResourcePath(), visible, loggingOn);
     return make_unique<ModelExchangeInstance>(c, modelDescription, lib);
 }

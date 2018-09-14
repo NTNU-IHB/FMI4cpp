@@ -53,7 +53,7 @@ std::string Unknown::dependencyKind() const {
     return dependencyKind_;
 }
 
-const std::vector<unsigned int > &Unknown::dependencies() const {
+const std::vector<unsigned int> &Unknown::dependencies() const {
     return *dependencies_;
 }
 

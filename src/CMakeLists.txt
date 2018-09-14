@@ -35,9 +35,7 @@ SET(HEADERS
         ../include/fmicpp/fmi2/xml/ScalarVariableAttributes.hpp
         ../include/fmicpp/fmi2/xml/DefaultExperiment.hpp
         ../include/fmicpp/fmi2/xml/SourceFiles.hpp
-        ../include/fmicpp/fmi2/xml/ModelStructure.hpp
-
-)
+        ../include/fmicpp/fmi2/xml/ModelStructure.hpp)
 
 SET(SOURCES
         fmicpp/fmi2/import/Fmu.cpp
@@ -65,6 +63,6 @@ target_link_libraries(fmicpp Boost::system Boost::filesystem ${LIBZIP_LIBRARIES}
 target_include_directories(fmicpp PRIVATE ${LIBZIP_INCLUDE_DIRS})
 if (UNIX)
     target_link_libraries(fmicpp dl)
-elseif(WIN32)
+elseif (WIN32)
     target_link_libraries(fmicpp bcrypt) # required by boost::uuids
-endif()
+endif ()

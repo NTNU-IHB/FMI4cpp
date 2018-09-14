@@ -2,9 +2,9 @@
 cmake_minimum_required(VERSION 3.12)
 
 SET(VCPKG_ROOT $ENV{VCPKG_ROOT} CACHE STRING "VCPKG_ROOT")
-if(DEFINED VCPKG_ROOT AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
+if (DEFINED VCPKG_ROOT AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
     set(CMAKE_TOOLCHAIN_FILE "${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake" CACHE STRING "")
-endif()
+endif ()
 
 project(FMICPP)
 
@@ -13,12 +13,12 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 if (MSVC)
     add_compile_definitions(-D_CRT_SECURE_NO_WARNINGS)
-endif()
+endif ()
 
 SET(BOOST_COMPONENTS system filesystem)
 if (BUILD_TESTS)
     SET(BOOST_COMPONENTS ${BOOST_COMPONENTS} unit_test_framework)
-endif()
+endif ()
 find_package(Boost 1.67 COMPONENTS ${BOOST_COMPONENTS} REQUIRED)
 include_directories(${Boost_INCLUDE_DIRS})
 
@@ -31,8 +31,8 @@ add_subdirectory(src)
 
 if (BUILD_TESTS)
     add_subdirectory(tests)
-endif()
+endif ()
 
 if (BUILD_EXAMPLES)
     add_subdirectory(examples)
-endif()
+endif ()

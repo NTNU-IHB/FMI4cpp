@@ -44,7 +44,7 @@ void IntegerAttribute::load(const ptree &node) {
     if (quantity_optional) {
         quantity = make_shared<string>(*quantity_optional);
     }
-    
+
 }
 
 void RealAttribute::load(const ptree &node) {
@@ -82,11 +82,11 @@ void RealAttribute::load(const ptree &node) {
     if (derivative_optional) {
         derivative = make_shared<unsigned int>(*derivative_optional);
     }
-    
+
     reinit = node.get<bool>("<xmlattr>.reinit", false);
     unbounded = node.get<bool>("<xmlattr>.unbounded", false);
     relativeQuantity = node.get<bool>("<xmlattr>.relativeQuantity", false);
-    
+
 }
 
 void StringAttribute::load(const ptree &node) {

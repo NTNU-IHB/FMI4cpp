@@ -41,10 +41,10 @@ unique_ptr<CoSimulationSlave> CoSimulationSlaveBuilder::newInstance(const bool v
         if (lib_ == nullptr) {
             lib_ = make_shared<CoSimulationLibrary>(fmu_.getAbsoluteLibraryPath(modelIdentifier));
         }
-       lib = lib_;
+        lib = lib_;
     }
     fmi2Component c = lib->instantiate(modelIdentifier, fmi2CoSimulation, modelDescription->guid(),
-            fmu_.getResourcePath(), visible, loggingOn);
+                                       fmu_.getResourcePath(), visible, loggingOn);
     return make_unique<CoSimulationSlave>(c, modelDescription, lib);
 }
 

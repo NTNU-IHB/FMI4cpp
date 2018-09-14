@@ -41,10 +41,11 @@ namespace {
 namespace fmicpp::fmi2::import {
 
     template<typename T, typename U>
-    class AbstractFmuInstance: virtual public FmuInstance {
+    class AbstractFmuInstance : virtual public FmuInstance {
 
         static_assert(std::is_base_of<FmiLibrary, T>::value, "T must derive from FmiLibrary");
-        static_assert(std::is_base_of<xml::SpecificModelDescription, U>::value, "U must derive from SpecificModelDescription");
+        static_assert(std::is_base_of<xml::SpecificModelDescription, U>::value,
+                      "U must derive from SpecificModelDescription");
 
     private:
         bool instanceFreed;
@@ -101,11 +102,11 @@ namespace fmicpp::fmi2::import {
         }
 
         void freeInstance() {
-           if (!instanceFreed) {
-               instanceFreed = true;
-               library_->freeInstance(c_);
-               c_ = nullptr;
-           }
+            if (!instanceFreed) {
+                instanceFreed = true;
+                library_->freeInstance(c_);
+                c_ = nullptr;
+            }
         }
 
         bool canGetAndSetFMUstate() const override {
@@ -152,11 +153,11 @@ namespace fmicpp::fmi2::import {
         }
 
         fmi2Status readInteger(const vector<fmi2ValueReference> &vr, vector<fmi2Integer> &ref) const override {
-            return library_->readInteger(c_,vr, ref);
+            return library_->readInteger(c_, vr, ref);
         }
 
         fmi2Status readReal(const fmi2ValueReference vr, fmi2Real &ref) const override {
-            return library_->readReal(c_,vr, ref);
+            return library_->readReal(c_, vr, ref);
         }
 
         fmi2Status readReal(const vector<fmi2ValueReference> &vr, vector<fmi2Real> &ref) const override {

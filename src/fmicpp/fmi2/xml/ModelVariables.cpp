@@ -51,7 +51,7 @@ ScalarVariable ModelVariables::getByIndex(const size_type index) const {
 
 ScalarVariable ModelVariables::getByName(const string &name) const {
 
-    for (const ScalarVariable& var : *this) {
+    for (const ScalarVariable &var : *this) {
         if (var.getName() == name) {
             return var;
         }
@@ -63,7 +63,7 @@ ScalarVariable ModelVariables::getByName(const string &name) const {
 
 ScalarVariable ModelVariables::getByValueReference(const fmi2ValueReference vr) const {
 
-    for (const ScalarVariable& var : *this) {
+    for (const ScalarVariable &var : *this) {
         if (var.getValueReference() == vr) {
             return var;
         }

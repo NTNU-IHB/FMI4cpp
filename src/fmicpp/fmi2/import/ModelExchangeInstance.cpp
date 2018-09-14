@@ -26,7 +26,8 @@
 
 using namespace fmicpp::fmi2::import;
 
-ModelExchangeInstance::ModelExchangeInstance(const fmi2Component c,
+ModelExchangeInstance::ModelExchangeInstance(
+        const fmi2Component c,
         const shared_ptr<fmicpp::fmi2::xml::ModelExchangeModelDescription> &modelDescription,
         const shared_ptr<ModelExchangeLibrary> &library) : AbstractFmuInstance(c, modelDescription, library) {}
 

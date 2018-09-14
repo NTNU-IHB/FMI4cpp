@@ -37,8 +37,8 @@ namespace {
 
     bool extractContents(std::string zip_file, std::string tmp_path) {
 
-        int* err = 0;
-        zip* za = zip_open(zip_file.c_str(), 0, err);
+        int *err = 0;
+        zip *za = zip_open(zip_file.c_str(), 0, err);
         if (za == nullptr) {
             return false;
         }
@@ -47,7 +47,7 @@ namespace {
         struct zip_stat sb;
 
         const int bufferSize = 1000;
-        char* contents = (char*) malloc(sizeof(char) * bufferSize);
+        char *contents = (char *) malloc(sizeof(char) * bufferSize);
         zip_int64_t sum, len;
         for (int i = 0; i < zip_get_num_entries(za, 0); i++) {
             if (zip_stat_index(za, i, 0, &sb) == 0) {
