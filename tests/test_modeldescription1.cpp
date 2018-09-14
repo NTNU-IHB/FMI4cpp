@@ -25,6 +25,7 @@
 #define BOOST_TEST_MODULE ControlledTemperature_Modeldescription_Test
 
 #include <string>
+#include <iostream>
 #include <boost/test/unit_test.hpp>
 #include <fmicpp/tools/os_util.hpp>
 #include <fmicpp/fmi2/fmicpp.hpp>
@@ -55,8 +56,27 @@ BOOST_AUTO_TEST_CASE(test1) {
 
     BOOST_CHECK_EQUAL(120, md.modelVariables().size());
 
-    BOOST_CHECK_EQUAL("ControlledTemperature", md_cs->modelIdentifier());
-    BOOST_CHECK_EQUAL(10, md_cs->sourceFiles().size());
-    BOOST_CHECK_EQUAL("EulerAngles.c", md_cs->sourceFiles().at(0).name());
+    auto heatCapatacity1 = md.getVariableByName("HeatCapacity1.T0").asRealVariable();
+    cout << heatCapatacity1.getValueReference() << endl;
+    BOOST_CHECK_EQUAL(1, heatCapatacity1.getValueReference());
+    BOOST_CHECK_EQUAL(nullptr, heatCapatacity1.getMin());
+    BOOST_CHECK_EQUAL(nullptr, heatCapatacity1.getMax());
+    BOOST_CHECK_EQUAL(298.0, *heatCapatacity1.getStart());
+    BOOST_CHECK_EQUAL("starting temperature", heatCapatacity1.getDescription());
+    BOOST_CHECK_EQUAL(nullptr, heatCapatacity1.getQuantity());
+
+    auto thermalConductor = md.getVariableByValueReference(12);
+    BOOST_CHECK_EQUAL("TemperatureSource.T", thermalConductor.getName());
+    BOOST_CHECK(fmi2Variability::tunable == thermalConductor.getVariability());
+    BOOST_CHECK(fmi2Causality::parameter == thermalConductor.getCausality());
+
+    auto sourceFiles = md_cs->sourceFiles();
+    BOOST_CHECK_EQUAL(10, sourceFiles.size());
+    BOOST_CHECK_EQUAL("EulerAngles.c", sourceFiles.at(0).name());
+
+    auto outputs = md.modelStructure().outputs();
+    BOOST_CHECK_EQUAL(2, outputs.size());
+    BOOST_CHECK_EQUAL(115, outputs[0].index());
+    BOOST_CHECK_EQUAL(116, outputs[1].index());
 
 }
