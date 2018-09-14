@@ -11,6 +11,10 @@ project(FMICPP)
 set(CMAKE_CXX_STANDARD 17)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
+if (MSVC)
+    add_compile_definitions(-D_CRT_SECURE_NO_WARNINGS)
+endif()
+
 SET(BOOST_COMPONENTS system filesystem)
 if (BUILD_TESTS)
     SET(BOOST_COMPONENTS ${BOOST_COMPONENTS} unit_test_framework)
