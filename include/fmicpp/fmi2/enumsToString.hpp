@@ -26,6 +26,8 @@
 #define FMICPP_ENUMSTOSTRING_HPP
 
 #include <string>
+#include <stdexcept>
+
 #include "fmi2Functions.h"
 #include "xml/enums.hpp"
 
