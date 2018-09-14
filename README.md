@@ -89,5 +89,5 @@ int main() {
 In order to run the example/test code, a system variable named __TEST_FMUs__ must be present on your system. 
 This variable should point to the location of the content found [here](https://github.com/markaren/TEST_FMUs).
 
-To build the examples pass ```-DBUILD_EXAMPLES``` to CMmake.
-Similarly, to build the tests, pass ```-DBUILD_TESTS``` to CMake.
+The examples are built by default. To change this pass ```-DBUILD_EXAMPLES=OFF``` to CMmake.
+Test are on the other hand _not_ built by default. To change this pass ```-DBUILD_TESTS=ON``` to CMake.
