@@ -26,6 +26,7 @@
 #define FMICPP_FMICPP_HPP
 
 #include <string>
+
 #include "fmi2Functions.h"
 #include "enumsToString.hpp"
 
