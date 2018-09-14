@@ -64,7 +64,7 @@ namespace fmicpp::fmi2::xml {
 
         ModelVariables modelVariables_;
         ModelStructure modelStructure_;
-        DefaultExperiment defaultExperiment_;
+        shared_ptr<DefaultExperiment> defaultExperiment_;
 
         shared_ptr<CoSimulationAttributes> coSimulation_ = nullptr;
         shared_ptr<ModelExchangeAttributes> modelExchange_ = nullptr;
@@ -99,7 +99,7 @@ namespace fmicpp::fmi2::xml {
 
         const ModelStructure &modelStructure() const;
 
-        const DefaultExperiment &defaultExperiment() const;
+        const shared_ptr<DefaultExperiment> defaultExperiment() const;
 
         bool supportsModelExchange() const;
 
