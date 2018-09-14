@@ -112,7 +112,7 @@ ModelExchangeInstanceBuilder &Fmu::asModelExchangeFmu() {
     return *meBuilder_;
 }
 
-const string Fmu::getAbsoluteLibraryPath(string modelIdentifier) const {
+const string Fmu::getAbsoluteLibraryPath(const string modelIdentifier) const {
     return tmp_path_.string() + "/binaries/" + getOs() + "/" + modelIdentifier + getLibExt();
 }
 

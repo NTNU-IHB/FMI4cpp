@@ -71,9 +71,9 @@ namespace fmicpp::fmi2::import {
         unique_ptr<CoSimulationSlaveBuilder> csBuilder_;
         unique_ptr<ModelExchangeInstanceBuilder> meBuilder_;
 
-        const string getModelDescriptionPath() const;
         const string getResourcePath() const;
-        const string getAbsoluteLibraryPath(string modelIdentifier) const;
+        const string getModelDescriptionPath() const;
+        const string getAbsoluteLibraryPath(const string modelIdentifier) const;
 
     };
 
