@@ -49,12 +49,15 @@ BOOST_AUTO_TEST_CASE(test1) {
     BOOST_CHECK_EQUAL("ControlledTemperature", md.modelName());
 
     BOOST_CHECK_EQUAL("{06c2700b-b39c-4895-9151-304ddde28443}", md.guid());
+    BOOST_CHECK_EQUAL("{06c2700b-b39c-4895-9151-304ddde28443}", md_cs->guid());
     BOOST_CHECK_EQUAL("20-sim", md.generationTool());
+    BOOST_CHECK_EQUAL("20-sim", md_cs->generationTool());
 
     BOOST_CHECK_EQUAL(true, md.supportsCoSimulation());
     BOOST_CHECK_EQUAL(false, md.supportsModelExchange());
 
     BOOST_CHECK_EQUAL(120, md.modelVariables().size());
+    BOOST_CHECK_EQUAL(120, md_cs->modelVariables().size());
 
     auto heatCapatacity1 = md.getVariableByName("HeatCapacity1.T0").asRealVariable();
     cout << heatCapatacity1.getValueReference() << endl;
