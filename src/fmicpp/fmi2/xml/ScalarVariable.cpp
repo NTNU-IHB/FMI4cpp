@@ -216,7 +216,7 @@ boost::optional<bool> BooleanVariable::getStart() const {
 }
 
 void BooleanVariable::setStart(const bool start) {
-    attribute_.start = make_shared<bool>(start);
+    attribute_.start = start;
 }
 
 EnumerationVariable::EnumerationVariable(const ScalarVariable &var, EnumerationAttribute &attribute)
