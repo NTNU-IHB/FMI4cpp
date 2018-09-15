@@ -27,36 +27,24 @@
 using namespace fmicpp::fmi2::xml;
 
 void DefaultExperiment::load(const ptree &node) {
-    auto startTime_optional = node.get_optional<double>("<xmlattr>.startTime");
-    if (startTime_optional) {
-        startTime_ = std::make_shared<double>(*startTime_optional);
-    }
-    auto stopTime_optional = node.get_optional<double>("<xmlattr>.stopTime");
-    if (stopTime_optional) {
-        stopTime_ = std::make_shared<double>(*stopTime_optional);
-    }
-    auto stepSize_optional = node.get_optional<double>("<xmlattr>.stepSize");
-    if (stepSize_optional) {
-        stepSize_ = std::make_shared<double>(*stepSize_optional);
-    }
-    auto tolerance_optional = node.get_optional<double>("<xmlattr>.tolerance");
-    if (tolerance_optional) {
-        tolerance_ = std::make_shared<double>(*tolerance_optional);
-    }
+    startTime_ = node.get_optional<double>("<xmlattr>.startTime");
+    stopTime_ = node.get_optional<double>("<xmlattr>.stopTime");
+    stepSize_ = node.get_optional<double>("<xmlattr>.stepSize");
+    tolerance_ = node.get_optional<double>("<xmlattr>.tolerance");
 }
 
-std::shared_ptr<double> DefaultExperiment::startTime() const {
+boost::optional<double> DefaultExperiment::startTime() const {
     return startTime_;
 }
 
-std::shared_ptr<double> DefaultExperiment::stopTime() const {
+boost::optional<double> DefaultExperiment::stopTime() const {
     return stopTime_;
 }
 
-std::shared_ptr<double> DefaultExperiment::stepSize() const {
+boost::optional<double> DefaultExperiment::stepSize() const {
     return stepSize_;
 }
 
-std::shared_ptr<double> DefaultExperiment::tolerance() const {
+boost::optional<double> DefaultExperiment::tolerance() const {
     return tolerance_;
 }

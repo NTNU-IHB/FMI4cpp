@@ -55,7 +55,7 @@ void ModelDescription::load(const string &fileName) {
             modelExchange_ = make_shared<ModelExchangeAttributes>();
             modelExchange_->load(v.second);
         } else if (v.first == "DefaultExperiment") {
-            defaultExperiment_ = make_shared<DefaultExperiment>();
+            defaultExperiment_ = DefaultExperiment();
             defaultExperiment_->load(v.second);
         } else if (v.first == "ModelVariables") {
             modelVariables_.load(v.second);
@@ -123,7 +123,7 @@ const ModelStructure &ModelDescription::modelStructure() const {
     return modelStructure_;
 }
 
-const shared_ptr<DefaultExperiment> ModelDescription::defaultExperiment() const {
+const boost::optional<DefaultExperiment> ModelDescription::defaultExperiment() const {
     return defaultExperiment_;
 }
 

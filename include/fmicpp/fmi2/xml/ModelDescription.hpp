@@ -27,6 +27,7 @@
 
 #include <memory>
 #include <string>
+#include <boost/optional.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 
@@ -64,7 +65,7 @@ namespace fmicpp::fmi2::xml {
 
         ModelVariables modelVariables_;
         ModelStructure modelStructure_;
-        shared_ptr<DefaultExperiment> defaultExperiment_;
+        boost::optional<DefaultExperiment> defaultExperiment_;
 
         shared_ptr<CoSimulationAttributes> coSimulation_ = nullptr;
         shared_ptr<ModelExchangeAttributes> modelExchange_ = nullptr;
@@ -99,7 +100,7 @@ namespace fmicpp::fmi2::xml {
 
         const ModelStructure &modelStructure() const;
 
-        const shared_ptr<DefaultExperiment> defaultExperiment() const;
+        const boost::optional<DefaultExperiment> defaultExperiment() const;
 
         bool supportsModelExchange() const;
 

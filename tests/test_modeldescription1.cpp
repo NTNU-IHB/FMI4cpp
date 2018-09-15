@@ -60,11 +60,12 @@ BOOST_AUTO_TEST_CASE(test1) {
 
     auto heatCapacity1 = md.getVariableByName("HeatCapacity1.T0").asRealVariable();
     BOOST_CHECK_EQUAL(1, heatCapacity1.getValueReference());
-    BOOST_CHECK_EQUAL(nullptr, heatCapacity1.getMin());
-    BOOST_CHECK_EQUAL(nullptr, heatCapacity1.getMax());
+    BOOST_CHECK_EQUAL(false, heatCapacity1.getMin().has_value());
+    BOOST_CHECK_EQUAL(false, heatCapacity1.getMax().has_value());
+    BOOST_CHECK_EQUAL(true, heatCapacity1.getStart().has_value());
     BOOST_CHECK_EQUAL(298.0, *heatCapacity1.getStart());
     BOOST_CHECK_EQUAL("starting temperature", heatCapacity1.getDescription());
-    BOOST_CHECK_EQUAL(nullptr, heatCapacity1.getQuantity());
+    BOOST_CHECK_EQUAL(false, heatCapacity1.getQuantity().has_value());
 
     auto thermalConductor = md.getVariableByValueReference(12);
     BOOST_CHECK_EQUAL("TemperatureSource.T", thermalConductor.getName());
@@ -81,10 +82,10 @@ BOOST_AUTO_TEST_CASE(test1) {
     BOOST_CHECK_EQUAL(116, outputs[1].index());
 
     auto de = md.defaultExperiment();
-    BOOST_CHECK(de != nullptr);
+    BOOST_CHECK(de.has_value());
     BOOST_CHECK_EQUAL(0.0, *de->startTime());
     BOOST_CHECK_EQUAL(20.0, *de->stopTime());
     BOOST_CHECK_EQUAL(1E-4, *de->stepSize());
-    BOOST_CHECK_EQUAL(nullptr, de->tolerance());
+    BOOST_CHECK_EQUAL(false, de->tolerance().has_value());
 
 }
