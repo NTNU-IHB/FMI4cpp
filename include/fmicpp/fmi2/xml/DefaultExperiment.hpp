@@ -25,8 +25,8 @@
 #ifndef FMICPP_DEFAULTEXPERIMENT_HPP
 #define FMICPP_DEFAULTEXPERIMENT_HPP
 
-#include <memory>
 #include <ostream>
+#include <boost/optional.hpp>
 #include <boost/property_tree/ptree.hpp>
 
 using boost::property_tree::ptree;
@@ -36,19 +36,19 @@ namespace fmicpp::fmi2::xml {
     struct DefaultExperiment {
 
     private:
-        std::shared_ptr<double> startTime_;
-        std::shared_ptr<double> stopTime_;
-        std::shared_ptr<double> stepSize_;
-        std::shared_ptr<double> tolerance_;
+        boost::optional<double> startTime_;
+        boost::optional<double> stopTime_;
+        boost::optional<double> stepSize_;
+        boost::optional<double> tolerance_;
 
     public:
-        std::shared_ptr<double> startTime() const;
+        boost::optional<double> startTime() const;
 
-        std::shared_ptr<double> stopTime() const;
+        boost::optional<double> stopTime() const;
 
-        std::shared_ptr<double> stepSize() const;
+        boost::optional<double> stepSize() const;
 
-        std::shared_ptr<double> tolerance() const;
+        boost::optional<double> tolerance() const;
 
         void load(const ptree &node);
 

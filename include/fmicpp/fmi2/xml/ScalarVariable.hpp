@@ -26,6 +26,7 @@
 #define FMICPP_SCALARVARIABLE_HPP
 
 #include <memory>
+#include <boost/optional.hpp>
 #include <boost/property_tree/ptree.hpp>
 
 #include "enums.hpp"
@@ -33,7 +34,6 @@
 #include "ScalarVariableAttributes.hpp"
 
 using std::string;
-using std::shared_ptr;
 using boost::property_tree::ptree;
 
 namespace fmicpp::fmi2::xml {
@@ -61,11 +61,11 @@ namespace fmicpp::fmi2::xml {
         fmi2Variability variability_;
         fmi2Initial initial_;
 
-        shared_ptr<IntegerAttribute> integerAttribute_;
-        shared_ptr<RealAttribute> realAttribute_;
-        shared_ptr<StringAttribute> stringAttribute_;
-        shared_ptr<BooleanAttribute> booleanAttribute_;
-        shared_ptr<EnumerationAttribute> enumerationAttribute_;
+        std::shared_ptr<IntegerAttribute> integerAttribute_;
+        std::shared_ptr<RealAttribute> realAttribute_;
+        std::shared_ptr<StringAttribute> stringAttribute_;
+        std::shared_ptr<BooleanAttribute> booleanAttribute_;
+        std::shared_ptr<EnumerationAttribute> enumerationAttribute_;
 
     public:
 
@@ -105,15 +105,15 @@ namespace fmicpp::fmi2::xml {
     public:
         IntegerVariable(const ScalarVariable &var, IntegerAttribute &attribute);
 
-        shared_ptr<int> getMin() const;
+        boost::optional<int> getMin() const;
 
-        shared_ptr<int> getMax() const;
+        boost::optional<int> getMax() const;
 
-        shared_ptr<int> getStart() const;
+        boost::optional<int> getStart() const;
 
         void setStart(const int start);
 
-        shared_ptr<string> getQuantity() const;
+        boost::optional<string> getQuantity() const;
 
     };
 
@@ -125,15 +125,15 @@ namespace fmicpp::fmi2::xml {
     public:
         RealVariable(const ScalarVariable &var, RealAttribute &attribute);
 
-        shared_ptr<double> getMin() const;
+        boost::optional<double> getMin() const;
 
-        shared_ptr<double> getMax() const;
+        boost::optional<double> getMax() const;
 
-        shared_ptr<double> getStart() const;
+        boost::optional<double> getStart() const;
 
         void setStart(const double start);
 
-        shared_ptr<double> getNominal() const;
+        boost::optional<double> getNominal() const;
 
         bool getReinit() const;
 
@@ -141,13 +141,13 @@ namespace fmicpp::fmi2::xml {
 
         bool getRelativeQuantity() const;
 
-        shared_ptr<string> getQuantity() const;
+        boost::optional<string> getQuantity() const;
 
-        shared_ptr<string> getUnit() const;
+        boost::optional<string> getUnit() const;
 
-        shared_ptr<string> getDisplayUnit() const;
+        boost::optional<string> getDisplayUnit() const;
 
-        shared_ptr<unsigned int> getDerivative() const;
+        boost::optional<unsigned int> getDerivative() const;
 
     };
 
@@ -159,7 +159,7 @@ namespace fmicpp::fmi2::xml {
     public:
         StringVariable(const ScalarVariable &var, StringAttribute &attribute);
 
-        shared_ptr<string> getStart() const;
+        boost::optional<string> getStart() const;
 
         void setStart(const string &start);
 
@@ -173,7 +173,7 @@ namespace fmicpp::fmi2::xml {
     public:
         BooleanVariable(const ScalarVariable &var, BooleanAttribute &attribute);
 
-        shared_ptr<bool> getStart() const;
+        boost::optional<bool> getStart() const;
 
         void setStart(const bool start);
 
@@ -187,15 +187,15 @@ namespace fmicpp::fmi2::xml {
     public:
         EnumerationVariable(const ScalarVariable &var, EnumerationAttribute &attribute);
 
-        shared_ptr<int> getMin() const;
+        boost::optional<int> getMin() const;
 
-        shared_ptr<int> getMax() const;
+        boost::optional<int> getMax() const;
 
-        shared_ptr<int> getStart() const;
+        boost::optional<int> getStart() const;
 
         void setStart(const int start);
 
-        shared_ptr<string> getQuantity() const;
+        boost::optional<string> getQuantity() const;
 
     };
 

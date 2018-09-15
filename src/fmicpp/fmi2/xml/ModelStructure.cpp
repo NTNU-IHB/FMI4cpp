@@ -49,11 +49,11 @@ unsigned int Unknown::index() const {
     return index_;
 }
 
-std::string Unknown::dependencyKind() const {
+boost::optional<std::string> Unknown::dependencyKind() const {
     return dependencyKind_;
 }
 
-const std::vector<unsigned int> &Unknown::dependencies() const {
+const boost::optional<std::vector<unsigned int>> &Unknown::dependencies() const {
     return *dependencies_;
 }
 

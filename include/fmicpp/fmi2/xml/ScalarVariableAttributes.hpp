@@ -25,37 +25,36 @@
 #ifndef FMICPP_SCALARVARIBALEATTRIBUTES_HPP
 #define FMICPP_SCALARVARIBALEATTRIBUTES_HPP
 
-#include <memory>
+#include <boost/optional.hpp>
 #include <boost/property_tree/ptree.hpp>
 
 using std::string;
-using std::shared_ptr;
 using boost::property_tree::ptree;
 
 namespace fmicpp::fmi2::xml {
 
     struct IntegerAttribute {
 
-        shared_ptr<int> min;
-        shared_ptr<int> max;
-        shared_ptr<int> start;
+        boost::optional<int> min;
+        boost::optional<int> max;
+        boost::optional<int> start;
 
-        shared_ptr<string> quantity;
+        boost::optional<string> quantity;
 
         void load(const ptree &node);
     };
 
     struct RealAttribute {
-        shared_ptr<double> min;
-        shared_ptr<double> max;
-        shared_ptr<double> start;
-        shared_ptr<double> nominal;
+        boost::optional<double> min;
+        boost::optional<double> max;
+        boost::optional<double> start;
+        boost::optional<double> nominal;
 
-        shared_ptr<string> quantity;
-        shared_ptr<string> unit;
-        shared_ptr<string> displayUnit;
+        boost::optional<string> quantity;
+        boost::optional<string> unit;
+        boost::optional<string> displayUnit;
 
-        shared_ptr<unsigned int> derivative;
+        boost::optional<unsigned int> derivative;
 
         bool reinit;
         bool unbounded;
@@ -65,23 +64,23 @@ namespace fmicpp::fmi2::xml {
     };
 
     struct StringAttribute {
-        shared_ptr<string> start;
+        boost::optional<string> start;
 
         void load(const ptree &node);
     };
 
     struct BooleanAttribute {
-        shared_ptr<bool> start;
+        boost::optional<bool> start;
 
         void load(const ptree &node);
     };
 
     struct EnumerationAttribute {
-        shared_ptr<int> min;
-        shared_ptr<int> max;
-        shared_ptr<int> start;
+        boost::optional<int> min;
+        boost::optional<int> max;
+        boost::optional<int> start;
 
-        shared_ptr<string> quantity;
+        boost::optional<string> quantity;
 
         void load(const ptree &node);
     };

@@ -126,46 +126,46 @@ fmi2Initial ScalarVariable::getInitial() const {
 IntegerVariable::IntegerVariable(const ScalarVariable &var, IntegerAttribute &attribute)
         : ScalarVariable(var), attribute_(attribute) {}
 
-shared_ptr<int> IntegerVariable::getMin() const {
+boost::optional<int> IntegerVariable::getMin() const {
     return attribute_.min;
 }
 
-shared_ptr<int> IntegerVariable::getMax() const {
+boost::optional<int> IntegerVariable::getMax() const {
     return attribute_.max;
 }
 
-shared_ptr<int> IntegerVariable::getStart() const {
+boost::optional<int> IntegerVariable::getStart() const {
     return attribute_.start;
 }
 
 void IntegerVariable::setStart(const int start) {
-    attribute_.start = make_shared<int>(start);
+    attribute_.start = start;
 }
 
-shared_ptr<string> IntegerVariable::getQuantity() const {
+boost::optional<string> IntegerVariable::getQuantity() const {
     return attribute_.quantity;
 }
 
 RealVariable::RealVariable(const ScalarVariable &var, RealAttribute &attribute)
         : ScalarVariable(var), attribute_(attribute) {}
 
-shared_ptr<double> RealVariable::getMin() const {
+boost::optional<double> RealVariable::getMin() const {
     return attribute_.min;
 }
 
-shared_ptr<double> RealVariable::getMax() const {
+boost::optional<double> RealVariable::getMax() const {
     return attribute_.max;
 }
 
-shared_ptr<double> RealVariable::getStart() const {
+boost::optional<double> RealVariable::getStart() const {
     return attribute_.start;
 }
 
 void RealVariable::setStart(const double start) {
-    attribute_.start = make_shared<double>(start);
+    attribute_.start = start;
 }
 
-shared_ptr<double> RealVariable::getNominal() const {
+boost::optional<double> RealVariable::getNominal() const {
     return attribute_.nominal;
 }
 
@@ -181,37 +181,37 @@ bool RealVariable::getRelativeQuantity() const {
     return attribute_.relativeQuantity;
 }
 
-shared_ptr<string> RealVariable::getQuantity() const {
+boost::optional<string> RealVariable::getQuantity() const {
     return attribute_.quantity;
 }
 
-shared_ptr<string> RealVariable::getUnit() const {
+boost::optional<string> RealVariable::getUnit() const {
     return attribute_.unit;
 }
 
-shared_ptr<string> RealVariable::getDisplayUnit() const {
+boost::optional<string> RealVariable::getDisplayUnit() const {
     return attribute_.displayUnit;
 }
 
-shared_ptr<unsigned int> RealVariable::getDerivative() const {
+boost::optional<unsigned int> RealVariable::getDerivative() const {
     return attribute_.derivative;
 }
 
 StringVariable::StringVariable(const ScalarVariable &var, StringAttribute &attribute)
         : ScalarVariable(var), attribute_(attribute) {}
 
-shared_ptr<string> StringVariable::getStart() const {
+boost::optional<string> StringVariable::getStart() const {
     return attribute_.start;
 }
 
 void StringVariable::setStart(const string &start) {
-    attribute_.start = make_shared<string>(start);
+    attribute_.start = start;
 }
 
 BooleanVariable::BooleanVariable(const ScalarVariable &var, BooleanAttribute &attribute)
         : ScalarVariable(var), attribute_(attribute) {}
 
-shared_ptr<bool> BooleanVariable::getStart() const {
+boost::optional<bool> BooleanVariable::getStart() const {
     return attribute_.start;
 }
 
@@ -222,22 +222,22 @@ void BooleanVariable::setStart(const bool start) {
 EnumerationVariable::EnumerationVariable(const ScalarVariable &var, EnumerationAttribute &attribute)
         : ScalarVariable(var), attribute_(attribute) {}
 
-shared_ptr<int> EnumerationVariable::getMin() const {
+boost::optional<int> EnumerationVariable::getMin() const {
     return attribute_.min;
 }
 
-shared_ptr<int> EnumerationVariable::getMax() const {
+boost::optional<int> EnumerationVariable::getMax() const {
     return attribute_.max;
 }
 
-shared_ptr<int> EnumerationVariable::getStart() const {
+boost::optional<int> EnumerationVariable::getStart() const {
     return attribute_.start;
 }
 
 void EnumerationVariable::setStart(const int start) {
-    attribute_.start = make_shared<int>(start);
+    attribute_.start = start;
 }
 
-shared_ptr<string> EnumerationVariable::getQuantity() const {
+boost::optional<string> EnumerationVariable::getQuantity() const {
     return attribute_.quantity;
 }
