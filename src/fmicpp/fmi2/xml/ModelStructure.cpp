@@ -59,7 +59,7 @@ const boost::optional<std::vector<unsigned int>> &Unknown::dependencies() const 
 
 void Unknown::load(const ptree &node) {
     index_ = node.get<unsigned int>("<xmlattr>.index");
-    dependencyKind_ = node.get<string>("<xmlattr>.dependencyKind");
+    dependencyKind_ = node.get_optional<string>("<xmlattr>.dependencyKind");
 }
 
 
