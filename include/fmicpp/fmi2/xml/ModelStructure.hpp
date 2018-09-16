@@ -27,7 +27,7 @@
 
 #include <string>
 #include <vector>
-#include <boost/optional.hpp>
+#include <optional>
 #include <boost/property_tree/ptree.hpp>
 
 #include "../fmi2TypesPlatform.h"
@@ -40,15 +40,15 @@ namespace fmicpp::fmi2::xml {
 
     private:
         unsigned int index_;
-        boost::optional<std::string> dependencyKind_;
-        boost::optional<std::vector<unsigned int >> dependencies_;
+        std::optional<std::string> dependencyKind_;
+        std::optional<std::vector<unsigned int >> dependencies_;
 
     public:
         unsigned int index() const;
 
-        boost::optional<std::string> dependencyKind() const;
+        std::optional<std::string> dependencyKind() const;
 
-        const boost::optional<std::vector<unsigned int>> &dependencies() const;
+        const std::optional<std::vector<unsigned int>> &dependencies() const;
 
         void load(const ptree &node);
 

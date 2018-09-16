@@ -25,6 +25,7 @@
 #ifndef FMICPP_SCALARVARIBALEATTRIBUTES_HPP
 #define FMICPP_SCALARVARIBALEATTRIBUTES_HPP
 
+#include <optional>
 #include <boost/optional.hpp>
 #include <boost/property_tree/ptree.hpp>
 
@@ -35,26 +36,26 @@ namespace fmicpp::fmi2::xml {
 
     struct IntegerAttribute {
 
-        boost::optional<int> min;
-        boost::optional<int> max;
-        boost::optional<int> start;
+        std::optional<int> min;
+        std::optional<int> max;
+        std::optional<int> start;
 
-        boost::optional<string> quantity;
+        std::optional<string> quantity;
 
         void load(const ptree &node);
     };
 
     struct RealAttribute {
-        boost::optional<double> min;
-        boost::optional<double> max;
-        boost::optional<double> start;
-        boost::optional<double> nominal;
+        std::optional<double> min;
+        std::optional<double> max;
+        std::optional<double> start;
+        std::optional<double> nominal;
 
-        boost::optional<string> quantity;
-        boost::optional<string> unit;
-        boost::optional<string> displayUnit;
+        std::optional<string> quantity;
+        std::optional<string> unit;
+        std::optional<string> displayUnit;
 
-        boost::optional<unsigned int> derivative;
+        std::optional<unsigned int> derivative;
 
         bool reinit;
         bool unbounded;
@@ -64,23 +65,23 @@ namespace fmicpp::fmi2::xml {
     };
 
     struct StringAttribute {
-        boost::optional<string> start;
+        std::optional<string> start;
 
         void load(const ptree &node);
     };
 
     struct BooleanAttribute {
-        boost::optional<bool> start;
+        std::optional<bool> start;
 
         void load(const ptree &node);
     };
 
     struct EnumerationAttribute {
-        boost::optional<int> min;
-        boost::optional<int> max;
-        boost::optional<int> start;
+        std::optional<int> min;
+        std::optional<int> max;
+        std::optional<int> start;
 
-        boost::optional<string> quantity;
+        std::optional<string> quantity;
 
         void load(const ptree &node);
     };

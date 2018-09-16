@@ -43,23 +43,32 @@ namespace {
 
     }
 
+    template <class T>
+    std::optional<T> convert(boost::optional<T> opt) {
+        if (!opt) {
+            return {};
+        } else {
+            return *opt;
+        }
+    }
+
 }
 
 unsigned int Unknown::index() const {
     return index_;
 }
 
-boost::optional<std::string> Unknown::dependencyKind() const {
+std::optional<std::string> Unknown::dependencyKind() const {
     return dependencyKind_;
 }
 
-const boost::optional<std::vector<unsigned int>> &Unknown::dependencies() const {
+const std::optional<std::vector<unsigned int>> &Unknown::dependencies() const {
     return *dependencies_;
 }
 
 void Unknown::load(const ptree &node) {
     index_ = node.get<unsigned int>("<xmlattr>.index");
-    dependencyKind_ = node.get_optional<string>("<xmlattr>.dependencyKind");
+    dependencyKind_ = convert(node.get_optional<string>("<xmlattr>.dependencyKind"));
 }
 
 

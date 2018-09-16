@@ -123,7 +123,7 @@ const ModelStructure &ModelDescription::modelStructure() const {
     return modelStructure_;
 }
 
-const boost::optional<DefaultExperiment> ModelDescription::defaultExperiment() const {
+const std::optional<DefaultExperiment> ModelDescription::defaultExperiment() const {
     return defaultExperiment_;
 }
 

@@ -27,25 +27,38 @@
 using namespace std;
 using namespace fmicpp::fmi2::xml;
 
-void IntegerAttribute::load(const ptree &node) {
-    min = node.get_optional<int>("<xmlattr>.min");
-    max = node.get_optional<int>("<xmlattr>.max");
-    start = node.get_optional<int>("<xmlattr>.start");
+namespace {
 
-    quantity = node.get_optional<string>("<xmlattr>.quantity");
+    template <class T>
+    std::optional<T> convert(boost::optional<T> opt) {
+        if (!opt) {
+            return {};
+        } else {
+            return *opt;
+        }
+    }
+
+}
+
+void IntegerAttribute::load(const ptree &node) {
+    min = convert(node.get_optional<int>("<xmlattr>.min"));
+    max = convert(node.get_optional<int>("<xmlattr>.max"));
+    start = convert(node.get_optional<int>("<xmlattr>.start"));
+
+    quantity = convert(node.get_optional<string>("<xmlattr>.quantity"));
 }
 
 void RealAttribute::load(const ptree &node) {
-    min = node.get_optional<double>("<xmlattr>.min");
-    max = node.get_optional<double>("<xmlattr>.max");
-    start = node.get_optional<double>("<xmlattr>.start");
-    nominal = node.get_optional<double>("<xmlattr>.nominal");
+    min = convert(node.get_optional<double>("<xmlattr>.min"));
+    max = convert(node.get_optional<double>("<xmlattr>.max"));
+    start = convert(node.get_optional<double>("<xmlattr>.start"));
+    nominal = convert(node.get_optional<double>("<xmlattr>.nominal"));
 
-    quantity = node.get_optional<string>("<xmlattr>.quantity");
-    unit = node.get_optional<string>("<xmlattr>.unit");
-    displayUnit = node.get_optional<string>("<xmlattr>.displayUnit");
+    quantity = convert(node.get_optional<string>("<xmlattr>.quantity"));
+    unit = convert(node.get_optional<string>("<xmlattr>.unit"));
+    displayUnit = convert(node.get_optional<string>("<xmlattr>.displayUnit"));
 
-    derivative = node.get_optional<unsigned int>("<xmlattr>.derivative");
+    derivative = convert(node.get_optional<unsigned int>("<xmlattr>.derivative"));
 
     reinit = node.get<bool>("<xmlattr>.reinit", false);
     unbounded = node.get<bool>("<xmlattr>.unbounded", false);
@@ -54,17 +67,17 @@ void RealAttribute::load(const ptree &node) {
 }
 
 void StringAttribute::load(const ptree &node) {
-    start = node.get_optional<string>("<xmlattr>.start");
+    start = convert(node.get_optional<string>("<xmlattr>.start"));
 }
 
 void BooleanAttribute::load(const ptree &node) {
-    start = node.get_optional<bool>("<xmlattr>.start");
+    start = convert(node.get_optional<bool>("<xmlattr>.start"));
 }
 
 void EnumerationAttribute::load(const ptree &node) {
-    min = node.get_optional<int>("<xmlattr>.min");
-    max = node.get_optional<int>("<xmlattr>.max");
-    start = node.get_optional<int>("<xmlattr>.start");
+    min = convert(node.get_optional<int>("<xmlattr>.min"));
+    max = convert(node.get_optional<int>("<xmlattr>.max"));
+    start = convert(node.get_optional<int>("<xmlattr>.start"));
 
-    quantity = node.get_optional<string>("<xmlattr>.quantity");
+    quantity = convert(node.get_optional<string>("<xmlattr>.quantity"));
 }
