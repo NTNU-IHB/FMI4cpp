@@ -29,9 +29,14 @@
 #include <sstream>
 #include <zip.h>
 #include <string>
-#include <boost/filesystem.hpp>
 
-namespace fs = boost::filesystem;
+#ifdef WIN32
+#include <experimental/filesystem>
+namespace fs = std::experimental::filesystem;
+#else
+#include <filesystem>
+namespace fs = std::filesystem;
+#endif
 
 namespace {
 

@@ -27,11 +27,16 @@
 
 #include <memory>
 #include <vector>
-#include <boost/filesystem.hpp>
+
+#ifdef WIN32
+#include <experimental/filesystem>
+namespace fs = std::experimental::filesystem;
+#else
+#include <filesystem>
+namespace fs = std::filesystem;
+#endif
 
 #include "../xml/ModelDescription.hpp"
-
-namespace fs = boost::filesystem;
 
 using std::string;
 using std::unique_ptr;
