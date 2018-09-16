@@ -63,7 +63,7 @@ std::optional<std::string> Unknown::dependencyKind() const {
 }
 
 const std::optional<std::vector<unsigned int>> &Unknown::dependencies() const {
-    return *dependencies_;
+    return dependencies_;
 }
 
 void Unknown::load(const ptree &node) {
