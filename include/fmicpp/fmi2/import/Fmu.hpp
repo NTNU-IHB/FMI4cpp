@@ -73,6 +73,7 @@ namespace fmicpp::fmi2::import {
     private:
 
         fs::path tmp_path_;
+        const string uuid_;
         const string fmu_file_;
         unique_ptr<ModelDescription> modelDescription_;
         unique_ptr<CoSimulationSlaveBuilder> csBuilder_;
