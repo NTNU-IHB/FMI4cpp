@@ -27,20 +27,14 @@
 
 #include <memory>
 #include <vector>
-
-#ifdef WIN32
 #include <experimental/filesystem>
-namespace fs = std::experimental::filesystem;
-#else
-#include <filesystem>
-namespace fs = std::filesystem;
-#endif
-
 #include "../xml/ModelDescription.hpp"
 
 using std::string;
 using std::unique_ptr;
 using fmicpp::fmi2::xml::ModelDescription;
+
+namespace fs = std::experimental::filesystem;
 
 namespace fmicpp::fmi2::import {
 
