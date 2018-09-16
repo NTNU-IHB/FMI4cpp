@@ -126,15 +126,15 @@ fmi2Initial ScalarVariable::getInitial() const {
 IntegerVariable::IntegerVariable(const ScalarVariable &var, IntegerAttribute &attribute)
         : ScalarVariable(var), attribute_(attribute) {}
 
-boost::optional<int> IntegerVariable::getMin() const {
+std::optional<int> IntegerVariable::getMin() const {
     return attribute_.min;
 }
 
-boost::optional<int> IntegerVariable::getMax() const {
+std::optional<int> IntegerVariable::getMax() const {
     return attribute_.max;
 }
 
-boost::optional<int> IntegerVariable::getStart() const {
+std::optional<int> IntegerVariable::getStart() const {
     return attribute_.start;
 }
 
@@ -142,22 +142,22 @@ void IntegerVariable::setStart(const int start) {
     attribute_.start = start;
 }
 
-boost::optional<string> IntegerVariable::getQuantity() const {
+std::optional<string> IntegerVariable::getQuantity() const {
     return attribute_.quantity;
 }
 
 RealVariable::RealVariable(const ScalarVariable &var, RealAttribute &attribute)
         : ScalarVariable(var), attribute_(attribute) {}
 
-boost::optional<double> RealVariable::getMin() const {
+std::optional<double> RealVariable::getMin() const {
     return attribute_.min;
 }
 
-boost::optional<double> RealVariable::getMax() const {
+std::optional<double> RealVariable::getMax() const {
     return attribute_.max;
 }
 
-boost::optional<double> RealVariable::getStart() const {
+std::optional<double> RealVariable::getStart() const {
     return attribute_.start;
 }
 
@@ -165,7 +165,7 @@ void RealVariable::setStart(const double start) {
     attribute_.start = start;
 }
 
-boost::optional<double> RealVariable::getNominal() const {
+std::optional<double> RealVariable::getNominal() const {
     return attribute_.nominal;
 }
 
@@ -181,26 +181,26 @@ bool RealVariable::getRelativeQuantity() const {
     return attribute_.relativeQuantity;
 }
 
-boost::optional<string> RealVariable::getQuantity() const {
+std::optional<string> RealVariable::getQuantity() const {
     return attribute_.quantity;
 }
 
-boost::optional<string> RealVariable::getUnit() const {
+std::optional<string> RealVariable::getUnit() const {
     return attribute_.unit;
 }
 
-boost::optional<string> RealVariable::getDisplayUnit() const {
+std::optional<string> RealVariable::getDisplayUnit() const {
     return attribute_.displayUnit;
 }
 
-boost::optional<unsigned int> RealVariable::getDerivative() const {
+std::optional<unsigned int> RealVariable::getDerivative() const {
     return attribute_.derivative;
 }
 
 StringVariable::StringVariable(const ScalarVariable &var, StringAttribute &attribute)
         : ScalarVariable(var), attribute_(attribute) {}
 
-boost::optional<string> StringVariable::getStart() const {
+std::optional<string> StringVariable::getStart() const {
     return attribute_.start;
 }
 
@@ -211,7 +211,7 @@ void StringVariable::setStart(const string &start) {
 BooleanVariable::BooleanVariable(const ScalarVariable &var, BooleanAttribute &attribute)
         : ScalarVariable(var), attribute_(attribute) {}
 
-boost::optional<bool> BooleanVariable::getStart() const {
+std::optional<bool> BooleanVariable::getStart() const {
     return attribute_.start;
 }
 
@@ -222,15 +222,15 @@ void BooleanVariable::setStart(const bool start) {
 EnumerationVariable::EnumerationVariable(const ScalarVariable &var, EnumerationAttribute &attribute)
         : ScalarVariable(var), attribute_(attribute) {}
 
-boost::optional<int> EnumerationVariable::getMin() const {
+std::optional<int> EnumerationVariable::getMin() const {
     return attribute_.min;
 }
 
-boost::optional<int> EnumerationVariable::getMax() const {
+std::optional<int> EnumerationVariable::getMax() const {
     return attribute_.max;
 }
 
-boost::optional<int> EnumerationVariable::getStart() const {
+std::optional<int> EnumerationVariable::getStart() const {
     return attribute_.start;
 }
 
@@ -238,6 +238,6 @@ void EnumerationVariable::setStart(const int start) {
     attribute_.start = start;
 }
 
-boost::optional<string> EnumerationVariable::getQuantity() const {
+std::optional<string> EnumerationVariable::getQuantity() const {
     return attribute_.quantity;
 }
