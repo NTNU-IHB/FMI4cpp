@@ -22,9 +22,10 @@
  * THE SOFTWARE.
  */
 
+#include <sstream>
+#include <iostream>
 #include <boost/optional.hpp>
 #include <fmi4cpp/fmi2/xml/ModelStructure.hpp>
-
 
 using namespace std;
 using namespace fmi4cpp::fmi2::xml;
@@ -52,6 +53,19 @@ namespace {
         }
     }
 
+    vector<unsigned int> parse(const string str) {
+        int i;
+        stringstream ss(str);
+        vector<unsigned int> result;
+        while (ss >> i) {
+            result.push_back(i);
+            if (ss.peek() == ',' || ss.peek() == ' ') {
+                ss.ignore();
+            }
+        }
+        return result;
+    }
+
 }
 
 unsigned int Unknown::index() const {
@@ -69,6 +83,12 @@ const std::optional<std::vector<unsigned int>> &Unknown::dependencies() const {
 void Unknown::load(const ptree &node) {
     index_ = node.get<unsigned int>("<xmlattr>.index");
     dependencyKind_ = convert(node.get_optional<string>("<xmlattr>.dependencyKind"));
+
+    auto dependencies = node.get_optional<string>("<xmlattr>.dependencies");
+    if (dependencies) {
+        dependencies_ = parse(*dependencies);
+    }
+
 }
 
 
