@@ -22,45 +22,43 @@
  * THE SOFTWARE.
  */
 
-#include <iostream>
-#include <fmi4cpp/fmi2/fmi4cpp.hpp>
-#include <fmi4cpp/tools/os_util.hpp>
+#ifndef FMI4CPP_ENUMS_HPP
+#define FMI4CPP_ENUMS_HPP
 
-using namespace std;
-using namespace fmi4cpp::fmi2;
+#include <string>
 
-const fmi2ValueReference vr = 46;
-const double stop = 10.0;
-const double step_size = 1E-4;
+namespace fmi4cpp::fmi2::xml {
 
-int main() {
+    enum class fmi2Causality {
+        parameter,
+        calculatedParameter,
+        input,
+        output,
+        local,
+        independent
+    };
 
-    const string fmu_path = string(getenv("TEST_FMUs"))
-                            + "/FMI_2.0/CoSimulation/" + getOs() +
-                            "/20sim/4.6.4.8004/ControlledTemperature/ControlledTemperature.fmu";
+    enum class fmi2Variability {
+        constant,
+        fixed,
+        tunable,
+        discrete,
+        continuous
+    };
 
-    import::Fmu fmu(fmu_path);
-    const auto slave = fmu.asCoSimulationFmu().newInstance();
-    slave->init();
+    enum class fmi2Initial {
+        exact,
+        approx,
+        calculated,
+        unknown
+    };
 
-    clock_t begin = clock();
-    
-    double t;
-    double ref;
-    while ((t = slave->getSimulationTime()) <= (stop - step_size)) {
-        fmi2Status status = slave->doStep(step_size);
-        if (status != fmi2OK) {
-            cout << "Error! step returned with status: " << to_string(status) << endl;
-            break;
-        }
-        slave->readReal(vr, ref);
-    }
+    fmi2Causality parseCausality(std::string str);
 
-    clock_t end = clock();
+    fmi2Variability parseVariability(std::string str);
 
-    long elapsed_ms =  (long) ((double(end-begin) / CLOCKS_PER_SEC) * 1000.0);
-    cout << "elapsed=" << elapsed_ms << "ms" << endl;
-
-    slave->terminate();
+    fmi2Initial parseInitial(std::string str);
 
 }
+
+#endif //FMI4CPP_ENUMS_HPP

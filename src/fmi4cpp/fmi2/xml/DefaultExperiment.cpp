@@ -22,45 +22,42 @@
  * THE SOFTWARE.
  */
 
-#include <iostream>
-#include <fmi4cpp/fmi2/fmi4cpp.hpp>
-#include <fmi4cpp/tools/os_util.hpp>
+#include <fmi4cpp/fmi2/xml/DefaultExperiment.hpp>
 
-using namespace std;
-using namespace fmi4cpp::fmi2;
+using namespace fmi4cpp::fmi2::xml;
 
-const fmi2ValueReference vr = 46;
-const double stop = 10.0;
-const double step_size = 1E-4;
+namespace {
 
-int main() {
-
-    const string fmu_path = string(getenv("TEST_FMUs"))
-                            + "/FMI_2.0/CoSimulation/" + getOs() +
-                            "/20sim/4.6.4.8004/ControlledTemperature/ControlledTemperature.fmu";
-
-    import::Fmu fmu(fmu_path);
-    const auto slave = fmu.asCoSimulationFmu().newInstance();
-    slave->init();
-
-    clock_t begin = clock();
-    
-    double t;
-    double ref;
-    while ((t = slave->getSimulationTime()) <= (stop - step_size)) {
-        fmi2Status status = slave->doStep(step_size);
-        if (status != fmi2OK) {
-            cout << "Error! step returned with status: " << to_string(status) << endl;
-            break;
+    template <class T>
+    std::optional<T> convert(boost::optional<T> opt) {
+        if (!opt) {
+            return {};
+        } else {
+            return *opt;
         }
-        slave->readReal(vr, ref);
     }
 
-    clock_t end = clock();
+}
 
-    long elapsed_ms =  (long) ((double(end-begin) / CLOCKS_PER_SEC) * 1000.0);
-    cout << "elapsed=" << elapsed_ms << "ms" << endl;
+void DefaultExperiment::load(const ptree &node) {
+    startTime_ = convert(node.get_optional<double>("<xmlattr>.startTime"));
+    stopTime_ = convert(node.get_optional<double>("<xmlattr>.stopTime"));
+    stepSize_ = convert(node.get_optional<double>("<xmlattr>.stepSize"));
+    tolerance_ = convert(node.get_optional<double>("<xmlattr>.tolerance"));
+}
 
-    slave->terminate();
+std::optional<double> DefaultExperiment::startTime() const {
+    return startTime_;
+}
 
+std::optional<double> DefaultExperiment::stopTime() const {
+    return stopTime_;
+}
+
+std::optional<double> DefaultExperiment::stepSize() const {
+    return stepSize_;
+}
+
+std::optional<double> DefaultExperiment::tolerance() const {
+    return tolerance_;
 }

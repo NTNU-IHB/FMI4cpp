@@ -22,45 +22,31 @@
  * THE SOFTWARE.
  */
 
-#include <iostream>
-#include <fmi4cpp/fmi2/fmi4cpp.hpp>
-#include <fmi4cpp/tools/os_util.hpp>
+#ifndef FMI4CPP_INSTANCEBUILDER_HPP
+#define FMI4CPP_INSTANCEBUILDER_HPP
 
-using namespace std;
-using namespace fmi4cpp::fmi2;
+#include <memory>
+#include "Fmu.hpp"
 
-const fmi2ValueReference vr = 46;
-const double stop = 10.0;
-const double step_size = 1E-4;
+namespace fmi4cpp::fmi2::import {
 
-int main() {
+    template<class T, class U>
+    class InstanceBuilder {
 
-    const string fmu_path = string(getenv("TEST_FMUs"))
-                            + "/FMI_2.0/CoSimulation/" + getOs() +
-                            "/20sim/4.6.4.8004/ControlledTemperature/ControlledTemperature.fmu";
+    protected:
 
-    import::Fmu fmu(fmu_path);
-    const auto slave = fmu.asCoSimulationFmu().newInstance();
-    slave->init();
+        Fmu &fmu_;
+        std::shared_ptr<T> lib_;
 
-    clock_t begin = clock();
-    
-    double t;
-    double ref;
-    while ((t = slave->getSimulationTime()) <= (stop - step_size)) {
-        fmi2Status status = slave->doStep(step_size);
-        if (status != fmi2OK) {
-            cout << "Error! step returned with status: " << to_string(status) << endl;
-            break;
-        }
-        slave->readReal(vr, ref);
-    }
+    public:
+        explicit InstanceBuilder(Fmu &fmu_) : fmu_(fmu_) {}
 
-    clock_t end = clock();
+        virtual std::unique_ptr<U> newInstance(const bool visible, const bool loggingOn) = 0;
 
-    long elapsed_ms =  (long) ((double(end-begin) / CLOCKS_PER_SEC) * 1000.0);
-    cout << "elapsed=" << elapsed_ms << "ms" << endl;
+        ~InstanceBuilder() {}
 
-    slave->terminate();
+    };
 
 }
+
+#endif //FMI4CPP_INSTANCEBUILDER_HPP

@@ -2,80 +2,80 @@ include(GNUInstallDirs)
 
 SET(HEADERS
 
-        ../include/fmicpp/tools/os_util.hpp
-        ../include/fmicpp/tools/unzipper.hpp
+        ../include/fmi4cpp/tools/os_util.hpp
+        ../include/fmi4cpp/tools/unzipper.hpp
 
-        ../include/fmicpp/fmi2/fmicpp.hpp
-        ../include/fmicpp/fmi2/fmi2Functions.h
-        ../include/fmicpp/fmi2/fmi2FunctionTypes.h
-        ../include/fmicpp/fmi2/fmi2TypesPlatform.h
-        ../include/fmicpp/fmi2/enumsToString.hpp
+        ../include/fmi4cpp/fmi2/fmi4cpp.hpp
+        ../include/fmi4cpp/fmi2/fmi2Functions.h
+        ../include/fmi4cpp/fmi2/fmi2FunctionTypes.h
+        ../include/fmi4cpp/fmi2/fmi2TypesPlatform.h
+        ../include/fmi4cpp/fmi2/enumsToString.hpp
 
-        ../include/fmicpp/fmi2/import/FmuInstance.hpp
-        ../include/fmicpp/fmi2/import/FmuSlave.hpp
-        ../include/fmicpp/fmi2/import/InstanceBuilder.hpp
+        ../include/fmi4cpp/fmi2/import/FmuInstance.hpp
+        ../include/fmi4cpp/fmi2/import/FmuSlave.hpp
+        ../include/fmi4cpp/fmi2/import/InstanceBuilder.hpp
 
-        ../include/fmicpp/fmi2/import/Fmu.hpp
-        ../include/fmicpp/fmi2/import/FmiLibrary.hpp
-        ../include/fmicpp/fmi2/import/CoSimulationLibrary.hpp
-        ../include/fmicpp/fmi2/import/ModelExchangeLibrary.hpp
-        ../include/fmicpp/fmi2/import/AbstractFmuInstance.hpp
-        ../include/fmicpp/fmi2/import/CoSimulationSlave.hpp
-        ../include/fmicpp/fmi2/import/CoSimulationSlaveBuilder.hpp
-        ../include/fmicpp/fmi2/import/ModelExchangeInstance.hpp
-        ../include/fmicpp/fmi2/import/ModelExchangeInstanceBuilder.hpp
+        ../include/fmi4cpp/fmi2/import/Fmu.hpp
+        ../include/fmi4cpp/fmi2/import/FmiLibrary.hpp
+        ../include/fmi4cpp/fmi2/import/CoSimulationLibrary.hpp
+        ../include/fmi4cpp/fmi2/import/ModelExchangeLibrary.hpp
+        ../include/fmi4cpp/fmi2/import/AbstractFmuInstance.hpp
+        ../include/fmi4cpp/fmi2/import/CoSimulationSlave.hpp
+        ../include/fmi4cpp/fmi2/import/CoSimulationSlaveBuilder.hpp
+        ../include/fmi4cpp/fmi2/import/ModelExchangeInstance.hpp
+        ../include/fmi4cpp/fmi2/import/ModelExchangeInstanceBuilder.hpp
 
-        ../include/fmicpp/fmi2/xml/enums.hpp
-        ../include/fmicpp/fmi2/xml/FmuTypeAttributes.hpp
-        ../include/fmicpp/fmi2/xml/ModelDescription.hpp
-        ../include/fmicpp/fmi2/xml/SpecificModelDescription.hpp
-        ../include/fmicpp/fmi2/xml/ModelVariables.hpp
-        ../include/fmicpp/fmi2/xml/ScalarVariable.hpp
-        ../include/fmicpp/fmi2/xml/ScalarVariableAttributes.hpp
-        ../include/fmicpp/fmi2/xml/DefaultExperiment.hpp
-        ../include/fmicpp/fmi2/xml/SourceFiles.hpp
-        ../include/fmicpp/fmi2/xml/ModelStructure.hpp)
+        ../include/fmi4cpp/fmi2/xml/enums.hpp
+        ../include/fmi4cpp/fmi2/xml/FmuTypeAttributes.hpp
+        ../include/fmi4cpp/fmi2/xml/ModelDescription.hpp
+        ../include/fmi4cpp/fmi2/xml/SpecificModelDescription.hpp
+        ../include/fmi4cpp/fmi2/xml/ModelVariables.hpp
+        ../include/fmi4cpp/fmi2/xml/ScalarVariable.hpp
+        ../include/fmi4cpp/fmi2/xml/ScalarVariableAttributes.hpp
+        ../include/fmi4cpp/fmi2/xml/DefaultExperiment.hpp
+        ../include/fmi4cpp/fmi2/xml/SourceFiles.hpp
+        ../include/fmi4cpp/fmi2/xml/ModelStructure.hpp)
 
 SET(SOURCES
-        fmicpp/fmi2/import/Fmu.cpp
-        fmicpp/fmi2/import/FmiLibrary.cpp
-        fmicpp/fmi2/import/CoSimulationLibrary.cpp
-        fmicpp/fmi2/import/ModelExchangeLibrary.cpp
-        fmicpp/fmi2/import/CoSimulationSlave.cpp
-        fmicpp/fmi2/import/CoSimulationSlaveBuilder.cpp
-        fmicpp/fmi2/import/ModelExchangeInstance.cpp
-        fmicpp/fmi2/import/ModelExchangeInstanceBuilder.cpp
+        fmi4cpp/fmi2/import/Fmu.cpp
+        fmi4cpp/fmi2/import/FmiLibrary.cpp
+        fmi4cpp/fmi2/import/CoSimulationLibrary.cpp
+        fmi4cpp/fmi2/import/ModelExchangeLibrary.cpp
+        fmi4cpp/fmi2/import/CoSimulationSlave.cpp
+        fmi4cpp/fmi2/import/CoSimulationSlaveBuilder.cpp
+        fmi4cpp/fmi2/import/ModelExchangeInstance.cpp
+        fmi4cpp/fmi2/import/ModelExchangeInstanceBuilder.cpp
 
-        fmicpp/fmi2/xml/enums.cpp
-        fmicpp/fmi2/xml/FmuTypeAttributes.cpp
-        fmicpp/fmi2/xml/ModelDescription.cpp
-        fmicpp/fmi2/xml/SpecificModelDescription.cpp
-        fmicpp/fmi2/xml/ModelVariables.cpp
-        fmicpp/fmi2/xml/ScalarVariable.cpp
-        fmicpp/fmi2/xml/ScalarVariableAttributes.cpp
-        fmicpp/fmi2/xml/DefaultExperiment.cpp
-        fmicpp/fmi2/xml/SourceFiles.cpp
-        fmicpp/fmi2/xml/ModelStructure.cpp)
+        fmi4cpp/fmi2/xml/enums.cpp
+        fmi4cpp/fmi2/xml/FmuTypeAttributes.cpp
+        fmi4cpp/fmi2/xml/ModelDescription.cpp
+        fmi4cpp/fmi2/xml/SpecificModelDescription.cpp
+        fmi4cpp/fmi2/xml/ModelVariables.cpp
+        fmi4cpp/fmi2/xml/ScalarVariable.cpp
+        fmi4cpp/fmi2/xml/ScalarVariableAttributes.cpp
+        fmi4cpp/fmi2/xml/DefaultExperiment.cpp
+        fmi4cpp/fmi2/xml/SourceFiles.cpp
+        fmi4cpp/fmi2/xml/ModelStructure.cpp)
 
-add_library(fmicpp ${HEADERS} ${SOURCES})
+add_library(fmi4cpp ${HEADERS} ${SOURCES})
 
-target_include_directories(fmicpp PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>"
+target_include_directories(fmi4cpp PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>"
                                          "$<INSTALL_INTERFACE:$<INSTALL_PREFIX>/${CMAKE_INSTALL_INCLUDEDIR}>")
 
-target_link_libraries(fmicpp Boost::system ${LIBZIP_LIBRARIES})
-target_include_directories(fmicpp PRIVATE ${LIBZIP_INCLUDE_DIRS})
+target_link_libraries(fmi4cpp Boost::system ${LIBZIP_LIBRARIES})
+target_include_directories(fmi4cpp PRIVATE ${LIBZIP_INCLUDE_DIRS})
 
 if (UNIX)
-    target_link_libraries(fmicpp dl stdc++fs)
+    target_link_libraries(fmi4cpp dl stdc++fs)
 elseif (WIN32)
-    target_link_libraries(fmicpp bcrypt) # required by boost::uuids
+    target_link_libraries(fmi4cpp bcrypt) # required by boost::uuids
 endif ()
 
-# Make sure that also downstream libraries that use fmicpp compile as C++17
-target_compile_features(fmicpp PUBLIC cxx_std_17)
+# Make sure that also downstream libraries that use fmi4cpp compile as C++17
+target_compile_features(fmi4cpp PUBLIC cxx_std_17)
 
 # Install target
-install(TARGETS fmicpp
+install(TARGETS fmi4cpp
         EXPORT ${PROJECT_NAME}
         LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
         ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"

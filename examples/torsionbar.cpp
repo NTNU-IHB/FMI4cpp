@@ -23,11 +23,11 @@
  */
 
 #include <iostream>
-#include <fmicpp/fmi2/fmicpp.hpp>
-#include <fmicpp/tools/os_util.hpp>
+#include <fmi4cpp/fmi2/fmi4cpp.hpp>
+#include <fmi4cpp/tools/os_util.hpp>
 
 using namespace std;
-using namespace fmicpp::fmi2;
+using namespace fmi4cpp::fmi2;
 
 const fmi2ValueReference vr = 2;
 const double stop = 12.0;

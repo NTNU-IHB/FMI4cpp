@@ -21,46 +21,55 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+#ifndef FMI4CPP_FMUTYPESATTRIBUTE_HPP
+#define FMI4CPP_FMUTYPESATTRIBUTE_HPP
 
-#include <iostream>
-#include <fmi4cpp/fmi2/fmi4cpp.hpp>
-#include <fmi4cpp/tools/os_util.hpp>
+#include <string>
+#include <boost/property_tree/ptree.hpp>
 
-using namespace std;
-using namespace fmi4cpp::fmi2;
+#include "SourceFiles.hpp"
 
-const fmi2ValueReference vr = 46;
-const double stop = 10.0;
-const double step_size = 1E-4;
+using std::string;
 
-int main() {
+namespace fmi4cpp::fmi2::xml {
 
-    const string fmu_path = string(getenv("TEST_FMUs"))
-                            + "/FMI_2.0/CoSimulation/" + getOs() +
-                            "/20sim/4.6.4.8004/ControlledTemperature/ControlledTemperature.fmu";
+    struct FmuTypeAttributes {
 
-    import::Fmu fmu(fmu_path);
-    const auto slave = fmu.asCoSimulationFmu().newInstance();
-    slave->init();
+        string modelIdentifier;
 
-    clock_t begin = clock();
-    
-    double t;
-    double ref;
-    while ((t = slave->getSimulationTime()) <= (stop - step_size)) {
-        fmi2Status status = slave->doStep(step_size);
-        if (status != fmi2OK) {
-            cout << "Error! step returned with status: " << to_string(status) << endl;
-            break;
-        }
-        slave->readReal(vr, ref);
-    }
+        bool canGetAndSetFMUstate;
+        bool canSerializeFMUstate;
+        bool needsExecutionTool;
+        bool canNotUseMemoryManagementFunctions;
+        bool canBeInstantiatedOnlyOncePerProcess;
+        bool providesDirectionalDerivative;
 
-    clock_t end = clock();
+        SourceFiles sourceFiles;
 
-    long elapsed_ms =  (long) ((double(end-begin) / CLOCKS_PER_SEC) * 1000.0);
-    cout << "elapsed=" << elapsed_ms << "ms" << endl;
+        virtual void load(const ptree &node);
 
-    slave->terminate();
+    };
+
+    struct CoSimulationAttributes : FmuTypeAttributes {
+
+        bool canInterpolateInputs;
+        bool canRunAsynchronuously;
+        bool canHandleVariableCommunicationStepSize;
+
+        unsigned int maxOutputDerivativeOrder;
+
+        void load(const ptree &node);
+
+    };
+
+    struct ModelExchangeAttributes : FmuTypeAttributes {
+
+        bool completedIntegratorStepNotNeeded;
+
+        void load(const ptree &node);
+
+    };
 
 }
+
+#endif //FMI4CPP_FMUTYPESATTRIBUTE_HPP

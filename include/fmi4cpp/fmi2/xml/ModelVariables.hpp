@@ -22,45 +22,33 @@
  * THE SOFTWARE.
  */
 
-#include <iostream>
-#include <fmi4cpp/fmi2/fmi4cpp.hpp>
-#include <fmi4cpp/tools/os_util.hpp>
+#ifndef FMI4CPP_MODELVARIABLES_HPP
+#define FMI4CPP_MODELVARIABLES_HPP
 
-using namespace std;
-using namespace fmi4cpp::fmi2;
+#include <vector>
+#include <memory>
+#include <boost/property_tree/ptree.hpp>
+#include <fmi4cpp/fmi2/xml/ScalarVariable.hpp>
 
-const fmi2ValueReference vr = 46;
-const double stop = 10.0;
-const double step_size = 1E-4;
+using boost::property_tree::ptree;
 
-int main() {
+namespace fmi4cpp::fmi2::xml {
 
-    const string fmu_path = string(getenv("TEST_FMUs"))
-                            + "/FMI_2.0/CoSimulation/" + getOs() +
-                            "/20sim/4.6.4.8004/ControlledTemperature/ControlledTemperature.fmu";
+    class ModelVariables : private std::vector<ScalarVariable> {
 
-    import::Fmu fmu(fmu_path);
-    const auto slave = fmu.asCoSimulationFmu().newInstance();
-    slave->init();
+    public:
+        void load(const ptree &node);
 
-    clock_t begin = clock();
-    
-    double t;
-    double ref;
-    while ((t = slave->getSimulationTime()) <= (stop - step_size)) {
-        fmi2Status status = slave->doStep(step_size);
-        if (status != fmi2OK) {
-            cout << "Error! step returned with status: " << to_string(status) << endl;
-            break;
-        }
-        slave->readReal(vr, ref);
-    }
+        const size_t size() const;
 
-    clock_t end = clock();
+        ScalarVariable getByIndex(const size_type index) const;
 
-    long elapsed_ms =  (long) ((double(end-begin) / CLOCKS_PER_SEC) * 1000.0);
-    cout << "elapsed=" << elapsed_ms << "ms" << endl;
+        ScalarVariable getByName(const std::string &name) const;
 
-    slave->terminate();
+        ScalarVariable getByValueReference(const fmi2ValueReference vr) const;
+
+    };
 
 }
+
+#endif //FMI4CPP_MODELVARIABLES_HPP

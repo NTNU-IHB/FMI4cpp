@@ -24,11 +24,11 @@
 
 #include <string>
 #include <iostream>
-#include <fmicpp/tools/os_util.hpp>
-#include <fmicpp/fmi2/fmicpp.hpp>
+#include <fmi4cpp/tools/os_util.hpp>
+#include <fmi4cpp/fmi2/fmi4cpp.hpp>
 
 using namespace std;
-using namespace fmicpp::fmi2;
+using namespace fmi4cpp::fmi2;
 
 int main() {
 
