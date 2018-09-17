@@ -24,9 +24,10 @@
 
 #ifndef NDEBUG
 
-#include <boost/filesystem.hpp>
 
-namespace fs = boost::filesystem;
+#include <experimental/filesystem>
+namespace fs = std::experimental::filesystem;
+
 #endif
 
 #include <sstream>

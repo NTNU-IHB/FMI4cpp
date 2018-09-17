@@ -27,15 +27,14 @@
 
 #include <memory>
 #include <vector>
-#include <boost/filesystem.hpp>
-
+#include <experimental/filesystem>
 #include "../xml/ModelDescription.hpp"
-
-namespace fs = boost::filesystem;
 
 using std::string;
 using std::unique_ptr;
 using fmicpp::fmi2::xml::ModelDescription;
+
+namespace fs = std::experimental::filesystem;
 
 namespace fmicpp::fmi2::import {
 

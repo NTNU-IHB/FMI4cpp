@@ -29,9 +29,9 @@
 #include <sstream>
 #include <zip.h>
 #include <string>
-#include <boost/filesystem.hpp>
+#include <experimental/filesystem>
 
-namespace fs = boost::filesystem;
+namespace fs = std::experimental::filesystem;
 
 namespace {
 
