@@ -62,11 +62,11 @@ add_library(fmicpp ${HEADERS} ${SOURCES})
 target_include_directories(fmicpp PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>"
                                          "$<INSTALL_INTERFACE:$<INSTALL_PREFIX>/${CMAKE_INSTALL_INCLUDEDIR}>")
 
-target_link_libraries(fmicpp Boost::system Boost::filesystem ${LIBZIP_LIBRARIES})
+target_link_libraries(fmicpp Boost::system ${LIBZIP_LIBRARIES})
 target_include_directories(fmicpp PRIVATE ${LIBZIP_INCLUDE_DIRS})
 
 if (UNIX)
-    target_link_libraries(fmicpp dl)
+    target_link_libraries(fmicpp dl stdc++fs)
 elseif (WIN32)
     target_link_libraries(fmicpp bcrypt) # required by boost::uuids
 endif ()

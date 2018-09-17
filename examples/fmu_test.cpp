@@ -58,19 +58,22 @@ int main() {
     double t = 0;
     double stop = 1.0;
     double stepSize = 1E-3;
-
-    fmi2Real v;
+    
+    vector<fmi2Real> ref(2);
+    vector<fmi2ValueReference> vr = {md.getVariableByName("Temperature_Reference").getValueReference(),
+                                     md.getVariableByName("Temperature_Room").getValueReference()};
+    
     fmi2Status status;
     while ((t = slave1->getSimulationTime()) <= stop) {
         status = slave1->doStep(stepSize);
         if (!status == fmi2OK) {
             break;
         }
-        status = slave1->readReal(var.getValueReference(), v);
+        status = slave1->readReal(vr, ref);
         if (status != fmi2OK) {
             break;
         }
-        cout << "t=" << t << ", " << var.getName() << "=" << v << endl;
+        cout << "t=" << t << ", Temperature_Reference=" << ref[0] << ", Temperature_Room=" << ref[1] << endl;
     }
 
     status = slave1->terminate();
