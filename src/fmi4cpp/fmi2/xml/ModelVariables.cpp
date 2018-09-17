@@ -45,8 +45,8 @@ void ModelVariables::load(const ptree &node) {
 
 }
 
-ScalarVariable ModelVariables::getByIndex(const size_type index) const {
-    return vector::at(index);
+ScalarVariable &ModelVariables::operator[](const size_type index) {
+    return vector::operator[](index);
 }
 
 ScalarVariable ModelVariables::getByName(const string &name) const {
@@ -72,3 +72,5 @@ ScalarVariable ModelVariables::getByValueReference(const fmi2ValueReference vr) 
     string errorMsg = "No such variable with valueReference '" + to_string(vr) + "'!";
     throw runtime_error(errorMsg);
 }
+
+
