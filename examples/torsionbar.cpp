@@ -29,14 +29,15 @@
 using namespace std;
 using namespace fmicpp::fmi2;
 
-const double stop = 10.0;
-const double step_size = 1E-4;
+const fmi2ValueReference vr = 2;
+const double stop = 12.0;
+const double step_size = 1E-5;
 
 int main() {
 
     const string fmu_path = string(getenv("TEST_FMUs"))
                             + "/FMI_2.0/CoSimulation/" + getOs() +
-                            "/20sim/4.6.4.8004/ControlledTemperature/ControlledTemperature.fmu";
+                            "/20sim/4.6.4.8004/TorsionBar/TorsionBar.fmu";
 
     import::Fmu fmu(fmu_path);
     const auto slave = fmu.asCoSimulationFmu().newInstance();
@@ -44,12 +45,8 @@ int main() {
 
     clock_t begin = clock();
 
-    vector<fmi2Real> ref(2);
-    vector<fmi2ValueReference> vr = {slave->getValueReference("Temperature_Reference"),
-                                     slave->getValueReference("Temperature_Room")};
-
-
     double t;
+    double ref;
     while ((t = slave->getSimulationTime()) <= (stop - step_size)) {
         fmi2Status status = slave->doStep(step_size);
         if (status != fmi2OK) {
@@ -61,8 +58,8 @@ int main() {
 
     clock_t end = clock();
 
-    double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
-    cout << "elapsed=" << elapsed_secs << "s" << endl;
+    long elapsed_ms =  (long) ((double(end-begin) / CLOCKS_PER_SEC) * 1000.0);
+    cout << "elapsed=" << elapsed_ms << "ms" << endl;
 
     slave->terminate();
 
