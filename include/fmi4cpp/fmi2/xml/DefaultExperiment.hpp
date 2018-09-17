@@ -22,45 +22,38 @@
  * THE SOFTWARE.
  */
 
-#include <iostream>
-#include <fmi4cpp/fmi2/fmi4cpp.hpp>
-#include <fmi4cpp/tools/os_util.hpp>
+#ifndef FMI4CPP_DEFAULTEXPERIMENT_HPP
+#define FMI4CPP_DEFAULTEXPERIMENT_HPP
 
-using namespace std;
-using namespace fmi4cpp::fmi2;
+#include <ostream>
+#include <optional>
+#include <boost/property_tree/ptree.hpp>
 
-const fmi2ValueReference vr = 46;
-const double stop = 10.0;
-const double step_size = 1E-4;
+using boost::property_tree::ptree;
 
-int main() {
+namespace fmi4cpp::fmi2::xml {
 
-    const string fmu_path = string(getenv("TEST_FMUs"))
-                            + "/FMI_2.0/CoSimulation/" + getOs() +
-                            "/20sim/4.6.4.8004/ControlledTemperature/ControlledTemperature.fmu";
+    struct DefaultExperiment {
 
-    import::Fmu fmu(fmu_path);
-    const auto slave = fmu.asCoSimulationFmu().newInstance();
-    slave->init();
+    private:
+        std::optional<double> startTime_;
+        std::optional<double> stopTime_;
+        std::optional<double> stepSize_;
+        std::optional<double> tolerance_;
 
-    clock_t begin = clock();
-    
-    double t;
-    double ref;
-    while ((t = slave->getSimulationTime()) <= (stop - step_size)) {
-        fmi2Status status = slave->doStep(step_size);
-        if (status != fmi2OK) {
-            cout << "Error! step returned with status: " << to_string(status) << endl;
-            break;
-        }
-        slave->readReal(vr, ref);
-    }
+    public:
+        std::optional<double> startTime() const;
 
-    clock_t end = clock();
+        std::optional<double> stopTime() const;
 
-    long elapsed_ms =  (long) ((double(end-begin) / CLOCKS_PER_SEC) * 1000.0);
-    cout << "elapsed=" << elapsed_ms << "ms" << endl;
+        std::optional<double> stepSize() const;
 
-    slave->terminate();
+        std::optional<double> tolerance() const;
+
+        void load(const ptree &node);
+
+    };
 
 }
+
+#endif //FMI4CPP_DEFAULTEXPERIMENT_HPP

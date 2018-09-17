@@ -36,9 +36,9 @@ These can probably also be installed through the native package handler.
 ```cpp
 
 #include <iostream>
-#include <fmicpp/fmicpp.hpp>
+#include <fmi4cpp/fmi4cpp.hpp>
 
-using namespace fmicpp::fmi2;
+using namespace fmi4cpp::fmi2;
 
 const double stop = 10.0;
 const double stepSize = 1.0/100;

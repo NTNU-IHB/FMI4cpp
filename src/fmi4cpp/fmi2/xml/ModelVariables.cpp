@@ -22,45 +22,53 @@
  * THE SOFTWARE.
  */
 
-#include <iostream>
-#include <fmi4cpp/fmi2/fmi4cpp.hpp>
-#include <fmi4cpp/tools/os_util.hpp>
+#include <fmi4cpp/fmi2/xml/ModelVariables.hpp>
 
 using namespace std;
-using namespace fmi4cpp::fmi2;
+using namespace fmi4cpp::fmi2::xml;
 
-const fmi2ValueReference vr = 46;
-const double stop = 10.0;
-const double step_size = 1E-4;
+const size_t ModelVariables::size() const {
+    return vector::size();
+}
 
-int main() {
+void ModelVariables::load(const ptree &node) {
 
-    const string fmu_path = string(getenv("TEST_FMUs"))
-                            + "/FMI_2.0/CoSimulation/" + getOs() +
-                            "/20sim/4.6.4.8004/ControlledTemperature/ControlledTemperature.fmu";
+    for (const ptree::value_type &v : node) {
 
-    import::Fmu fmu(fmu_path);
-    const auto slave = fmu.asCoSimulationFmu().newInstance();
-    slave->init();
-
-    clock_t begin = clock();
-    
-    double t;
-    double ref;
-    while ((t = slave->getSimulationTime()) <= (stop - step_size)) {
-        fmi2Status status = slave->doStep(step_size);
-        if (status != fmi2OK) {
-            cout << "Error! step returned with status: " << to_string(status) << endl;
-            break;
+        if (v.first == "ScalarVariable") {
+            ScalarVariable var;
+            var.load(v.second);
+            push_back(var);
         }
-        slave->readReal(vr, ref);
+
     }
 
-    clock_t end = clock();
+}
 
-    long elapsed_ms =  (long) ((double(end-begin) / CLOCKS_PER_SEC) * 1000.0);
-    cout << "elapsed=" << elapsed_ms << "ms" << endl;
+ScalarVariable ModelVariables::getByIndex(const size_type index) const {
+    return vector::at(index);
+}
 
-    slave->terminate();
+ScalarVariable ModelVariables::getByName(const string &name) const {
 
+    for (const ScalarVariable &var : *this) {
+        if (var.getName() == name) {
+            return var;
+        }
+    }
+
+    string errorMsg = "No such variable with name '" + name + "'!";
+    throw runtime_error(errorMsg);
+}
+
+ScalarVariable ModelVariables::getByValueReference(const fmi2ValueReference vr) const {
+
+    for (const ScalarVariable &var : *this) {
+        if (var.getValueReference() == vr) {
+            return var;
+        }
+    }
+
+    string errorMsg = "No such variable with valueReference '" + to_string(vr) + "'!";
+    throw runtime_error(errorMsg);
 }

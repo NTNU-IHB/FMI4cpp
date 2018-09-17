@@ -21,46 +21,38 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
+#include <fmi4cpp/fmi2/xml/SourceFiles.hpp>
 #include <iostream>
-#include <fmi4cpp/fmi2/fmi4cpp.hpp>
-#include <fmi4cpp/tools/os_util.hpp>
 
-using namespace std;
-using namespace fmi4cpp::fmi2;
+using std::string;
+using namespace fmi4cpp::fmi2::xml;
 
-const fmi2ValueReference vr = 46;
-const double stop = 10.0;
-const double step_size = 1E-4;
+void File::load(const ptree &node) {
+    name_ = node.get<string>("<xmlattr>.name");
+}
 
-int main() {
+std::string File::name() const {
+    return name_;
+}
 
-    const string fmu_path = string(getenv("TEST_FMUs"))
-                            + "/FMI_2.0/CoSimulation/" + getOs() +
-                            "/20sim/4.6.4.8004/ControlledTemperature/ControlledTemperature.fmu";
+const size_t SourceFiles::size() const {
+    return vector::size();
+}
 
-    import::Fmu fmu(fmu_path);
-    const auto slave = fmu.asCoSimulationFmu().newInstance();
-    slave->init();
+File SourceFiles::at(const size_type index) const {
+    return vector::at(index);
+}
 
-    clock_t begin = clock();
-    
-    double t;
-    double ref;
-    while ((t = slave->getSimulationTime()) <= (stop - step_size)) {
-        fmi2Status status = slave->doStep(step_size);
-        if (status != fmi2OK) {
-            cout << "Error! step returned with status: " << to_string(status) << endl;
-            break;
+void SourceFiles::load(const ptree &node) {
+
+    for (const ptree::value_type &v : node) {
+
+        if (v.first == "File") {
+            File file;
+            file.load(v.second);
+            push_back(file);
         }
-        slave->readReal(vr, ref);
+
     }
-
-    clock_t end = clock();
-
-    long elapsed_ms =  (long) ((double(end-begin) / CLOCKS_PER_SEC) * 1000.0);
-    cout << "elapsed=" << elapsed_ms << "ms" << endl;
-
-    slave->terminate();
 
 }

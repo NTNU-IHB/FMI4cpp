@@ -26,12 +26,12 @@
 
 #include <string>
 #include <boost/test/unit_test.hpp>
-#include <fmicpp/tools/os_util.hpp>
-#include <fmicpp/fmi2/fmicpp.hpp>
+#include <fmi4cpp/tools/os_util.hpp>
+#include <fmi4cpp/fmi2/fmi4cpp.hpp>
 
 
 using namespace std;
-using namespace fmicpp::fmi2;
+using namespace fmi4cpp::fmi2;
 
 const string fmu_path = string(getenv("TEST_FMUs"))
                         + "/FMI_2.0/CoSimulation/" + getOs() +

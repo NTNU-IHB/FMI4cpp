@@ -22,45 +22,57 @@
  * THE SOFTWARE.
  */
 
-#include <iostream>
-#include <fmi4cpp/fmi2/fmi4cpp.hpp>
-#include <fmi4cpp/tools/os_util.hpp>
+#ifndef FMI4CPP_MODELSTRUCTURE_HPP
+#define FMI4CPP_MODELSTRUCTURE_HPP
 
-using namespace std;
-using namespace fmi4cpp::fmi2;
+#include <string>
+#include <vector>
+#include <optional>
+#include <boost/property_tree/ptree.hpp>
 
-const fmi2ValueReference vr = 46;
-const double stop = 10.0;
-const double step_size = 1E-4;
+#include "../fmi2TypesPlatform.h"
 
-int main() {
+using boost::property_tree::ptree;
 
-    const string fmu_path = string(getenv("TEST_FMUs"))
-                            + "/FMI_2.0/CoSimulation/" + getOs() +
-                            "/20sim/4.6.4.8004/ControlledTemperature/ControlledTemperature.fmu";
+namespace fmi4cpp::fmi2::xml {
 
-    import::Fmu fmu(fmu_path);
-    const auto slave = fmu.asCoSimulationFmu().newInstance();
-    slave->init();
+    class Unknown {
 
-    clock_t begin = clock();
-    
-    double t;
-    double ref;
-    while ((t = slave->getSimulationTime()) <= (stop - step_size)) {
-        fmi2Status status = slave->doStep(step_size);
-        if (status != fmi2OK) {
-            cout << "Error! step returned with status: " << to_string(status) << endl;
-            break;
-        }
-        slave->readReal(vr, ref);
-    }
+    private:
+        unsigned int index_;
+        std::optional<std::string> dependencyKind_;
+        std::optional<std::vector<unsigned int >> dependencies_;
 
-    clock_t end = clock();
+    public:
+        unsigned int index() const;
 
-    long elapsed_ms =  (long) ((double(end-begin) / CLOCKS_PER_SEC) * 1000.0);
-    cout << "elapsed=" << elapsed_ms << "ms" << endl;
+        std::optional<std::string> dependencyKind() const;
 
-    slave->terminate();
+        const std::optional<std::vector<unsigned int>> &dependencies() const;
+
+        void load(const ptree &node);
+
+    };
+
+    class ModelStructure {
+
+    private:
+        std::vector<Unknown> outputs_;
+        std::vector<Unknown> derivatives_;
+        std::vector<Unknown> initialUnknowns_;
+
+    public:
+
+        const std::vector<Unknown> &outputs() const;
+
+        const std::vector<Unknown> &derivatives() const;
+
+        const std::vector<Unknown> &initialUnknowns() const;
+
+        void load(const ptree &node);
+
+    };
 
 }
+
+#endif //FMI4CPP_MODELSTRUCTURE_HPP
