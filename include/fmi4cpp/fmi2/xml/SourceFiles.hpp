@@ -55,6 +55,8 @@ namespace fmi4cpp::fmi2::xml {
 
         File at(const size_type index) const;
 
+        File &operator[](const size_type index);
+
         void load(const ptree &node);
 
     };
