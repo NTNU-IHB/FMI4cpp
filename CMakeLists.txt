@@ -52,7 +52,7 @@ install(EXPORT ${PROJECT_NAME}
 
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
 "include(CMakeFindDependencyMacro)
-find_dependency(Boost 1.65 COMPONENTS system filesystem REQUIRED)
+find_dependency(Boost 1.65 COMPONENTS system REQUIRED)
 include(\"\${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}Targets.cmake\")
 "
 )
