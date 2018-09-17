@@ -72,8 +72,8 @@ unsigned int Unknown::index() const {
     return index_;
 }
 
-std::optional<std::string> Unknown::dependencyKind() const {
-    return dependencyKind_;
+std::optional<std::string> Unknown::dependenciesKind() const {
+    return dependenciesKind_;
 }
 
 const std::optional<std::vector<unsigned int>> &Unknown::dependencies() const {
@@ -82,7 +82,7 @@ const std::optional<std::vector<unsigned int>> &Unknown::dependencies() const {
 
 void Unknown::load(const ptree &node) {
     index_ = node.get<unsigned int>("<xmlattr>.index");
-    dependencyKind_ = convert(node.get_optional<string>("<xmlattr>.dependencyKind"));
+    dependenciesKind_ = convert(node.get_optional<string>("<xmlattr>.dependenciesKind"));
 
     auto dependencies = node.get_optional<string>("<xmlattr>.dependencies");
     if (dependencies) {

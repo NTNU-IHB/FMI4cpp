@@ -40,13 +40,13 @@ namespace fmi4cpp::fmi2::xml {
 
     private:
         unsigned int index_;
-        std::optional<std::string> dependencyKind_;
+        std::optional<std::string> dependenciesKind_;
         std::optional<std::vector<unsigned int >> dependencies_;
 
     public:
         unsigned int index() const;
 
-        std::optional<std::string> dependencyKind() const;
+        std::optional<std::string> dependenciesKind() const;
 
         const std::optional<std::vector<unsigned int>> &dependencies() const;
 
