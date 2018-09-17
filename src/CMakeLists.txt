@@ -1,5 +1,4 @@
-
-include_directories(../include)
+include(GNUInstallDirs)
 
 SET(HEADERS
 
@@ -59,10 +58,30 @@ SET(SOURCES
         fmicpp/fmi2/xml/ModelStructure.cpp)
 
 add_library(fmicpp ${HEADERS} ${SOURCES})
+
+target_include_directories(fmicpp PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>"
+                                         "$<INSTALL_INTERFACE:$<INSTALL_PREFIX>/${CMAKE_INSTALL_INCLUDEDIR}>")
+
 target_link_libraries(fmicpp Boost::system ${LIBZIP_LIBRARIES})
 target_include_directories(fmicpp PRIVATE ${LIBZIP_INCLUDE_DIRS})
+
 if (UNIX)
     target_link_libraries(fmicpp dl stdc++fs)
 elseif (WIN32)
     target_link_libraries(fmicpp bcrypt) # required by boost::uuids
 endif ()
+
+# Make sure that also downstream libraries that use fmicpp compile as C++17
+target_compile_features(fmicpp PUBLIC cxx_std_17)
+
+# Install target
+install(TARGETS fmicpp
+        EXPORT ${PROJECT_NAME}
+        LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+        ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+        RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
+
+# Install headers
+install(DIRECTORY ../include/
+        DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+        FILES_MATCHING REGEX ".*.(hpp|h)")
