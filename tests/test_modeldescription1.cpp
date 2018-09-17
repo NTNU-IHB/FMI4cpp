@@ -29,7 +29,6 @@
 #include <fmi4cpp/tools/os_util.hpp>
 #include <fmi4cpp/fmi2/fmi4cpp.hpp>
 
-
 using namespace std;
 using namespace fmi4cpp::fmi2;
 
@@ -37,8 +36,7 @@ const string fmu_path = string(getenv("TEST_FMUs"))
                         + "/FMI_2.0/CoSimulation/" + getOs() +
                         "/20sim/4.6.4.8004/ControlledTemperature/ControlledTemperature.fmu";
 
-
-BOOST_AUTO_TEST_CASE(test1) {
+BOOST_AUTO_TEST_CASE(ControlledTemperature_test1) {
 
     import::Fmu fmu(fmu_path);
     auto md = fmu.getModelDescription();
@@ -74,7 +72,7 @@ BOOST_AUTO_TEST_CASE(test1) {
 
     auto sourceFiles = md_cs->sourceFiles();
     BOOST_CHECK_EQUAL(10, sourceFiles.size());
-    BOOST_CHECK_EQUAL("EulerAngles.c", sourceFiles.at(0).name());
+    BOOST_CHECK_EQUAL("EulerAngles.c", sourceFiles[0].name());
 
     auto outputs = md.modelStructure().outputs();
     BOOST_CHECK_EQUAL(2, outputs.size());
