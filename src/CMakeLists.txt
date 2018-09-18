@@ -67,8 +67,6 @@ target_include_directories(fmi4cpp PUBLIC ${Boost_INCLUDE_DIRS} PRIVATE ${LIBZIP
 
 if (UNIX)
     target_link_libraries(fmi4cpp dl stdc++fs)
-elseif (WIN32)
-    target_link_libraries(fmi4cpp bcrypt) # required by boost::uuids
 endif ()
 
 # Make sure that also downstream libraries that use fmi4cpp compile as C++17
