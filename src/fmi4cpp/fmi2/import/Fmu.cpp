@@ -35,28 +35,25 @@
 #include <fmi4cpp/tools/unzipper.hpp>
 #include <fmi4cpp/tools/os_util.hpp>
 
-#include <boost/uuid/uuid.hpp>
-#include <boost/uuid/uuid_io.hpp>
-#include <boost/uuid/uuid_generators.hpp>
-
 using namespace std;
 using namespace fmi4cpp::fmi2::import;
 
 namespace {
 
-    const string generate_uuid() {
-        using namespace boost::uuids;
-        random_generator generator;
-        uuid uuid = generator();
-        return to_string(uuid);
+    string generate_simple_id() {
+        string id;
+        for (int i = 0; i < 8; i++) {
+            id += to_string(rand() % 10);
+        }
+        return id;
     }
 
 }
 
-Fmu::Fmu(const string &fmu_file) : uuid_(generate_uuid()), fmu_file_(fmu_file) {
+Fmu::Fmu(const string &fmu_file) : fmu_file_(fmu_file) {
 
     const string fmuName = fs::path(fmu_file).stem().string();
-    tmp_path_ = fs::temp_directory_path() /= fs::path(fmuName + "_" + uuid_);
+    tmp_path_ = fs::temp_directory_path() /= fs::path(fmuName + "_" + generate_simple_id());
 
     if (!create_directories(tmp_path_)) {
         throw runtime_error("Failed to create temporary directory!");
