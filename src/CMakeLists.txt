@@ -62,8 +62,8 @@ add_library(fmi4cpp ${HEADERS} ${SOURCES})
 target_include_directories(fmi4cpp PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>"
                                          "$<INSTALL_INTERFACE:$<INSTALL_PREFIX>/${CMAKE_INSTALL_INCLUDEDIR}>")
 
-target_link_libraries(fmi4cpp Boost::system ${LIBZIP_LIBRARIES})
-target_include_directories(fmi4cpp PRIVATE ${LIBZIP_INCLUDE_DIRS})
+target_link_libraries(fmi4cpp ${LIBZIP_LIBRARIES})
+target_include_directories(fmi4cpp PUBLIC ${Boost_INCLUDE_DIRS} PRIVATE ${LIBZIP_INCLUDE_DIRS})
 
 if (UNIX)
     target_link_libraries(fmi4cpp dl stdc++fs)

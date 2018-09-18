@@ -16,12 +16,10 @@ if (MSVC)
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 endif ()
 
-SET(BOOST_COMPONENTS system)
 if (BUILD_TESTS)
     SET(BOOST_COMPONENTS ${BOOST_COMPONENTS} unit_test_framework)
 endif ()
 find_package(Boost 1.65 COMPONENTS ${BOOST_COMPONENTS} REQUIRED)
-include_directories(${Boost_INCLUDE_DIRS})
 
 find_package(Libzip REQUIRED)
 
@@ -52,7 +50,7 @@ install(EXPORT ${PROJECT_NAME}
 
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
 "include(CMakeFindDependencyMacro)
-find_dependency(Boost 1.65 COMPONENTS system REQUIRED)
+find_dependency(Boost 1.65)
 include(\"\${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}Targets.cmake\")
 "
 )
