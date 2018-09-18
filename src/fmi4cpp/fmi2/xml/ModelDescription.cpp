@@ -44,6 +44,7 @@ void ModelDescription::load(const string &fileName) {
     license_ = root.get<string>("<xmlattr>.license", "");
     generationTool_ = root.get<string>("<xmlattr>.generationTool", "");
     generationDateAndTime_ = root.get<string>("<xmlattr>.generationDateAndTime", "");
+    variableNamingConvention_ = root.get<string>("<xmlattr>.variableNamingConvention", "flat");
     numberOfEventIndicators_ = root.get<unsigned int>("<xmlattr>.numberOfEventIndicators", 0);
 
     for (const ptree::value_type &v : root) {
@@ -105,6 +106,10 @@ string ModelDescription::generationTool() const {
 
 string ModelDescription::generationDateAndTime() const {
     return generationDateAndTime_;
+}
+
+string ModelDescription::variableNamingConvention() const {
+    return variableNamingConvention_;
 }
 
 unsigned int ModelDescription::numberOfEventIndicators() const {

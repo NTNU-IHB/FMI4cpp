@@ -60,6 +60,7 @@ namespace fmi4cpp::fmi2::xml {
         string copyright_;
         string generationTool_;
         string generationDateAndTime_;
+        string variableNamingConvention_;
 
         unsigned int numberOfEventIndicators_;
 
@@ -91,6 +92,8 @@ namespace fmi4cpp::fmi2::xml {
         string generationTool() const;
 
         string generationDateAndTime() const;
+
+        string variableNamingConvention() const;
 
         unsigned int numberOfEventIndicators() const;
 
