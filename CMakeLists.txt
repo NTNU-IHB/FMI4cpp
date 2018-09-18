@@ -6,7 +6,7 @@ if (DEFINED VCPKG_ROOT AND NOT DEFINED CMAKE_TOOLCHAIN_FILE AND EXISTS "${VCPKG_
     set(CMAKE_TOOLCHAIN_FILE "${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake" CACHE STRING "")
 endif ()
 
-project(FMI4cpp
+project(fmi4cpp
         VERSION 0.0.1)
 
 set(CMAKE_CXX_STANDARD 17)
