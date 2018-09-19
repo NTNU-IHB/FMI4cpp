@@ -1,6 +1,9 @@
 
 cmake_minimum_required(VERSION 3.10)
 
+option(BUILD_TESTS "Build tests" OFF)
+option(BUILD_EXAMPLES "Build examples" ON)
+
 SET(VCPKG_ROOT $ENV{VCPKG_ROOT} CACHE STRING "VCPKG_ROOT")
 if (DEFINED VCPKG_ROOT AND NOT DEFINED CMAKE_TOOLCHAIN_FILE AND EXISTS "${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake")
     set(CMAKE_TOOLCHAIN_FILE "${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake" CACHE STRING "")
@@ -23,9 +26,6 @@ endif ()
 find_package(Boost 1.65 COMPONENTS ${BOOST_COMPONENTS} REQUIRED)
 
 find_package(Libzip REQUIRED)
-
-option(BUILD_TESTS "Build tests" OFF)
-option(BUILD_EXAMPLES "Build examples" ON)
 
 add_subdirectory(src)
 
