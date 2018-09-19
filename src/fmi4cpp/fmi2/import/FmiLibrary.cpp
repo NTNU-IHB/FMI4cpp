@@ -22,12 +22,10 @@
  * THE SOFTWARE.
  */
 
-#ifndef NDEBUG
 
-
+#if DEBUG_LOGGING_ENABLED
 #include <experimental/filesystem>
 namespace fs = std::experimental::filesystem;
-
 #endif
 
 #include <sstream>
@@ -55,7 +53,7 @@ namespace {
 
 FmiLibrary::FmiLibrary(const string &libName) {
 
-#ifndef NDEBUG
+#if DEBUG_LOGGING_ENABLED
     cout << "Loading shared library " << fs::path(libName).stem() << endl;
 #endif
 

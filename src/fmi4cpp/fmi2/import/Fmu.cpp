@@ -22,10 +22,8 @@
  * THE SOFTWARE.
  */
 
-#ifndef NDEBUG
-
+#if DEBUG_LOGGING_ENABLED
 #include <iostream>
-
 #endif
 
 #include <fmi4cpp/fmi2/import/Fmu.hpp>
@@ -58,10 +56,10 @@ Fmu::Fmu(const string &fmu_file) : fmu_file_(fmu_file) {
     if (!create_directories(tmp_path_)) {
         throw runtime_error("Failed to create temporary directory!");
     }
-#ifndef NDEBUG
-    cout << "Created temporary directory '" << tmp_path_.string() << "'" << endl;
-#endif
 
+#if DEBUG_LOGGING_ENABLED
+    cout << "Created temporary directory '" << tmp_path_.string()  << "'" << endl;
+#endif
     if (!extractContents(fmu_file, tmp_path_.string())) {
         throw runtime_error("Failed to extract FMU!");
     }
@@ -128,7 +126,7 @@ Fmu::~Fmu() {
     csBuilder_ = nullptr;
     remove_all(tmp_path_);
 
-#ifndef NDEBUG
+#if DEBUG_LOGGING_ENABLED
     cout << "Fmu '" << getModelName() << "' disposed.." << endl;
 #endif
 
