@@ -57,23 +57,24 @@ SET(SOURCES
         fmi4cpp/fmi2/xml/SourceFiles.cpp
         fmi4cpp/fmi2/xml/ModelStructure.cpp)
 
-add_library(fmi4cpp ${HEADERS} ${SOURCES})
+SET(FMI4CPP_LIB fmi4cpp)
+add_library(${FMI4CPP_LIB} ${HEADERS} ${SOURCES})
 
 target_include_directories(fmi4cpp PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>"
                                          "$<INSTALL_INTERFACE:$<INSTALL_PREFIX>/${CMAKE_INSTALL_INCLUDEDIR}>")
 
-target_link_libraries(fmi4cpp ${LIBZIP_LIBRARIES})
-target_include_directories(fmi4cpp PUBLIC ${Boost_INCLUDE_DIRS} PRIVATE ${LIBZIP_INCLUDE_DIRS})
+target_link_libraries(${FMI4CPP_LIB} ${LIBZIP_LIBRARIES})
+target_include_directories(${FMI4CPP_LIB} PUBLIC ${Boost_INCLUDE_DIRS} PRIVATE ${LIBZIP_INCLUDE_DIRS})
 
 if (UNIX)
-    target_link_libraries(fmi4cpp dl stdc++fs)
+    target_link_libraries(${FMI4CPP_LIB} dl stdc++fs)
 endif ()
 
 # Make sure that also downstream libraries that use fmi4cpp compile as C++17
-target_compile_features(fmi4cpp PUBLIC cxx_std_17)
+target_compile_features(${FMI4CPP_LIB} PUBLIC cxx_std_17)
 
 # Install target
-install(TARGETS fmi4cpp
+install(TARGETS ${FMI4CPP_LIB}
         EXPORT ${PROJECT_NAME}
         LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
         ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
