@@ -36,7 +36,7 @@ if (BUILD_TESTS)
 endif ()
 find_package(Boost 1.65 COMPONENTS ${BOOST_COMPONENTS} REQUIRED)
 
-find_package(Libzip REQUIRED)
+find_package(LibZip REQUIRED)
 
 add_subdirectory(src)
 
