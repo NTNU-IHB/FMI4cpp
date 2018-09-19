@@ -60,7 +60,7 @@ SET(SOURCES
 SET(FMI4CPP_LIB fmi4cpp)
 add_library(${FMI4CPP_LIB} ${HEADERS} ${SOURCES})
 
-target_include_directories(fmi4cpp PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>"
+target_include_directories(${FMI4CPP_LIB} PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>"
                                          "$<INSTALL_INTERFACE:$<INSTALL_PREFIX>/${CMAKE_INSTALL_INCLUDEDIR}>")
 
 target_link_libraries(${FMI4CPP_LIB} ${LIBZIP_LIBRARIES})
