@@ -77,7 +77,7 @@ namespace fmi4cpp::fmi2::import {
 
         virtual fmi2Status freeFMUstate(fmi2FMUstate &state) = 0;
 
-        virtual bool canSerializeFmuState() const = 0;
+        virtual bool canSerializeFMUstate() const = 0;
 
         virtual fmi2Status serializeFMUstate(const fmi2FMUstate &state, vector<fmi2Byte> &serializedState) = 0;
 

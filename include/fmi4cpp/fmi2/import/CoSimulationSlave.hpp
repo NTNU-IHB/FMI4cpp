@@ -64,7 +64,7 @@ namespace fmi4cpp::fmi2::import {
 
         fmi2Status freeFMUstate(fmi2FMUstate &state) override;
 
-        bool canSerializeFmuState() const override;
+        bool canSerializeFMUstate() const override;
 
         fmi2Status serializeFMUstate(const fmi2FMUstate &state, vector<fmi2Byte> &serializedState) override;
 

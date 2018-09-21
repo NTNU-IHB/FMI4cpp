@@ -125,7 +125,7 @@ namespace fmi4cpp::fmi2::import {
             return library_->freeFMUstate(c_, state);
         }
 
-        bool canSerializeFmuState() const override {
+        bool canSerializeFMUstate() const override {
             return modelDescription_->canSerializeFMUstate();
         }
 
