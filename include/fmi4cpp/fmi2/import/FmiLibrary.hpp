@@ -145,12 +145,12 @@ namespace fmi4cpp::fmi2::import {
         fmi2Status
         readBoolean(const fmi2Component c, const vector<fmi2ValueReference> &vr, vector<fmi2Boolean> &ref) const;
 
-        fmi2Status writeInteger(const fmi2Component c, const fmi2ValueReference vr, fmi2Integer &value) const;
+        fmi2Status writeInteger(const fmi2Component c, const fmi2ValueReference vr, const fmi2Integer &value) const;
 
         fmi2Status writeInteger(const fmi2Component c, const vector<fmi2ValueReference> &vr,
                                 const vector<fmi2Integer> &values) const;
 
-        fmi2Status writeReal(const fmi2Component c, const fmi2ValueReference vr, fmi2Real &value) const;
+        fmi2Status writeReal(const fmi2Component c, const fmi2ValueReference vr, const fmi2Real &value) const;
 
         fmi2Status
         writeReal(const fmi2Component c, const vector<fmi2ValueReference> &vr, const vector<fmi2Real> &values) const;

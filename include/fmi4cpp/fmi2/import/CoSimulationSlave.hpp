@@ -93,6 +93,22 @@ namespace fmi4cpp::fmi2::import {
 
         fmi2Status readBoolean(const vector<fmi2ValueReference> &vr, vector<fmi2Boolean> &ref) const override;
 
+        fmi2Status writeInteger(const fmi2ValueReference vr, const fmi2Integer &value) const override;
+
+        fmi2Status writeInteger(const vector<fmi2ValueReference> &vr, const vector<fmi2Integer> &values) const override;
+
+        fmi2Status writeReal(const fmi2ValueReference vr, const fmi2Real &value) const override;
+
+        fmi2Status writeReal(const vector<fmi2ValueReference> &vr, const vector<fmi2Real> &values) const override;
+
+        fmi2Status writeString(const fmi2ValueReference vr, fmi2String &value) const override;
+
+        fmi2Status writeString(const vector<fmi2ValueReference> &vr, const vector<fmi2String> &values) const override;
+
+        fmi2Status writeBoolean(const fmi2ValueReference vr, const fmi2Boolean &value) const override;
+
+        fmi2Status writeBoolean(const vector<fmi2ValueReference> &vr, const vector<fmi2Boolean> &values) const override;
+
     };
 
 }

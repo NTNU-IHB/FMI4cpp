@@ -184,7 +184,7 @@ fmi2Status FmiLibrary::readBoolean(const fmi2Component c,
 }
 
 fmi2Status FmiLibrary::writeInteger(const fmi2Component c, const fmi2ValueReference vr,
-                                    fmi2Integer &value) const {
+                                    const fmi2Integer &value) const {
     return fmi2SetInteger_(c, &vr, 1, &value);
 }
 
@@ -193,7 +193,7 @@ fmi2Status FmiLibrary::writeInteger(const fmi2Component c, const vector<fmi2Valu
     return fmi2SetInteger_(c, vr.data(), vr.size(), values.data());
 }
 
-fmi2Status FmiLibrary::writeReal(const fmi2Component c, const fmi2ValueReference vr, fmi2Real &value) const {
+fmi2Status FmiLibrary::writeReal(const fmi2Component c, const fmi2ValueReference vr, const fmi2Real &value) const {
     return fmi2SetReal_(c, &vr, 1, &value);
 }
 
