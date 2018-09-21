@@ -35,6 +35,13 @@ if (BUILD_TESTS)
 endif ()
 find_package(Boost 1.65 COMPONENTS ${BOOST_COMPONENTS} REQUIRED)
 
+
+if (UNIX)
+    find_package(ZLIB REQUIRED)
+    find_package(BZip2 REQUIRED)
+    find_package(OpenSSL COMPONENTS Crypto REQUIRED)
+endif ()
+
 find_package(LIBZIP REQUIRED)
 
 add_subdirectory(src)
