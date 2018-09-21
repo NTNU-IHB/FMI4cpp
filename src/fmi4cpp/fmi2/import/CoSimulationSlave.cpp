@@ -76,8 +76,8 @@ fmi2Status CoSimulationSlave::freeFMUstate(fmi2FMUstate &state) {
     return AbstractFmuInstance::freeFMUstate(state);
 }
 
-bool CoSimulationSlave::canSerializeFmuState() const {
-    return AbstractFmuInstance::canSerializeFmuState();
+bool CoSimulationSlave::canSerializeFMUstate() const {
+    return AbstractFmuInstance::canSerializeFMUstate();
 }
 
 fmi2Status CoSimulationSlave::serializeFMUstate(const fmi2FMUstate &state, vector<fmi2Byte> &serializedState) {
