@@ -130,3 +130,38 @@ fmi2Status CoSimulationSlave::readBoolean(const fmi2ValueReference vr, fmi2Boole
 fmi2Status CoSimulationSlave::readBoolean(const vector<fmi2ValueReference> &vr, vector<fmi2Boolean> &ref) const {
     return AbstractFmuInstance::readBoolean(vr, ref);
 }
+
+fmi2Status CoSimulationSlave::writeInteger(const fmi2ValueReference vr, const fmi2Integer &value) const {
+    return AbstractFmuInstance::writeInteger(vr, value);
+}
+
+fmi2Status
+CoSimulationSlave::writeInteger(const vector<fmi2ValueReference> &vr, const vector<fmi2Integer> &values) const {
+    return AbstractFmuInstance::writeInteger(vr, values);
+}
+
+fmi2Status CoSimulationSlave::writeReal(const fmi2ValueReference vr, const fmi2Real &value) const {
+    return AbstractFmuInstance::writeReal(vr, value);
+}
+
+fmi2Status CoSimulationSlave::writeReal(const vector<fmi2ValueReference> &vr, const vector<fmi2Real> &values) const {
+    return AbstractFmuInstance::writeReal(vr, values);
+}
+
+fmi2Status CoSimulationSlave::writeString(const fmi2ValueReference vr, fmi2String &value) const {
+    return AbstractFmuInstance::writeString(vr, value);
+}
+
+fmi2Status
+CoSimulationSlave::writeString(const vector<fmi2ValueReference> &vr, const vector<fmi2String> &values) const {
+    return AbstractFmuInstance::writeString(vr, values);
+}
+
+fmi2Status CoSimulationSlave::writeBoolean(const fmi2ValueReference vr, const fmi2Boolean &value) const {
+    return AbstractFmuInstance::writeBoolean(vr, value);
+}
+
+fmi2Status
+CoSimulationSlave::writeBoolean(const vector<fmi2ValueReference> &vr, const vector<fmi2Boolean> &values) const {
+    return AbstractFmuInstance::writeBoolean(vr, values);
+}
