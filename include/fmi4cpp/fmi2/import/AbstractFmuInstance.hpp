@@ -58,7 +58,7 @@ namespace fmi4cpp::fmi2::import {
 
     public:
 
-        AbstractFmuInstance(const fmi2Component c, const shared_ptr<U> modelDescription, const shared_ptr<T> library)
+        AbstractFmuInstance(const fmi2Component c, const shared_ptr<U> &modelDescription, const shared_ptr<T> &library)
                 : c_(c), modelDescription_(modelDescription), library_(library) {}
 
 
