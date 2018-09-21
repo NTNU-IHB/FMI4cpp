@@ -16,10 +16,10 @@ option(BUILD_TESTS "Build tests" OFF)
 option(BUILD_EXAMPLES "Build examples" ON)
 
 string(COMPARE EQUAL ${CMAKE_BUILD_TYPE} "Debug" DEBUG_MODE)
-option(DEBUG_LOGGING_ENABLED "Enable debug logging" ${DEBUG_MODE})
-message("Debug logging=${DEBUG_LOGGING_ENABLED}")
+option(FMI4CPP_DEBUG_LOGGING_ENABLED "Enable debug logging" ${DEBUG_MODE})
+message("Debug logging=${FMI4CPP_DEBUG_LOGGING_ENABLED}")
 
-if (DEBUG_LOGGING_ENABLED)
+if (FMI4CPP_DEBUG_LOGGING_ENABLED)
     add_definitions(-DDEBUG_LOGGING_ENABLED=1)
 else ()
     add_definitions(-DDEBUG_LOGGING_ENABLED=0)

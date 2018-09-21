@@ -23,7 +23,7 @@
  */
 
 
-#if DEBUG_LOGGING_ENABLED
+#if FMI4CPP_DEBUG_LOGGING_ENABLED
 #include <experimental/filesystem>
 namespace fs = std::experimental::filesystem;
 #endif
@@ -53,7 +53,7 @@ namespace {
 
 FmiLibrary::FmiLibrary(const string &libName) {
 
-#if DEBUG_LOGGING_ENABLED
+#if FMI4CPP_DEBUG_LOGGING_ENABLED
     cout << "Loading shared library " << fs::path(libName).stem() << endl;
 #endif
 

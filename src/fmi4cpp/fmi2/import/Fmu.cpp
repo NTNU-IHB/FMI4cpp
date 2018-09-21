@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-#if DEBUG_LOGGING_ENABLED
+#if FMI4CPP_DEBUG_LOGGING_ENABLED
 #include <iostream>
 #endif
 
@@ -57,7 +57,7 @@ Fmu::Fmu(const string &fmu_file) : fmu_file_(fmu_file) {
         throw runtime_error("Failed to create temporary directory!");
     }
 
-#if DEBUG_LOGGING_ENABLED
+#if FMI4CPP_DEBUG_LOGGING_ENABLED
     cout << "Created temporary directory '" << tmp_path_.string()  << "'" << endl;
 #endif
     if (!extractContents(fmu_file, tmp_path_.string())) {
@@ -126,7 +126,7 @@ Fmu::~Fmu() {
     csBuilder_ = nullptr;
     remove_all(tmp_path_);
 
-#if DEBUG_LOGGING_ENABLED
+#if FMI4CPP_DEBUG_LOGGING_ENABLED
     cout << "Fmu '" << getModelName() << "' disposed.." << endl;
 #endif
 
