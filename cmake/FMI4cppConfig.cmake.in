@@ -3,11 +3,11 @@ include(CMakeFindDependencyMacro)
 
 list(APPEND CMAKE_MODULE_PATH ${FMI4cpp_CMAKE_DIR})
 
-find_package(Boost 1.55 REQUIRED)
-find_package(ZLIB REQUIRED)
-find_package(BZip2 REQUIRED)
-find_package(OpenSSL COMPONENTS Crypto REQUIRED)
-find_package(LIBZIP REQUIRED)
+find_dependency(Boost 1.55 REQUIRED)
+find_dependency(ZLIB REQUIRED)
+find_dependency(BZip2 REQUIRED)
+find_dependency(OpenSSL COMPONENTS Crypto REQUIRED)
+find_dependency(LIBZIP REQUIRED)
 list(REMOVE_AT CMAKE_MODULE_PATH -1)
 
 if(NOT TARGET FMI4cpp::FMI4cpp)
