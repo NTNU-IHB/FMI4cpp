@@ -3,7 +3,7 @@ include(CMakeFindDependencyMacro)
 
 list(APPEND CMAKE_MODULE_PATH ${FMI4cpp_CMAKE_DIR})
 
-find_dependency(Boost 1.55 REQUIRED)
+find_dependency(Boost 1.65 REQUIRED)
 find_dependency(ZLIB REQUIRED)
 find_dependency(BZip2 REQUIRED)
 find_dependency(OpenSSL COMPONENTS Crypto REQUIRED)
