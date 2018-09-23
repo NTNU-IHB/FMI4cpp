@@ -10,6 +10,7 @@ project(FMI4cpp
         VERSION 0.0.1)
 
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 option(BUILD_TESTS "Build tests" OFF)
@@ -24,7 +25,6 @@ if (BUILD_TESTS)
     SET(BOOST_COMPONENTS ${BOOST_COMPONENTS} unit_test_framework)
 endif ()
 find_package(Boost 1.65 COMPONENTS ${BOOST_COMPONENTS} REQUIRED)
-
 
 if (UNIX)
     find_package(ZLIB REQUIRED)
