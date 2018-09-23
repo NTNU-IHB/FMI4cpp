@@ -74,6 +74,9 @@ endif ()
 # Make sure that also downstream libraries that use fmi4cpp compile as C++17
 target_compile_features(${FMI4CPP_LIB} PUBLIC cxx_std_17)
 
+#Enable fmi4cpp debug messages for debug configurations
+target_compile_definitions(${FMI4CPP_LIB} PRIVATE $<$<CONFIG:Debug>:DEBUG_LOGGING_ENABLED>)
+
 # Install target
 install(TARGETS ${FMI4CPP_LIB}
         EXPORT ${PROJECT_NAME}
