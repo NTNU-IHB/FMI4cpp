@@ -58,7 +58,7 @@ namespace fmi4cpp::fmi2::import {
 
     public:
 
-        AbstractFmuInstance(const fmi2Component c, const shared_ptr<U> modelDescription, const shared_ptr<T> library)
+        AbstractFmuInstance(const fmi2Component c, const shared_ptr<U> &modelDescription, const shared_ptr<T> &library)
                 : c_(c), modelDescription_(modelDescription), library_(library) {}
 
 
@@ -125,7 +125,7 @@ namespace fmi4cpp::fmi2::import {
             return library_->freeFMUstate(c_, state);
         }
 
-        bool canSerializeFmuState() const override {
+        bool canSerializeFMUstate() const override {
             return modelDescription_->canSerializeFMUstate();
         }
 
@@ -178,6 +178,40 @@ namespace fmi4cpp::fmi2::import {
 
         fmi2Status readBoolean(const vector<fmi2ValueReference> &vr, vector<fmi2Boolean> &ref) const override {
             return library_->readBoolean(c_, vr, ref);
+        }
+
+        fmi2Status writeInteger(const fmi2ValueReference vr, const fmi2Integer &value) const override {
+            return library_->writeInteger(c_, vr, value);
+        }
+
+        fmi2Status
+        writeInteger(const vector<fmi2ValueReference> &vr, const vector<fmi2Integer> &values) const override {
+            return library_->writeInteger(c_, vr, values);
+        }
+
+        fmi2Status writeReal(const fmi2ValueReference vr, const fmi2Real &value) const override {
+            return library_->writeReal(c_, vr, value);
+        }
+
+        fmi2Status writeReal(const vector<fmi2ValueReference> &vr, const vector<fmi2Real> &values) const override {
+            return library_->writeReal(c_, vr, values);
+        }
+
+        fmi2Status writeString(const fmi2ValueReference vr, fmi2String &value) const override {
+            return library_->writeString(c_, vr, value);
+        }
+
+        fmi2Status writeString(const vector<fmi2ValueReference> &vr, const vector<fmi2String> &values) const override {
+            return library_->writeString(c_, vr, values);
+        }
+
+        fmi2Status writeBoolean(const fmi2ValueReference vr, const fmi2Boolean &value) const override {
+            return library_->writeBoolean(c_, vr, value);
+        }
+
+        fmi2Status
+        writeBoolean(const vector<fmi2ValueReference> &vr, const vector<fmi2Boolean> &values) const override {
+            return library_->writeBoolean(c_, vr, values);
         }
 
         ~AbstractFmuInstance() {

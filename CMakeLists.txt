@@ -15,16 +15,6 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 option(BUILD_TESTS "Build tests" OFF)
 option(BUILD_EXAMPLES "Build examples" ON)
 
-string(COMPARE EQUAL ${CMAKE_BUILD_TYPE} "Debug" DEBUG_MODE)
-option(DEBUG_LOGGING_ENABLED "Enable debug logging" ${DEBUG_MODE})
-message("Debug logging=${DEBUG_LOGGING_ENABLED}")
-
-if (DEBUG_LOGGING_ENABLED)
-    add_definitions(-DDEBUG_LOGGING_ENABLED=1)
-else ()
-    add_definitions(-DDEBUG_LOGGING_ENABLED=0)
-endif ()
-
 if (MSVC)
     set(CMAKE_DEBUG_POSTFIX "d")
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)
