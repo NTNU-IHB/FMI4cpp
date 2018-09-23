@@ -34,6 +34,7 @@
 #include "../fmi2FunctionTypes.h"
 
 #if defined(_MSC_VER) || defined(WIN32) || defined(__MINGW32__)
+#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #define DLL_HANDLE HMODULE
 #else
