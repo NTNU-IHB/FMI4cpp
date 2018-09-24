@@ -85,6 +85,8 @@ namespace fmi4cpp::fmi2::import {
         fmi2GetFMUstateTYPE *fmi2GetFMUstate_;
         fmi2SetFMUstateTYPE *fmi2SetFMUstate_;
         fmi2FreeFMUstateTYPE *fmi2FreeFMUstate_;
+
+        fmi2SerializedFMUstateSizeTYPE *fmi2SerializedFMUstateSize_;
         fmi2SerializeFMUstateTYPE *fmi2SerializeFMUstate_;
         fmi2DeSerializeFMUstateTYPE *fmi2DeSerializeFMUstate_;
 
@@ -166,6 +168,9 @@ namespace fmi4cpp::fmi2::import {
         fmi2Status setFMUstate(const fmi2Component c, const fmi2FMUstate state) const;
 
         fmi2Status freeFMUstate(const fmi2Component c, fmi2FMUstate &state) const;
+
+        fmi2Status
+        getSerializedFMUstateSize(const fmi2Component c, const fmi2FMUstate state, size_t &size) const;
 
         fmi2Status
         serializeFMUstate(const fmi2Component c, const fmi2FMUstate &state, vector<fmi2Byte> &serializedState) const;

@@ -133,6 +133,10 @@ namespace fmi4cpp::fmi2::import {
             return modelDescription_->canSerializeFMUstate();
         }
 
+        fmi2Status getSerializedFMUstateSize(const fmi2FMUstate state, size_t &size) const {
+            return library_->getSerializedFMUstateSize(c_, state, size);
+        }
+
         fmi2Status serializeFMUstate(const fmi2FMUstate &state, vector<fmi2Byte> &serializedState) override {
             return library_->serializeFMUstate(c_, state, serializedState);
         }
