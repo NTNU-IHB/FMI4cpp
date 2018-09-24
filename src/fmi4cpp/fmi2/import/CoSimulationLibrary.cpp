@@ -22,23 +22,24 @@
  * THE SOFTWARE.
  */
 
+#include "FmiLibraryHelper.hpp"
 #include <fmi4cpp/fmi2/import/CoSimulationLibrary.hpp>
 
 using namespace fmi4cpp::fmi2::import;
 
 CoSimulationLibrary::CoSimulationLibrary(const string &libName) : FmiLibrary(libName) {
 
-    fmi2SetRealInputDerivatives_ = loadFunction<fmi2SetRealInputDerivativesTYPE *>("fmi2SetRealInputDerivatives");
-    fmi2GetRealOutputDerivatives_ = loadFunction<fmi2GetRealOutputDerivativesTYPE *>("fmi2GetRealOutputDerivatives");
+    fmi2SetRealInputDerivatives_ = loadFunction<fmi2SetRealInputDerivativesTYPE *>(handle_, "fmi2SetRealInputDerivatives");
+    fmi2GetRealOutputDerivatives_ = loadFunction<fmi2GetRealOutputDerivativesTYPE *>(handle_, "fmi2GetRealOutputDerivatives");
 
-    fmi2DoStep_ = loadFunction<fmi2DoStepTYPE *>("fmi2DoStep");
-    fmi2CancelStep_ = loadFunction<fmi2CancelStepTYPE *>("fmi2CancelStep");
+    fmi2DoStep_ = loadFunction<fmi2DoStepTYPE *>(handle_, "fmi2DoStep");
+    fmi2CancelStep_ = loadFunction<fmi2CancelStepTYPE *>(handle_, "fmi2CancelStep");
 
-    fmi2GetStatus_ = loadFunction<fmi2GetStatusTYPE *>("fmi2GetStatusTYPE");
-    fmi2GetRealStatus_ = loadFunction<fmi2GetRealStatusTYPE *>("fmi2GetRealStatusTYPE");
-    fmi2GetIntegerStatus_ = loadFunction<fmi2GetIntegerStatusTYPE *>("fmi2GetIntegerStatusTYPE");
-    fmi2GetBooleanStatus_ = loadFunction<fmi2GetBooleanStatusTYPE *>("fmi2GetBooleanStatusTYPE");
-    fmi2GetStringStatus_ = loadFunction<fmi2GetStringStatusTYPE *>("fmi2GetStringStatusTYPE");
+    fmi2GetStatus_ = loadFunction<fmi2GetStatusTYPE *>(handle_, "fmi2GetStatusTYPE");
+    fmi2GetRealStatus_ = loadFunction<fmi2GetRealStatusTYPE *>(handle_, "fmi2GetRealStatusTYPE");
+    fmi2GetIntegerStatus_ = loadFunction<fmi2GetIntegerStatusTYPE *>(handle_, "fmi2GetIntegerStatusTYPE");
+    fmi2GetBooleanStatus_ = loadFunction<fmi2GetBooleanStatusTYPE *>(handle_, "fmi2GetBooleanStatusTYPE");
+    fmi2GetStringStatus_ = loadFunction<fmi2GetStringStatusTYPE *>(handle_, "fmi2GetStringStatusTYPE");
 
 }
 

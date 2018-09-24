@@ -33,6 +33,8 @@ namespace fs = std::experimental::filesystem;
 #include <fmi4cpp/fmi2/enumsToString.hpp>
 #include <fmi4cpp/fmi2/import/FmiLibrary.hpp>
 
+#include "FmiLibraryHelper.hpp"
+
 using namespace std;
 using fmi4cpp::fmi2::import::FmiLibrary;
 
@@ -57,11 +59,7 @@ FmiLibrary::FmiLibrary(const string &libName) {
     cout << "Loading shared library " << fs::path(libName).stem() << endl;
 #endif
 
-#ifdef WIN32
-    handle_ = LoadLibrary(libName.c_str());
-#else
-    handle_ = dlopen(libName.c_str(), RTLD_NOW | RTLD_LOCAL);
-#endif
+    handle_ = loadLibrary(libName);
 
     if (!handle_) {
         cerr << getLastError() << endl;
@@ -69,36 +67,36 @@ FmiLibrary::FmiLibrary(const string &libName) {
         throw runtime_error(msg);
     }
 
-    fmi2GetVersion_ = loadFunction<fmi2GetVersionTYPE *>("fmi2GetVersion");
-    fmi2GetTypesPlatform_ = loadFunction<fmi2GetTypesPlatformTYPE *>("fmi2GetTypesPlatform");
+    fmi2GetVersion_ = loadFunction<fmi2GetVersionTYPE *>(handle_, "fmi2GetVersion");
+    fmi2GetTypesPlatform_ = loadFunction<fmi2GetTypesPlatformTYPE *>(handle_, "fmi2GetTypesPlatform");
 
-    fmi2Instantiate_ = loadFunction<fmi2InstantiateTYPE *>("fmi2Instantiate");
-    fmi2SetupExperiment_ = loadFunction<fmi2SetupExperimentTYPE *>("fmi2SetupExperiment");
-    fmi2EnterInitializationMode_ = loadFunction<fmi2EnterInitializationModeTYPE *>("fmi2EnterInitializationMode");
-    fmi2ExitInitializationMode_ = loadFunction<fmi2ExitInitializationModeTYPE *>("fmi2ExitInitializationMode");
+    fmi2Instantiate_ = loadFunction<fmi2InstantiateTYPE *>(handle_, "fmi2Instantiate");
+    fmi2SetupExperiment_ = loadFunction<fmi2SetupExperimentTYPE *>(handle_, "fmi2SetupExperiment");
+    fmi2EnterInitializationMode_ = loadFunction<fmi2EnterInitializationModeTYPE *>(handle_, "fmi2EnterInitializationMode");
+    fmi2ExitInitializationMode_ = loadFunction<fmi2ExitInitializationModeTYPE *>(handle_, "fmi2ExitInitializationMode");
 
-    fmi2Reset_ = loadFunction<fmi2ResetTYPE *>("fmi2Reset");
-    fmi2Terminate_ = loadFunction<fmi2TerminateTYPE *>("fmi2Terminate");
+    fmi2Reset_ = loadFunction<fmi2ResetTYPE *>(handle_, "fmi2Reset");
+    fmi2Terminate_ = loadFunction<fmi2TerminateTYPE *>(handle_, "fmi2Terminate");
 
-    fmi2GetInteger_ = loadFunction<fmi2GetIntegerTYPE *>("fmi2GetInteger");
-    fmi2GetReal_ = loadFunction<fmi2GetRealTYPE *>("fmi2GetReal");
-    fmi2GetString_ = loadFunction<fmi2GetStringTYPE *>("fmi2GetString");
-    fmi2GetBoolean_ = loadFunction<fmi2GetBooleanTYPE *>("fmi2GetBoolean");
+    fmi2GetInteger_ = loadFunction<fmi2GetIntegerTYPE *>(handle_, "fmi2GetInteger");
+    fmi2GetReal_ = loadFunction<fmi2GetRealTYPE *>(handle_, "fmi2GetReal");
+    fmi2GetString_ = loadFunction<fmi2GetStringTYPE *>(handle_, "fmi2GetString");
+    fmi2GetBoolean_ = loadFunction<fmi2GetBooleanTYPE *>(handle_, "fmi2GetBoolean");
 
-    fmi2SetInteger_ = loadFunction<fmi2SetIntegerTYPE *>("fmi2SetInteger");
-    fmi2SetReal_ = loadFunction<fmi2SetRealTYPE *>("fmi2SetReal");
-    fmi2SetString_ = loadFunction<fmi2SetStringTYPE *>("fmi2SetString");
-    fmi2SetBoolean_ = loadFunction<fmi2SetBooleanTYPE *>("fmi2SetBoolean");
+    fmi2SetInteger_ = loadFunction<fmi2SetIntegerTYPE *>(handle_, "fmi2SetInteger");
+    fmi2SetReal_ = loadFunction<fmi2SetRealTYPE *>(handle_, "fmi2SetReal");
+    fmi2SetString_ = loadFunction<fmi2SetStringTYPE *>(handle_, "fmi2SetString");
+    fmi2SetBoolean_ = loadFunction<fmi2SetBooleanTYPE *>(handle_, "fmi2SetBoolean");
 
-    fmi2GetFMUstate_ = loadFunction<fmi2GetFMUstateTYPE *>("fmi2GetFMUstate");
-    fmi2SetFMUstate_ = loadFunction<fmi2SetFMUstateTYPE *>("fmi2SetFMUstate");
-    fmi2FreeFMUstate_ = loadFunction<fmi2FreeFMUstateTYPE *>("fmi2FreeFMUstate");
-    fmi2SerializeFMUstate_ = loadFunction<fmi2SerializeFMUstateTYPE *>("fmi2SerializeFMUstate");
-    fmi2DeSerializeFMUstate_ = loadFunction<fmi2DeSerializeFMUstateTYPE *>("fmi2DeSerializeFMUstate");
+    fmi2GetFMUstate_ = loadFunction<fmi2GetFMUstateTYPE *>(handle_, "fmi2GetFMUstate");
+    fmi2SetFMUstate_ = loadFunction<fmi2SetFMUstateTYPE *>(handle_, "fmi2SetFMUstate");
+    fmi2FreeFMUstate_ = loadFunction<fmi2FreeFMUstateTYPE *>(handle_, "fmi2FreeFMUstate");
+    fmi2SerializeFMUstate_ = loadFunction<fmi2SerializeFMUstateTYPE *>(handle_, "fmi2SerializeFMUstate");
+    fmi2DeSerializeFMUstate_ = loadFunction<fmi2DeSerializeFMUstateTYPE *>(handle_, "fmi2DeSerializeFMUstate");
 
-    fmi2GetDirectionalDerivative_ = loadFunction<fmi2GetDirectionalDerivativeTYPE *>("fmi2GetDirectionalDerivative");
+    fmi2GetDirectionalDerivative_ = loadFunction<fmi2GetDirectionalDerivativeTYPE *>(handle_, "fmi2GetDirectionalDerivative");
 
-    fmi2FreeInstance_ = loadFunction<fmi2FreeInstanceTYPE *>("fmi2FreeInstance");
+    fmi2FreeInstance_ = loadFunction<fmi2FreeInstanceTYPE *>(handle_, "fmi2FreeInstance");
 
 }
 

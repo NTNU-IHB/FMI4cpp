@@ -58,10 +58,7 @@ namespace fmi4cpp::fmi2::import {
     class FmiLibrary {
 
     private:
-        DLL_HANDLE handle_ = nullptr;
-
-        string getLastError() const;
-
+        
         fmi2GetVersionTYPE *fmi2GetVersion_;
         fmi2GetTypesPlatformTYPE *fmi2GetTypesPlatform_;
 
@@ -93,17 +90,11 @@ namespace fmi4cpp::fmi2::import {
 
         fmi2FreeInstanceTYPE *fmi2FreeInstance_;
 
+        string getLastError() const;
+
     protected:
-
-        template<class T>
-        T loadFunction(const char *function_name) const {
-#ifdef WIN32
-            return (T) GetProcAddress(handle_, function_name);
-#else
-            return (T) dlsym(handle_, function_name);
-#endif
-        }
-
+        DLL_HANDLE handle_ = nullptr;
+        
     public:
 
         explicit FmiLibrary(const string &libName);

@@ -22,22 +22,24 @@
  * THE SOFTWARE.
  */
 
+#include "FmiLibraryHelper.hpp"
 #include <fmi4cpp/fmi2/import/ModelExchangeLibrary.hpp>
 
 
 ModelExchangeLibrary::ModelExchangeLibrary(const string &libName) : FmiLibrary(libName) {
 
-    fmi2EnterEventMode_ = loadFunction<fmi2EnterEventModeTYPE *>("fmi2EnterEventMode");
-    fmi2EnterContinuousTimeMode_ = loadFunction<fmi2EnterContinuousTimeModeTYPE *>("fmi2EnterContinuousTimeMode");
-    fmi2SetTime_ = loadFunction<fmi2SetTimeTYPE *>("fmi2SetTime");
-    fmi2SetContinuousStates_ = loadFunction<fmi2SetContinuousStatesTYPE *>("fmi2SetContinuousStates");
-    fmi2GetDerivatives_ = loadFunction<fmi2GetDerivativesTYPE *>("fmi2GetDerivatives");
-    fmi2GetEventIndicators_ = loadFunction<fmi2GetEventIndicatorsTYPE *>("fmi2GetEventIndicators");
-    fmi2GetContinuousStates_ = loadFunction<fmi2GetContinuousStatesTYPE *>("fmi2GetContinuousStates");
+    fmi2EnterEventMode_ = loadFunction<fmi2EnterEventModeTYPE *>(handle_, "fmi2EnterEventMode");
+    fmi2EnterContinuousTimeMode_ = loadFunction<fmi2EnterContinuousTimeModeTYPE *>(
+            handle_, "fmi2EnterContinuousTimeMode");
+    fmi2SetTime_ = loadFunction<fmi2SetTimeTYPE *>(handle_, "fmi2SetTime");
+    fmi2SetContinuousStates_ = loadFunction<fmi2SetContinuousStatesTYPE *>(handle_, "fmi2SetContinuousStates");
+    fmi2GetDerivatives_ = loadFunction<fmi2GetDerivativesTYPE *>(handle_, "fmi2GetDerivatives");
+    fmi2GetEventIndicators_ = loadFunction<fmi2GetEventIndicatorsTYPE *>(handle_, "fmi2GetEventIndicators");
+    fmi2GetContinuousStates_ = loadFunction<fmi2GetContinuousStatesTYPE *>(handle_, "fmi2GetContinuousStates");
     fmi2GetNominalsOfContinuousStates_ = loadFunction<fmi2GetNominalsOfContinuousStatesTYPE *>(
-            "fmi2GetNominalsOfContinuousStates");
-    fmi2CompletedIntegratorStep_ = loadFunction<fmi2CompletedIntegratorStepTYPE *>("fmi2CompletedIntegratorStep");
-    fmi2NewDiscreteStates_ = loadFunction<fmi2NewDiscreteStatesTYPE *>("fmi2NewDiscreteStates");
+            handle_, "fmi2GetNominalsOfContinuousStates");
+    fmi2CompletedIntegratorStep_ = loadFunction<fmi2CompletedIntegratorStepTYPE *>(handle_, "fmi2CompletedIntegratorStep");
+    fmi2NewDiscreteStates_ = loadFunction<fmi2NewDiscreteStatesTYPE *>(handle_, "fmi2NewDiscreteStates");
 
 }
 
