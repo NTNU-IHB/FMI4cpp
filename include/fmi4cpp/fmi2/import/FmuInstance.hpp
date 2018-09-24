@@ -70,21 +70,15 @@ namespace fmi4cpp::fmi2::import {
         virtual fmi2Status terminate() = 0;
 
         virtual bool canGetAndSetFMUstate() const = 0;
-
         virtual fmi2Status getFMUstate(fmi2FMUstate &state) = 0;
-
         virtual fmi2Status setFMUstate(const fmi2FMUstate state) = 0;
-
         virtual fmi2Status freeFMUstate(fmi2FMUstate &state) = 0;
 
         virtual bool canSerializeFMUstate() const = 0;
-
         virtual fmi2Status serializeFMUstate(const fmi2FMUstate &state, vector<fmi2Byte> &serializedState) = 0;
-
         virtual fmi2Status deSerializeFMUstate(fmi2FMUstate &state, const vector<fmi2Byte> &serializedState) = 0;
 
         virtual bool providesDirectionalDerivative() const = 0;
-
         virtual fmi2Status getDirectionalDerivative(
                 const vector<fmi2ValueReference> &vUnkownRef,
                 const vector<fmi2ValueReference> &vKnownRef,
@@ -92,67 +86,27 @@ namespace fmi4cpp::fmi2::import {
                 vector<fmi2Real> &dvUnknownRef) const = 0;
 
 
-        fmi2Status readInteger(const string &name, fmi2Integer &ref) const {
-            const auto vr = getModelDescription().getVariableByName(name).getValueReference();
-            return readInteger(vr, ref);
-        }
-
         virtual fmi2Status readInteger(const fmi2ValueReference vr, fmi2Integer &ref) const = 0;
-
         virtual fmi2Status readInteger(const vector<fmi2ValueReference> &vr, vector<fmi2Integer> &ref) const = 0;
 
-        fmi2Status readReal(const string &name, fmi2Real &ref) const {
-            const auto vr = getModelDescription().getVariableByName(name).getValueReference();
-            return readReal(vr, ref);
-        }
-
         virtual fmi2Status readReal(const fmi2ValueReference vr, fmi2Real &ref) const = 0;
-
         virtual fmi2Status readReal(const vector<fmi2ValueReference> &vr, vector<fmi2Real> &ref) const = 0;
 
-        fmi2Status readString(const string &name, fmi2String &ref) const {
-            const auto vr = getModelDescription().getVariableByName(name).getValueReference();
-            return readString(vr, ref);
-        }
-
         virtual fmi2Status readString(const fmi2ValueReference vr, fmi2String &ref) const = 0;
-
         virtual fmi2Status readString(const vector<fmi2ValueReference> &vr, vector<fmi2String> &ref) const = 0;
 
-        fmi2Status readBoolean(const string &name, fmi2Boolean &ref) const {
-            const auto vr = getModelDescription().getVariableByName(name).getValueReference();
-            return readBoolean(vr, ref);
-        }
-
         virtual fmi2Status readBoolean(const fmi2ValueReference vr, fmi2Boolean &ref) const = 0;
-
         virtual fmi2Status readBoolean(const vector<fmi2ValueReference> &vr, vector<fmi2Boolean> &ref) const = 0;
 
-        fmi2Status writeInteger(const string &name, const fmi2Integer &ref) const {
-            const auto vr = getModelDescription().getVariableByName(name).getValueReference();
-            return writeInteger(vr, ref);
-        }
         virtual fmi2Status writeInteger(const fmi2ValueReference vr, const fmi2Integer &value) const = 0;
         virtual fmi2Status writeInteger(const vector<fmi2ValueReference> &vr, const vector<fmi2Integer > &values) const = 0;
 
-        fmi2Status writeReal(const string &name, const fmi2Integer &ref) const {
-            const auto vr = getModelDescription().getVariableByName(name).getValueReference();
-            return writeReal(vr, ref);
-        }
         virtual fmi2Status writeReal(const fmi2ValueReference vr, const fmi2Real &value) const = 0;
         virtual fmi2Status writeReal(const vector<fmi2ValueReference> &vr, const vector<fmi2Real > &values) const = 0;
 
-        fmi2Status writeString(const string &name, fmi2String &ref) const {
-            const auto vr = getModelDescription().getVariableByName(name).getValueReference();
-            return writeString(vr, ref);
-        }
         virtual fmi2Status writeString(const fmi2ValueReference vr, fmi2String &value) const = 0;
         virtual fmi2Status writeString(const vector<fmi2ValueReference> &vr, const vector<fmi2String > &values) const = 0;
 
-        fmi2Status writeBoolean(const string &name, const fmi2Boolean &ref) const {
-            const auto vr = getModelDescription().getVariableByName(name).getValueReference();
-            return writeBoolean(vr, ref);
-        }
         virtual fmi2Status writeBoolean(const fmi2ValueReference vr, const fmi2Boolean &value) const = 0;
         virtual fmi2Status writeBoolean(const vector<fmi2ValueReference> &vr, const vector<fmi2Boolean > &values) const = 0;
 
