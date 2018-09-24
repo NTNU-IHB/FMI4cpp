@@ -30,8 +30,8 @@
 #include <fmi4cpp/fmi2/import/CoSimulationSlaveBuilder.hpp>
 #include <fmi4cpp/fmi2/import/ModelExchangeInstanceBuilder.hpp>
 
-#include <fmi4cpp/tools/unzipper.hpp>
-#include <fmi4cpp/tools/os_util.hpp>
+#include "../../tools/unzipper.hpp"
+#include "../../tools/os_util.hpp"
 
 using namespace std;
 using namespace fmi4cpp::fmi2::import;

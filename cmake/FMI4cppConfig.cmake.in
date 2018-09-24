@@ -1,0 +1,19 @@
+get_filename_component(FMI4cpp_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+include(CMakeFindDependencyMacro)
+
+list(APPEND CMAKE_MODULE_PATH ${FMI4cpp_CMAKE_DIR})
+
+find_dependency(Boost 1.65 REQUIRED)
+if (UNIX)
+    find_dependency(ZLIB REQUIRED)
+    find_dependency(BZip2 REQUIRED)
+    find_dependency(OpenSSL COMPONENTS Crypto REQUIRED)
+endif()
+find_dependency(LIBZIP REQUIRED)
+list(REMOVE_AT CMAKE_MODULE_PATH -1)
+
+if(NOT TARGET FMI4cpp::FMI4cpp)
+    include("${FMI4cpp_CMAKE_DIR}/FMI4cppTargets.cmake")
+endif()
+
+set(FMI4CPP_LIBRARIES FMI4cpp::FMI4cpp)
