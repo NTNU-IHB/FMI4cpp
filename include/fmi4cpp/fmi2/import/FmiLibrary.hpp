@@ -62,6 +62,8 @@ namespace fmi4cpp::fmi2::import {
         fmi2GetVersionTYPE *fmi2GetVersion_;
         fmi2GetTypesPlatformTYPE *fmi2GetTypesPlatform_;
 
+        fmi2SetDebugLoggingTYPE *fmi2SetDebugLogging_;
+
         fmi2InstantiateTYPE *fmi2Instantiate_;
         fmi2SetupExperimentTYPE *fmi2SetupExperiment_;
         fmi2EnterInitializationModeTYPE *fmi2EnterInitializationMode_;
@@ -102,6 +104,8 @@ namespace fmi4cpp::fmi2::import {
         fmi2String getVersion() const;
 
         fmi2String getTypesPlatform() const;
+
+        fmi2Status setDebugLogging(const fmi2Component c, const bool loggingOn, const vector<const char*> categories) const;
 
         fmi2Component instantiate(const string instanceName, const fmi2Type type,
                                   const string guid, const string resourceLocation,

@@ -70,6 +70,8 @@ FmiLibrary::FmiLibrary(const string &libName) {
     fmi2GetVersion_ = loadFunction<fmi2GetVersionTYPE *>(handle_, "fmi2GetVersion");
     fmi2GetTypesPlatform_ = loadFunction<fmi2GetTypesPlatformTYPE *>(handle_, "fmi2GetTypesPlatform");
 
+    fmi2SetDebugLogging_ = loadFunction<fmi2SetDebugLoggingTYPE *>(handle_, "fmi2SetDebugLogging");
+
     fmi2Instantiate_ = loadFunction<fmi2InstantiateTYPE *>(handle_, "fmi2Instantiate");
     fmi2SetupExperiment_ = loadFunction<fmi2SetupExperimentTYPE *>(handle_, "fmi2SetupExperiment");
     fmi2EnterInitializationMode_ = loadFunction<fmi2EnterInitializationModeTYPE *>(handle_, "fmi2EnterInitializationMode");
@@ -106,6 +108,11 @@ fmi2String FmiLibrary::getVersion() const {
 
 fmi2String FmiLibrary::getTypesPlatform() const {
     return fmi2GetTypesPlatform_();
+}
+
+fmi2Status fmi4cpp::fmi2::import::FmiLibrary::setDebugLogging(const fmi2Component c, const bool loggingOn,
+                                                                  const vector<const char*> categories) const {
+    return fmi2SetDebugLogging_(c, loggingOn, categories.size(), categories.data());
 }
 
 fmi2Component FmiLibrary::instantiate(const string instanceName, const fmi2Type type,
