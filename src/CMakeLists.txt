@@ -53,7 +53,7 @@ endif()
 target_compile_features(${FMI4CPP_LIB} PUBLIC cxx_std_17)
 
 #Enable fmi4cpp debug messages for debug configurations
-target_compile_definitions(${FMI4CPP_LIB} PRIVATE $<$<CONFIG:Debug>:DEBUG_LOGGING_ENABLED>)
+target_compile_definitions(${FMI4CPP_LIB} PRIVATE $<$<CONFIG:Debug>:FMI4CPP_DEBUG_LOGGING_ENABLED>)
 
 ##############################################
 # Installation instructions
