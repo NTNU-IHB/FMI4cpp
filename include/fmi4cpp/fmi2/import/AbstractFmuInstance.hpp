@@ -67,7 +67,7 @@ namespace fmi4cpp::fmi2::import {
         }
 
         fmi2Status setDebugLogging(const bool loggingOn, const vector<const char*> categories) const {
-            return library_->(c_, loggingOn, categories);
+            return library_->setDebugLogging(c_, loggingOn, categories);
         }
 
         void init(const double start = 0, const double stop = 0) override {
