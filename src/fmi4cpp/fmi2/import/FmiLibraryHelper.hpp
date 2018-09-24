@@ -11,7 +11,7 @@ namespace {
 
     DLL_HANDLE loadLibrary(const std::string libName) {
 #ifdef WIN32
-        handle_ = LoadLibrary(libName.c_str());
+        return LoadLibrary(libName.c_str());
 #else
         return dlopen(libName.c_str(), RTLD_NOW | RTLD_LOCAL);
 #endif
