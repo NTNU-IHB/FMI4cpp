@@ -25,6 +25,7 @@
 #ifndef FMI4CPP_UNZIPPER_HPP
 #define FMI4CPP_UNZIPPER_HPP
 
+#include <fstream>
 #include <iostream>
 #include <sstream>
 #include <zip.h>
