@@ -28,7 +28,7 @@ using namespace std;
 using namespace fmi4cpp::fmi2::xml;
 
 const size_t ModelVariables::size() const {
-    return vector::size();
+    return variables.size();
 }
 
 void ModelVariables::load(const ptree &node) {
@@ -38,20 +38,20 @@ void ModelVariables::load(const ptree &node) {
         if (v.first == "ScalarVariable") {
             ScalarVariable var;
             var.load(v.second);
-            push_back(var);
+            variables.push_back(var);
         }
 
     }
 
 }
 
-ScalarVariable &ModelVariables::operator[](const size_type index) {
-    return vector::operator[](index);
+ScalarVariable &ModelVariables::operator[](const size_t index) {
+    return variables.operator[](index);
 }
 
 ScalarVariable ModelVariables::getByName(const string &name) const {
 
-    for (const ScalarVariable &var : *this) {
+    for (const ScalarVariable &var : variables) {
         if (var.getName() == name) {
             return var;
         }
@@ -63,7 +63,7 @@ ScalarVariable ModelVariables::getByName(const string &name) const {
 
 ScalarVariable ModelVariables::getByValueReference(const fmi2ValueReference vr) const {
 
-    for (const ScalarVariable &var : *this) {
+    for (const ScalarVariable &var : variables) {
         if (var.getValueReference() == vr) {
             return var;
         }
