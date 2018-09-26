@@ -61,7 +61,7 @@ namespace {
 
         switch (causality) {
             case fmi2Causality::calculatedParameter:
-                return "Warning";
+                return "calculatedParameter";
             case fmi2Causality::input:
                 return "input";
             case fmi2Causality::output:
