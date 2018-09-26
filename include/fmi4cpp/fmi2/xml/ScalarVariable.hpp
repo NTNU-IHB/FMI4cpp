@@ -29,6 +29,7 @@
 #include <optional>
 #include <boost/optional.hpp>
 #include <boost/property_tree/ptree.hpp>
+#include <ostream>
 
 #include "enums.hpp"
 #include "../fmi2Functions.h"
@@ -62,11 +63,11 @@ namespace fmi4cpp::fmi2::xml {
         fmi2Variability variability_;
         fmi2Initial initial_;
 
-        std::shared_ptr<IntegerAttribute> integerAttribute_;
-        std::shared_ptr<RealAttribute> realAttribute_;
-        std::shared_ptr<StringAttribute> stringAttribute_;
-        std::shared_ptr<BooleanAttribute> booleanAttribute_;
-        std::shared_ptr<EnumerationAttribute> enumerationAttribute_;
+        std::optional<IntegerAttribute> integerAttribute_;
+        std::optional<RealAttribute> realAttribute_;
+        std::optional<StringAttribute> stringAttribute_;
+        std::optional<BooleanAttribute> booleanAttribute_;
+        std::optional<EnumerationAttribute> enumerationAttribute_;
 
     public:
 
@@ -96,6 +97,8 @@ namespace fmi4cpp::fmi2::xml {
 
         void load(const ptree &node);
 
+        friend std::ostream &operator<<(std::ostream &os, const ScalarVariable &variable);
+
     };
 
     class IntegerVariable : public ScalarVariable {
@@ -104,7 +107,7 @@ namespace fmi4cpp::fmi2::xml {
         IntegerAttribute &attribute_;
 
     public:
-        IntegerVariable(const ScalarVariable &var, IntegerAttribute &attribute);
+        IntegerVariable(const ScalarVariable &var, IntegerAttribute attribute);
 
         std::optional<int> getMin() const;
 
@@ -124,7 +127,7 @@ namespace fmi4cpp::fmi2::xml {
         RealAttribute &attribute_;
 
     public:
-        RealVariable(const ScalarVariable &var, RealAttribute &attribute);
+        RealVariable(const ScalarVariable &var, RealAttribute attribute);
 
         std::optional<double> getMin() const;
 
@@ -158,7 +161,7 @@ namespace fmi4cpp::fmi2::xml {
         StringAttribute attribute_;
 
     public:
-        StringVariable(const ScalarVariable &var, StringAttribute &attribute);
+        StringVariable(const ScalarVariable &var, StringAttribute attribute);
 
         std::optional<string> getStart() const;
 
@@ -172,7 +175,7 @@ namespace fmi4cpp::fmi2::xml {
         BooleanAttribute attribute_;
 
     public:
-        BooleanVariable(const ScalarVariable &var, BooleanAttribute &attribute);
+        BooleanVariable(const ScalarVariable &var, BooleanAttribute attribute);
 
         std::optional<bool> getStart() const;
 
@@ -186,7 +189,7 @@ namespace fmi4cpp::fmi2::xml {
         EnumerationAttribute attribute_;
 
     public:
-        EnumerationVariable(const ScalarVariable &var, EnumerationAttribute &attribute);
+        EnumerationVariable(const ScalarVariable &var, EnumerationAttribute attribute);
 
         std::optional<int> getMin() const;
 
