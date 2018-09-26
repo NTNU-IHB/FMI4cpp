@@ -47,17 +47,26 @@ namespace fmi4cpp::fmi2::xml {
 
     };
 
-    class SourceFiles : private std::vector<File> {
+    class SourceFiles {
+
+    private:
+        std::vector<File> files;
 
     public:
 
         const size_t size() const;
 
-        File at(const size_type index) const;
-
-        File &operator[](const size_type index);
+        File &operator[](const size_t index);
 
         void load(const ptree &node);
+
+        std::vector<File>::iterator begin();
+
+        std::vector<File>::iterator end();
+
+        std::vector<File>::const_iterator cbegin() const;
+
+        std::vector<File>::const_iterator cend() const;
 
     };
 

@@ -36,11 +36,11 @@ std::string File::name() const {
 }
 
 const size_t SourceFiles::size() const {
-    return vector::size();
+    return files.size();
 }
 
-File &SourceFiles::operator[](const size_type index) {
-    return vector::operator[]( index );
+File &SourceFiles::operator[](const size_t index) {
+    return files[index];
 }
 
 void SourceFiles::load(const ptree &node) {
@@ -50,9 +50,25 @@ void SourceFiles::load(const ptree &node) {
         if (v.first == "File") {
             File file;
             file.load(v.second);
-            push_back(file);
+            files.push_back(file);
         }
 
     }
 
+}
+
+std::vector<File>::iterator SourceFiles::begin() {
+    return files.begin();
+}
+
+std::vector<File>::iterator SourceFiles::end() {
+    return files.end();
+}
+
+std::vector<File>::const_iterator SourceFiles::cbegin() const {
+    return files.cbegin();
+}
+
+std::vector<File>::const_iterator SourceFiles::cend() const {
+    return files.cend();
 }
