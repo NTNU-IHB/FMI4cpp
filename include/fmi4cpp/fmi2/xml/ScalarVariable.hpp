@@ -84,15 +84,15 @@ namespace fmi4cpp::fmi2::xml {
 
         fmi2Initial getInitial() const;
 
-        IntegerVariable asIntegerVariable();
+        IntegerVariable asIntegerVariable() const;
 
-        RealVariable asRealVariable();
+        RealVariable asRealVariable() const;
 
-        StringVariable asStringVariable();
+        StringVariable asStringVariable() const;
 
-        BooleanVariable asBooleanVariable();
+        BooleanVariable asBooleanVariable() const;
 
-        EnumerationVariable asEnumerationVariable();
+        EnumerationVariable asEnumerationVariable() const;
 
         void load(const ptree &node);
 

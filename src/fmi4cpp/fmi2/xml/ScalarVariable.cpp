@@ -60,35 +60,35 @@ void ScalarVariable::load(const ptree &node) {
 
 }
 
-IntegerVariable ScalarVariable::asIntegerVariable() {
+IntegerVariable ScalarVariable::asIntegerVariable() const {
     if (integerAttribute_ == nullptr) {
         throw runtime_error(getName() + "is not of type Integer!");
     }
     return IntegerVariable(*this, *integerAttribute_);
 }
 
-RealVariable ScalarVariable::asRealVariable() {
+RealVariable ScalarVariable::asRealVariable() const {
     if (realAttribute_ == nullptr) {
         throw runtime_error(getName() + "is not of type Real!");
     }
     return RealVariable(*this, *realAttribute_);
 }
 
-StringVariable ScalarVariable::asStringVariable() {
+StringVariable ScalarVariable::asStringVariable() const {
     if (stringAttribute_ == nullptr) {
         throw runtime_error(getName() + "is not of type String!");
     }
     return StringVariable(*this, *stringAttribute_);
 }
 
-BooleanVariable ScalarVariable::asBooleanVariable() {
+BooleanVariable ScalarVariable::asBooleanVariable() const {
     if (booleanAttribute_ == nullptr) {
         throw runtime_error(getName() + "is not of type Boolean!");
     }
     return BooleanVariable(*this, *booleanAttribute_);
 }
 
-EnumerationVariable ScalarVariable::asEnumerationVariable() {
+EnumerationVariable ScalarVariable::asEnumerationVariable() const {
     if (enumerationAttribute_ == nullptr) {
         throw runtime_error(getName() + "is not of type Enumeration!");
     }
