@@ -71,7 +71,7 @@ namespace {
             case fmi2Causality::independent:
                 return "independent";
             default:
-                throw std::runtime_error("Invalid fmi2Causality encountered");
+                return "unknown";
         }
 
     }
@@ -90,7 +90,7 @@ namespace {
             case fmi2Variability::continuous:
                 return "continuous";
             default:
-                throw std::runtime_error("Invalid fmi2Variability encountered");
+                return "unknown";
         }
 
     }
@@ -104,8 +104,9 @@ namespace {
                 return "approx";
             case fmi2Initial::calculated:
                 return "calculated";
+            case fmi2Initial::unknown:
             default:
-                throw std::runtime_error("Invalid fmi2Initial encountered");
+                return "unknown";
         }
 
     }
