@@ -73,4 +73,19 @@ ScalarVariable ModelVariables::getByValueReference(const fmi2ValueReference vr) 
     throw runtime_error(errorMsg);
 }
 
+std::vector<ScalarVariable>::iterator ModelVariables::begin() {
+    return variables.begin();
+}
+
+std::vector<ScalarVariable>::iterator ModelVariables::end() {
+    return variables.end();
+}
+
+std::vector<ScalarVariable>::const_iterator ModelVariables::cbegin() {
+    return variables.cbegin();
+}
+
+std::vector<ScalarVariable>::const_iterator ModelVariables::cend() const {
+    return variables.cend();
+}
 

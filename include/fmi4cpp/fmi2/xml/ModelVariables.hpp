@@ -50,6 +50,14 @@ namespace fmi4cpp::fmi2::xml {
 
         ScalarVariable getByValueReference(const fmi2ValueReference vr) const;
 
+        std::vector<ScalarVariable>::iterator begin();
+
+        std::vector<ScalarVariable>::iterator end();
+
+        std::vector<ScalarVariable>::const_iterator cbegin();
+
+        std::vector<ScalarVariable>::const_iterator cend() const;
+
     };
 
 }
