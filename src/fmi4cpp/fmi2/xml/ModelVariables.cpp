@@ -81,7 +81,7 @@ std::vector<ScalarVariable>::iterator ModelVariables::end() {
     return variables.end();
 }
 
-std::vector<ScalarVariable>::const_iterator ModelVariables::cbegin() {
+std::vector<ScalarVariable>::const_iterator ModelVariables::cbegin() const{
     return variables.cbegin();
 }
 
