@@ -53,11 +53,11 @@ namespace fmi4cpp::fmi2::xml {
         unknown
     };
 
-    fmi2Causality parseCausality(std::string str);
+    fmi2Causality parseCausality(const std::string &str);
 
-    fmi2Variability parseVariability(std::string str);
+    fmi2Variability parseVariability(const std::string &str);
 
-    fmi2Initial parseInitial(std::string str);
+    fmi2Initial parseInitial(const std::string &str);
 
 }
 
