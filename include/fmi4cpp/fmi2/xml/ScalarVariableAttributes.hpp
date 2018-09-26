@@ -28,6 +28,7 @@
 #include <optional>
 #include <boost/optional.hpp>
 #include <boost/property_tree/ptree.hpp>
+#include <ostream>
 
 using std::string;
 using boost::property_tree::ptree;
@@ -43,6 +44,9 @@ namespace fmi4cpp::fmi2::xml {
         std::optional<string> quantity;
 
         void load(const ptree &node);
+
+        friend std::ostream &operator<<(std::ostream &os, const IntegerAttribute &attribute);
+
     };
 
     struct RealAttribute {
@@ -62,18 +66,27 @@ namespace fmi4cpp::fmi2::xml {
         bool relativeQuantity;
 
         void load(const ptree &node);
+
+        friend std::ostream &operator<<(std::ostream &os, const RealAttribute &attribute);
+
     };
 
     struct StringAttribute {
         std::optional<string> start;
 
         void load(const ptree &node);
+
+        friend std::ostream &operator<<(std::ostream &os, const StringAttribute &attribute);
+
     };
 
     struct BooleanAttribute {
         std::optional<bool> start;
 
         void load(const ptree &node);
+
+        friend std::ostream &operator<<(std::ostream &os, const BooleanAttribute &attribute);
+
     };
 
     struct EnumerationAttribute {
@@ -84,6 +97,9 @@ namespace fmi4cpp::fmi2::xml {
         std::optional<string> quantity;
 
         void load(const ptree &node);
+
+        friend std::ostream &operator<<(std::ostream &os, const EnumerationAttribute &attribute);
+
     };
 
 }

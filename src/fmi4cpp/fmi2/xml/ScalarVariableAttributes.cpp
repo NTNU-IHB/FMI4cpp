@@ -48,6 +48,22 @@ void IntegerAttribute::load(const ptree &node) {
     quantity = convert(node.get_optional<string>("<xmlattr>.quantity"));
 }
 
+ostream &fmi4cpp::fmi2::xml::operator<<(ostream &os, const IntegerAttribute &attribute) {
+    if (attribute.min) {
+        os << " min=" << attribute.min.value();
+    }
+    if (attribute.max) {
+        os << " max=" << attribute.max.value();
+    }
+    if (attribute.start) {
+        os << " start=" << attribute.start.value();
+    }
+    if (attribute.quantity) {
+        os << " quantity=" << attribute.quantity.value();
+    }
+    return os;
+}
+
 void RealAttribute::load(const ptree &node) {
     min = convert(node.get_optional<double>("<xmlattr>.min"));
     max = convert(node.get_optional<double>("<xmlattr>.max"));
@@ -66,12 +82,39 @@ void RealAttribute::load(const ptree &node) {
 
 }
 
+ostream &fmi4cpp::fmi2::xml::operator<<(ostream &os, const RealAttribute &attribute) {
+    if (attribute.min) {
+        os << " min=" << attribute.min.value();
+    }
+    if (attribute.max) {
+        os << " max=" << attribute.max.value();
+    }
+    if (attribute.start) {
+        os << " start=" << attribute.start.value();
+    }
+    return os;
+}
+
 void StringAttribute::load(const ptree &node) {
     start = convert(node.get_optional<string>("<xmlattr>.start"));
 }
 
+ostream &fmi4cpp::fmi2::xml::operator<<(ostream &os, const StringAttribute &attribute) {
+    if (attribute.start) {
+        os << " start=" << attribute.start.value();
+    }
+    return os;
+}
+
 void BooleanAttribute::load(const ptree &node) {
     start = convert(node.get_optional<bool>("<xmlattr>.start"));
+}
+
+ostream &fmi4cpp::fmi2::xml::operator<<(ostream &os, const BooleanAttribute &attribute) {
+    if (attribute.start) {
+        os << " start=" << attribute.start.value();
+    }
+    return os;
 }
 
 void EnumerationAttribute::load(const ptree &node) {
@@ -80,4 +123,20 @@ void EnumerationAttribute::load(const ptree &node) {
     start = convert(node.get_optional<int>("<xmlattr>.start"));
 
     quantity = convert(node.get_optional<string>("<xmlattr>.quantity"));
+}
+
+ostream &fmi4cpp::fmi2::xml::operator<<(ostream &os, const EnumerationAttribute &attribute) {
+    if (attribute.min) {
+        os << " min=" << attribute.min.value();
+    }
+    if (attribute.max) {
+        os << " max=" << attribute.max.value();
+    }
+    if (attribute.start) {
+        os << " start=" << attribute.start.value();
+    }
+    if (attribute.quantity) {
+        os << " quantity=" << attribute.quantity.value();
+    }
+    return os;
 }
