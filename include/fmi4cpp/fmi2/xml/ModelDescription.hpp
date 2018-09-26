@@ -109,9 +109,9 @@ namespace fmi4cpp::fmi2::xml {
 
         bool supportsCoSimulation() const;
 
-        ScalarVariable getVariableByName(const string &name) const;
+        ScalarVariable getVariableByName(const string &name);
 
-        ScalarVariable getVariableByValueReference(const fmi2ValueReference vr) const;
+        ScalarVariable getVariableByValueReference(const fmi2ValueReference vr);
 
         shared_ptr<CoSimulationModelDescription> asCoSimulationModelDescription() const;
 

@@ -49,9 +49,9 @@ ScalarVariable &ModelVariables::operator[](const size_t index) {
     return variables.operator[](index);
 }
 
-ScalarVariable ModelVariables::getByName(const string &name) const {
+ScalarVariable &ModelVariables::getByName(const string &name) {
 
-    for (const ScalarVariable &var : variables) {
+    for (ScalarVariable &var : variables) {
         if (var.getName() == name) {
             return var;
         }
@@ -61,9 +61,9 @@ ScalarVariable ModelVariables::getByName(const string &name) const {
     throw runtime_error(errorMsg);
 }
 
-ScalarVariable ModelVariables::getByValueReference(const fmi2ValueReference vr) const {
+ScalarVariable &ModelVariables::getByValueReference(const fmi2ValueReference vr) {
 
-    for (const ScalarVariable &var : variables) {
+    for (ScalarVariable &var : variables) {
         if (var.getValueReference() == vr) {
             return var;
         }
@@ -71,6 +71,14 @@ ScalarVariable ModelVariables::getByValueReference(const fmi2ValueReference vr) 
 
     string errorMsg = "No such variable with valueReference '" + to_string(vr) + "'!";
     throw runtime_error(errorMsg);
+}
+
+void ModelVariables::getByCausality(const fmi2Causality causality, std::vector<ScalarVariable> &store) {
+    for (ScalarVariable &var : variables) {
+        if (var.getCausality() == causality) {
+            store.push_back(var);
+        }
+    }
 }
 
 std::vector<ScalarVariable>::iterator ModelVariables::begin() {

@@ -57,11 +57,11 @@ namespace fmi4cpp::fmi2::import {
             return terminated_;
         }
 
-        virtual const fmi2ValueReference getValueReference(const std::string &name) const {
+        virtual const fmi2ValueReference getValueReference(const std::string &name) {
             return getModelDescription().getVariableByName(name).getValueReference();
         }
 
-        virtual const xml::ModelDescription &getModelDescription() const = 0;
+        virtual xml::ModelDescription &getModelDescription() const = 0;
 
         virtual void init(const double start = 0, const double stop = 0) = 0;
 

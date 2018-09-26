@@ -28,7 +28,6 @@
 using namespace std;
 using namespace fmi4cpp::fmi2::xml;
 
-
 void ScalarVariable::load(const ptree &node) {
 
     name_ = node.get<string>("<xmlattr>.name");
@@ -42,19 +41,19 @@ void ScalarVariable::load(const ptree &node) {
 
     for (const ptree::value_type &v : node) {
         if (v.first == "Integer") {
-            integerAttribute_ = IntegerAttribute();
+            integerAttribute_ = make_shared<IntegerAttribute>();
             integerAttribute_->load(v.second);
         } else if (v.first == "Real") {
-            realAttribute_ = RealAttribute();
+            realAttribute_ = make_shared<RealAttribute>();
             realAttribute_->load(v.second);
         } else if (v.first == "String") {
-            stringAttribute_ = StringAttribute();
+            stringAttribute_ = make_shared<StringAttribute>();
             stringAttribute_->load(v.second);
         } else if (v.first == "Boolean") {
-            booleanAttribute_ = BooleanAttribute();
+            booleanAttribute_ = make_shared<BooleanAttribute>();
             booleanAttribute_->load(v.second);
         } else if (v.first == "Enumeration") {
-            enumerationAttribute_ = EnumerationAttribute();
+            enumerationAttribute_ = make_shared<EnumerationAttribute>();
             enumerationAttribute_->load(v.second);
         }
     }
@@ -62,28 +61,28 @@ void ScalarVariable::load(const ptree &node) {
 }
 
 IntegerVariable ScalarVariable::asIntegerVariable() const {
-    if (!integerAttribute_) {
+    if (integerAttribute_ == nullptr) {
         throw runtime_error(getName() + "is not of type Integer!");
     }
-    return IntegerVariable(*this, integerAttribute_.value());
+    return IntegerVariable(*this, *integerAttribute_);
 }
 
 RealVariable ScalarVariable::asRealVariable() const {
-    if (!realAttribute_) {
+    if (realAttribute_ == nullptr) {
         throw runtime_error(getName() + "is not of type Real!");
     }
-    return RealVariable(*this, realAttribute_.value());
+    return RealVariable(*this, *realAttribute_);
 }
 
 StringVariable ScalarVariable::asStringVariable() const {
-    if (!stringAttribute_) {
+    if (stringAttribute_ == nullptr) {
         throw runtime_error(getName() + "is not of type String!");
     }
     return StringVariable(*this, *stringAttribute_);
 }
 
 BooleanVariable ScalarVariable::asBooleanVariable() const {
-    if (!booleanAttribute_) {
+    if (booleanAttribute_ == nullptr) {
         throw runtime_error(getName() + "is not of type Boolean!");
     }
     return BooleanVariable(*this, *booleanAttribute_);
@@ -130,9 +129,9 @@ ostream &fmi4cpp::fmi2::xml::operator<<(ostream &os, const ScalarVariable &varia
        <<  to_string(variable.variability_) << ", initial: " <<  to_string(variable.initial_);
 
     if (variable.integerAttribute_) {
-        os << ", IntegerAttribute_(" << variable.integerAttribute_.value() << " )";
+        os << ", IntegerAttribute_(" << *variable.integerAttribute_ << " )";
     } else if (variable.realAttribute_) {
-        os << ", RealAttribute(" << variable.realAttribute_.value() << " )";
+        os << ", RealAttribute(" << *variable.realAttribute_ << " )";
     }
 
     os << " )";
@@ -140,7 +139,7 @@ ostream &fmi4cpp::fmi2::xml::operator<<(ostream &os, const ScalarVariable &varia
     return os;
 }
 
-IntegerVariable::IntegerVariable(const ScalarVariable &var, IntegerAttribute attribute)
+IntegerVariable::IntegerVariable(const ScalarVariable &var, IntegerAttribute &attribute)
         : ScalarVariable(var), attribute_(attribute) {}
 
 std::optional<int> IntegerVariable::getMin() const {
@@ -163,7 +162,7 @@ std::optional<string> IntegerVariable::getQuantity() const {
     return attribute_.quantity;
 }
 
-RealVariable::RealVariable(const ScalarVariable &var, RealAttribute attribute)
+RealVariable::RealVariable(const ScalarVariable &var, RealAttribute &attribute)
         : ScalarVariable(var), attribute_(attribute) {}
 
 std::optional<double> RealVariable::getMin() const {
@@ -214,7 +213,7 @@ std::optional<unsigned int> RealVariable::getDerivative() const {
     return attribute_.derivative;
 }
 
-StringVariable::StringVariable(const ScalarVariable &var, StringAttribute attribute)
+StringVariable::StringVariable(const ScalarVariable &var, StringAttribute &attribute)
         : ScalarVariable(var), attribute_(attribute) {}
 
 std::optional<string> StringVariable::getStart() const {
@@ -225,7 +224,7 @@ void StringVariable::setStart(const string &start) {
     attribute_.start = start;
 }
 
-BooleanVariable::BooleanVariable(const ScalarVariable &var, BooleanAttribute attribute)
+BooleanVariable::BooleanVariable(const ScalarVariable &var, BooleanAttribute &attribute)
         : ScalarVariable(var), attribute_(attribute) {}
 
 std::optional<bool> BooleanVariable::getStart() const {
@@ -236,7 +235,7 @@ void BooleanVariable::setStart(const bool start) {
     attribute_.start = start;
 }
 
-EnumerationVariable::EnumerationVariable(const ScalarVariable &var, EnumerationAttribute attribute)
+EnumerationVariable::EnumerationVariable(const ScalarVariable &var, EnumerationAttribute &attribute)
         : ScalarVariable(var), attribute_(attribute) {}
 
 std::optional<int> EnumerationVariable::getMin() const {

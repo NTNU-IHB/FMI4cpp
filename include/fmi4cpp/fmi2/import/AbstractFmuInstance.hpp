@@ -62,7 +62,7 @@ namespace fmi4cpp::fmi2::import {
                 : c_(c), modelDescription_(modelDescription), library_(library) {}
 
 
-        const U &getModelDescription() const override {
+        U &getModelDescription() const override {
             return *modelDescription_;
         }
 

@@ -44,7 +44,7 @@ fmi2Status CoSimulationSlave::cancelStep() {
     return library_->cancelStep(c_);
 }
 
-const CoSimulationModelDescription &CoSimulationSlave::getModelDescription() const {
+CoSimulationModelDescription &CoSimulationSlave::getModelDescription() const {
     return AbstractFmuInstance::getModelDescription();
 }
 

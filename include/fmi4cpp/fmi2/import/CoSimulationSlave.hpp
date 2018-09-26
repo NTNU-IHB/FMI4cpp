@@ -48,7 +48,7 @@ namespace fmi4cpp::fmi2::import {
 
         fmi2Status cancelStep() override;
 
-        const CoSimulationModelDescription &getModelDescription() const override;
+        CoSimulationModelDescription &getModelDescription() const override;
 
         void init(const double start = 0, const double stop = 0) override;
 
