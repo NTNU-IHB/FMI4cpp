@@ -42,13 +42,6 @@ int main() {
     cout << "Supports ModelExchange=" << fmu.supportsModelExchange() << endl;
 
     auto& md = fmu.getModelDescription();
-    auto mv = md.getModelVariables();
-
-    for (const ScalarVariable &v : mv) {
-        if (v.getCausality() == fmi2Causality::output) {
-            cout << v << endl;
-        }
-    }
 
     xml::ScalarVariable var = md.getVariableByValueReference(47);
     cout << var << endl;
