@@ -246,7 +246,10 @@ fmi2Status fmi4cpp::fmi2::import::FmiLibrary::getSerializedFMUstateSize(const fm
 
 fmi2Status FmiLibrary::serializeFMUstate(const fmi2Component c,
                                          const fmi2FMUstate &state, vector<fmi2Byte> &serializedState) const {
-    return fmi2SerializeFMUstate_(c, state, serializedState.data(), serializedState.size());
+    size_t size = 0;
+    getSerializedFMUstateSize(c, state, size);
+    serializedState.reserve(size);
+    return fmi2SerializeFMUstate_(c, state, serializedState.data(), size);
 }
 
 fmi2Status FmiLibrary::deSerializeFMUstate(const fmi2Component c,
