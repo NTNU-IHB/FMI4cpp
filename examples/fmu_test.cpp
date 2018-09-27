@@ -37,10 +37,6 @@ int main() {
                            "/20sim/4.6.4.8004/ControlledTemperature/ControlledTemperature.fmu";
 
     import::Fmu fmu(fmuPath);
-
-    cout << "Supports CoSimulation=" << fmu.supportsCoSimulation() << endl;
-    cout << "Supports ModelExchange=" << fmu.supportsModelExchange() << endl;
-
     auto& md = fmu.getModelDescription();
 
     xml::ScalarVariable var = md.getVariableByValueReference(47);
