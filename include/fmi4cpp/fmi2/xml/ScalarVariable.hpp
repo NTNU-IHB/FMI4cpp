@@ -111,10 +111,51 @@ namespace fmi4cpp::fmi2::xml {
 
     };
 
-    class IntegerVariable : public ScalarVariable {
+    template <class T, class U>
+    class TypedVariable {
 
     private:
-        IntegerAttribute &attribute_;
+
+        bool startChanged;
+        std::optional<T> originalStart;
+
+    protected:
+        U &attribute_;
+
+    public:
+
+        TypedVariable(U &attribute_) : attribute_(attribute_) {
+            originalStart = attribute_.start;
+        }
+
+        bool hasStartChanged() const {
+            return startChanged;
+        }
+
+        std::optional<T> getStart() const {
+            return attribute_.start;
+        }
+
+        void setStart(const T value) {
+            if (attribute_.start) {
+                attribute_.start = value;
+                startChanged = true;
+            } else if (attribute_.start.value() != value) {
+                attribute_.start = value;
+                startChanged = true;
+            }
+        }
+
+        void resetStart() {
+            if (startChanged) {
+                attribute_.start = originalStart;
+                startChanged = false;
+            }
+        }
+
+    };
+
+    class IntegerVariable : public ScalarVariable, public TypedVariable<int, IntegerAttribute> {
 
     public:
         IntegerVariable(const ScalarVariable &var, IntegerAttribute &attribute);
@@ -123,18 +164,13 @@ namespace fmi4cpp::fmi2::xml {
 
         std::optional<int> getMax() const;
 
-        std::optional<int> getStart() const;
-
         void setStart(const int start);
 
         std::optional<string> getQuantity() const;
 
     };
 
-    class RealVariable : public ScalarVariable {
-
-    private:
-        RealAttribute &attribute_;
+    class RealVariable : public ScalarVariable, public TypedVariable<double, RealAttribute> {
 
     public:
         RealVariable(const ScalarVariable &var, RealAttribute &attribute);
@@ -142,10 +178,6 @@ namespace fmi4cpp::fmi2::xml {
         std::optional<double> getMin() const;
 
         std::optional<double> getMax() const;
-
-        std::optional<double> getStart() const;
-
-        void setStart(const double start);
 
         std::optional<double> getNominal() const;
 
@@ -165,38 +197,19 @@ namespace fmi4cpp::fmi2::xml {
 
     };
 
-    class StringVariable : public ScalarVariable {
-
-    private:
-        StringAttribute &attribute_;
+    class StringVariable : public ScalarVariable, public TypedVariable<string, StringAttribute> {
 
     public:
         StringVariable(const ScalarVariable &var, StringAttribute &attribute);
-
-        std::optional<string> getStart() const;
-
-        void setStart(const string &start);
-
     };
 
-    class BooleanVariable : public ScalarVariable {
-
-    private:
-        BooleanAttribute &attribute_;
+    class BooleanVariable : public ScalarVariable, public TypedVariable<bool, BooleanAttribute> {
 
     public:
         BooleanVariable(const ScalarVariable &var, BooleanAttribute &attribute);
-
-        std::optional<bool> getStart() const;
-
-        void setStart(const bool start);
-
     };
 
-    class EnumerationVariable : public ScalarVariable {
-
-    private:
-        EnumerationAttribute &attribute_;
+    class EnumerationVariable : public ScalarVariable, public TypedVariable<int, EnumerationAttribute> {
 
     public:
         EnumerationVariable(const ScalarVariable &var, EnumerationAttribute &attribute);
@@ -204,10 +217,6 @@ namespace fmi4cpp::fmi2::xml {
         std::optional<int> getMin() const;
 
         std::optional<int> getMax() const;
-
-        std::optional<int> getStart() const;
-
-        void setStart(const int start);
 
         std::optional<string> getQuantity() const;
 

@@ -132,6 +132,12 @@ ostream &fmi4cpp::fmi2::xml::operator<<(ostream &os, const ScalarVariable &varia
         os << ", IntegerAttribute_(" << *variable.integerAttribute_ << " )";
     } else if (variable.realAttribute_) {
         os << ", RealAttribute(" << *variable.realAttribute_ << " )";
+    } else if (variable.stringAttribute_) {
+        os << ", StringAttribute(" << *variable.stringAttribute_ << " )";
+    } else if (variable.booleanAttribute_) {
+        os << ", BooleanAttribute(" << *variable.booleanAttribute_ << " )";
+    } else if (variable.enumerationAttribute_) {
+        os << ", EnumerationAttribute(" << *variable.enumerationAttribute_ << " )";
     }
 
     os << " )";
@@ -160,7 +166,7 @@ bool ScalarVariable::isEnumerationVariable() const {
 }
 
 IntegerVariable::IntegerVariable(const ScalarVariable &var, IntegerAttribute &attribute)
-        : ScalarVariable(var), attribute_(attribute) {}
+        : ScalarVariable(var), TypedVariable<int, IntegerAttribute>(attribute) {}
 
 std::optional<int> IntegerVariable::getMin() const {
     return attribute_.min;
@@ -170,9 +176,6 @@ std::optional<int> IntegerVariable::getMax() const {
     return attribute_.max;
 }
 
-std::optional<int> IntegerVariable::getStart() const {
-    return attribute_.start;
-}
 
 void IntegerVariable::setStart(const int start) {
     attribute_.start = start;
@@ -183,7 +186,7 @@ std::optional<string> IntegerVariable::getQuantity() const {
 }
 
 RealVariable::RealVariable(const ScalarVariable &var, RealAttribute &attribute)
-        : ScalarVariable(var), attribute_(attribute) {}
+        : ScalarVariable(var), TypedVariable<double, RealAttribute>(attribute) {}
 
 std::optional<double> RealVariable::getMin() const {
     return attribute_.min;
@@ -193,13 +196,6 @@ std::optional<double> RealVariable::getMax() const {
     return attribute_.max;
 }
 
-std::optional<double> RealVariable::getStart() const {
-    return attribute_.start;
-}
-
-void RealVariable::setStart(const double start) {
-    attribute_.start = start;
-}
 
 std::optional<double> RealVariable::getNominal() const {
     return attribute_.nominal;
@@ -234,29 +230,14 @@ std::optional<unsigned int> RealVariable::getDerivative() const {
 }
 
 StringVariable::StringVariable(const ScalarVariable &var, StringAttribute &attribute)
-        : ScalarVariable(var), attribute_(attribute) {}
-
-std::optional<string> StringVariable::getStart() const {
-    return attribute_.start;
-}
-
-void StringVariable::setStart(const string &start) {
-    attribute_.start = start;
-}
+        : ScalarVariable(var), TypedVariable<string, StringAttribute>(attribute) {}
 
 BooleanVariable::BooleanVariable(const ScalarVariable &var, BooleanAttribute &attribute)
-        : ScalarVariable(var), attribute_(attribute) {}
+        : ScalarVariable(var), TypedVariable<bool, BooleanAttribute>(attribute) {}
 
-std::optional<bool> BooleanVariable::getStart() const {
-    return attribute_.start;
-}
-
-void BooleanVariable::setStart(const bool start) {
-    attribute_.start = start;
-}
 
 EnumerationVariable::EnumerationVariable(const ScalarVariable &var, EnumerationAttribute &attribute)
-        : ScalarVariable(var), attribute_(attribute) {}
+        : ScalarVariable(var), TypedVariable<int, EnumerationAttribute>(attribute) {}
 
 std::optional<int> EnumerationVariable::getMin() const {
     return attribute_.min;
@@ -264,14 +245,6 @@ std::optional<int> EnumerationVariable::getMin() const {
 
 std::optional<int> EnumerationVariable::getMax() const {
     return attribute_.max;
-}
-
-std::optional<int> EnumerationVariable::getStart() const {
-    return attribute_.start;
-}
-
-void EnumerationVariable::setStart(const int start) {
-    attribute_.start = start;
 }
 
 std::optional<string> EnumerationVariable::getQuantity() const {
