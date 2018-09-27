@@ -26,6 +26,7 @@
 #include <iostream>
 #endif
 
+#include <random>
 #include <fmi4cpp/fmi2/import/Fmu.hpp>
 #include <fmi4cpp/fmi2/import/CoSimulationSlaveBuilder.hpp>
 #include <fmi4cpp/fmi2/import/ModelExchangeInstanceBuilder.hpp>
@@ -38,10 +39,15 @@ using namespace fmi4cpp::fmi2::import;
 
 namespace {
 
+    std::random_device rd;
+    std::mt19937 mt(rd());
+    
     string generate_simple_id() {
+       
+        std::uniform_int_distribution<int> dist(0, 10);
         string id;
         for (int i = 0; i < 8; i++) {
-            id += std::to_string(rand() % 10);
+            id += std::to_string(dist(mt));
         }
         return id;
     }
