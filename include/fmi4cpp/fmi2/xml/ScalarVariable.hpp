@@ -136,14 +136,17 @@ namespace fmi4cpp::fmi2::xml {
             return attribute_.start;
         }
 
-        void setStart(const T value) {
+        bool setStart(const T value) {
             if (attribute_.start) {
                 attribute_.start = value;
                 startChanged = true;
+                return true;
             } else if (attribute_.start.value() != value) {
                 attribute_.start = value;
                 startChanged = true;
+                return true;
             }
+            return false;
         }
 
         void resetStart() {
