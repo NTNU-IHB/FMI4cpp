@@ -25,6 +25,7 @@
 #include "FmiLibraryHelper.hpp"
 #include <fmi4cpp/fmi2/import/ModelExchangeLibrary.hpp>
 
+using namespace fmi4cpp::fmi2::import;
 
 ModelExchangeLibrary::ModelExchangeLibrary(const string &libName) : FmiLibrary(libName) {
 

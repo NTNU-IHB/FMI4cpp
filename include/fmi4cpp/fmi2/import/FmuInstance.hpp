@@ -61,7 +61,7 @@ namespace fmi4cpp::fmi2::import {
             return getModelDescription().getVariableByName(name).getValueReference();
         }
 
-        virtual xml::ModelDescription &getModelDescription() const = 0;
+        virtual xml::ModelDescription &getModelDescription() = 0;
 
         virtual void init(const double start = 0, const double stop = 0) = 0;
 

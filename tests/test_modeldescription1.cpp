@@ -39,22 +39,22 @@ const string fmu_path = string(getenv("TEST_FMUs"))
 BOOST_AUTO_TEST_CASE(ControlledTemperature_test1) {
 
     import::Fmu fmu(fmu_path);
-    auto md = fmu.getModelDescription();
+    auto& md = fmu.getModelDescription();
     auto md_cs = md.asCoSimulationModelDescription();
 
     BOOST_CHECK_EQUAL("2.0", md.getFmiVersion());
     BOOST_CHECK_EQUAL("ControlledTemperature", md.getModelName());
 
     BOOST_CHECK_EQUAL("{06c2700b-b39c-4895-9151-304ddde28443}", md.getGuid());
-    BOOST_CHECK_EQUAL("{06c2700b-b39c-4895-9151-304ddde28443}", md_cs->getGuid());
+    BOOST_CHECK_EQUAL("{06c2700b-b39c-4895-9151-304ddde28443}", md_cs.getGuid());
     BOOST_CHECK_EQUAL("20-sim", md.getGenerationTool());
-    BOOST_CHECK_EQUAL("20-sim", md_cs->getGenerationTool());
+    BOOST_CHECK_EQUAL("20-sim", md_cs.getGenerationTool());
 
     BOOST_CHECK_EQUAL(true, md.supportsCoSimulation());
     BOOST_CHECK_EQUAL(false, md.supportsModelExchange());
 
     BOOST_CHECK_EQUAL(120, md.getModelVariables().size());
-    BOOST_CHECK_EQUAL(120, md_cs->getModelVariables().size());
+    BOOST_CHECK_EQUAL(120, md_cs.getModelVariables().size());
 
     auto heatCapacity1 = md.getVariableByName("HeatCapacity1.T0").asRealVariable();
     BOOST_CHECK_EQUAL(1, heatCapacity1.getValueReference());
@@ -70,7 +70,7 @@ BOOST_AUTO_TEST_CASE(ControlledTemperature_test1) {
     BOOST_CHECK(fmi2Variability::tunable == thermalConductor.getVariability());
     BOOST_CHECK(fmi2Causality::parameter == thermalConductor.getCausality());
 
-    auto sourceFiles = md_cs->sourceFiles();
+    xml::SourceFiles sourceFiles = md_cs.getSourceFiles();
     BOOST_CHECK_EQUAL(10, sourceFiles.size());
     BOOST_CHECK_EQUAL("EulerAngles.c", sourceFiles[0].getName());
 
@@ -79,7 +79,7 @@ BOOST_AUTO_TEST_CASE(ControlledTemperature_test1) {
     BOOST_CHECK_EQUAL(115, modelStructureOutputs[0].getIndex());
     BOOST_CHECK_EQUAL(116, modelStructureOutputs[1].getIndex());
 
-    auto de = md.defaultExperiment();
+    auto de = md.getDefaultExperiment();
     BOOST_CHECK(de.has_value());
     BOOST_CHECK_EQUAL(0.0, *de->getStartTime());
     BOOST_CHECK_EQUAL(20.0, *de->getStopTime());

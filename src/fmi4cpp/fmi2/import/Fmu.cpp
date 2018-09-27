@@ -41,7 +41,7 @@ namespace {
     string generate_simple_id() {
         string id;
         for (int i = 0; i < 8; i++) {
-            id += to_string(rand() % 10);
+            id += std::to_string(rand() % 10);
         }
         return id;
     }
@@ -64,8 +64,7 @@ Fmu::Fmu(const string &fmu_file) : fmu_file_(fmu_file) {
         throw runtime_error("Failed to extract FMU!");
     }
 
-    modelDescription_ = make_unique<ModelDescription>();
-    modelDescription_->load(getModelDescriptionPath());
+    modelDescription_ = make_unique<ModelDescriptionImpl>(getModelDescriptionPath());
 
 }
 
@@ -83,7 +82,7 @@ const string Fmu::getModelDescriptionXml() const {
     return xml;
 }
 
-const ModelDescription &Fmu::getModelDescription() const {
+ModelDescription &Fmu::getModelDescription() {
     return *modelDescription_;
 }
 

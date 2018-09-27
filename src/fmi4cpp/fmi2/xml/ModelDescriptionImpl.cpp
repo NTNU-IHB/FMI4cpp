@@ -22,13 +22,13 @@
  * THE SOFTWARE.
  */
 
-#include <fmi4cpp/fmi2/xml/ModelDescription.hpp>
+#include <fmi4cpp/fmi2/xml/ModelDescriptionImpl.hpp>
 #include <fmi4cpp/fmi2/xml/SpecificModelDescription.hpp>
 
 using namespace std;
 using namespace fmi4cpp::fmi2::xml;
 
-void ModelDescription::load(const string &fileName) {
+ModelDescriptionImpl::ModelDescriptionImpl(const string &fileName) {
 
     ptree tree;
     read_xml(fileName, tree);
@@ -50,10 +50,10 @@ void ModelDescription::load(const string &fileName) {
     for (const ptree::value_type &v : root) {
 
         if (v.first == "CoSimulation") {
-            coSimulation_ = make_shared<CoSimulationAttributes>();
+            coSimulation_ = CoSimulationAttributes();
             coSimulation_->load(v.second);
         } else if (v.first == "ModelExchange") {
-            modelExchange_ = make_shared<ModelExchangeAttributes>();
+            modelExchange_ = ModelExchangeAttributes();
             modelExchange_->load(v.second);
         } else if (v.first == "DefaultExperiment") {
             defaultExperiment_ = DefaultExperiment();
@@ -68,90 +68,90 @@ void ModelDescription::load(const string &fileName) {
 
 }
 
-string ModelDescription::getGuid() const {
+string ModelDescriptionImpl::getGuid() const {
     return guid_;
 }
 
-string ModelDescription::getFmiVersion() const {
+string ModelDescriptionImpl::getFmiVersion() const {
     return fmiVersion_;
 }
 
-string ModelDescription::getModelName() const {
+string ModelDescriptionImpl::getModelName() const {
     return modelName_;
 }
 
-string ModelDescription::getDescription() const {
+string ModelDescriptionImpl::getDescription() const {
     return description_;
 }
 
-string ModelDescription::getVersion() const {
+string ModelDescriptionImpl::getVersion() const {
     return version_;
 }
 
-string ModelDescription::getAuthor() const {
+string ModelDescriptionImpl::getAuthor() const {
     return author_;
 }
 
-string ModelDescription::getLicense() const {
+string ModelDescriptionImpl::getLicense() const {
     return license_;
 }
 
-string ModelDescription::getCopyright() const {
+string ModelDescriptionImpl::getCopyright() const {
     return copyright_;
 }
 
-string ModelDescription::getGenerationTool() const {
+string ModelDescriptionImpl::getGenerationTool() const {
     return generationTool_;
 }
 
-string ModelDescription::getGenerationDateAndTime() const {
+string ModelDescriptionImpl::getGenerationDateAndTime() const {
     return generationDateAndTime_;
 }
 
-string ModelDescription::getVariableNamingConvention() const {
+string ModelDescriptionImpl::getVariableNamingConvention() const {
     return variableNamingConvention_;
 }
 
-unsigned int ModelDescription::getNumberOfEventIndicators() const {
+unsigned int ModelDescriptionImpl::getNumberOfEventIndicators() const {
     return numberOfEventIndicators_;
 }
 
-unsigned int ModelDescription::getnNumberOfContinuousStates() const {
+unsigned int ModelDescriptionImpl::getNumberOfContinuousStates() const {
     return modelStructure_.getDerivatives().size();
 }
 
-const ModelVariables &ModelDescription::getModelVariables() const {
+ModelVariables &ModelDescriptionImpl::getModelVariables() {
     return modelVariables_;
 }
 
-const ModelStructure &ModelDescription::getModelStructure() const {
+const ModelStructure &ModelDescriptionImpl::getModelStructure() const {
     return modelStructure_;
 }
 
-const std::optional<DefaultExperiment> ModelDescription::defaultExperiment() const {
+const std::optional<DefaultExperiment> ModelDescriptionImpl::getDefaultExperiment() const {
     return defaultExperiment_;
 }
 
-bool ModelDescription::supportsModelExchange() const {
-    return modelExchange_ != nullptr;
+bool ModelDescriptionImpl::supportsModelExchange() const {
+    return modelExchange_.has_value();
 }
 
-bool ModelDescription::supportsCoSimulation() const {
-    return coSimulation_ != nullptr;
+bool ModelDescriptionImpl::supportsCoSimulation() const {
+    return coSimulation_.has_value();
 }
 
-shared_ptr<CoSimulationModelDescription> ModelDescription::asCoSimulationModelDescription() const {
-    return make_shared<CoSimulationModelDescription>(*this, *coSimulation_);
-}
-
-shared_ptr<ModelExchangeModelDescription> ModelDescription::asModelExchangeModelDescription() const {
-    return make_shared<ModelExchangeModelDescription>(*this, *modelExchange_);
-}
-
-ScalarVariable ModelDescription::getVariableByName(const string &name) {
+ScalarVariable &ModelDescriptionImpl::getVariableByName(const string &name) {
     return modelVariables_.getByName(name);
 }
 
-ScalarVariable ModelDescription::getVariableByValueReference(const fmi2ValueReference vr) {
+ScalarVariable &ModelDescriptionImpl::getVariableByValueReference(const fmi2ValueReference vr) {
     return modelVariables_.getByValueReference(vr);
+}
+
+CoSimulationModelDescription ModelDescriptionImpl::asCoSimulationModelDescription() {
+    return CoSimulationModelDescription(*this, *coSimulation_);
+}
+
+ModelExchangeModelDescription ModelDescriptionImpl::asModelExchangeModelDescription() {
+    return ModelExchangeModelDescription(*this, *modelExchange_);
 }

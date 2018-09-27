@@ -12,7 +12,7 @@ SET(SOURCES
 
     fmi4cpp/fmi2/xml/enums.cpp
     fmi4cpp/fmi2/xml/FmuTypeAttributes.cpp
-    fmi4cpp/fmi2/xml/ModelDescription.cpp
+    fmi4cpp/fmi2/xml/ModelDescriptionImpl.cpp
     fmi4cpp/fmi2/xml/SpecificModelDescription.cpp
     fmi4cpp/fmi2/xml/ModelVariables.cpp
     fmi4cpp/fmi2/xml/ScalarVariable.cpp

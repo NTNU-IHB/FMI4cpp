@@ -27,78 +27,38 @@
 
 using namespace fmi4cpp::fmi2::xml;
 
-SpecificModelDescription::SpecificModelDescription(const ModelDescription &md, const FmuTypeAttributes &data)
-        : ModelDescription(md),
-          modelIdentifier_(data.modelIdentifier),
-          canGetAndSetFMUstate_(data.canGetAndSetFMUstate),
-          needsExecutionTool_(data.needsExecutionTool),
-          canNotUseMemoryManagementFunctions_(data.canNotUseMemoryManagementFunctions),
-          canBeInstantiatedOnlyOncePerProcess_(data.canBeInstantiatedOnlyOncePerProcess),
-          providesDirectionalDerivative_(data.providesDirectionalDerivative),
-          sourceFiles_(data.sourceFiles),
-          canSerializeFMUstate_(data.canSerializeFMUstate) {};
-
-string SpecificModelDescription::modelIdentifier() const {
-    return modelIdentifier_;
+template<class T>
+CoSimulationModelDescription SpecificModelDescription<T>::asCoSimulationModelDescription() {
+    return modelDescription_.asCoSimulationModelDescription();
 }
 
-bool SpecificModelDescription::canGetAndSetFMUstate() const {
-    return canGetAndSetFMUstate_;
+template<class T>
+ModelExchangeModelDescription SpecificModelDescription<T>::asModelExchangeModelDescription() {
+    return modelDescription_.asModelExchangeModelDescription();
 }
 
-bool SpecificModelDescription::canSerializeFMUstate() const {
-    return canSerializeFMUstate_;
-}
-
-bool SpecificModelDescription::needsExecutionTool() const {
-    return needsExecutionTool_;
-}
-
-bool SpecificModelDescription::canNotUseMemoryManagementFunctions() const {
-    return canNotUseMemoryManagementFunctions_;
-}
-
-bool SpecificModelDescription::canBeInstantiatedOnlyOncePerProcess() const {
-    return canBeInstantiatedOnlyOncePerProcess_;
-}
-
-bool SpecificModelDescription::providesDirectionalDerivative() const {
-    return providesDirectionalDerivative_;
-}
-
-SourceFiles SpecificModelDescription::sourceFiles() const {
-    return sourceFiles_;
-}
-
-CoSimulationModelDescription::CoSimulationModelDescription(const ModelDescription &md,
-                                                           const CoSimulationAttributes &data)
-        : SpecificModelDescription(md, data),
-          canInterpolateInputs_(data.canInterpolateInputs),
-          canRunAsynchronuously_(data.canRunAsynchronuously),
-          canHandleVariableCommunicationStepSize_(data.canHandleVariableCommunicationStepSize),
-          maxOutputDerivativeOrder_(data.maxOutputDerivativeOrder) {};
+CoSimulationModelDescription::CoSimulationModelDescription(ModelDescription &md, const CoSimulationAttributes &data)
+        : SpecificModelDescription<CoSimulationAttributes>(md, data) {};
 
 bool CoSimulationModelDescription::canInterpolateInputs() const {
-    return canInterpolateInputs_;
+    return data_.canInterpolateInputs;
 }
 
 bool CoSimulationModelDescription::canRunAsynchronuously() const {
-    return canRunAsynchronuously_;
+    return data_.canRunAsynchronuously;
 }
 
 bool CoSimulationModelDescription::canHandleVariableCommunicationStepSize() const {
-    return canHandleVariableCommunicationStepSize_;
+    return data_.canHandleVariableCommunicationStepSize;
 }
 
 const unsigned int CoSimulationModelDescription::maxOutputDerivativeOrder() const {
-    return maxOutputDerivativeOrder_;
+    return data_.maxOutputDerivativeOrder;
 }
 
-ModelExchangeModelDescription::ModelExchangeModelDescription(const ModelDescription &md,
-                                                             const ModelExchangeAttributes &data)
-        : SpecificModelDescription(md, data),
-          completedIntegratorStepNotNeeded_(data.completedIntegratorStepNotNeeded) {};
+ModelExchangeModelDescription::ModelExchangeModelDescription(ModelDescription &md, const ModelExchangeAttributes &data)
+        : SpecificModelDescription(md, data) {};
 
 bool ModelExchangeModelDescription::completedIntegratorStepNotNeeded() const {
-    return completedIntegratorStepNotNeeded_;
+    return data_.completedIntegratorStepNotNeeded;
 }

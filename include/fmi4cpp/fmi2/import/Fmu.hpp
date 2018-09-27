@@ -28,11 +28,12 @@
 #include <memory>
 #include <vector>
 #include <experimental/filesystem>
-#include "../xml/ModelDescription.hpp"
+#include "../xml/ModelDescriptionImpl.hpp"
 
 using std::string;
 using std::unique_ptr;
 using fmi4cpp::fmi2::xml::ModelDescription;
+using fmi4cpp::fmi2::xml::ModelDescriptionImpl;
 
 namespace fs = std::experimental::filesystem;
 
@@ -57,7 +58,7 @@ namespace fmi4cpp::fmi2::import {
 
         const string getModelDescriptionXml() const;
 
-        const ModelDescription &getModelDescription() const;
+        ModelDescription &getModelDescription();
 
         const bool supportsModelExchange() const;
 
@@ -73,7 +74,7 @@ namespace fmi4cpp::fmi2::import {
 
         fs::path tmp_path_;
         const string fmu_file_;
-        unique_ptr<ModelDescription> modelDescription_;
+        unique_ptr<ModelDescriptionImpl> modelDescription_;
         unique_ptr<CoSimulationSlaveBuilder> csBuilder_;
         unique_ptr<ModelExchangeInstanceBuilder> meBuilder_;
 

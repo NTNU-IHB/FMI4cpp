@@ -28,9 +28,9 @@ using namespace std;
 using namespace fmi4cpp::fmi2::import;
 
 CoSimulationSlave::CoSimulationSlave(const fmi2Component c,
-                                     const shared_ptr<CoSimulationModelDescription> &modelDescription,
-                                     const shared_ptr<CoSimulationLibrary> &library)
-        : AbstractFmuInstance<CoSimulationLibrary, CoSimulationModelDescription>(c, modelDescription, library) {}
+                                     const shared_ptr<CoSimulationLibrary> &library,
+                                     CoSimulationModelDescription &modelDescription)
+        : AbstractFmuInstance<CoSimulationLibrary, CoSimulationModelDescription>(c, library, modelDescription) {}
 
 fmi2Status CoSimulationSlave::doStep(const double stepSize) {
     fmi2Status status = library_->doStep(c_, simulationTime_, stepSize, false);
@@ -44,7 +44,7 @@ fmi2Status CoSimulationSlave::cancelStep() {
     return library_->cancelStep(c_);
 }
 
-CoSimulationModelDescription &CoSimulationSlave::getModelDescription() const {
+CoSimulationModelDescription &CoSimulationSlave::getModelDescription() {
     return AbstractFmuInstance::getModelDescription();
 }
 

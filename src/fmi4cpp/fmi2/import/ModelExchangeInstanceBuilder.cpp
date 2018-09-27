@@ -26,16 +26,16 @@
 
 using std::make_unique;
 using std::make_shared;
-using namespace fmi4cpp::fmi2::import;
+using namespace fmi4cpp::fmi2;
 
-ModelExchangeInstanceBuilder::ModelExchangeInstanceBuilder(Fmu &fmu) : InstanceBuilder(fmu) {}
+import::ModelExchangeInstanceBuilder::ModelExchangeInstanceBuilder(Fmu &fmu) : InstanceBuilder(fmu) {}
 
-unique_ptr<ModelExchangeInstance> ModelExchangeInstanceBuilder::newInstance(const bool visible, const bool loggingOn) {
-    shared_ptr<ModelExchangeModelDescription> modelDescription
-            = fmu_.getModelDescription().asModelExchangeModelDescription();
+unique_ptr<import::ModelExchangeInstance> import::ModelExchangeInstanceBuilder::newInstance(const bool visible, const bool loggingOn) {
+
     shared_ptr<ModelExchangeLibrary> lib = nullptr;
-    string modelIdentifier = modelDescription->modelIdentifier();
-    if (modelDescription->canBeInstantiatedOnlyOncePerProcess()) {
+    ModelExchangeModelDescription modelDescription = fmu_.getModelDescription().asModelExchangeModelDescription();
+    string modelIdentifier = modelDescription.getModelIdentifier();
+    if (modelDescription.canBeInstantiatedOnlyOncePerProcess()) {
         lib = make_shared<ModelExchangeLibrary>(fmu_.getAbsoluteLibraryPath(modelIdentifier));
     } else {
         if (lib_ == nullptr) {
@@ -43,7 +43,7 @@ unique_ptr<ModelExchangeInstance> ModelExchangeInstanceBuilder::newInstance(cons
         }
         lib = lib_;
     }
-    fmi2Component c = lib->instantiate(modelIdentifier, fmi2ModelExchange, modelDescription->getGuid(),
+    fmi2Component c = lib->instantiate(modelIdentifier, fmi2ModelExchange, modelDescription.getGuid(),
                                        fmu_.getResourcePath(), visible, loggingOn);
-    return make_unique<ModelExchangeInstance>(c, modelDescription, lib);
+    return make_unique<ModelExchangeInstance>(c, lib, modelDescription);
 }

@@ -41,7 +41,7 @@ int main() {
     cout << "Supports CoSimulation=" << fmu.supportsCoSimulation() << endl;
     cout << "Supports ModelExchange=" << fmu.supportsModelExchange() << endl;
 
-    auto md = fmu.getModelDescription();
+    auto& md = fmu.getModelDescription();
     auto mv = md.getModelVariables();
 
     for (const ScalarVariable &v : mv) {
@@ -54,7 +54,7 @@ int main() {
     cout << var << endl;
 
     auto md_cs = md.asCoSimulationModelDescription();
-    cout << "modelIdentifier=" << md_cs->modelIdentifier() << endl;
+    cout << "modelIdentifier=" << md_cs.getModelIdentifier() << endl;
 
     auto slave1 = fmu.asCoSimulationFmu().newInstance();
     auto slave2 = fmu.asCoSimulationFmu().newInstance();

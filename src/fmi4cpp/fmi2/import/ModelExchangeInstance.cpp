@@ -26,10 +26,10 @@
 
 using namespace fmi4cpp::fmi2::import;
 
-ModelExchangeInstance::ModelExchangeInstance(
-        const fmi2Component c,
-        const shared_ptr<fmi4cpp::fmi2::xml::ModelExchangeModelDescription> &modelDescription,
-        const shared_ptr<ModelExchangeLibrary> &library) : AbstractFmuInstance(c, modelDescription, library) {}
+ModelExchangeInstance::ModelExchangeInstance(const fmi2Component c,
+                                             const shared_ptr<ModelExchangeLibrary> &library,
+                                             ModelExchangeModelDescription &modelDescription)
+        : AbstractFmuInstance<ModelExchangeLibrary, ModelExchangeModelDescription>(c, library, modelDescription) {}
 
 fmi2Status ModelExchangeInstance::enterEventMode() const {
     return library_->enterEventMode(c_);

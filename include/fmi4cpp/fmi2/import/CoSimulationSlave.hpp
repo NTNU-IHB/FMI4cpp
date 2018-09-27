@@ -41,14 +41,14 @@ namespace fmi4cpp::fmi2::import {
 
     public:
         explicit CoSimulationSlave(const fmi2Component c,
-                                   const std::shared_ptr<CoSimulationModelDescription> &modelDescription,
-                                   const std::shared_ptr<CoSimulationLibrary> &library);
+                                   const std::shared_ptr<CoSimulationLibrary> &library,
+                                   CoSimulationModelDescription &modelDescription);
 
         fmi2Status doStep(const double stepSize) override;
 
         fmi2Status cancelStep() override;
 
-        CoSimulationModelDescription &getModelDescription() const override;
+        CoSimulationModelDescription &getModelDescription() override;
 
         void init(const double start = 0, const double stop = 0) override;
 
@@ -108,6 +108,8 @@ namespace fmi4cpp::fmi2::import {
         fmi2Status writeBoolean(const fmi2ValueReference vr, const fmi2Boolean &value) const override;
 
         fmi2Status writeBoolean(const vector<fmi2ValueReference> &vr, const vector<fmi2Boolean> &values) const override;
+        
+        
 
     };
 

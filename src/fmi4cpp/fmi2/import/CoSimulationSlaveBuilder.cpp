@@ -22,20 +22,22 @@
  * THE SOFTWARE.
  */
 
-
+#include <fmi4cpp/fmi2/import/CoSimulationLibrary.hpp>
 #include <fmi4cpp/fmi2/import/CoSimulationSlaveBuilder.hpp>
 
 using std::make_unique;
 using std::make_shared;
-using namespace fmi4cpp::fmi2::import;
+using namespace fmi4cpp::fmi2;
 
-CoSimulationSlaveBuilder::CoSimulationSlaveBuilder(Fmu &fmu) : InstanceBuilder(fmu) {}
+import::CoSimulationSlaveBuilder::CoSimulationSlaveBuilder(Fmu &fmu) : InstanceBuilder(fmu) {}
 
-unique_ptr<CoSimulationSlave> CoSimulationSlaveBuilder::newInstance(const bool visible, const bool loggingOn) {
-    shared_ptr<CoSimulationModelDescription> modelDescription = fmu_.getModelDescription().asCoSimulationModelDescription();
-    shared_ptr<CoSimulationLibrary> lib = nullptr;
-    string modelIdentifier = modelDescription->modelIdentifier();
-    if (modelDescription->canBeInstantiatedOnlyOncePerProcess()) {
+unique_ptr<import::CoSimulationSlave>
+import::CoSimulationSlaveBuilder::newInstance(const bool visible, const bool loggingOn) {
+
+    shared_ptr<import::CoSimulationLibrary> lib = nullptr;
+    xml::CoSimulationModelDescription modelDescription = fmu_.getModelDescription().asCoSimulationModelDescription();
+    string modelIdentifier = modelDescription.getModelIdentifier();
+    if (modelDescription.canBeInstantiatedOnlyOncePerProcess()) {
         lib = make_shared<CoSimulationLibrary>(fmu_.getAbsoluteLibraryPath(modelIdentifier));
     } else {
         if (lib_ == nullptr) {
@@ -43,8 +45,8 @@ unique_ptr<CoSimulationSlave> CoSimulationSlaveBuilder::newInstance(const bool v
         }
         lib = lib_;
     }
-    fmi2Component c = lib->instantiate(modelIdentifier, fmi2CoSimulation, modelDescription->getGuid(),
+    fmi2Component c = lib->instantiate(modelIdentifier, fmi2CoSimulation, modelDescription.getGuid(),
                                        fmu_.getResourcePath(), visible, loggingOn);
-    return make_unique<CoSimulationSlave>(c, modelDescription, lib);
+    return make_unique<CoSimulationSlave>(c, lib, modelDescription);
 }
 

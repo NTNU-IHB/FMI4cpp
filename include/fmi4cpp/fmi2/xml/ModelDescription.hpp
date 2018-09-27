@@ -49,75 +49,51 @@ namespace fmi4cpp::fmi2::xml {
 
     class ModelDescription {
 
-    private:
-        string guid_;
-        string fmiVersion_;
-        string modelName_;
-        string description_;
-        string version_;
-        string author_;
-        string license_;
-        string copyright_;
-        string generationTool_;
-        string generationDateAndTime_;
-        string variableNamingConvention_;
-
-        unsigned int numberOfEventIndicators_;
-
-        ModelVariables modelVariables_;
-        ModelStructure modelStructure_;
-        std::optional<DefaultExperiment> defaultExperiment_;
-
-        shared_ptr<CoSimulationAttributes> coSimulation_ = nullptr;
-        shared_ptr<ModelExchangeAttributes> modelExchange_ = nullptr;
-
     public:
 
-        string getGuid() const;
+        virtual string getGuid() const = 0;
 
-        string getFmiVersion() const;
+        virtual string getFmiVersion() const = 0;
 
-        string getModelName() const;
+        virtual string getModelName() const = 0;
 
-        string getDescription() const;
+        virtual string getDescription() const = 0;
 
-        string getVersion() const;
+        virtual string getVersion() const = 0;
 
-        string getAuthor() const;
+        virtual string getAuthor() const = 0;
 
-        string getLicense() const;
+        virtual string getLicense() const = 0;
 
-        string getCopyright() const;
+        virtual string getCopyright() const = 0;
 
-        string getGenerationTool() const;
+        virtual string getGenerationTool() const = 0;
 
-        string getGenerationDateAndTime() const;
+        virtual string getGenerationDateAndTime() const = 0;
 
-        string getVariableNamingConvention() const;
+        virtual string getVariableNamingConvention() const = 0;
 
-        unsigned int getNumberOfEventIndicators() const;
+        virtual unsigned int getNumberOfEventIndicators() const = 0;
 
-        unsigned int getnNumberOfContinuousStates() const;
+        virtual unsigned int getNumberOfContinuousStates() const = 0;
 
-        const ModelVariables &getModelVariables() const;
+        virtual ModelVariables &getModelVariables() = 0;
 
-        const ModelStructure &getModelStructure() const;
+        virtual const ModelStructure &getModelStructure() const = 0;
 
-        const std::optional<DefaultExperiment> defaultExperiment() const;
+        virtual const std::optional<DefaultExperiment> getDefaultExperiment() const = 0;
 
-        bool supportsModelExchange() const;
+        virtual bool supportsModelExchange() const = 0;
 
-        bool supportsCoSimulation() const;
+        virtual bool supportsCoSimulation() const = 0;
 
-        ScalarVariable getVariableByName(const string &name);
+        virtual ScalarVariable &getVariableByName(const string &name) = 0;
 
-        ScalarVariable getVariableByValueReference(const fmi2ValueReference vr);
+        virtual ScalarVariable &getVariableByValueReference(const fmi2ValueReference vr) = 0;
 
-        shared_ptr<CoSimulationModelDescription> asCoSimulationModelDescription() const;
+        virtual CoSimulationModelDescription asCoSimulationModelDescription() = 0;
 
-        shared_ptr<ModelExchangeModelDescription> asModelExchangeModelDescription() const;
-
-        void load(const string &fileName);
+        virtual ModelExchangeModelDescription asModelExchangeModelDescription() = 0;
 
     };
 

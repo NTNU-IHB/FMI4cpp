@@ -38,8 +38,8 @@ namespace fmi4cpp::fmi2::import {
 
     public:
         ModelExchangeInstance(const fmi2Component c,
-                              const shared_ptr<ModelExchangeModelDescription> &modelDescription,
-                              const shared_ptr<ModelExchangeLibrary> &library);
+                              const shared_ptr<ModelExchangeLibrary> &library,
+                              ModelExchangeModelDescription &modelDescription);
 
 
         fmi2Status enterEventMode() const;

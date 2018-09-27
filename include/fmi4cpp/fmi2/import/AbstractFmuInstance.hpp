@@ -28,12 +28,13 @@
 #include <type_traits>
 #include "FmuInstance.hpp"
 #include "FmiLibrary.hpp"
+#include "../enumsToString.hpp"
 #include "../xml/SpecificModelDescription.hpp"
 
 namespace {
     void checkStatus(const fmi2Status status, const string &function_name) {
         if (status != fmi2OK) {
-            throw std::runtime_error(function_name + " failed with status: " + std::to_string(status));
+            throw std::runtime_error(function_name + " failed with status: " + to_string(status));
         }
     }
 }
@@ -44,8 +45,8 @@ namespace fmi4cpp::fmi2::import {
     class AbstractFmuInstance : virtual public FmuInstance {
 
         static_assert(std::is_base_of<FmiLibrary, T>::value, "T must derive from FmiLibrary");
-        static_assert(std::is_base_of<xml::SpecificModelDescription, U>::value,
-                      "U must derive from SpecificModelDescription");
+//        static_assert(std::is_base_of<xml::SpecificModelDescription<xml::FmuTypeAttributes>, U>::value,
+//                      "U must derive from SpecificModelDescription");
 
     private:
         bool instanceFreed;
@@ -53,17 +54,17 @@ namespace fmi4cpp::fmi2::import {
     protected:
 
         fmi2Component c_;
+        U modelDescription_;
         std::shared_ptr<T> library_;
-        const std::shared_ptr<U> modelDescription_;
 
     public:
 
-        AbstractFmuInstance(const fmi2Component c, const shared_ptr<U> &modelDescription, const shared_ptr<T> &library)
-                : c_(c), modelDescription_(modelDescription), library_(library) {}
+        AbstractFmuInstance(const fmi2Component c, const shared_ptr<T> &library, U &modelDescription)
+                : c_(c),library_(library), modelDescription_(modelDescription) {}
 
 
-        U &getModelDescription() const override {
-            return *modelDescription_;
+        U &getModelDescription() override {
+            return modelDescription_;
         }
 
         fmi2Status setDebugLogging(const bool loggingOn, const vector<const char*> categories) const {
@@ -114,7 +115,7 @@ namespace fmi4cpp::fmi2::import {
         }
 
         bool canGetAndSetFMUstate() const override {
-            return modelDescription_->canGetAndSetFMUstate();
+            return modelDescription_.canGetAndSetFMUstate();
         }
 
         fmi2Status getFMUstate(fmi2FMUstate &state) override {
@@ -130,7 +131,7 @@ namespace fmi4cpp::fmi2::import {
         }
 
         bool canSerializeFMUstate() const override {
-            return modelDescription_->canSerializeFMUstate();
+            return modelDescription_.canSerializeFMUstate();
         }
 
         fmi2Status getSerializedFMUstateSize(const fmi2FMUstate state, size_t &size) const {
@@ -147,7 +148,7 @@ namespace fmi4cpp::fmi2::import {
         }
 
         bool providesDirectionalDerivative() const override {
-            return modelDescription_->providesDirectionalDerivative();
+            return modelDescription_.providesDirectionalDerivative();
         }
 
         fmi2Status getDirectionalDerivative(

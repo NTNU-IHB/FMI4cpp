@@ -53,7 +53,7 @@ int main() {
     slave2->doStep(1E-4);
 
     double ref;
-    double vr = slave1->getValueReference("MotorDiskRev");
+    fmi2ValueReference vr = slave1->getValueReference("MotorDiskRev");
     assert(vr == 105);
     slave1->readReal(vr, ref);
     cout << "MotorDiskRev=" << ref << endl;
