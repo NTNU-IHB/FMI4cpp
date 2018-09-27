@@ -42,9 +42,16 @@ int main() {
     cout << "Supports ModelExchange=" << fmu.supportsModelExchange() << endl;
 
     auto md = fmu.getModelDescription();
+    auto mv = md.getModelVariables();
+
+    for (const ScalarVariable &v : mv) {
+        if (v.getCausality() == fmi2Causality::output) {
+            cout << v << endl;
+        }
+    }
+
     xml::ScalarVariable var = md.getVariableByValueReference(47);
-    cout << "Causality=" << to_string(var.getCausality()) << ", variability=" << to_string(var.getVariability())
-         << endl;
+    cout << var << endl;
 
     auto md_cs = md.asCoSimulationModelDescription();
     cout << "modelIdentifier=" << md_cs->modelIdentifier() << endl;
@@ -55,18 +62,17 @@ int main() {
     slave1->init();
     slave2->init();
 
-    double t = 0;
-    double stop = 1.0;
-    double stepSize = 1E-3;
-    
     vector<fmi2Real> ref(2);
     vector<fmi2ValueReference> vr = {md.getVariableByName("Temperature_Reference").getValueReference(),
                                      md.getVariableByName("Temperature_Room").getValueReference()};
-    
+
+    double t = 0;
+    double stop = 0.1;
+    double stepSize = 1E-3;
     fmi2Status status;
     while ((t = slave1->getSimulationTime()) <= stop) {
         status = slave1->doStep(stepSize);
-        if (!status == fmi2OK) {
+        if (status != fmi2OK) {
             break;
         }
         status = slave1->readReal(vr, ref);
