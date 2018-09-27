@@ -68,63 +68,63 @@ void ModelDescription::load(const string &fileName) {
 
 }
 
-string ModelDescription::guid() const {
+string ModelDescription::getGuid() const {
     return guid_;
 }
 
-string ModelDescription::fmiVersion() const {
+string ModelDescription::getFmiVersion() const {
     return fmiVersion_;
 }
 
-string ModelDescription::modelName() const {
+string ModelDescription::getModelName() const {
     return modelName_;
 }
 
-string ModelDescription::description() const {
+string ModelDescription::getDescription() const {
     return description_;
 }
 
-string ModelDescription::version() const {
+string ModelDescription::getVersion() const {
     return version_;
 }
 
-string ModelDescription::author() const {
+string ModelDescription::getAuthor() const {
     return author_;
 }
 
-string ModelDescription::license() const {
+string ModelDescription::getLicense() const {
     return license_;
 }
 
-string ModelDescription::copyright() const {
+string ModelDescription::getCopyright() const {
     return copyright_;
 }
 
-string ModelDescription::generationTool() const {
+string ModelDescription::getGenerationTool() const {
     return generationTool_;
 }
 
-string ModelDescription::generationDateAndTime() const {
+string ModelDescription::getGenerationDateAndTime() const {
     return generationDateAndTime_;
 }
 
-string ModelDescription::variableNamingConvention() const {
+string ModelDescription::getVariableNamingConvention() const {
     return variableNamingConvention_;
 }
 
-unsigned int ModelDescription::numberOfEventIndicators() const {
+unsigned int ModelDescription::getNumberOfEventIndicators() const {
     return numberOfEventIndicators_;
 }
 
-unsigned int ModelDescription::numberOfContinuousStates() const {
-    return modelStructure_.derivatives().size();
+unsigned int ModelDescription::getnNumberOfContinuousStates() const {
+    return modelStructure_.getDerivatives().size();
 }
 
-const ModelVariables &ModelDescription::modelVariables() const {
+const ModelVariables &ModelDescription::getModelVariables() const {
     return modelVariables_;
 }
 
-const ModelStructure &ModelDescription::modelStructure() const {
+const ModelStructure &ModelDescription::getModelStructure() const {
     return modelStructure_;
 }
 

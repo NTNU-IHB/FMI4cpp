@@ -42,13 +42,13 @@ namespace fmi4cpp::fmi2::xml {
         std::optional<double> tolerance_;
 
     public:
-        std::optional<double> startTime() const;
+        std::optional<double> getStartTime() const;
 
-        std::optional<double> stopTime() const;
+        std::optional<double> getStopTime() const;
 
-        std::optional<double> stepSize() const;
+        std::optional<double> getStepSize() const;
 
-        std::optional<double> tolerance() const;
+        std::optional<double> getTolerance() const;
 
         void load(const ptree &node);
 

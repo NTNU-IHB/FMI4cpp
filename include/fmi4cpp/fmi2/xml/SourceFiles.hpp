@@ -41,7 +41,7 @@ namespace fmi4cpp::fmi2::xml {
 
     public:
 
-        std::string name() const;
+        std::string getName() const;
 
         void load(const ptree &node);
 

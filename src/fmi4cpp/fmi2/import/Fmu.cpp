@@ -70,11 +70,11 @@ Fmu::Fmu(const string &fmu_file) : fmu_file_(fmu_file) {
 }
 
 const string Fmu::getGuid() const {
-    return modelDescription_->guid();
+    return modelDescription_->getGuid();
 }
 
 const string Fmu::getModelName() const {
-    return modelDescription_->modelName();
+    return modelDescription_->getModelName();
 }
 
 const string Fmu::getModelDescriptionXml() const {

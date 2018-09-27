@@ -73,35 +73,35 @@ namespace fmi4cpp::fmi2::xml {
 
     public:
 
-        string guid() const;
+        string getGuid() const;
 
-        string fmiVersion() const;
+        string getFmiVersion() const;
 
-        string modelName() const;
+        string getModelName() const;
 
-        string description() const;
+        string getDescription() const;
 
-        string version() const;
+        string getVersion() const;
 
-        string author() const;
+        string getAuthor() const;
 
-        string license() const;
+        string getLicense() const;
 
-        string copyright() const;
+        string getCopyright() const;
 
-        string generationTool() const;
+        string getGenerationTool() const;
 
-        string generationDateAndTime() const;
+        string getGenerationDateAndTime() const;
 
-        string variableNamingConvention() const;
+        string getVariableNamingConvention() const;
 
-        unsigned int numberOfEventIndicators() const;
+        unsigned int getNumberOfEventIndicators() const;
 
-        unsigned int numberOfContinuousStates() const;
+        unsigned int getnNumberOfContinuousStates() const;
 
-        const ModelVariables &modelVariables() const;
+        const ModelVariables &getModelVariables() const;
 
-        const ModelStructure &modelStructure() const;
+        const ModelStructure &getModelStructure() const;
 
         const std::optional<DefaultExperiment> defaultExperiment() const;
 

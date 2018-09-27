@@ -31,7 +31,7 @@ void File::load(const ptree &node) {
     name_ = node.get<string>("<xmlattr>.name");
 }
 
-std::string File::name() const {
+std::string File::getName() const {
     return name_;
 }
 

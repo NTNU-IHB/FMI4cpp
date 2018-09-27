@@ -68,15 +68,15 @@ namespace {
 
 }
 
-unsigned int Unknown::index() const {
+unsigned int Unknown::getIndex() const {
     return index_;
 }
 
-std::optional<std::string> Unknown::dependenciesKind() const {
+std::optional<std::string> Unknown::getDependenciesKind() const {
     return dependenciesKind_;
 }
 
-const std::optional<std::vector<unsigned int>> &Unknown::dependencies() const {
+const std::optional<std::vector<unsigned int>> &Unknown::getDependencies() const {
     return dependencies_;
 }
 
@@ -92,15 +92,15 @@ void Unknown::load(const ptree &node) {
 }
 
 
-const std::vector<Unknown> &ModelStructure::outputs() const {
+const std::vector<Unknown> &ModelStructure::getOutputs() const {
     return outputs_;
 }
 
-const std::vector<Unknown> &ModelStructure::derivatives() const {
+const std::vector<Unknown> &ModelStructure::getDerivatives() const {
     return derivatives_;
 }
 
-const std::vector<Unknown> &ModelStructure::initialUnknowns() const {
+const std::vector<Unknown> &ModelStructure::getInitialUnknowns() const {
     return initialUnknowns_;
 }
 

@@ -44,11 +44,11 @@ namespace fmi4cpp::fmi2::xml {
         std::optional<std::vector<unsigned int >> dependencies_;
 
     public:
-        unsigned int index() const;
+        unsigned int getIndex() const;
 
-        std::optional<std::string> dependenciesKind() const;
+        std::optional<std::string> getDependenciesKind() const;
 
-        const std::optional<std::vector<unsigned int>> &dependencies() const;
+        const std::optional<std::vector<unsigned int>> &getDependencies() const;
 
         void load(const ptree &node);
 
@@ -63,11 +63,11 @@ namespace fmi4cpp::fmi2::xml {
 
     public:
 
-        const std::vector<Unknown> &outputs() const;
+        const std::vector<Unknown> &getOutputs() const;
 
-        const std::vector<Unknown> &derivatives() const;
+        const std::vector<Unknown> &getDerivatives() const;
 
-        const std::vector<Unknown> &initialUnknowns() const;
+        const std::vector<Unknown> &getInitialUnknowns() const;
 
         void load(const ptree &node);
 

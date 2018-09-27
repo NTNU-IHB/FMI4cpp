@@ -43,7 +43,7 @@ unique_ptr<ModelExchangeInstance> ModelExchangeInstanceBuilder::newInstance(cons
         }
         lib = lib_;
     }
-    fmi2Component c = lib->instantiate(modelIdentifier, fmi2ModelExchange, modelDescription->guid(),
+    fmi2Component c = lib->instantiate(modelIdentifier, fmi2ModelExchange, modelDescription->getGuid(),
                                        fmu_.getResourcePath(), visible, loggingOn);
     return make_unique<ModelExchangeInstance>(c, modelDescription, lib);
 }

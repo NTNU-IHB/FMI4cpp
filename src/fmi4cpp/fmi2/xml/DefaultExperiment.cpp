@@ -46,18 +46,18 @@ void DefaultExperiment::load(const ptree &node) {
     tolerance_ = convert(node.get_optional<double>("<xmlattr>.tolerance"));
 }
 
-std::optional<double> DefaultExperiment::startTime() const {
+std::optional<double> DefaultExperiment::getStartTime() const {
     return startTime_;
 }
 
-std::optional<double> DefaultExperiment::stopTime() const {
+std::optional<double> DefaultExperiment::getStopTime() const {
     return stopTime_;
 }
 
-std::optional<double> DefaultExperiment::stepSize() const {
+std::optional<double> DefaultExperiment::getStepSize() const {
     return stepSize_;
 }
 
-std::optional<double> DefaultExperiment::tolerance() const {
+std::optional<double> DefaultExperiment::getTolerance() const {
     return tolerance_;
 }
