@@ -95,6 +95,16 @@ namespace fmi4cpp::fmi2::xml {
 
         EnumerationVariable asEnumerationVariable() const;
 
+        bool isIntegerVariable() const;
+
+        bool isRealVariable() const;
+
+        bool isStringVariable() const;
+
+        bool isBooleanVariable() const;
+
+        bool isEnumerationVariable() const;
+
         void load(const ptree &node);
 
         friend std::ostream &operator<<(std::ostream &os, const ScalarVariable &variable);

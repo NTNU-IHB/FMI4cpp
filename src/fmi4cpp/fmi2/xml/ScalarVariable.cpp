@@ -61,35 +61,35 @@ void ScalarVariable::load(const ptree &node) {
 }
 
 IntegerVariable ScalarVariable::asIntegerVariable() const {
-    if (integerAttribute_ == nullptr) {
+    if (!isIntegerVariable()) {
         throw runtime_error(getName() + "is not of type Integer!");
     }
     return IntegerVariable(*this, *integerAttribute_);
 }
 
 RealVariable ScalarVariable::asRealVariable() const {
-    if (realAttribute_ == nullptr) {
+    if (!isRealVariable()) {
         throw runtime_error(getName() + "is not of type Real!");
     }
     return RealVariable(*this, *realAttribute_);
 }
 
 StringVariable ScalarVariable::asStringVariable() const {
-    if (stringAttribute_ == nullptr) {
+    if (!isStringVariable()) {
         throw runtime_error(getName() + "is not of type String!");
     }
     return StringVariable(*this, *stringAttribute_);
 }
 
 BooleanVariable ScalarVariable::asBooleanVariable() const {
-    if (booleanAttribute_ == nullptr) {
+    if (!isBooleanVariable()) {
         throw runtime_error(getName() + "is not of type Boolean!");
     }
     return BooleanVariable(*this, *booleanAttribute_);
 }
 
 EnumerationVariable ScalarVariable::asEnumerationVariable() const {
-    if (!enumerationAttribute_) {
+    if (!isEnumerationVariable()) {
         throw runtime_error(getName() + "is not of type Enumeration!");
     }
     return EnumerationVariable(*this, *enumerationAttribute_);
@@ -137,6 +137,26 @@ ostream &fmi4cpp::fmi2::xml::operator<<(ostream &os, const ScalarVariable &varia
     os << " )";
 
     return os;
+}
+
+bool ScalarVariable::isIntegerVariable() const {
+    return integerAttribute_ != nullptr;
+}
+
+bool ScalarVariable::isRealVariable() const {
+    return realAttribute_ != nullptr;
+}
+
+bool ScalarVariable::isStringVariable() const {
+    return stringAttribute_ != nullptr;
+}
+
+bool ScalarVariable::isBooleanVariable() const {
+    return booleanAttribute_ != nullptr;
+}
+
+bool ScalarVariable::isEnumerationVariable() const {
+    return enumerationAttribute_ != nullptr;
 }
 
 IntegerVariable::IntegerVariable(const ScalarVariable &var, IntegerAttribute &attribute)
