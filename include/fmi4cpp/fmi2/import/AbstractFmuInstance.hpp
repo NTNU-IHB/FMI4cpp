@@ -25,6 +25,10 @@
 #ifndef FMI4CPP_ABSTRACTFMUINSTANCE_HPP
 #define FMI4CPP_ABSTRACTFMUINSTANCE_HPP
 
+#if FMI4CPP_DEBUG_LOGGING_ENABLED
+#include <iostream>
+#endif
+
 #include <type_traits>
 #include "FmuInstance.hpp"
 #include "FmiLibrary.hpp"
@@ -32,11 +36,56 @@
 #include "../xml/SpecificModelDescription.hpp"
 
 namespace {
+
     void checkStatus(const fmi2Status status, const string &function_name) {
         if (status != fmi2OK) {
             throw std::runtime_error(function_name + " failed with status: " + to_string(status));
         }
     }
+
+    bool assignStart(const fmi4cpp::fmi2::xml::ScalarVariable &v, const fmi4cpp::fmi2::import::FmuInstance &instance) {
+
+        if (v.isIntegerVariable()) {
+            IntegerVariable v = v.asIntegerVariable();
+            auto start = v.getStart();
+            if (v.hasStartChanged() && start) {
+                instance.writeInteger(v.getValueReference(), start.value());
+                return true;
+            }
+        } else if (v.isRealVariable()) {
+            RealVariable v = v.asRealVariable();
+            auto start = v.getStart();
+            if (v.hasStartChanged() && start) {
+                instance.writeReal(v.getValueReference(), start.value());
+                return true;
+            }
+        } else if (v.isStringVariable()) {
+            StringVariable v = v.asStringVariable();
+            auto start = v.getStart();
+            if (v.hasStartChanged() && start) {
+                instance.writeString(v.getValueReference(), start.value().c_str());
+                return true;
+            }
+        } else if (v.isBooleanVariable()) {
+            BooleanVariable v = v.asBooleanVariable();
+            auto start = v.getStart();
+            if (v.hasStartChanged() && start) {
+                instance.writeBoolean(v.getValueReference(), start.value());
+                return true;
+            }
+        } else if (v.isEnumerationVariable()) {
+            EnumerationVariable v = v.asEnumerationVariable();
+            auto start = v.getStart();
+            if (v.hasStartChanged() && start) {
+                instance.writeInteger(v.getValueReference(), start.value());
+                return true;
+            }
+        } else {
+            return false;
+        }
+
+    }
+
 }
 
 namespace fmi4cpp::fmi2::import {
@@ -60,14 +109,14 @@ namespace fmi4cpp::fmi2::import {
     public:
 
         AbstractFmuInstance(const fmi2Component c, const shared_ptr<T> &library, U &modelDescription)
-                : c_(c),library_(library), modelDescription_(modelDescription) {}
+                : c_(c), library_(library), modelDescription_(modelDescription) {}
 
 
         U &getModelDescription() override {
             return modelDescription_;
         }
 
-        fmi2Status setDebugLogging(const bool loggingOn, const vector<const char*> categories) const {
+        fmi2Status setDebugLogging(const bool loggingOn, const vector<const char *> categories) const {
             return library_->setDebugLogging(c_, loggingOn, categories);
         }
 
@@ -75,13 +124,47 @@ namespace fmi4cpp::fmi2::import {
 
             if (!instantiated_) {
 
+                unsigned int count = 0;
+                for (ScalarVariable &v: modelDescription_.getModelVariables()) {
+                    if (v.getVariability() != fmi2Variability::constant && v.getInitial() == fmi2Initial::exact ||
+                        v.getInitial() == fmi2Initial::approx) {
+                        if (assignStart(v, *this)) {
+                            count++;
+                        }
+                    }
+                }
+
+#if FMI4CPP_DEBUG_LOGGING_ENABLED
+                if (count > 0) {
+                    std::cout << "Assigned modified start values to" << count << " variables with variability != constant and initial == exact or approx" << std::endl;
+                }
+#endif
+
                 checkStatus(library_->setupExperiment(c_, false, 1E-4, start, stop), "setupExperiment");
 
                 checkStatus(library_->enterInitializationMode(c_), "enterInitializationMode");
+
+                count = 0;
+                for (ScalarVariable &v: modelDescription_.getModelVariables()) {
+                    if (v.getVariability() != fmi2Variability::constant && v.getInitial() == fmi2Initial::exact ||
+                        v.getCausality() == fmi2Causality::input) {
+                        if (assignStart(v, *this)) {
+                            count++;
+                        }
+                    }
+                }
+
+#if FMI4CPP_DEBUG_LOGGING_ENABLED
+                if (count > 0) {
+                    std::cout << "Assigned modified start values to" << count << " variables with variability != constant and initial == exact or causality == input" << std::endl;
+                }
+#endif
+
                 checkStatus(library_->exitInitializationMode(c_), "exitInitializationMode");
 
                 instantiated_ = true;
                 simulationTime_ = start;
+
             }
 
         }
