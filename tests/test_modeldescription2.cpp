@@ -42,16 +42,16 @@ BOOST_AUTO_TEST_CASE(FmuExportCrossCompile_test1) {
     import::Fmu fmu(fmu_path);
     auto md = fmu.getModelDescription();
 
-    BOOST_CHECK_EQUAL("structured", md.variableNamingConvention());
+    BOOST_CHECK_EQUAL("structured", md.getVariableNamingConvention());
 
-    std::vector<xml::Unknown> derivatives = md.modelStructure().derivatives();
+    vector<xml::Unknown> derivatives = md.getModelStructure().getDerivatives();
     BOOST_CHECK_EQUAL(2, derivatives.size());
 
-    BOOST_CHECK_EQUAL(3, derivatives[0].index());
-    BOOST_CHECK_EQUAL(4, derivatives[1].index());
+    BOOST_CHECK_EQUAL(3, derivatives[0].getIndex());
+    BOOST_CHECK_EQUAL(4, derivatives[1].getIndex());
 
-    BOOST_CHECK_EQUAL(true, derivatives[0].dependencies().has_value());
-    BOOST_CHECK_EQUAL(2, derivatives[0].dependencies().value()[0]);
-    BOOST_CHECK_EQUAL("dependent", derivatives[0].dependenciesKind().value());
+    BOOST_CHECK_EQUAL(true, derivatives[0].getDependencies().has_value());
+    BOOST_CHECK_EQUAL(2, derivatives[0].getDependencies().value()[0]);
+    BOOST_CHECK_EQUAL("dependent", derivatives[0].getDependenciesKind().value());
 
 }

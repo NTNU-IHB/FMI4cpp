@@ -42,19 +42,19 @@ BOOST_AUTO_TEST_CASE(ControlledTemperature_test1) {
     auto md = fmu.getModelDescription();
     auto md_cs = md.asCoSimulationModelDescription();
 
-    BOOST_CHECK_EQUAL("2.0", md.fmiVersion());
-    BOOST_CHECK_EQUAL("ControlledTemperature", md.modelName());
+    BOOST_CHECK_EQUAL("2.0", md.getFmiVersion());
+    BOOST_CHECK_EQUAL("ControlledTemperature", md.getModelName());
 
-    BOOST_CHECK_EQUAL("{06c2700b-b39c-4895-9151-304ddde28443}", md.guid());
-    BOOST_CHECK_EQUAL("{06c2700b-b39c-4895-9151-304ddde28443}", md_cs->guid());
-    BOOST_CHECK_EQUAL("20-sim", md.generationTool());
-    BOOST_CHECK_EQUAL("20-sim", md_cs->generationTool());
+    BOOST_CHECK_EQUAL("{06c2700b-b39c-4895-9151-304ddde28443}", md.getGuid());
+    BOOST_CHECK_EQUAL("{06c2700b-b39c-4895-9151-304ddde28443}", md_cs->getGuid());
+    BOOST_CHECK_EQUAL("20-sim", md.getGenerationTool());
+    BOOST_CHECK_EQUAL("20-sim", md_cs->getGenerationTool());
 
     BOOST_CHECK_EQUAL(true, md.supportsCoSimulation());
     BOOST_CHECK_EQUAL(false, md.supportsModelExchange());
 
-    BOOST_CHECK_EQUAL(120, md.modelVariables().size());
-    BOOST_CHECK_EQUAL(120, md_cs->modelVariables().size());
+    BOOST_CHECK_EQUAL(120, md.getModelVariables().size());
+    BOOST_CHECK_EQUAL(120, md_cs->getModelVariables().size());
 
     auto heatCapacity1 = md.getVariableByName("HeatCapacity1.T0").asRealVariable();
     BOOST_CHECK_EQUAL(1, heatCapacity1.getValueReference());
@@ -72,18 +72,31 @@ BOOST_AUTO_TEST_CASE(ControlledTemperature_test1) {
 
     auto sourceFiles = md_cs->sourceFiles();
     BOOST_CHECK_EQUAL(10, sourceFiles.size());
-    BOOST_CHECK_EQUAL("EulerAngles.c", sourceFiles[0].name());
+    BOOST_CHECK_EQUAL("EulerAngles.c", sourceFiles[0].getName());
 
-    auto outputs = md.modelStructure().outputs();
-    BOOST_CHECK_EQUAL(2, outputs.size());
-    BOOST_CHECK_EQUAL(115, outputs[0].index());
-    BOOST_CHECK_EQUAL(116, outputs[1].index());
+    auto modelStructureOutputs = md.getModelStructure().getOutputs();
+    BOOST_CHECK_EQUAL(2, modelStructureOutputs.size());
+    BOOST_CHECK_EQUAL(115, modelStructureOutputs[0].getIndex());
+    BOOST_CHECK_EQUAL(116, modelStructureOutputs[1].getIndex());
 
     auto de = md.defaultExperiment();
     BOOST_CHECK(de.has_value());
-    BOOST_CHECK_EQUAL(0.0, *de->startTime());
-    BOOST_CHECK_EQUAL(20.0, *de->stopTime());
-    BOOST_CHECK_EQUAL(1E-4, *de->stepSize());
-    BOOST_CHECK_EQUAL(false, de->tolerance().has_value());
+    BOOST_CHECK_EQUAL(0.0, *de->getStartTime());
+    BOOST_CHECK_EQUAL(20.0, *de->getStopTime());
+    BOOST_CHECK_EQUAL(1E-4, *de->getStepSize());
+    BOOST_CHECK_EQUAL(false, de->getTolerance().has_value());
+
+    auto mv = md.getModelVariables();
+    for (const xml::ScalarVariable &v : mv) {
+        if (v.getCausality() == fmi2Causality::output) {
+            v.asRealVariable().setStart(99);
+        }
+    }
+
+    vector<xml::ScalarVariable> outputs;
+    mv.getByCausality(fmi2Causality::output, outputs);
+    for (const xml::ScalarVariable &v : outputs) {
+        BOOST_CHECK_EQUAL(99, v.asRealVariable().getStart().value());
+    }
 
 }
