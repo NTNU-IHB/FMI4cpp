@@ -31,12 +31,11 @@
 #include "fmi2Functions.h"
 #include "xml/enums.hpp"
 
-using std::string;
 using namespace fmi4cpp::fmi2::xml;
 
 namespace {
 
-    const string to_string(fmi2Status status) {
+    const std::string to_string(fmi2Status status) {
 
         switch (status) {
             case fmi2OK:
@@ -52,12 +51,12 @@ namespace {
             case fmi2Pending:
                 return "Pending";
             default:
-                throw std::runtime_error("Invalid fmi2Status encountered!");
+                return "unknown";
         }
 
     }
 
-    const string to_string(fmi2Causality causality) {
+    const std::string to_string(fmi2Causality causality) {
 
         switch (causality) {
             case fmi2Causality::calculatedParameter:
@@ -78,7 +77,7 @@ namespace {
 
     }
 
-    const string to_string(fmi2Variability variability) {
+    const std::string to_string(fmi2Variability variability) {
 
         switch (variability) {
             case fmi2Variability::constant:
@@ -97,7 +96,7 @@ namespace {
 
     }
 
-    const string to_string(fmi2Initial initial) {
+    const std::string to_string(fmi2Initial initial) {
 
         switch (initial) {
             case fmi2Initial::exact:
