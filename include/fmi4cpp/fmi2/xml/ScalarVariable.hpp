@@ -35,7 +35,6 @@
 #include "../fmi2Functions.h"
 #include "ScalarVariableAttributes.hpp"
 
-using std::string;
 using boost::property_tree::ptree;
 
 namespace fmi4cpp::fmi2::xml {
@@ -54,8 +53,8 @@ namespace fmi4cpp::fmi2::xml {
     class ScalarVariable {
 
     private:
-        string name_;
-        string description_;
+        std::string name_;
+        std::string description_;
         fmi2ValueReference valueReference_;
         bool canHandleMultipleSetPerTimelnstant_;
 
@@ -71,9 +70,9 @@ namespace fmi4cpp::fmi2::xml {
 
     public:
 
-        string getName() const;
+        std::string getName() const;
 
-        string getDescription() const;
+        std::string getDescription() const;
 
         fmi2ValueReference getValueReference() const;
 
@@ -169,7 +168,7 @@ namespace fmi4cpp::fmi2::xml {
 
         void setStart(const int start);
 
-        std::optional<string> getQuantity() const;
+        std::optional<std::string> getQuantity() const;
 
     };
 
@@ -190,17 +189,17 @@ namespace fmi4cpp::fmi2::xml {
 
         bool getRelativeQuantity() const;
 
-        std::optional<string> getQuantity() const;
+        std::optional<std::string> getQuantity() const;
 
-        std::optional<string> getUnit() const;
+        std::optional<std::string> getUnit() const;
 
-        std::optional<string> getDisplayUnit() const;
+        std::optional<std::string> getDisplayUnit() const;
 
         std::optional<unsigned int> getDerivative() const;
 
     };
 
-    class StringVariable : public ScalarVariable, public TypedVariable<string, StringAttribute> {
+    class StringVariable : public ScalarVariable, public TypedVariable<std::string, StringAttribute> {
 
     public:
         StringVariable(const ScalarVariable &var, StringAttribute &attribute);
@@ -221,7 +220,7 @@ namespace fmi4cpp::fmi2::xml {
 
         std::optional<int> getMax() const;
 
-        std::optional<string> getQuantity() const;
+        std::optional<std::string> getQuantity() const;
 
     };
 
