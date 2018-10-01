@@ -80,10 +80,8 @@ namespace {
                 instance.writeInteger(v.getValueReference(), start.value());
                 return true;
             }
-        } else {
-            return false;
         }
-
+        return false;
     }
 
 }
