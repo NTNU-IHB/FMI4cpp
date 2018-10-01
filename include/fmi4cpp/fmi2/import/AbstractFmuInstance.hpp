@@ -96,7 +96,8 @@ namespace fmi4cpp::fmi2::import {
 //                      "U must derive from SpecificModelDescription");
 
     private:
-        bool instanceFreed;
+        bool instanceFreed_;
+
 
     protected:
 
@@ -188,8 +189,8 @@ namespace fmi4cpp::fmi2::import {
         }
 
         void freeInstance() {
-            if (!instanceFreed) {
-                instanceFreed = true;
+            if (!instanceFreed_) {
+                instanceFreed_ = true;
                 library_->freeInstance(c_);
                 c_ = nullptr;
             }
