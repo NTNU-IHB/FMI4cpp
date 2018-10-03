@@ -22,50 +22,24 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMI4CPP_ENUMS_HPP
-#define FMI4CPP_ENUMS_HPP
+#ifndef FMI4CPP_MODELDESCRIPTIONPROVIDER_HPP
+#define FMI4CPP_MODELDESCRIPTIONPROVIDER_HPP
 
-#include <string>
+#include <memory>
+#include "ModelDescription.hpp"
 
 namespace fmi4cpp::fmi2::xml {
 
-    enum class fmi2Causality {
-        parameter,
-        calculatedParameter,
-        input,
-        output,
-        local,
-        independent
+    class ModelDescriptionProvider: public ModelDescription {
+
+    public:
+
+        virtual std::shared_ptr<CoSimulationModelDescription> asCoSimulationModelDescription() const = 0;
+
+        virtual std::shared_ptr<ModelExchangeModelDescription> asModelExchangeModelDescription() const = 0;
+
     };
-
-    enum class fmi2Variability {
-        constant,
-        fixed,
-        tunable,
-        discrete,
-        continuous
-    };
-
-    enum class fmi2Initial {
-        exact,
-        approx,
-        calculated,
-        unknown
-    };
-
-    fmi2Causality parseCausality(const std::string &str);
-
-    fmi2Variability parseVariability(const std::string &str);
-
-    fmi2Initial parseInitial(const std::string &str);
-
-    const std::string to_string(fmi2Causality causality);
-
-    const std::string to_string(fmi2Variability variability);
-
-    const std::string to_string(fmi2Initial initial);
-
 
 }
 
-#endif //FMI4CPP_ENUMS_HPP
+#endif //FMI4CPP_MODELDESCRIPTIONPROVIDER_HPP

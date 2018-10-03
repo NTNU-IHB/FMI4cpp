@@ -22,50 +22,35 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMI4CPP_ENUMS_HPP
-#define FMI4CPP_ENUMS_HPP
+#ifndef FMI4CPP_FMI4CPPUTILS_HPP
+#define FMI4CPP_FMI4CPPUTILS_HPP
 
 #include <string>
+#include "fmi2FunctionTypes.h"
 
-namespace fmi4cpp::fmi2::xml {
+namespace fmi4cpp {
 
-    enum class fmi2Causality {
-        parameter,
-        calculatedParameter,
-        input,
-        output,
-        local,
-        independent
-    };
+    std::string to_string(fmi2Status status) {
 
-    enum class fmi2Variability {
-        constant,
-        fixed,
-        tunable,
-        discrete,
-        continuous
-    };
+        switch (status) {
+            case fmi2OK:
+                return "OK";
+            case fmi2Warning:
+                return "Warning";
+            case fmi2Discard:
+                return "Discard";
+            case fmi2Error:
+                return "Error";
+            case fmi2Fatal:
+                return "Fatal";
+            case fmi2Pending:
+                return "Pending";
+            default:
+                return "Unknown";
+        }
 
-    enum class fmi2Initial {
-        exact,
-        approx,
-        calculated,
-        unknown
-    };
-
-    fmi2Causality parseCausality(const std::string &str);
-
-    fmi2Variability parseVariability(const std::string &str);
-
-    fmi2Initial parseInitial(const std::string &str);
-
-    const std::string to_string(fmi2Causality causality);
-
-    const std::string to_string(fmi2Variability variability);
-
-    const std::string to_string(fmi2Initial initial);
-
+    }
 
 }
 
-#endif //FMI4CPP_ENUMS_HPP
+#endif //FMI4CPP_FMI4CPPUTILS_HPP

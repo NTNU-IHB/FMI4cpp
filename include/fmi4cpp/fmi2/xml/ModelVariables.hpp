@@ -36,29 +36,54 @@ namespace fmi4cpp::fmi2::xml {
 
     class ModelVariables {
 
+    public:
+
+        virtual const size_t size() const = 0;
+
+        virtual ScalarVariable &operator[](size_t index) = 0;
+
+        virtual const ScalarVariable &getByName(const std::string &name) const = 0;
+
+        virtual const ScalarVariable &getByValueReference(fmi2ValueReference vr) const = 0;
+
+        virtual void getByCausality(fmi2Causality causality, std::vector<std::shared_ptr<ScalarVariable>> &store) = 0;
+
+        virtual std::vector<std::shared_ptr<ScalarVariable>>::iterator begin() = 0;
+
+        virtual std::vector<std::shared_ptr<ScalarVariable>>::iterator end() = 0;
+
+        virtual std::vector<std::shared_ptr<ScalarVariable>>::const_iterator cbegin() const = 0;
+
+        virtual std::vector<std::shared_ptr<ScalarVariable>>::const_iterator cend() const = 0;
+    };
+
+
+    class ModelVariablesImpl: public virtual ModelVariables {
+
     private:
-        std::vector<ScalarVariable> variables;
+        std::vector<std::shared_ptr<ScalarVariable>> variables_;
 
     public:
-        void load(const ptree &node);
 
-        const size_t size() const;
+        explicit ModelVariablesImpl(const ptree &node);
 
-        ScalarVariable &operator[](const size_t index);
+        const ScalarVariable &getByName(const std::string &name) const override;
 
-        ScalarVariable &getByName(const std::string &name);
+        const ScalarVariable &getByValueReference(fmi2ValueReference vr) const override;
 
-        ScalarVariable &getByValueReference(const fmi2ValueReference vr);
+        void getByCausality(fmi2Causality causality, std::vector<std::shared_ptr<ScalarVariable>> &store) override;
 
-        void getByCausality(const fmi2Causality causality, std::vector<ScalarVariable> &store);
+        const size_t size() const override;
 
-        std::vector<ScalarVariable>::iterator begin();
+        ScalarVariable &operator[](size_t index) override;
 
-        std::vector<ScalarVariable>::iterator end();
+        std::vector<std::shared_ptr<ScalarVariable>>::iterator begin() override;
 
-        std::vector<ScalarVariable>::const_iterator cbegin() const;
+        std::vector<std::shared_ptr<ScalarVariable>>::iterator end() override;
 
-        std::vector<ScalarVariable>::const_iterator cend() const;
+        std::vector<std::shared_ptr<ScalarVariable>>::const_iterator cbegin() const override;
+
+        std::vector<std::shared_ptr<ScalarVariable>>::const_iterator cend() const override;
 
     };
 

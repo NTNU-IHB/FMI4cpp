@@ -74,3 +74,57 @@ fmi2Initial fmi4cpp::fmi2::xml::parseInitial(const std::string &str) {
     }
 
 }
+
+const std::string fmi4cpp::fmi2::xml::to_string(fmi2Causality causality) {
+
+    switch (causality) {
+        case fmi2Causality::calculatedParameter:
+            return "calculatedParameter";
+        case fmi2Causality::parameter:
+            return "parameter";
+        case fmi2Causality::input:
+            return "input";
+        case fmi2Causality::output:
+            return "output";
+        case fmi2Causality::local:
+            return "local";
+        case fmi2Causality::independent:
+            return "independent";
+        default:
+            return "unknown";
+    }
+
+}
+
+const std::string fmi4cpp::fmi2::xml::to_string(fmi2Variability variability) {
+
+    switch (variability) {
+        case fmi2Variability::constant:
+            return "constant";
+        case fmi2Variability::fixed:
+            return "fixed";
+        case fmi2Variability::tunable:
+            return "tunable";
+        case fmi2Variability::discrete:
+            return "discrete";
+        case fmi2Variability::continuous:
+            return "continuous";
+        default:
+            return "unknown";
+    }
+
+}
+
+const std::string fmi4cpp::fmi2::xml::to_string(fmi2Initial initial) {
+    switch (initial) {
+        case fmi2Initial::exact:
+            return "exact";
+        case fmi2Initial::approx:
+            return "approx";
+        case fmi2Initial::calculated:
+            return "calculated";
+        case fmi2Initial::unknown:
+        default:
+            return "unknown";
+    }
+}

@@ -46,7 +46,7 @@ namespace fmi4cpp::fmi2::xml {
 
         SourceFiles sourceFiles;
 
-        virtual void load(const ptree &node);
+        virtual void load(const ptree &node) = 0;
 
     };
 
@@ -58,7 +58,7 @@ namespace fmi4cpp::fmi2::xml {
 
         unsigned int maxOutputDerivativeOrder;
 
-        void load(const ptree &node);
+        void load(const ptree &node) override;
 
     };
 
@@ -66,7 +66,7 @@ namespace fmi4cpp::fmi2::xml {
 
         bool completedIntegratorStepNotNeeded;
 
-        void load(const ptree &node);
+        void load(const ptree &node) override;
 
     };
 

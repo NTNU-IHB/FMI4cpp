@@ -25,11 +25,10 @@
 #ifndef FMI4CPP_FMI4CPP_HPP
 #define FMI4CPP_FMI4CPP_HPP
 
-#include <string>
-
 #include "fmi2Functions.h"
-#include "enumsToString.hpp"
+#include "fmi4cppUtils.hpp"
 
+#include "xml/enums.hpp"
 #include "xml/ModelDescription.hpp"
 #include "xml/ScalarVariable.hpp"
 
@@ -39,5 +38,6 @@
 
 #include "import/CoSimulationSlaveBuilder.hpp"
 #include "import/ModelExchangeInstanceBuilder.hpp"
+
 
 #endif //FMI4CPP_FMI4CPP_HPP

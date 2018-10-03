@@ -41,9 +41,9 @@ namespace {
 
     std::random_device rd;
     std::mt19937 mt(rd());
-    
+
     string generate_simple_id() {
-       
+
         std::uniform_int_distribution<int> dist(0, 10);
         string id;
         for (int i = 0; i < 8; i++) {
@@ -70,65 +70,58 @@ Fmu::Fmu(const string &fmu_file) : fmu_file_(fmu_file) {
         throw runtime_error("Failed to extract FMU!");
     }
 
-    modelDescription_ = make_unique<ModelDescriptionImpl>(getModelDescriptionPath());
+    modelDescription_ = make_shared<ModelDescriptionImpl>(getModelDescriptionPath());
 
 }
 
-const string Fmu::getGuid() const {
+string Fmu::getGuid() const {
     return modelDescription_->getGuid();
 }
 
-const string Fmu::getModelName() const {
+string Fmu::getModelName() const {
     return modelDescription_->getModelName();
 }
 
-const string Fmu::getModelDescriptionXml() const {
+string Fmu::getModelDescriptionXml() const {
     ifstream stream(getModelDescriptionPath());
     const string xml = string((istreambuf_iterator<char>(stream)), istreambuf_iterator<char>());
     return xml;
 }
 
-ModelDescription &Fmu::getModelDescription() {
+ModelDescriptionProvider &Fmu::getModelDescription() {
     return *modelDescription_;
 }
 
-const bool Fmu::supportsModelExchange() const {
+bool Fmu::supportsModelExchange() const {
     return modelDescription_->supportsModelExchange();
 }
 
-const bool Fmu::supportsCoSimulation() const {
+ bool Fmu::supportsCoSimulation() const {
     return modelDescription_->supportsCoSimulation();
 }
 
-CoSimulationSlaveBuilder &Fmu::asCoSimulationFmu() {
-    if (csBuilder_ == nullptr) {
-        csBuilder_ = make_unique<CoSimulationSlaveBuilder>(*this);
-    }
-    return *csBuilder_;
+CoSimulationSlaveBuilder Fmu::asCoSimulationFmu() {
+    return CoSimulationSlaveBuilder(*this);
 }
 
-ModelExchangeInstanceBuilder &Fmu::asModelExchangeFmu() {
-    if (meBuilder_ == nullptr) {
-        meBuilder_ = make_unique<ModelExchangeInstanceBuilder>(*this);
-    }
-    return *meBuilder_;
+ModelExchangeInstanceBuilder Fmu::asModelExchangeFmu() {
+    return ModelExchangeInstanceBuilder(*this);
 }
 
-const string Fmu::getAbsoluteLibraryPath(const string modelIdentifier) const {
+string Fmu::getAbsoluteLibraryPath(const string modelIdentifier) const {
     return tmp_path_.string() + "/binaries/" + getOs() + "/" + modelIdentifier + getLibExt();
 }
 
-const string Fmu::getResourcePath() const {
+string Fmu::getResourcePath() const {
     return "file:/" + tmp_path_.string() + "/resources/" + getOs() + "/" + getLibExt();
 }
 
-const string Fmu::getModelDescriptionPath() const {
+string Fmu::getModelDescriptionPath() const {
     return tmp_path_.string() + "/modelDescription.xml";
 }
 
 Fmu::~Fmu() {
-    meBuilder_ = nullptr;
-    csBuilder_ = nullptr;
+
     remove_all(tmp_path_);
 
 #if FMI4CPP_DEBUG_LOGGING_ENABLED

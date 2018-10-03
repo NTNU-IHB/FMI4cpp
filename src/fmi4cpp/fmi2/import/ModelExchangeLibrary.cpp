@@ -78,7 +78,7 @@ ModelExchangeLibrary::getNominalsOfContinuousStates(const fmi2Component c, vecto
 }
 
 fmi2Status ModelExchangeLibrary::completedIntegratorStep(const fmi2Component c,
-                                                         fmi2Boolean noSetFMUStatePriorToCurrentPoint,
+                                                         const fmi2Boolean noSetFMUStatePriorToCurrentPoint,
                                                          fmi2Boolean &enterEventMode,
                                                          fmi2Boolean &terminateSimulation) const {
     return fmi2CompletedIntegratorStep_(c, noSetFMUStatePriorToCurrentPoint, &enterEventMode, &terminateSimulation);

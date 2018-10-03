@@ -22,53 +22,57 @@
  * THE SOFTWARE.
  */
 
-#include <boost/optional.hpp>
-#include <fmi4cpp/fmi2/xml/ModelStructure.hpp>
+#include <sstream>
+#include <iostream>
+#include <fmi4cpp/fmi2/xml/Unknown.hpp>
 
-using namespace std;
-using namespace fmi4cpp::fmi2::xml;
+using fmi4cpp::fmi2::xml::Unknown;
 
 namespace {
 
-    void loadUnknowns(const ptree &node, vector<Unknown> &vector) {
+    template <class T>
+    std::optional<T> convert(boost::optional<T> opt) {
+        if (!opt) {
+            return {};
+        } else {
+            return *opt;
+        }
+    }
 
-        for (const ptree::value_type &v : node) {
-            if (v.first == "Unknown") {
-                Unknown unknown;
-                unknown.load(v.second);
-                vector.push_back(unknown);
+    std::vector<unsigned int> parse(const std::string &str) {
+        int i;
+        std::stringstream ss(str);
+        std::vector<unsigned int> result;
+        while (ss >> i) {
+            result.push_back(i);
+            if (ss.peek() == ',' || ss.peek() == ' ') {
+                ss.ignore();
             }
         }
-
+        return result;
     }
 
 }
 
+size_t Unknown::getIndex() const {
+    return index_;
+}
 
-ModelStructureImpl::ModelStructureImpl(const ptree &node) {
+std::optional<std::string> Unknown::getDependenciesKind() const {
+    return dependenciesKind_;
+}
 
-    for (const ptree::value_type &v : node) {
-        if (v.first == "Outputs") {
-            loadUnknowns(v.second, outputs_);
-        } else if (v.first == "Derivatives") {
-            loadUnknowns(v.second, derivatives_);
-        } else if (v.first == "InitialUnknowns") {
-            loadUnknowns(v.second, initialUnknowns_);
-        }
+const std::optional<std::vector<unsigned int>> &Unknown::getDependencies() const {
+    return dependencies_;
+}
+
+void Unknown::load(const ptree &node) {
+    index_ = node.get<unsigned int>("<xmlattr>.index");
+    dependenciesKind_ = convert(node.get_optional<std::string>("<xmlattr>.dependenciesKind"));
+
+    auto dependencies = node.get_optional<std::string>("<xmlattr>.dependencies");
+    if (dependencies) {
+        dependencies_ = parse(*dependencies);
     }
 
 }
-
-const std::vector<Unknown> &ModelStructureImpl::getOutputs() const {
-    return outputs_;
-}
-
-const std::vector<Unknown> &ModelStructureImpl::getDerivatives() const {
-    return derivatives_;
-}
-
-const std::vector<Unknown> &ModelStructureImpl::getInitialUnknowns() const {
-    return initialUnknowns_;
-}
-
-

@@ -16,9 +16,11 @@ SET(SOURCES
     fmi4cpp/fmi2/xml/SpecificModelDescription.cpp
     fmi4cpp/fmi2/xml/ModelVariables.cpp
     fmi4cpp/fmi2/xml/ScalarVariable.cpp
+    fmi4cpp/fmi2/xml/ScalarVariableImpl.cpp
     fmi4cpp/fmi2/xml/ScalarVariableAttributes.cpp
     fmi4cpp/fmi2/xml/DefaultExperiment.cpp
     fmi4cpp/fmi2/xml/SourceFiles.cpp
+    fmi4cpp/fmi2/xml/Unknown.cpp
     fmi4cpp/fmi2/xml/ModelStructure.cpp
 
 )

@@ -22,78 +22,68 @@
  * THE SOFTWARE.
  */
 
+#include <fmi4cpp/fmi2/xml/enums.hpp>
+#include <fmi4cpp/fmi2/xml/ScalarVariableImpl.hpp>
 #include <fmi4cpp/fmi2/xml/ModelVariables.hpp>
 
 using namespace std;
 using namespace fmi4cpp::fmi2::xml;
 
-const size_t ModelVariables::size() const {
-    return variables.size();
-}
-
-void ModelVariables::load(const ptree &node) {
-
+ModelVariablesImpl::ModelVariablesImpl(const ptree &node) {
     for (const ptree::value_type &v : node) {
-
         if (v.first == "ScalarVariable") {
-            ScalarVariable var;
-            var.load(v.second);
-            variables.push_back(var);
-        }
-
-    }
-
-}
-
-ScalarVariable &ModelVariables::operator[](const size_t index) {
-    return variables.operator[](index);
-}
-
-ScalarVariable &ModelVariables::getByName(const string &name) {
-
-    for (ScalarVariable &var : variables) {
-        if (var.getName() == name) {
-            return var;
+            variables_.push_back(make_shared<ScalarVariableImpl>(v.second));
         }
     }
-
-    string errorMsg = "No such variable with name '" + name + "'!";
-    throw runtime_error(errorMsg);
 }
 
-ScalarVariable &ModelVariables::getByValueReference(const fmi2ValueReference vr) {
-
-    for (ScalarVariable &var : variables) {
-        if (var.getValueReference() == vr) {
-            return var;
+const ScalarVariable &ModelVariablesImpl::getByName(const string &name) const {
+    for (const auto &var : variables_) {
+        if (var->getName() == name) {
+            return *var;
         }
     }
-
-    string errorMsg = "No such variable with valueReference '" + to_string(vr) + "'!";
-    throw runtime_error(errorMsg);
+    throw runtime_error("No such variable with name '" + name + "'!");
 }
 
-void ModelVariables::getByCausality(const fmi2Causality causality, std::vector<ScalarVariable> &store) {
-    for (ScalarVariable &var : variables) {
-        if (var.getCausality() == causality) {
+const ScalarVariable &ModelVariablesImpl::getByValueReference(const fmi2ValueReference vr) const {
+    for (const auto &var : variables_) {
+        if (var->getValueReference() == vr) {
+            return *var;
+        }
+    }
+    throw runtime_error("No such variable with valueReference '" + std::to_string(vr) + "'!");
+}
+
+void ModelVariablesImpl::getByCausality(const fmi2Causality causality, vector<shared_ptr<ScalarVariable>> &store) {
+    for (const auto &var : variables_) {
+        if (var->getCausality() == causality) {
             store.push_back(var);
         }
     }
 }
 
-std::vector<ScalarVariable>::iterator ModelVariables::begin() {
-    return variables.begin();
+const size_t ModelVariablesImpl::size() const {
+    return variables_.size();
 }
 
-std::vector<ScalarVariable>::iterator ModelVariables::end() {
-    return variables.end();
+ScalarVariable &ModelVariablesImpl::operator[](const size_t index) {
+    return *variables_[index];
 }
 
-std::vector<ScalarVariable>::const_iterator ModelVariables::cbegin() const{
-    return variables.cbegin();
+vector<shared_ptr<ScalarVariable>>::iterator ModelVariablesImpl::begin() {
+    return variables_.begin();
 }
 
-std::vector<ScalarVariable>::const_iterator ModelVariables::cend() const {
-    return variables.cend();
+vector<shared_ptr<ScalarVariable>>::iterator ModelVariablesImpl::end() {
+    return variables_.end();
+}
+
+vector<shared_ptr<ScalarVariable>>::const_iterator ModelVariablesImpl::cbegin() const{
+    return variables_.cbegin();
+}
+
+vector<shared_ptr<ScalarVariable>>::const_iterator ModelVariablesImpl::cend() const {
+    return variables_.cend();
 }
 

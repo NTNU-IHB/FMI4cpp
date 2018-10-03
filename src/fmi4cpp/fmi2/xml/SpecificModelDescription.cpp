@@ -25,19 +25,10 @@
 #include <fmi4cpp/fmi2/xml/ModelDescription.hpp>
 #include <fmi4cpp/fmi2/xml/SpecificModelDescription.hpp>
 
+using namespace std;
 using namespace fmi4cpp::fmi2::xml;
 
-template<class T>
-CoSimulationModelDescription SpecificModelDescription<T>::asCoSimulationModelDescription() {
-    return modelDescription_.asCoSimulationModelDescription();
-}
-
-template<class T>
-ModelExchangeModelDescription SpecificModelDescription<T>::asModelExchangeModelDescription() {
-    return modelDescription_.asModelExchangeModelDescription();
-}
-
-CoSimulationModelDescription::CoSimulationModelDescription(ModelDescription &md, const CoSimulationAttributes &data)
+CoSimulationModelDescription::CoSimulationModelDescription(const ModelDescription &md, const CoSimulationAttributes &data)
         : SpecificModelDescription<CoSimulationAttributes>(md, data) {};
 
 bool CoSimulationModelDescription::canInterpolateInputs() const {
@@ -52,11 +43,11 @@ bool CoSimulationModelDescription::canHandleVariableCommunicationStepSize() cons
     return data_.canHandleVariableCommunicationStepSize;
 }
 
-const unsigned int CoSimulationModelDescription::maxOutputDerivativeOrder() const {
+size_t CoSimulationModelDescription::maxOutputDerivativeOrder() const {
     return data_.maxOutputDerivativeOrder;
 }
 
-ModelExchangeModelDescription::ModelExchangeModelDescription(ModelDescription &md, const ModelExchangeAttributes &data)
+ModelExchangeModelDescription::ModelExchangeModelDescription(const ModelDescription &md, const ModelExchangeAttributes &data)
         : SpecificModelDescription(md, data) {};
 
 bool ModelExchangeModelDescription::completedIntegratorStepNotNeeded() const {

@@ -25,29 +25,30 @@
 #ifndef FMI4CPP_MODELDESCRIPTIONIMPL_HPP
 #define FMI4CPP_MODELDESCRIPTIONIMPL_HPP
 
-#include "ModelDescription.hpp"
+#include "ModelDescriptionProvider.hpp"
 
 namespace fmi4cpp::fmi2::xml {
 
-    class ModelDescriptionImpl: public ModelDescription {
+    class ModelDescriptionImpl: public ModelDescriptionProvider {
 
     private:
-        string guid_;
-        string fmiVersion_;
-        string modelName_;
-        string description_;
-        string version_;
-        string author_;
-        string license_;
-        string copyright_;
-        string generationTool_;
-        string generationDateAndTime_;
-        string variableNamingConvention_;
+        std::string guid_;
+        std::string fmiVersion_;
+        std::string modelName_;
+        std::string description_;
+        std::string version_;
+        std::string author_;
+        std::string license_;
+        std::string copyright_;
+        std::string generationTool_;
+        std::string generationDateAndTime_;
+        std::string variableNamingConvention_;
 
-        unsigned int numberOfEventIndicators_;
+        size_t numberOfEventIndicators_;
 
-        ModelVariables modelVariables_;
-        ModelStructure modelStructure_;
+        std::unique_ptr<ModelVariables> modelVariables_;
+        std::unique_ptr<ModelStructure> modelStructure_;
+
         std::optional<DefaultExperiment> defaultExperiment_;
 
         std::optional<CoSimulationAttributes> coSimulation_;
@@ -55,51 +56,51 @@ namespace fmi4cpp::fmi2::xml {
 
     public:
 
-        explicit ModelDescriptionImpl(const string &fileName);
+        explicit ModelDescriptionImpl(const std::string &fileName);
 
-        string getGuid() const override;
+        std::string getGuid() const override;
 
-        string getFmiVersion() const override;
+        std::string getFmiVersion() const override;
 
-        string getModelName() const override;
+        std::string getModelName() const override;
 
-        string getDescription() const override;
+        std::string getDescription() const override;
 
-        string getVersion() const override;
+        std::string getVersion() const override;
 
-        string getAuthor() const override;
+        std::string getAuthor() const override;
 
-        string getLicense() const override;
+        std::string getLicense() const override;
 
-        string getCopyright() const override;
+        std::string getCopyright() const override;
 
-        string getGenerationTool() const override;
+        std::string getGenerationTool() const override;
 
-        string getGenerationDateAndTime() const override;
+        std::string getGenerationDateAndTime() const override;
 
-        string getVariableNamingConvention() const override;
+        std::string getVariableNamingConvention() const override;
 
-        unsigned int getNumberOfEventIndicators() const override;
+        size_t getNumberOfEventIndicators() const override;
 
-        unsigned int getNumberOfContinuousStates() const override;
+        size_t getNumberOfContinuousStates() const override;
 
-        ModelVariables &getModelVariables() override;
+        const ModelVariables &getModelVariables() const override;
 
         const ModelStructure &getModelStructure() const override;
 
-        const std::optional<DefaultExperiment> getDefaultExperiment() const override;
+        std::optional<DefaultExperiment> getDefaultExperiment() const override;
 
         bool supportsModelExchange() const override;
 
         bool supportsCoSimulation() const override;
 
-        ScalarVariable &getVariableByName(const string &name) override;
+        const ScalarVariable &getVariableByName(const std::string &name) const override;
 
-        ScalarVariable &getVariableByValueReference(const fmi2ValueReference vr) override;
+        const ScalarVariable &getVariableByValueReference(fmi2ValueReference vr) const override;
 
-        CoSimulationModelDescription asCoSimulationModelDescription() override;
+        std::shared_ptr<CoSimulationModelDescription> asCoSimulationModelDescription() const override;
 
-        ModelExchangeModelDescription asModelExchangeModelDescription() override;
+        std::shared_ptr<ModelExchangeModelDescription> asModelExchangeModelDescription() const override;
 
     };
 

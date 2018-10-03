@@ -29,7 +29,8 @@
 
 namespace fmi4cpp::fmi2::import {
 
-    class FmuSlave : virtual public FmuInstance {
+    template <class T>
+    class FmuSlave : virtual public FmuInstance<T> {
 
     public:
 

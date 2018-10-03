@@ -32,136 +32,132 @@
 namespace fmi4cpp::fmi2::xml {
 
     template <class T>
-    class SpecificModelDescription : public ModelDescription {
+    class SpecificModelDescription : public virtual ModelDescription {
 
-        static_assert(std::is_base_of<xml::FmuTypeAttributes, T>::value, "T must derive from FmuTypeAttributes");
+//        static_assert(std::is_base_of<xml::FmuTypeAttributes, T>::value, "T must derive from FmuTypeAttributes");
 
     private:
-        ModelDescription &modelDescription_;
+        const ModelDescription &modelDescription_;
 
     protected:
         const T &data_;
 
     public:
 
-        SpecificModelDescription(ModelDescription &md, const T &data)
-                : modelDescription_(md), data_(data) {};
+        SpecificModelDescription(const ModelDescription &md, const T &data)
+                : modelDescription_(md), data_(data) {}
 
-        string getModelIdentifier() const {
-            return data_.modelIdentifier;
+        const ScalarVariable &getVariableByValueReference(const fmi2ValueReference vr) const {
+            return modelDescription_.getVariableByValueReference(vr);
         }
 
-        bool canGetAndSetFMUstate() const {
-            return data_.canGetAndSetFMUstate;
+        const ScalarVariable &getVariableByName(const string &name) const {
+            return modelDescription_.getVariableByName(name);
         }
 
-        bool canSerializeFMUstate() const {
-            return data_.canSerializeFMUstate;
+        bool supportsCoSimulation() const {
+            return modelDescription_.supportsCoSimulation();
         }
 
-        bool needsExecutionTool() const {
-            return data_.needsExecutionTool;
+        bool supportsModelExchange() const {
+            return modelDescription_.supportsModelExchange();
         }
 
-        bool canNotUseMemoryManagementFunctions() const {
-            return data_.canNotUseMemoryManagementFunctions;
+        std::optional<DefaultExperiment> getDefaultExperiment() const {
+            return modelDescription_.getDefaultExperiment();
         }
 
-        bool canBeInstantiatedOnlyOncePerProcess() const {
-            return data_.canBeInstantiatedOnlyOncePerProcess;
+        const ModelStructure &getModelStructure() const {
+            return modelDescription_.getModelStructure();
         }
 
-        bool providesDirectionalDerivative() const {
-            return data_.providesDirectionalDerivative;
+        const ModelVariables &getModelVariables() const {
+            return modelDescription_.getModelVariables();
+        }
+
+        size_t getNumberOfContinuousStates() const {
+            return modelDescription_.getNumberOfContinuousStates();
+        }
+
+        size_t getNumberOfEventIndicators() const {
+            return modelDescription_.getNumberOfEventIndicators();
+        }
+
+        std::string getVariableNamingConvention() const {
+            return modelDescription_.getVariableNamingConvention();
+        }
+
+        std::string getGenerationDateAndTime() const {
+            return modelDescription_.getGenerationDateAndTime();
+        }
+
+        std::string getGenerationTool() const {
+            return modelDescription_.getGenerationTool();
+        }
+
+        std::string getCopyright() const {
+            return modelDescription_.getCopyright();
+        }
+
+        std::string getLicense() const {
+            return modelDescription_.getLicense();
+        }
+
+        std::string getAuthor() const {
+            return modelDescription_.getAuthor();
+        }
+
+        std::string getVersion() const {
+            return modelDescription_.getVersion();
+        }
+
+        std::string getDescription() const {
+            return modelDescription_.getDescription();
+        }
+
+        std::string getModelName() const {
+            return modelDescription_.getModelName();
+        }
+
+        std::string getFmiVersion() const {
+            return modelDescription_.getFmiVersion();
+        }
+
+        std::string getGuid() const {
+            return modelDescription_.getGuid();
         }
 
         SourceFiles getSourceFiles() const {
             return data_.sourceFiles;
         }
 
-        string getGuid() const override {
-            return modelDescription_.getGuid();
+        bool providesDirectionalDerivative() const {
+            return data_.providesDirectionalDerivative;
         }
 
-        string getFmiVersion() const override {
-            return modelDescription_.getFmiVersion();
+        bool canBeInstantiatedOnlyOncePerProcess() const {
+            return data_.canBeInstantiatedOnlyOncePerProcess;
         }
 
-        string getModelName() const override {
-            return modelDescription_.getModelName();
+        bool canNotUseMemoryManagementFunctions() const {
+            return data_.canNotUseMemoryManagementFunctions;
         }
 
-        string getDescription() const override {
-            return modelDescription_.getDescription();
+        bool needsExecutionTool() const {
+            return data_.needsExecutionTool;
         }
 
-        string getVersion() const {
-            return modelDescription_.getVersion();
+        bool canSerializeFMUstate() const {
+            return data_.canSerializeFMUstate;
         }
 
-        string getAuthor() const override {
-            return modelDescription_.getAuthor();
+        bool canGetAndSetFMUstate() const {
+            return data_.canGetAndSetFMUstate;
         }
 
-        string getLicense() const override {
-            return modelDescription_.getLicense();
+        string getModelIdentifier() const {
+            return data_.modelIdentifier;
         }
-
-        string getCopyright() const override {
-            return modelDescription_.getCopyright();
-        }
-
-        string getGenerationTool() const override {
-            return modelDescription_.getGenerationTool();
-        }
-
-        string getGenerationDateAndTime() const override {
-            return modelDescription_.getGenerationDateAndTime();
-        }
-
-        string getVariableNamingConvention() const override {
-            return modelDescription_.getVariableNamingConvention();
-        }
-
-        unsigned int getNumberOfEventIndicators() const override {
-            return modelDescription_.getNumberOfEventIndicators();
-        }
-
-        unsigned int getNumberOfContinuousStates() const override {
-            return modelDescription_.getNumberOfContinuousStates();
-        }
-
-        ModelVariables &getModelVariables() override {
-            return modelDescription_.getModelVariables();
-        }
-
-        const ModelStructure &getModelStructure() const override {
-            return modelDescription_.getModelStructure();
-        }
-
-        const std::optional<DefaultExperiment> getDefaultExperiment() const override {
-            return modelDescription_.getDefaultExperiment();
-        }
-
-        bool supportsModelExchange() const override {
-            return modelDescription_.supportsModelExchange();
-        }
-
-        bool supportsCoSimulation() const override {
-            return modelDescription_.supportsCoSimulation();
-        }
-
-        ScalarVariable &getVariableByName(const string &name) override {
-            return modelDescription_.getVariableByName(name);
-        }
-
-        ScalarVariable &getVariableByValueReference(const fmi2ValueReference vr) override {
-            return modelDescription_.getVariableByValueReference(vr);
-        }
-
-        CoSimulationModelDescription asCoSimulationModelDescription() override;
-
-        ModelExchangeModelDescription asModelExchangeModelDescription() override;
 
     };
 
@@ -169,7 +165,7 @@ namespace fmi4cpp::fmi2::xml {
 
     public:
 
-        explicit CoSimulationModelDescription(ModelDescription &md, const CoSimulationAttributes &data);
+        explicit CoSimulationModelDescription(const ModelDescription &md, const CoSimulationAttributes &data);
 
         bool canInterpolateInputs() const;
 
@@ -177,14 +173,14 @@ namespace fmi4cpp::fmi2::xml {
 
         bool canHandleVariableCommunicationStepSize() const;
 
-        const unsigned int maxOutputDerivativeOrder() const;
+        size_t maxOutputDerivativeOrder() const;
 
     };
 
     class ModelExchangeModelDescription : public SpecificModelDescription<ModelExchangeAttributes> {
 
     public:
-        explicit ModelExchangeModelDescription(ModelDescription &md, const ModelExchangeAttributes &data);
+        explicit ModelExchangeModelDescription(const ModelDescription &md, const ModelExchangeAttributes &data);
 
         bool completedIntegratorStepNotNeeded() const;
 

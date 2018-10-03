@@ -25,10 +25,11 @@
 #include <fmi4cpp/fmi2/import/ModelExchangeInstance.hpp>
 
 using namespace fmi4cpp::fmi2::import;
+using fmi4cpp::fmi2::import::ModelExchangeInstance;
 
 ModelExchangeInstance::ModelExchangeInstance(const fmi2Component c,
-                                             const shared_ptr<ModelExchangeLibrary> &library,
-                                             ModelExchangeModelDescription &modelDescription)
+                                             const std::shared_ptr<ModelExchangeLibrary> &library,
+                                             const std::shared_ptr<ModelExchangeModelDescription> &modelDescription)
         : AbstractFmuInstance<ModelExchangeLibrary, ModelExchangeModelDescription>(c, library, modelDescription) {}
 
 fmi2Status ModelExchangeInstance::enterEventMode() const {

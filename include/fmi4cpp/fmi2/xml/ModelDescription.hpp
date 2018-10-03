@@ -36,9 +36,6 @@
 #include "DefaultExperiment.hpp"
 #include "FmuTypeAttributes.hpp"
 
-using std::string;
-using std::unique_ptr;
-using std::shared_ptr;
 using boost::property_tree::ptree;
 
 namespace fmi4cpp::fmi2::xml {
@@ -51,51 +48,49 @@ namespace fmi4cpp::fmi2::xml {
 
     public:
 
-        virtual string getGuid() const = 0;
+        virtual std::string getGuid() const = 0;
 
-        virtual string getFmiVersion() const = 0;
+        virtual std::string getFmiVersion() const = 0;
 
-        virtual string getModelName() const = 0;
+        virtual std::string getModelName() const = 0;
 
-        virtual string getDescription() const = 0;
+        virtual std::string getDescription() const = 0;
 
-        virtual string getVersion() const = 0;
+        virtual std::string getVersion() const = 0;
 
-        virtual string getAuthor() const = 0;
+        virtual std::string getAuthor() const = 0;
 
-        virtual string getLicense() const = 0;
+        virtual std::string getLicense() const = 0;
 
-        virtual string getCopyright() const = 0;
+        virtual std::string getCopyright() const = 0;
 
-        virtual string getGenerationTool() const = 0;
+        virtual std::string getGenerationTool() const = 0;
 
-        virtual string getGenerationDateAndTime() const = 0;
+        virtual std::string getGenerationDateAndTime() const = 0;
 
-        virtual string getVariableNamingConvention() const = 0;
+        virtual std::string getVariableNamingConvention() const = 0;
 
-        virtual unsigned int getNumberOfEventIndicators() const = 0;
+        virtual size_t getNumberOfEventIndicators() const = 0;
 
-        virtual unsigned int getNumberOfContinuousStates() const = 0;
+        virtual size_t getNumberOfContinuousStates() const = 0;
 
-        virtual ModelVariables &getModelVariables() = 0;
+        virtual const ModelVariables &getModelVariables() const = 0;
 
         virtual const ModelStructure &getModelStructure() const = 0;
 
-        virtual const std::optional<DefaultExperiment> getDefaultExperiment() const = 0;
+        virtual std::optional<DefaultExperiment> getDefaultExperiment() const = 0;
 
         virtual bool supportsModelExchange() const = 0;
 
         virtual bool supportsCoSimulation() const = 0;
 
-        virtual ScalarVariable &getVariableByName(const string &name) = 0;
+        virtual const ScalarVariable &getVariableByName(const std::string &name) const = 0;
 
-        virtual ScalarVariable &getVariableByValueReference(const fmi2ValueReference vr) = 0;
-
-        virtual CoSimulationModelDescription asCoSimulationModelDescription() = 0;
-
-        virtual ModelExchangeModelDescription asModelExchangeModelDescription() = 0;
+        virtual const ScalarVariable &getVariableByValueReference(fmi2ValueReference vr) const = 0;
 
     };
+
+//    typedef shared_ptr<ModelDescription> ModelDescriptionRef;
 
 }
 

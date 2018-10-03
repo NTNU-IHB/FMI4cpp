@@ -30,7 +30,8 @@ namespace fs = std::experimental::filesystem;
 
 #include <sstream>
 #include <iostream>
-#include <fmi4cpp/fmi2/enumsToString.hpp>
+
+#include <fmi4cpp/fmi2/fmi4cppUtils.hpp>
 #include <fmi4cpp/fmi2/import/FmiLibrary.hpp>
 
 #include "FmiLibraryHelper.hpp"
@@ -42,7 +43,7 @@ namespace {
 
     void logger(void *fmi2ComponentEnvironment,
                 fmi2String instance_name, fmi2Status status, fmi2String category, fmi2String message, ...) {
-        printf("status = %s, instanceName = %s, category = %s: %s\n", to_string(status).c_str(), instance_name,
+        printf("status = %s, instanceName = %s, category = %s: %s\n", fmi4cpp::to_string(status).c_str(), instance_name,
                category, message);
     }
 

@@ -30,10 +30,7 @@
 #include <experimental/filesystem>
 #include "../xml/ModelDescriptionImpl.hpp"
 
-using std::string;
-using std::unique_ptr;
-using fmi4cpp::fmi2::xml::ModelDescription;
-using fmi4cpp::fmi2::xml::ModelDescriptionImpl;
+using fmi4cpp::fmi2::xml::ModelDescriptionProvider;
 
 namespace fs = std::experimental::filesystem;
 
@@ -49,40 +46,39 @@ namespace fmi4cpp::fmi2::import {
 
         friend class ModelExchangeInstanceBuilder;
 
-    public:
-        explicit Fmu(const string &fmu_file);
-
-        const string getGuid() const;
-
-        const string getModelName() const;
-
-        const string getModelDescriptionXml() const;
-
-        ModelDescription &getModelDescription();
-
-        const bool supportsModelExchange() const;
-
-        const bool supportsCoSimulation() const;
-
-        CoSimulationSlaveBuilder &asCoSimulationFmu();
-
-        ModelExchangeInstanceBuilder &asModelExchangeFmu();
-
-        ~Fmu();
-
     private:
 
         fs::path tmp_path_;
-        const string fmu_file_;
-        unique_ptr<ModelDescriptionImpl> modelDescription_;
-        unique_ptr<CoSimulationSlaveBuilder> csBuilder_;
-        unique_ptr<ModelExchangeInstanceBuilder> meBuilder_;
+        const std::string fmu_file_;
+        std::shared_ptr<ModelDescriptionProvider> modelDescription_;
 
-        const string getResourcePath() const;
+        std::string getResourcePath() const;
 
-        const string getModelDescriptionPath() const;
+        std::string getModelDescriptionPath() const;
 
-        const string getAbsoluteLibraryPath(const string modelIdentifier) const;
+        std::string getAbsoluteLibraryPath(const string modelIdentifier) const;
+
+
+    public:
+        explicit Fmu(const std::string &fmu_file);
+
+        std::string getGuid() const;
+
+        std::string getModelName() const;
+
+        std::string getModelDescriptionXml() const;
+
+        ModelDescriptionProvider &getModelDescription();
+
+        bool supportsModelExchange() const;
+
+        bool supportsCoSimulation() const;
+
+        CoSimulationSlaveBuilder asCoSimulationFmu();
+
+        ModelExchangeInstanceBuilder asModelExchangeFmu();
+
+        ~Fmu();
 
     };
 

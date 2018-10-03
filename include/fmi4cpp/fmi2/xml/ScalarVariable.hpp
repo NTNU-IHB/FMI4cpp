@@ -26,16 +26,16 @@
 #define FMI4CPP_SCALARVARIABLE_HPP
 
 #include <memory>
+#include <ostream>
 #include <optional>
 #include <boost/optional.hpp>
 #include <boost/property_tree/ptree.hpp>
-#include <ostream>
+
+#include "../fmi2Functions.h"
 
 #include "enums.hpp"
-#include "../fmi2Functions.h"
 #include "ScalarVariableAttributes.hpp"
 
-using std::string;
 using boost::property_tree::ptree;
 
 namespace fmi4cpp::fmi2::xml {
@@ -53,177 +53,52 @@ namespace fmi4cpp::fmi2::xml {
 
     class ScalarVariable {
 
-    private:
-        string name_;
-        string description_;
-        fmi2ValueReference valueReference_;
-        bool canHandleMultipleSetPerTimelnstant_;
-
-        fmi2Causality causality_;
-        fmi2Variability variability_;
-        fmi2Initial initial_;
-
-        std::shared_ptr<IntegerAttribute> integerAttribute_;
-        std::shared_ptr<RealAttribute> realAttribute_;
-        std::shared_ptr<StringAttribute> stringAttribute_;
-        std::shared_ptr<BooleanAttribute> booleanAttribute_;
-        std::shared_ptr<EnumerationAttribute> enumerationAttribute_;
-
     public:
 
-        string getName() const;
+        virtual std::string getName() const = 0;
 
-        string getDescription() const;
+        virtual std::string getDescription() const = 0;
 
-        fmi2ValueReference getValueReference() const;
+        virtual fmi2ValueReference getValueReference() const = 0;
 
-        bool canHandleMultipleSetPerTimelnstant() const;
+        virtual bool canHandleMultipleSetPerTimelnstant() const = 0;
 
-        fmi2Causality getCausality() const;
+        virtual fmi2Causality getCausality() const = 0;
 
-        fmi2Variability getVariability() const;
+        virtual fmi2Variability getVariability() const = 0;
 
-        fmi2Initial getInitial() const;
+        virtual fmi2Initial getInitial() const = 0;
 
-        IntegerVariable asIntegerVariable() const;
+        virtual IntegerVariable asIntegerVariable() const = 0;
 
-        RealVariable asRealVariable() const;
+        virtual RealVariable asRealVariable() const = 0;
 
-        StringVariable asStringVariable() const;
+        virtual StringVariable asStringVariable() const = 0;
 
-        BooleanVariable asBooleanVariable() const;
+        virtual BooleanVariable asBooleanVariable() const = 0;
 
-        EnumerationVariable asEnumerationVariable() const;
+        virtual EnumerationVariable asEnumerationVariable() const = 0;
 
-        bool isIntegerVariable() const;
+        virtual bool isIntegerVariable() const = 0;
 
-        bool isRealVariable() const;
+        virtual bool isRealVariable() const = 0;
 
-        bool isStringVariable() const;
+        virtual bool isStringVariable() const = 0;
 
-        bool isBooleanVariable() const;
+        virtual bool isBooleanVariable() const = 0;
 
-        bool isEnumerationVariable() const;
+        virtual bool isEnumerationVariable() const = 0;
 
-        void load(const ptree &node);
+        virtual std::string toString() const = 0;
 
-        friend std::ostream &operator<<(std::ostream &os, const ScalarVariable &variable);
-
-    };
-
-    template <class T, class U>
-    class TypedVariable {
-
-    private:
-
-        bool startChanged;
-        std::optional<T> originalStart;
-
-    protected:
-        U &attribute_;
-
-    public:
-
-        TypedVariable(U &attribute_) : attribute_(attribute_) {
-            originalStart = attribute_.start;
-        }
-
-        bool hasStartChanged() const {
-            return startChanged;
-        }
-
-        std::optional<T> getStart() const {
-            return attribute_.start;
-        }
-
-        bool setStart(const T value) {
-            if (attribute_.start) {
-                attribute_.start = value;
-                startChanged = true;
-                return true;
-            } else if (attribute_.start.value() != value) {
-                attribute_.start = value;
-                startChanged = true;
-                return true;
-            }
-            return false;
-        }
-
-        void resetStart() {
-            if (startChanged) {
-                attribute_.start = originalStart;
-                startChanged = false;
-            }
+        friend std::ostream &operator<<(std::ostream &os, const ScalarVariable &variable) {
+            os << variable.toString();
+            return os;
         }
 
     };
 
-    class IntegerVariable : public ScalarVariable, public TypedVariable<int, IntegerAttribute> {
-
-    public:
-        IntegerVariable(const ScalarVariable &var, IntegerAttribute &attribute);
-
-        std::optional<int> getMin() const;
-
-        std::optional<int> getMax() const;
-
-        void setStart(const int start);
-
-        std::optional<string> getQuantity() const;
-
-    };
-
-    class RealVariable : public ScalarVariable, public TypedVariable<double, RealAttribute> {
-
-    public:
-        RealVariable(const ScalarVariable &var, RealAttribute &attribute);
-
-        std::optional<double> getMin() const;
-
-        std::optional<double> getMax() const;
-
-        std::optional<double> getNominal() const;
-
-        bool getReinit() const;
-
-        bool getUnbounded() const;
-
-        bool getRelativeQuantity() const;
-
-        std::optional<string> getQuantity() const;
-
-        std::optional<string> getUnit() const;
-
-        std::optional<string> getDisplayUnit() const;
-
-        std::optional<unsigned int> getDerivative() const;
-
-    };
-
-    class StringVariable : public ScalarVariable, public TypedVariable<string, StringAttribute> {
-
-    public:
-        StringVariable(const ScalarVariable &var, StringAttribute &attribute);
-    };
-
-    class BooleanVariable : public ScalarVariable, public TypedVariable<bool, BooleanAttribute> {
-
-    public:
-        BooleanVariable(const ScalarVariable &var, BooleanAttribute &attribute);
-    };
-
-    class EnumerationVariable : public ScalarVariable, public TypedVariable<int, EnumerationAttribute> {
-
-    public:
-        EnumerationVariable(const ScalarVariable &var, EnumerationAttribute &attribute);
-
-        std::optional<int> getMin() const;
-
-        std::optional<int> getMax() const;
-
-        std::optional<string> getQuantity() const;
-
-    };
+//    typedef std::shared_ptr<ScalarVariable> ScalarVariableRef;
 
 }
 
