@@ -65,9 +65,9 @@ ModelDescriptionImpl::ModelDescriptionImpl(const string &fileName) {
             defaultExperiment_ = DefaultExperiment();
             defaultExperiment_->load(v.second);
         } else if (v.first == "ModelVariables") {
-            modelVariables_ = make_unique<ModelVariablesImpl>(v.second);
+            modelVariables_ = make_shared<ModelVariablesImpl>(v.second);
         } else if (v.first == "ModelStructure") {
-            modelStructure_ = make_unique<ModelStructureImpl>(v.second);
+            modelStructure_ = make_shared<ModelStructureImpl>(v.second);
         }
 
     }
