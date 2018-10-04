@@ -150,9 +150,7 @@ namespace fmi4cpp::fmi2::xml {
 
     };
 
-    class CoSimulationModelDescription : public virtual SpecificModelDescription<CoSimulationAttributes> {
-
-    public:
+    struct CoSimulationModelDescription : virtual SpecificModelDescription<CoSimulationAttributes> {
 
         explicit CoSimulationModelDescription(const ModelDescription &md, const CoSimulationAttributes &attributes);
 
@@ -166,9 +164,8 @@ namespace fmi4cpp::fmi2::xml {
 
     };
 
-    class ModelExchangeModelDescription : public virtual SpecificModelDescription<ModelExchangeAttributes> {
+    struct ModelExchangeModelDescription : virtual SpecificModelDescription<ModelExchangeAttributes> {
 
-    public:
         explicit ModelExchangeModelDescription(const ModelDescription &md, const ModelExchangeAttributes &attributes);
 
         bool completedIntegratorStepNotNeeded() const;
