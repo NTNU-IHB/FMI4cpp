@@ -33,7 +33,7 @@ using std::string;
 
 namespace fmi4cpp::fmi2::xml {
 
-    struct FmuTypeAttributes {
+    struct CommonFmuAttributes {
 
         string modelIdentifier;
 
@@ -50,19 +50,19 @@ namespace fmi4cpp::fmi2::xml {
 
     };
 
-    struct CoSimulationAttributes : FmuTypeAttributes {
+    struct CoSimulationAttributes : CommonFmuAttributes {
 
         bool canInterpolateInputs;
         bool canRunAsynchronuously;
         bool canHandleVariableCommunicationStepSize;
 
-        unsigned int maxOutputDerivativeOrder;
+        size_t maxOutputDerivativeOrder;
 
         void load(const ptree &node) override;
 
     };
 
-    struct ModelExchangeAttributes : FmuTypeAttributes {
+    struct ModelExchangeAttributes : CommonFmuAttributes {
 
         bool completedIntegratorStepNotNeeded;
 

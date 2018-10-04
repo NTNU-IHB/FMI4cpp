@@ -23,33 +23,33 @@
  */
 
 #include <fmi4cpp/fmi2/xml/ModelDescription.hpp>
-#include <fmi4cpp/fmi2/xml/SpecificModelDescription.hpp>
+#include <fmi4cpp/fmi2/xml/CommonModelDescription.hpp>
 
 using namespace std;
 using namespace fmi4cpp::fmi2::xml;
 
-CoSimulationModelDescription::CoSimulationModelDescription(const ModelDescription &md, const CoSimulationAttributes &data)
-        : SpecificModelDescription<CoSimulationAttributes>(md, data) {};
+CoSimulationModelDescription::CoSimulationModelDescription(const ModelDescription &md, const CoSimulationAttributes &attributes)
+        : CommonModelDescription<CoSimulationAttributes>(md, attributes) {};
 
 bool CoSimulationModelDescription::canInterpolateInputs() const {
-    return data_.canInterpolateInputs;
+    return attributes_.canInterpolateInputs;
 }
 
 bool CoSimulationModelDescription::canRunAsynchronuously() const {
-    return data_.canRunAsynchronuously;
+    return attributes_.canRunAsynchronuously;
 }
 
 bool CoSimulationModelDescription::canHandleVariableCommunicationStepSize() const {
-    return data_.canHandleVariableCommunicationStepSize;
+    return attributes_.canHandleVariableCommunicationStepSize;
 }
 
 size_t CoSimulationModelDescription::maxOutputDerivativeOrder() const {
-    return data_.maxOutputDerivativeOrder;
+    return attributes_.maxOutputDerivativeOrder;
 }
 
-ModelExchangeModelDescription::ModelExchangeModelDescription(const ModelDescription &md, const ModelExchangeAttributes &data)
-        : SpecificModelDescription(md, data) {};
+ModelExchangeModelDescription::ModelExchangeModelDescription(const ModelDescription &md, const ModelExchangeAttributes &attributes)
+        : CommonModelDescription(md, attributes) {};
 
 bool ModelExchangeModelDescription::completedIntegratorStepNotNeeded() const {
-    return data_.completedIntegratorStepNotNeeded;
+    return attributes_.completedIntegratorStepNotNeeded;
 }

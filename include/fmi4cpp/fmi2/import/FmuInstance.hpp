@@ -27,7 +27,7 @@
 
 #include <vector>
 #include <string>
-#include "../xml/SpecificModelDescription.hpp"
+#include "fmi4cpp/fmi2/xml/CommonModelDescription.hpp"
 #include "../fmi2Functions.h"
 
 namespace fmi4cpp::fmi2::import {
@@ -97,7 +97,7 @@ namespace fmi4cpp::fmi2::import {
         virtual fmi2Status readBoolean(fmi2ValueReference vr, fmi2Boolean &ref) const = 0;
         virtual fmi2Status readBoolean(const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Boolean> &ref) const = 0;
 
-        virtual fmi2Status writeInteger(fmi2ValueReference vr, const fmi2Integer value) = 0;
+        virtual fmi2Status writeInteger(fmi2ValueReference vr, fmi2Integer value) = 0;
         virtual fmi2Status writeInteger(const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2Integer > &values) = 0;
 
         virtual fmi2Status writeReal(fmi2ValueReference vr, fmi2Real value) = 0;

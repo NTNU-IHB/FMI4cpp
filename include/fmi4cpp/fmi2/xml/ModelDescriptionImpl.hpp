@@ -25,11 +25,11 @@
 #ifndef FMI4CPP_MODELDESCRIPTIONIMPL_HPP
 #define FMI4CPP_MODELDESCRIPTIONIMPL_HPP
 
-#include "ModelDescriptionProvider.hpp"
+#include "ModelDescription.hpp"
 
 namespace fmi4cpp::fmi2::xml {
 
-    class ModelDescriptionImpl: public ModelDescriptionProvider {
+    class ModelDescriptionImpl: public virtual ModelDescriptionProvider {
 
     private:
         std::string guid_;
@@ -96,11 +96,9 @@ namespace fmi4cpp::fmi2::xml {
 
         const ScalarVariable &getVariableByName(const std::string &name) const override;
 
-        const ScalarVariable &getVariableByValueReference(fmi2ValueReference vr) const override;
+        const CoSimulationModelDescription asCoSimulationModelDescription() const override;
 
-        std::shared_ptr<CoSimulationModelDescription> asCoSimulationModelDescription() const override;
-
-        std::shared_ptr<ModelExchangeModelDescription> asModelExchangeModelDescription() const override;
+        const ModelExchangeModelDescription asModelExchangeModelDescription() const override;
 
     };
 

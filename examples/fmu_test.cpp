@@ -39,7 +39,7 @@ int main() {
     import::Fmu fmu(fmuPath);
     auto& md = fmu.getModelDescription();
 
-    xml::ScalarVariable var = md.getVariableByValueReference(47);
+    const auto& var = md.getModelVariables().getByValueReference(47);
     cout << var << endl;
 
     auto md_cs = md.asCoSimulationModelDescription();

@@ -36,7 +36,7 @@
 #include "FmuInstance.hpp"
 #include "FmiLibrary.hpp"
 #include "../fmi4cppUtils.hpp"
-#include "../xml/SpecificModelDescription.hpp"
+#include "fmi4cpp/fmi2/xml/CommonModelDescription.hpp"
 
 namespace {
 
@@ -141,12 +141,14 @@ namespace fmi4cpp::fmi2::import {
     class AbstractFmuInstance : virtual public FmuInstance<U> {
 
         static_assert(std::is_base_of<FmiLibrary, T>::value, "T must derive from FmiLibrary");
-//        static_assert(std::is_base_of<xml::SpecificModelDescription<xml::FmuTypeAttributes>, U>::value,
-//                      "U must derive from SpecificModelDescription");
+//        static_assert(std::is_base_of<xml::CommonModelDescription<xml::FmuTypeAttributes>, U>::value,
+//                      "U must derive from CommonModelDescription");
 
     private:
-        bool instanceFreed_;
+
         StartQueue queue_;
+        bool instanceFreed_;
+
 
     protected:
 

@@ -25,6 +25,7 @@
 #ifndef FMI4CPP_SPECIFICMODELDESCRIPTION_HPP
 #define FMI4CPP_SPECIFICMODELDESCRIPTION_HPP
 
+#include <string>
 #include <type_traits>
 #include "ModelDescription.hpp"
 #include "SourceFiles.hpp"
@@ -32,7 +33,7 @@
 namespace fmi4cpp::fmi2::xml {
 
     template <class T>
-    class SpecificModelDescription : public virtual ModelDescription {
+    class CommonModelDescription : public virtual ModelDescription {
 
 //        static_assert(std::is_base_of<xml::FmuTypeAttributes, T>::value, "T must derive from FmuTypeAttributes");
 
@@ -40,18 +41,14 @@ namespace fmi4cpp::fmi2::xml {
         const ModelDescription &modelDescription_;
 
     protected:
-        const T &data_;
+        const T &attributes_;
 
     public:
 
-        SpecificModelDescription(const ModelDescription &md, const T &data)
-                : modelDescription_(md), data_(data) {}
+        CommonModelDescription(const ModelDescription &md, const T &attributes)
+                : modelDescription_(md), attributes_(attributes) {}
 
-        const ScalarVariable &getVariableByValueReference(const fmi2ValueReference vr) const {
-            return modelDescription_.getVariableByValueReference(vr);
-        }
-
-        const ScalarVariable &getVariableByName(const string &name) const {
+        const ScalarVariable &getVariableByName(const std::string &name) const {
             return modelDescription_.getVariableByName(name);
         }
 
@@ -128,44 +125,44 @@ namespace fmi4cpp::fmi2::xml {
         }
 
         SourceFiles getSourceFiles() const {
-            return data_.sourceFiles;
+            return attributes_.sourceFiles;
         }
 
         bool providesDirectionalDerivative() const {
-            return data_.providesDirectionalDerivative;
+            return attributes_.providesDirectionalDerivative;
         }
 
         bool canBeInstantiatedOnlyOncePerProcess() const {
-            return data_.canBeInstantiatedOnlyOncePerProcess;
+            return attributes_.canBeInstantiatedOnlyOncePerProcess;
         }
 
         bool canNotUseMemoryManagementFunctions() const {
-            return data_.canNotUseMemoryManagementFunctions;
+            return attributes_.canNotUseMemoryManagementFunctions;
         }
 
         bool needsExecutionTool() const {
-            return data_.needsExecutionTool;
+            return attributes_.needsExecutionTool;
         }
 
         bool canSerializeFMUstate() const {
-            return data_.canSerializeFMUstate;
+            return attributes_.canSerializeFMUstate;
         }
 
         bool canGetAndSetFMUstate() const {
-            return data_.canGetAndSetFMUstate;
+            return attributes_.canGetAndSetFMUstate;
         }
 
-        string getModelIdentifier() const {
-            return data_.modelIdentifier;
+        std::string getModelIdentifier() const {
+            return attributes_.modelIdentifier;
         }
 
     };
 
-    class CoSimulationModelDescription : public SpecificModelDescription<CoSimulationAttributes> {
+    class CoSimulationModelDescription : public virtual CommonModelDescription<CoSimulationAttributes> {
 
     public:
 
-        explicit CoSimulationModelDescription(const ModelDescription &md, const CoSimulationAttributes &data);
+        explicit CoSimulationModelDescription(const ModelDescription &md, const CoSimulationAttributes &attributes);
 
         bool canInterpolateInputs() const;
 
@@ -177,10 +174,10 @@ namespace fmi4cpp::fmi2::xml {
 
     };
 
-    class ModelExchangeModelDescription : public SpecificModelDescription<ModelExchangeAttributes> {
+    class ModelExchangeModelDescription : public virtual CommonModelDescription<ModelExchangeAttributes> {
 
     public:
-        explicit ModelExchangeModelDescription(const ModelDescription &md, const ModelExchangeAttributes &data);
+        explicit ModelExchangeModelDescription(const ModelDescription &md, const ModelExchangeAttributes &attributes);
 
         bool completedIntegratorStepNotNeeded() const;
 

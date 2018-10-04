@@ -11,9 +11,9 @@ SET(SOURCES
     fmi4cpp/fmi2/import/ModelExchangeInstanceBuilder.cpp
 
     fmi4cpp/fmi2/xml/enums.cpp
-    fmi4cpp/fmi2/xml/FmuTypeAttributes.cpp
+    fmi4cpp/fmi2/xml/FmuAttributes.cpp
     fmi4cpp/fmi2/xml/ModelDescriptionImpl.cpp
-    fmi4cpp/fmi2/xml/SpecificModelDescription.cpp
+    fmi4cpp/fmi2/xml/CommonModelDescription.cpp
     fmi4cpp/fmi2/xml/ModelVariables.cpp
     fmi4cpp/fmi2/xml/ScalarVariable.cpp
     fmi4cpp/fmi2/xml/ScalarVariableImpl.cpp

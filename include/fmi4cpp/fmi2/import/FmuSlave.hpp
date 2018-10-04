@@ -29,16 +29,15 @@
 
 namespace fmi4cpp::fmi2::import {
 
-    template <class T>
-    class FmuSlave : virtual public FmuInstance<T> {
+    class FmuSlave : virtual public FmuInstance<xml::CoSimulationModelDescription> {
 
     public:
 
-        virtual fmi2Status doStep(const double stepSize) = 0;
+        virtual fmi2Status doStep(double stepSize) = 0;
 
         virtual fmi2Status cancelStep() = 0;
 
-        virtual ~FmuSlave() {};
+        ~FmuSlave() override = default;
 
     };
 

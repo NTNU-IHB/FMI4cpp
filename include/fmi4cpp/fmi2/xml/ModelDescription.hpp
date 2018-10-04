@@ -34,7 +34,7 @@
 #include "ModelStructure.hpp"
 #include "ModelVariables.hpp"
 #include "DefaultExperiment.hpp"
-#include "FmuTypeAttributes.hpp"
+#include "FmuAttributes.hpp"
 
 using boost::property_tree::ptree;
 
@@ -80,17 +80,23 @@ namespace fmi4cpp::fmi2::xml {
 
         virtual std::optional<DefaultExperiment> getDefaultExperiment() const = 0;
 
+        virtual const ScalarVariable &getVariableByName(const std::string &name) const = 0;
+
+    };
+
+    class ModelDescriptionProvider: public virtual ModelDescription {
+
+    public:
+
         virtual bool supportsModelExchange() const = 0;
 
         virtual bool supportsCoSimulation() const = 0;
 
-        virtual const ScalarVariable &getVariableByName(const std::string &name) const = 0;
+        virtual const CoSimulationModelDescription asCoSimulationModelDescription() const = 0;
 
-        virtual const ScalarVariable &getVariableByValueReference(fmi2ValueReference vr) const = 0;
+        virtual const ModelExchangeModelDescription asModelExchangeModelDescription() const = 0;
 
     };
-
-//    typedef shared_ptr<ModelDescription> ModelDescriptionRef;
 
 }
 

@@ -22,12 +22,12 @@
  * THE SOFTWARE.
  */
 
-#include <fmi4cpp/fmi2/xml/FmuTypeAttributes.hpp>
+#include <fmi4cpp/fmi2/xml/FmuAttributes.hpp>
 
 using namespace std;
 using namespace fmi4cpp::fmi2::xml;
 
-void FmuTypeAttributes::load(const ptree &node) {
+void CommonFmuAttributes::load(const ptree &node) {
 
     modelIdentifier = node.get<string>("<xmlattr>.modelIdentifier");
 
@@ -47,9 +47,9 @@ void FmuTypeAttributes::load(const ptree &node) {
 }
 
 void CoSimulationAttributes::load(const ptree &node) {
-    FmuTypeAttributes::load(node);
+    CommonFmuAttributes::load(node);
 
-    maxOutputDerivativeOrder = node.get<unsigned int>("<xmlattr>.maxOutputDerivativeOrder", 0);
+    maxOutputDerivativeOrder = node.get<size_t >("<xmlattr>.maxOutputDerivativeOrder", 0);
 
     canInterpolateInputs = node.get<bool>("<xmlattr>.canInterpolateInputs", false);
     canRunAsynchronuously = node.get<bool>("<xmlattr>.canRunAsynchronuously", false);
@@ -58,7 +58,7 @@ void CoSimulationAttributes::load(const ptree &node) {
 }
 
 void ModelExchangeAttributes::load(const ptree &node) {
-    FmuTypeAttributes::load(node);
+    CommonFmuAttributes::load(node);
 
     completedIntegratorStepNotNeeded = node.get<bool>("<xmlattr>.completedIntegratorStepNotNeeded", false);
 

@@ -36,11 +36,11 @@ namespace fmi4cpp::fmi2::import {
 
     using xml::CoSimulationModelDescription;
 
-    class CoSimulationSlave : public FmuSlave<CoSimulationModelDescription>,
+    class CoSimulationSlave : public FmuSlave,
                               public AbstractFmuInstance<CoSimulationLibrary, CoSimulationModelDescription> {
 
     public:
-        explicit CoSimulationSlave(const fmi2Component c,
+        explicit CoSimulationSlave(fmi2Component c,
                                    const std::shared_ptr<CoSimulationLibrary> &library,
                                    const std::shared_ptr<CoSimulationModelDescription> &modelDescription);
 
@@ -50,7 +50,7 @@ namespace fmi4cpp::fmi2::import {
 
         CoSimulationModelDescription &getModelDescription() const override;
 
-        void init(double start = 0, double stop = 0) override;
+        void init(double start = 0, double stop = 0) final override;
 
         fmi2Status reset() override;
 
