@@ -151,9 +151,9 @@ string fmi4cpp::fmi2::xml::ScalarVariableImpl::toString() const {
 
     std::ostringstream os;
 
-    os << "ScalarVariable( name: " << name_ << ", description: " << description_ << ", valueReference: "
-       << valueReference_ << ", causality: " << to_string(causality_) << ", variability: "
-       <<  to_string(variability_) << ", initial: " <<  to_string(initial_);
+    os << "ScalarVariable( name=" << name_ << ", description=" << description_ << ", valueReference="
+       << valueReference_ << ", causality=" << to_string(causality_) << ", variability="
+       <<  to_string(variability_) << ", initial=" <<  to_string(initial_);
 
     if (integerAttribute_) {
         os << ", IntegerAttribute_(" << *integerAttribute_ << " )";
