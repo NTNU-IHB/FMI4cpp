@@ -147,7 +147,7 @@ namespace fmi4cpp::fmi2::import {
     private:
 
 //        StartQueue queue_;
-        bool instanceFreed_;
+        bool instanceFreed_ = false;
 
 
     protected:
