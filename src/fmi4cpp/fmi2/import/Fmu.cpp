@@ -127,7 +127,7 @@ Fmu::~Fmu() {
     remove_all(tmpPath_);
 
 #if FMI4CPP_DEBUG_LOGGING_ENABLED
-    cout << "Fmu '" << getModelName() << "' disposed.." << endl;
+    cout << "FMU '" << getModelName() << "' disposed.." << endl;
 #endif
 
 }
