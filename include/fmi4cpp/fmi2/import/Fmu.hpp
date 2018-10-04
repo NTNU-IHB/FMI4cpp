@@ -44,16 +44,14 @@ namespace fs = std::experimental::filesystem;
 
 namespace fmi4cpp::fmi2::import {
 
-    class CoSimulationFmu;
+    struct CoSimulationFmu;
 
-    class ModelExchangeFmu;
+    struct ModelExchangeFmu;
 
     template<class T>
-    class IFmu {
+    struct IFmu {
 
         static_assert(std::is_base_of<xml::ModelDescription, T>::value, "T must derive from ModelDescription");
-
-    public:
 
         std::string getGuid() const {
             return getModelDescription().getGuid();
@@ -67,9 +65,8 @@ namespace fmi4cpp::fmi2::import {
 
     };
 
-    class FmuProvider : public virtual IFmu<xml::ModelDescriptionProvider> {
+    struct FmuProvider : virtual IFmu<xml::ModelDescriptionProvider> {
 
-    public:
         virtual bool supportsCoSimulation() const = 0;
 
         virtual bool supportsModelExchange() const = 0;
@@ -81,11 +78,11 @@ namespace fmi4cpp::fmi2::import {
     };
 
 
-    class Fmu : public virtual FmuProvider {
+    struct Fmu : virtual FmuProvider {
 
-        friend class CoSimulationFmu;
+        friend struct CoSimulationFmu;
 
-        friend class ModelExchangeFmu;
+        friend struct ModelExchangeFmu;
 
     private:
 
@@ -122,7 +119,7 @@ namespace fmi4cpp::fmi2::import {
 
     };
 
-    class CoSimulationFmu : public virtual IFmu<xml::CoSimulationModelDescription> {
+    struct CoSimulationFmu : virtual IFmu<xml::CoSimulationModelDescription> {
 
     private:
         Fmu &fmu_;
@@ -139,7 +136,7 @@ namespace fmi4cpp::fmi2::import {
 
     };
 
-    class ModelExchangeFmu: public virtual IFmu<xml::ModelExchangeModelDescription> {
+    struct ModelExchangeFmu: virtual IFmu<xml::ModelExchangeModelDescription> {
 
     private:
         Fmu &fmu_;
