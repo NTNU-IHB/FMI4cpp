@@ -37,16 +37,17 @@ int main() {
                            "/20sim/4.6.4.8004/ControlledTemperature/ControlledTemperature.fmu";
 
     import::Fmu fmu(fmuPath);
-    auto& md = fmu.getModelDescription();
+    import::CoSimulationFmu cs_fmu = fmu.asCoSimulationFmu();
+
+    auto& md = cs_fmu.getModelDescription();
 
     const auto& var = md.getModelVariables().getByValueReference(47);
     cout << var << endl;
 
-    auto md_cs = md.asCoSimulationModelDescription();
-    cout << "modelIdentifier=" << md_cs.getModelIdentifier() << endl;
+    cout << "modelIdentifier=" << md.getModelIdentifier() << endl;
 
-    auto slave1 = fmu.asCoSimulationFmu().newInstance();
-    auto slave2 = fmu.asCoSimulationFmu().newInstance();
+    auto slave1 = cs_fmu.newInstance();
+    auto slave2 = cs_fmu.newInstance();
     
     cout << "modelIdentifier= " << slave1->getModelDescription().getModelIdentifier() << endl;
 
