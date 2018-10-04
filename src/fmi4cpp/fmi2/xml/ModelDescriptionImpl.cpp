@@ -23,7 +23,7 @@
  */
 
 #include <fmi4cpp/fmi2/xml/ModelDescriptionImpl.hpp>
-#include <fmi4cpp/fmi2/xml/CommonModelDescription.hpp>
+#include <fmi4cpp/fmi2/xml/SpecificModelDescription.hpp>
 
 using namespace std;
 using namespace fmi4cpp::fmi2::xml;
@@ -150,10 +150,10 @@ const ScalarVariable &ModelDescriptionImpl::getVariableByName(const string &name
     return modelVariables_->getByName(name);
 }
 
-CoSimulationModelDescription ModelDescriptionImpl::asCoSimulationModelDescription() const {
+const CoSimulationModelDescription ModelDescriptionImpl::asCoSimulationModelDescription() const {
     return CoSimulationModelDescription(*this, *coSimulation_);
 }
 
-ModelExchangeModelDescription ModelDescriptionImpl::asModelExchangeModelDescription() const {
+const ModelExchangeModelDescription ModelDescriptionImpl::asModelExchangeModelDescription() const {
     return ModelExchangeModelDescription(*this, *modelExchange_);
 }

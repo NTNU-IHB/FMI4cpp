@@ -27,12 +27,11 @@
 
 #include <vector>
 #include <string>
-#include "fmi4cpp/fmi2/xml/CommonModelDescription.hpp"
 #include "../fmi2Functions.h"
 
 namespace fmi4cpp::fmi2::import {
 
-    template <class T>
+    template <typename T>
     class FmuInstance {
 
     protected:
@@ -44,23 +43,23 @@ namespace fmi4cpp::fmi2::import {
 
     public:
 
-        virtual const double getSimulationTime() const {
+        const double getSimulationTime() const {
             return simulationTime_;
         }
 
-        virtual const bool isInstantiated() const {
+        const bool isInstantiated() const {
             return instantiated_;
         }
 
-        virtual const bool isTerminated() const {
+        const bool isTerminated() const {
             return terminated_;
         }
 
-        virtual const fmi2ValueReference getValueReference(const std::string &name) {
+        const fmi2ValueReference getValueReference(const std::string &name) {
             return getModelDescription().getVariableByName(name).getValueReference();
         }
 
-        virtual T &getModelDescription() const = 0;
+        virtual const T &getModelDescription() const = 0;
 
         virtual void init(double start = 0, double stop = 0) = 0;
 
@@ -109,7 +108,7 @@ namespace fmi4cpp::fmi2::import {
         virtual fmi2Status writeBoolean(fmi2ValueReference vr, fmi2Boolean value) = 0;
         virtual fmi2Status writeBoolean(const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2Boolean > &values) = 0;
 
-        virtual ~FmuInstance() {};
+        virtual ~FmuInstance() = default;
 
     };
 

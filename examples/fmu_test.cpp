@@ -47,6 +47,8 @@ int main() {
 
     auto slave1 = fmu.asCoSimulationFmu().newInstance();
     auto slave2 = fmu.asCoSimulationFmu().newInstance();
+    
+    cout << "modelIdentifier= " << slave1->getModelDescription().getModelIdentifier() << endl;
 
     slave1->init();
     slave2->init();

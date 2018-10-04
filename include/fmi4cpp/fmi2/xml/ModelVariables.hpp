@@ -34,19 +34,17 @@ using boost::property_tree::ptree;
 
 namespace fmi4cpp::fmi2::xml {
 
-    class ModelVariables {
-
-    public:
+    struct ModelVariables {
 
         virtual const size_t size() const = 0;
 
-        virtual ScalarVariable &operator[](size_t index) = 0;
+        virtual const ScalarVariable &operator[](size_t index) const = 0;
 
         virtual const ScalarVariable &getByName(const std::string &name) const = 0;
 
         virtual const ScalarVariable &getByValueReference(fmi2ValueReference vr) const = 0;
 
-        virtual void getByCausality(fmi2Causality causality, std::vector<std::shared_ptr<ScalarVariable>> &store) = 0;
+        virtual void getByCausality(fmi2Causality causality, std::vector<std::reference_wrapper<ScalarVariable>> &store) const = 0;
 
         virtual std::vector<std::shared_ptr<ScalarVariable>>::iterator begin() = 0;
 
@@ -71,11 +69,11 @@ namespace fmi4cpp::fmi2::xml {
 
         const ScalarVariable &getByValueReference(fmi2ValueReference vr) const override;
 
-        void getByCausality(fmi2Causality causality, std::vector<std::shared_ptr<ScalarVariable>> &store) override;
+        void getByCausality(fmi2Causality causality, std::vector<std::reference_wrapper<ScalarVariable>> &store) const override;
 
         const size_t size() const override;
 
-        ScalarVariable &operator[](size_t index) override;
+        const ScalarVariable &operator[](size_t index) const override;
 
         std::vector<std::shared_ptr<ScalarVariable>>::iterator begin() override;
 

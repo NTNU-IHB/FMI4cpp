@@ -40,7 +40,7 @@ const string fmu_path = string(getenv("TEST_FMUs"))
 BOOST_AUTO_TEST_CASE(FmuExportCrossCompile_test1) {
 
     import::Fmu fmu(fmu_path);
-    xml::ModelDescription& md = fmu.getModelDescription();
+    const xml::ModelDescription& md = fmu.getModelDescription();
 
     BOOST_CHECK_EQUAL("structured", md.getVariableNamingConvention());
 

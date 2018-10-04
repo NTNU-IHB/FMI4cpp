@@ -33,9 +33,9 @@
 namespace fmi4cpp::fmi2::xml {
 
     template <class T>
-    class CommonModelDescription : public virtual ModelDescription {
+    struct SpecificModelDescription : virtual ModelDescription {
 
-//        static_assert(std::is_base_of<xml::FmuTypeAttributes, T>::value, "T must derive from FmuTypeAttributes");
+        static_assert(std::is_base_of<xml::CommonFmuAttributes, T>::value, "T must derive from FmuTypeAttributes");
 
     private:
         const ModelDescription &modelDescription_;
@@ -45,19 +45,11 @@ namespace fmi4cpp::fmi2::xml {
 
     public:
 
-        CommonModelDescription(const ModelDescription &md, const T &attributes)
+        SpecificModelDescription(const ModelDescription &md, const T &attributes)
                 : modelDescription_(md), attributes_(attributes) {}
 
         const ScalarVariable &getVariableByName(const std::string &name) const {
             return modelDescription_.getVariableByName(name);
-        }
-
-        bool supportsCoSimulation() const {
-            return modelDescription_.supportsCoSimulation();
-        }
-
-        bool supportsModelExchange() const {
-            return modelDescription_.supportsModelExchange();
         }
 
         std::optional<DefaultExperiment> getDefaultExperiment() const {
@@ -158,7 +150,7 @@ namespace fmi4cpp::fmi2::xml {
 
     };
 
-    class CoSimulationModelDescription : public virtual CommonModelDescription<CoSimulationAttributes> {
+    class CoSimulationModelDescription : public virtual SpecificModelDescription<CoSimulationAttributes> {
 
     public:
 
@@ -174,7 +166,7 @@ namespace fmi4cpp::fmi2::xml {
 
     };
 
-    class ModelExchangeModelDescription : public virtual CommonModelDescription<ModelExchangeAttributes> {
+    class ModelExchangeModelDescription : public virtual SpecificModelDescription<ModelExchangeAttributes> {
 
     public:
         explicit ModelExchangeModelDescription(const ModelDescription &md, const ModelExchangeAttributes &attributes);

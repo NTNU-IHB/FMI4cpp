@@ -26,6 +26,7 @@
 #include <sstream>
 #include <stdexcept>
 #include <fmi4cpp/fmi2/xml/enums.hpp>
+#include <fmi4cpp/fmi2/enumsToString.hpp>
 #include <fmi4cpp/fmi2/xml/ScalarVariableImpl.hpp>
 
 using namespace fmi4cpp::fmi2::xml;

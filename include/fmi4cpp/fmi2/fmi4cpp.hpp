@@ -26,18 +26,15 @@
 #define FMI4CPP_FMI4CPP_HPP
 
 #include "fmi2Functions.h"
-#include "fmi4cppUtils.hpp"
+#include "enumsToString.hpp"
 
 #include "xml/enums.hpp"
 #include "xml/ModelDescription.hpp"
-#include "xml/ScalarVariable.hpp"
+#include "xml/ScalarVariableImpl.hpp"
 
 #include "import/Fmu.hpp"
 #include "import/FmuInstance.hpp"
 #include "import/FmuSlave.hpp"
-
-#include "import/CoSimulationSlaveBuilder.hpp"
-#include "import/ModelExchangeInstanceBuilder.hpp"
-
+#include "import/ModelExchangeInstance.hpp"
 
 #endif //FMI4CPP_FMI4CPP_HPP

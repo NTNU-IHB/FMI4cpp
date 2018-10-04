@@ -29,7 +29,7 @@ using fmi4cpp::fmi2::import::ModelExchangeInstance;
 
 ModelExchangeInstance::ModelExchangeInstance(const fmi2Component c,
                                              const std::shared_ptr<ModelExchangeLibrary> &library,
-                                             const std::shared_ptr<ModelExchangeModelDescription> &modelDescription)
+                                             const ModelExchangeModelDescription &modelDescription)
         : AbstractFmuInstance<ModelExchangeLibrary, ModelExchangeModelDescription>(c, library, modelDescription) {}
 
 fmi2Status ModelExchangeInstance::enterEventMode() const {

@@ -40,13 +40,7 @@ using boost::property_tree::ptree;
 
 namespace fmi4cpp::fmi2::xml {
 
-    class CoSimulationModelDescription;
-
-    class ModelExchangeModelDescription;
-
-    class ModelDescription {
-
-    public:
+    struct ModelDescription {
 
         virtual std::string getGuid() const = 0;
 
@@ -84,9 +78,11 @@ namespace fmi4cpp::fmi2::xml {
 
     };
 
-    class ModelDescriptionProvider: public virtual ModelDescription {
+    struct CoSimulationModelDescription;
 
-    public:
+    struct ModelExchangeModelDescription;
+
+    struct ModelDescriptionProvider: virtual ModelDescription {
 
         virtual bool supportsModelExchange() const = 0;
 

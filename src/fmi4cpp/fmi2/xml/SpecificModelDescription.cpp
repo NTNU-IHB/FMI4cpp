@@ -23,13 +23,13 @@
  */
 
 #include <fmi4cpp/fmi2/xml/ModelDescription.hpp>
-#include <fmi4cpp/fmi2/xml/CommonModelDescription.hpp>
+#include <fmi4cpp/fmi2/xml/SpecificModelDescription.hpp>
 
 using namespace std;
 using namespace fmi4cpp::fmi2::xml;
 
 CoSimulationModelDescription::CoSimulationModelDescription(const ModelDescription &md, const CoSimulationAttributes &attributes)
-        : CommonModelDescription<CoSimulationAttributes>(md, attributes) {};
+        : SpecificModelDescription<CoSimulationAttributes>(md, attributes) {};
 
 bool CoSimulationModelDescription::canInterpolateInputs() const {
     return attributes_.canInterpolateInputs;
@@ -48,7 +48,7 @@ size_t CoSimulationModelDescription::maxOutputDerivativeOrder() const {
 }
 
 ModelExchangeModelDescription::ModelExchangeModelDescription(const ModelDescription &md, const ModelExchangeAttributes &attributes)
-        : CommonModelDescription(md, attributes) {};
+        : SpecificModelDescription(md, attributes) {};
 
 bool ModelExchangeModelDescription::completedIntegratorStepNotNeeded() const {
     return attributes_.completedIntegratorStepNotNeeded;

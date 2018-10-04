@@ -26,6 +26,7 @@
 #define FMI4CPP_FMUSLAVE_HPP
 
 #include "FmuInstance.hpp"
+#include "fmi4cpp/fmi2/xml/SpecificModelDescription.hpp"
 
 namespace fmi4cpp::fmi2::import {
 

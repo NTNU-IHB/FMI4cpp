@@ -49,7 +49,7 @@ namespace fmi4cpp::fmi2::xml {
 
     public:
 
-        ScalarVariableImpl(const ptree &node);
+        explicit ScalarVariableImpl(const ptree &node);
 
         std::string getName() const override;
 
@@ -90,7 +90,7 @@ namespace fmi4cpp::fmi2::xml {
     };
 
 
-    template <class T, class U>
+    template <typename T, typename U>
     class TypedVariable {
 
     protected:
@@ -98,7 +98,7 @@ namespace fmi4cpp::fmi2::xml {
 
     public:
 
-        explicit TypedVariable(const U &attribute_) : attribute_(attribute_) {}
+        explicit TypedVariable(const U &attribute) : attribute_(attribute) {}
 
         std::optional<T> getStart() const {
             return attribute_.start;
@@ -111,32 +111,30 @@ namespace fmi4cpp::fmi2::xml {
 
     public:
 
-        explicit BoundedVariable(const U &attribute_) : TypedVariable(attribute_) {}
+        explicit BoundedVariable(const U &attribute) : TypedVariable<T, U>(attribute) {}
 
         std::optional<T> getMin() const {
-            return attribute_.min;
+            return this->attribute_.min;
         }
 
         std::optional<T> getMax() const {
-            return attribute_.max;
+            return this->attribute_.max;
         }
 
         std::optional<string> getQuantity() const {
-            return attribute_.quantity;
+            return this->attribute_.quantity;
         }
 
     };
 
 
-    class IntegerVariable : public ScalarVariableImpl, public BoundedVariable<int, IntegerAttribute> {
+    struct IntegerVariable : ScalarVariableImpl, BoundedVariable<int, IntegerAttribute> {
 
-    public:
         IntegerVariable(const ScalarVariableImpl &var, const IntegerAttribute &attribute);
     };
 
-    class RealVariable : public ScalarVariableImpl, public BoundedVariable<double, RealAttribute> {
+    struct RealVariable : ScalarVariableImpl, BoundedVariable<double, RealAttribute> {
 
-    public:
         RealVariable(const ScalarVariableImpl &var, const RealAttribute &attribute);
 
         std::optional<double> getNominal() const;
@@ -155,21 +153,18 @@ namespace fmi4cpp::fmi2::xml {
 
     };
 
-    class StringVariable : public ScalarVariableImpl, public TypedVariable<string, StringAttribute> {
+    struct StringVariable : ScalarVariableImpl, TypedVariable<string, StringAttribute> {
 
-    public:
         StringVariable(const ScalarVariableImpl &var, const StringAttribute &attribute);
     };
 
-    class BooleanVariable :  public ScalarVariableImpl, public TypedVariable<bool, BooleanAttribute> {
+    struct BooleanVariable :  ScalarVariableImpl, TypedVariable<bool, BooleanAttribute> {
 
-    public:
         BooleanVariable(const ScalarVariableImpl &var, const BooleanAttribute &attribute);
     };
 
-    class EnumerationVariable : public ScalarVariableImpl, public BoundedVariable<int, EnumerationAttribute> {
+    struct EnumerationVariable : ScalarVariableImpl, BoundedVariable<int, EnumerationAttribute> {
 
-    public:
         EnumerationVariable(const ScalarVariableImpl &var, const EnumerationAttribute &attribute);
 
     };

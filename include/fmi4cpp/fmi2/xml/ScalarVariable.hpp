@@ -41,19 +41,17 @@ using boost::property_tree::ptree;
 namespace fmi4cpp::fmi2::xml {
 
     //forward declarations
-    class IntegerVariable;
+    struct IntegerVariable;
 
-    class RealVariable;
+    struct RealVariable;
 
-    class StringVariable;
+    struct StringVariable;
 
-    class BooleanVariable;
+    struct BooleanVariable;
 
-    class EnumerationVariable;
+    struct EnumerationVariable;
 
-    class ScalarVariable {
-
-    public:
+    struct ScalarVariable {
 
         virtual std::string getName() const = 0;
 
@@ -97,8 +95,6 @@ namespace fmi4cpp::fmi2::xml {
         }
 
     };
-
-//    typedef std::shared_ptr<ScalarVariable> ScalarVariableRef;
 
 }
 

@@ -35,16 +35,16 @@
 #include <type_traits>
 #include "FmuInstance.hpp"
 #include "FmiLibrary.hpp"
-#include "../fmi4cppUtils.hpp"
-#include "fmi4cpp/fmi2/xml/CommonModelDescription.hpp"
+#include "../enumsToString.hpp"
+#include "fmi4cpp/fmi2/xml/SpecificModelDescription.hpp"
+
+using fmi4cpp::fmi2::import::FmuInstance;
 
 namespace {
 
-    using namespace fmi4cpp::fmi2::xml;
-
     void checkStatus(const fmi2Status status, const std::string &function_name) {
         if (status != fmi2OK) {
-            throw std::runtime_error(function_name + " failed with status: " + fmi4cpp::to_string(status));
+            throw std::runtime_error(function_name + " failed with status: " + to_string(status));
         }
     }
 
@@ -61,92 +61,92 @@ namespace {
 
 namespace fmi4cpp::fmi2::import {
 
-    class StartQueue {
-
-    private:
-
-        std::queue<std::pair<fmi2ValueReference, fmi2Integer > > integerQueue_;
-        std::queue<std::pair<fmi2ValueReference, fmi2Real > > realQueue_;
-        std::queue<std::pair<fmi2ValueReference, fmi2String > > stringQueue_;
-        std::queue<std::pair<fmi2ValueReference, fmi2Boolean > > booleanQueue_;
-
-    public:
-
-        fmi2Status putInteger(const fmi2ValueReference vr, const fmi2Integer value) {
-            integerQueue_.push(std::make_pair(vr, value));
-            return fmi2OK;
-        }
-
-        fmi2Status putReal(const fmi2ValueReference vr, const fmi2Real value) {
-            realQueue_.push(std::make_pair(vr, value));
-            return fmi2OK;
-        }
-
-        fmi2Status putString(const fmi2ValueReference vr, fmi2String value) {
-            stringQueue_.push(std::make_pair(vr, value));
-            return fmi2OK;
-        }
-
-        fmi2Status putBoolean(const fmi2ValueReference vr, const fmi2Boolean value) {
-            booleanQueue_.push(std::make_pair(vr, value));
-            return fmi2OK;
-        }
-
-        template <class T>
-        bool assignStartValues(fmi4cpp::fmi2::import::FmuInstance<T> &instance) {
-
-            while (!integerQueue_.empty()) {
-                const auto &pair = integerQueue_.front();
-                fmi2Status status = instance.writeInteger(pair.first, pair.second);
-                if (status != fmi2OK) {
-                    return false;
-                }
-                integerQueue_.pop();
-            }
-
-            while (!realQueue_.empty()) {
-                const auto &pair = realQueue_.front();
-                fmi2Status status = instance.writeReal(pair.first, pair.second);
-                if (status != fmi2OK) {
-                    return false;
-                }
-                realQueue_.pop();
-            }
-
-            while (!stringQueue_.empty()) {
-                const auto &pair = stringQueue_.front();
-                fmi2Status status = instance.writeString(pair.first, pair.second);
-                if (status != fmi2OK) {
-                    return false;
-                }
-                stringQueue_.pop();
-            }
-
-            while (!booleanQueue_.empty()) {
-                const auto &pair = booleanQueue_.front();
-                fmi2Status status = instance.writeBoolean(pair.first, pair.second);
-                if (!status == fmi2OK) {
-                    return false;
-                }
-                booleanQueue_.pop();
-            }
-
-            return true;
-
-        }
-
-    };
+//    class StartQueue {
+//
+//    private:
+//
+//        std::queue<std::pair<fmi2ValueReference, fmi2Integer > > integerQueue_;
+//        std::queue<std::pair<fmi2ValueReference, fmi2Real > > realQueue_;
+//        std::queue<std::pair<fmi2ValueReference, fmi2String > > stringQueue_;
+//        std::queue<std::pair<fmi2ValueReference, fmi2Boolean > > booleanQueue_;
+//
+//    public:
+//
+//        fmi2Status putInteger(const fmi2ValueReference vr, const fmi2Integer value) {
+//            integerQueue_.push(std::make_pair(vr, value));
+//            return fmi2OK;
+//        }
+//
+//        fmi2Status putReal(const fmi2ValueReference vr, const fmi2Real value) {
+//            realQueue_.push(std::make_pair(vr, value));
+//            return fmi2OK;
+//        }
+//
+//        fmi2Status putString(const fmi2ValueReference vr, fmi2String value) {
+//            stringQueue_.push(std::make_pair(vr, value));
+//            return fmi2OK;
+//        }
+//
+//        fmi2Status putBoolean(const fmi2ValueReference vr, const fmi2Boolean value) {
+//            booleanQueue_.push(std::make_pair(vr, value));
+//            return fmi2OK;
+//        }
+//
+//        template <class T>
+//        bool assignStartValues(fmi4cpp::fmi2::import::FmuInstance<T> &instance) {
+//
+//            while (!integerQueue_.empty()) {
+//                const auto &pair = integerQueue_.front();
+//                fmi2Status status = instance.writeInteger(pair.first, pair.second);
+//                if (status != fmi2OK) {
+//                    return false;
+//                }
+//                integerQueue_.pop();
+//            }
+//
+//            while (!realQueue_.empty()) {
+//                const auto &pair = realQueue_.front();
+//                fmi2Status status = instance.writeReal(pair.first, pair.second);
+//                if (status != fmi2OK) {
+//                    return false;
+//                }
+//                realQueue_.pop();
+//            }
+//
+//            while (!stringQueue_.empty()) {
+//                const auto &pair = stringQueue_.front();
+//                fmi2Status status = instance.writeString(pair.first, pair.second);
+//                if (status != fmi2OK) {
+//                    return false;
+//                }
+//                stringQueue_.pop();
+//            }
+//
+//            while (!booleanQueue_.empty()) {
+//                const auto &pair = booleanQueue_.front();
+//                fmi2Status status = instance.writeBoolean(pair.first, pair.second);
+//                if (!status == fmi2OK) {
+//                    return false;
+//                }
+//                booleanQueue_.pop();
+//            }
+//
+//            return true;
+//
+//        }
+//
+//    };
 
     template<typename T, typename U>
-    class AbstractFmuInstance : virtual public FmuInstance<U> {
+    class AbstractFmuInstance : public virtual FmuInstance<U> {
 
         static_assert(std::is_base_of<FmiLibrary, T>::value, "T must derive from FmiLibrary");
-//        static_assert(std::is_base_of<xml::CommonModelDescription<xml::FmuTypeAttributes>, U>::value,
-//                      "U must derive from CommonModelDescription");
+//        static_assert(std::is_base_of<xml::SpecificModelDescription<xml::FmuTypeAttributes>, U>::value,
+//                      "U must derive from SpecificModelDescription");
 
     private:
 
-        StartQueue queue_;
+//        StartQueue queue_;
         bool instanceFreed_;
 
 
@@ -154,25 +154,25 @@ namespace fmi4cpp::fmi2::import {
 
         fmi2Component c_;
         std::shared_ptr<T> library_;
-        const std::shared_ptr<U> modelDescription_;
+        const U modelDescription_;
 
     public:
 
-        AbstractFmuInstance(const fmi2Component c, const std::shared_ptr<T> &library, const std::shared_ptr<U> &modelDescription)
+        AbstractFmuInstance(const fmi2Component c, const std::shared_ptr<T> &library, const U &modelDescription)
                 : c_(c), library_(library), modelDescription_(modelDescription) {}
 
 
-        U &getModelDescription() const override {
-            return *modelDescription_;
+        const U &getModelDescription() const override {
+            return modelDescription_;
         }
 
         fmi2Status setDebugLogging(const bool loggingOn, const vector<const char *> categories) const {
             return library_->setDebugLogging(c_, loggingOn, categories);
         }
 
-        void init(const double start = 0, const double stop = 0) override {
+        void init(const double start, const double stop) override {
 
-            if (!instantiated_) {
+            if (!this->instantiated_) {
 
                 unsigned int count = 0;
 //                queue_.assignStartValues(*this);
@@ -213,8 +213,8 @@ namespace fmi4cpp::fmi2::import {
 
                 checkStatus(library_->exitInitializationMode(c_), "exitInitializationMode");
 
-                instantiated_ = true;
-                simulationTime_ = start;
+                this->instantiated_ = true;
+                this->simulationTime_ = start;
 
             }
 
@@ -229,8 +229,8 @@ namespace fmi4cpp::fmi2::import {
         }
 
         fmi2Status terminate(bool freeInstance) {
-            if (!terminated_) {
-                terminated_ = true;
+            if (!this->terminated_) {
+                this->terminated_ = true;
                 fmi2Status status = library_->terminate(c_);
                 if (freeInstance) {
                     this->freeInstance();
@@ -249,7 +249,15 @@ namespace fmi4cpp::fmi2::import {
         }
 
         bool canGetAndSetFMUstate() const override {
-            return modelDescription_->canGetAndSetFMUstate();
+            return modelDescription_.canGetAndSetFMUstate();
+        }
+
+        bool canSerializeFMUstate() const override {
+            return modelDescription_.canSerializeFMUstate();
+        }
+
+        bool providesDirectionalDerivative() const override {
+            return modelDescription_.providesDirectionalDerivative();
         }
 
         fmi2Status getFMUstate(fmi2FMUstate &state) override {
@@ -264,9 +272,6 @@ namespace fmi4cpp::fmi2::import {
             return library_->freeFMUstate(c_, state);
         }
 
-        bool canSerializeFMUstate() const override {
-            return modelDescription_->canSerializeFMUstate();
-        }
 
         fmi2Status getSerializedFMUstateSize(const fmi2FMUstate state, size_t &size) const {
             return library_->getSerializedFMUstateSize(c_, state, size);
@@ -279,10 +284,6 @@ namespace fmi4cpp::fmi2::import {
         fmi2Status
         deSerializeFMUstate(fmi2FMUstate &state, const vector<fmi2Byte> &serializedState) override {
             return library_->deSerializeFMUstate(c_, state, serializedState);
-        }
-
-        bool providesDirectionalDerivative() const override {
-            return modelDescription_->providesDirectionalDerivative();
         }
 
         fmi2Status getDirectionalDerivative(
@@ -324,14 +325,10 @@ namespace fmi4cpp::fmi2::import {
         }
 
         fmi2Status writeInteger(const fmi2ValueReference vr, const fmi2Integer value) override {
-            if (!isInstantiated()) {
-                return queue_.putInteger(vr, value);
-            }
             return library_->writeInteger(c_, vr, value);
         }
 
-        fmi2Status
-        writeInteger(const vector<fmi2ValueReference> &vr, const vector<fmi2Integer> &values) override {
+        fmi2Status writeInteger(const vector<fmi2ValueReference> &vr, const vector<fmi2Integer> &values) override {
             return library_->writeInteger(c_, vr, values);
         }
 

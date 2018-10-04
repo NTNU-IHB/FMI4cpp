@@ -30,7 +30,7 @@ using fmi4cpp::fmi2::import::CoSimulationSlave;
 
 CoSimulationSlave::CoSimulationSlave(const fmi2Component c,
                                      const shared_ptr<CoSimulationLibrary> &library,
-                                     const shared_ptr<CoSimulationModelDescription> &modelDescription)
+                                     const CoSimulationModelDescription &modelDescription)
         : AbstractFmuInstance<CoSimulationLibrary, CoSimulationModelDescription>(c, library, modelDescription) {}
 
 fmi2Status CoSimulationSlave::doStep(const double stepSize) {
@@ -45,7 +45,7 @@ fmi2Status CoSimulationSlave::cancelStep() {
     return library_->cancelStep(c_);
 }
 
-CoSimulationModelDescription &CoSimulationSlave::getModelDescription() const {
+const CoSimulationModelDescription &CoSimulationSlave::getModelDescription() const {
     return AbstractFmuInstance::getModelDescription();
 }
 

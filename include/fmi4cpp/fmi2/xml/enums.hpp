@@ -59,13 +59,6 @@ namespace fmi4cpp::fmi2::xml {
 
     fmi2Initial parseInitial(const std::string &str);
 
-    const std::string to_string(fmi2Causality causality);
-
-    const std::string to_string(fmi2Variability variability);
-
-    const std::string to_string(fmi2Initial initial);
-
-
 }
 
 #endif //FMI4CPP_ENUMS_HPP

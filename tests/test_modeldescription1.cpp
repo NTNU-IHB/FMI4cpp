@@ -46,7 +46,7 @@ BOOST_AUTO_TEST_CASE(ControlledTemperature_test1) {
     BOOST_CHECK_EQUAL("ControlledTemperature", md.getModelName());
 
     BOOST_CHECK_EQUAL("{06c2700b-b39c-4895-9151-304ddde28443}", md.getGuid());
-    BOOST_CHECK_EQUAL("{06c2700b-b39c-4895-9151-304ddde28443}", md_cs->getGuid());
+    BOOST_CHECK_EQUAL("{06c2700b-b39c-4895-9151-304ddde28443}", md_cs.getGuid());
     BOOST_CHECK_EQUAL("20-sim", md.getGenerationTool());
     BOOST_CHECK_EQUAL("20-sim", md_cs.getGenerationTool());
 
@@ -54,9 +54,9 @@ BOOST_AUTO_TEST_CASE(ControlledTemperature_test1) {
     BOOST_CHECK_EQUAL(false, md.supportsModelExchange());
 
     BOOST_CHECK_EQUAL(120, md.getModelVariables().size());
-    BOOST_CHECK_EQUAL(120, md_cs->getModelVariables().size());
+    BOOST_CHECK_EQUAL(120, md_cs.getModelVariables().size());
 
-    auto& heatCapacity1 = md.getVariableByName("HeatCapacity1.T0").asRealVariable();
+    const auto& heatCapacity1 = md.getVariableByName("HeatCapacity1.T0").asRealVariable();
     BOOST_CHECK_EQUAL(1, heatCapacity1.getValueReference());
     BOOST_CHECK_EQUAL(false, heatCapacity1.getMin().has_value());
     BOOST_CHECK_EQUAL(false, heatCapacity1.getMax().has_value());
@@ -65,10 +65,10 @@ BOOST_AUTO_TEST_CASE(ControlledTemperature_test1) {
     BOOST_CHECK_EQUAL("starting temperature", heatCapacity1.getDescription());
     BOOST_CHECK_EQUAL(false, heatCapacity1.getQuantity().has_value());
 
-    auto& thermalConductor = md.getVariableByValueReference(12);
+    auto& thermalConductor = md.getModelVariables().getByValueReference(12);
     BOOST_CHECK_EQUAL("TemperatureSource.T", thermalConductor.getName());
-    BOOST_CHECK(fmi2Variability::tunable == thermalConductor.getVariability());
-    BOOST_CHECK(fmi2Causality::parameter == thermalConductor.getCausality());
+    BOOST_CHECK(xml::fmi2Variability::tunable == thermalConductor.getVariability());
+    BOOST_CHECK(xml::fmi2Causality::parameter == thermalConductor.getCausality());
 
     xml::SourceFiles sourceFiles = md_cs.getSourceFiles();
     BOOST_CHECK_EQUAL(10, sourceFiles.size());
@@ -86,15 +86,15 @@ BOOST_AUTO_TEST_CASE(ControlledTemperature_test1) {
     BOOST_CHECK_EQUAL(1E-4, *de->getStepSize());
     BOOST_CHECK_EQUAL(false, de->getTolerance().has_value());
 
-    const ModelVariables& mv = md.getModelVariables();
-    for (const auto &v : mv) {
-        if (v.getCausality() == fmi2Causality::output) {
-            v.asRealVariable().setStart(99);
-        }
-    }
+    const xml::ModelVariables& mv = md.getModelVariables();
+//    for (const auto &v : mv) {
+//        if (v.getCausality() == xml::fmi2Causality::output) {
+//            v.asRealVariable().setStart(99);
+//        }
+//    }
 
-    vector<xml::ScalarVariable> outputs;
-    mv.getByCausality(fmi2Causality::output, outputs);
+    vector<std::reference_wrapper<xml::ScalarVariable>> outputs;
+    mv.getByCausality(xml::fmi2Causality::output, outputs);
     for (const xml::ScalarVariable &v : outputs) {
         BOOST_CHECK_EQUAL(99, v.asRealVariable().getStart().value());
     }
