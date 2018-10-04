@@ -68,9 +68,9 @@ namespace fmi4cpp::fmi2::xml {
 
         virtual size_t getNumberOfContinuousStates() const = 0;
 
-        virtual const ModelVariables &getModelVariables() const = 0;
+        virtual ModelVariables &getModelVariables() const = 0;
 
-        virtual const ModelStructure &getModelStructure() const = 0;
+        virtual ModelStructure &getModelStructure() const = 0;
 
         virtual std::optional<DefaultExperiment> getDefaultExperiment() const = 0;
 

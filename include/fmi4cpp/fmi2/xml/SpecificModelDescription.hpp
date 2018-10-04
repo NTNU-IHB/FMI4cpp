@@ -56,11 +56,11 @@ namespace fmi4cpp::fmi2::xml {
             return modelDescription_.getDefaultExperiment();
         }
 
-        const ModelStructure &getModelStructure() const {
+        ModelStructure &getModelStructure() const {
             return modelDescription_.getModelStructure();
         }
 
-        const ModelVariables &getModelVariables() const {
+        ModelVariables &getModelVariables() const {
             return modelDescription_.getModelVariables();
         }
 

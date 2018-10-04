@@ -125,12 +125,10 @@ size_t ModelDescriptionImpl::getNumberOfEventIndicators() const {
 size_t ModelDescriptionImpl::getNumberOfContinuousStates() const {
     return modelStructure_->getDerivatives().size();
 }
-
-const ModelVariables &ModelDescriptionImpl::getModelVariables() const {
+ ModelVariables &ModelDescriptionImpl::getModelVariables() const {
     return *modelVariables_;
 }
-
-const ModelStructure &ModelDescriptionImpl::getModelStructure() const {
+ ModelStructure &ModelDescriptionImpl::getModelStructure() const {
     return *modelStructure_;
 }
 

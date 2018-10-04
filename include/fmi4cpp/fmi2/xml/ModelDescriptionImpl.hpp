@@ -84,9 +84,9 @@ namespace fmi4cpp::fmi2::xml {
 
         size_t getNumberOfContinuousStates() const override;
 
-        const ModelVariables &getModelVariables() const override;
+        ModelVariables &getModelVariables() const override;
 
-        const ModelStructure &getModelStructure() const override;
+        ModelStructure &getModelStructure() const override;
 
         std::optional<DefaultExperiment> getDefaultExperiment() const override;
 
