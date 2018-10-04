@@ -150,7 +150,7 @@ unique_ptr<import::FmuSlave> CoSimulationFmu::newInstance(const bool visible, co
     }
     fmi2Component c = lib->instantiate(modelIdentifier, fmi2CoSimulation, getGuid(),
                                        fmu_.getResourcePath(), visible, loggingOn);
-    return make_unique<import::CoSimulationSlave>(c, lib, modelDescription_);
+    return make_unique<CoSimulationSlave>(c, lib, modelDescription_);
 }
 
 

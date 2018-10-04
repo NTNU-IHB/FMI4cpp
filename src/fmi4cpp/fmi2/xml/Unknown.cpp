@@ -39,17 +39,15 @@ namespace {
         }
     }
 
-    std::vector<unsigned int> parse(const std::string &str) {
+    void parseDependencies(const std::string &str, std::vector<unsigned int> &store) {
         int i;
         std::stringstream ss(str);
-        std::vector<unsigned int> result;
         while (ss >> i) {
-            result.push_back(i);
+            store.push_back(i);
             if (ss.peek() == ',' || ss.peek() == ' ') {
                 ss.ignore();
             }
         }
-        return result;
     }
 
 }
@@ -72,7 +70,8 @@ void Unknown::load(const ptree &node) {
 
     auto dependencies = node.get_optional<std::string>("<xmlattr>.dependencies");
     if (dependencies) {
-        dependencies_ = parse(*dependencies);
+        dependencies_ = std::vector<unsigned int>();
+        parseDependencies(*dependencies, *dependencies_);
     }
 
 }

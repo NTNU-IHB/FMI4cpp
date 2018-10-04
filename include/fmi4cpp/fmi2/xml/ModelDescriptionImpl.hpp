@@ -46,8 +46,8 @@ namespace fmi4cpp::fmi2::xml {
 
         size_t numberOfEventIndicators_;
 
-        std::unique_ptr<ModelVariables> modelVariables_;
-        std::unique_ptr<ModelStructure> modelStructure_;
+        std::shared_ptr<ModelVariables> modelVariables_;
+        std::shared_ptr<ModelStructure> modelStructure_;
 
         std::optional<DefaultExperiment> defaultExperiment_;
 
