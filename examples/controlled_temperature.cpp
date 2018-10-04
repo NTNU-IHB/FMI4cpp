@@ -29,9 +29,9 @@
 using namespace std;
 using namespace fmi4cpp::fmi2;
 
-const fmi2ValueReference vr = 46;
 const double stop = 10.0;
 const double step_size = 1E-4;
+const fmi2ValueReference vr = 46;
 
 int main() {
 
