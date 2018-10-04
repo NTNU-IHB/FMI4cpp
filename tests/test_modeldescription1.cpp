@@ -86,17 +86,18 @@ BOOST_AUTO_TEST_CASE(ControlledTemperature_test1) {
     BOOST_CHECK_EQUAL(1E-4, *de->getStepSize());
     BOOST_CHECK_EQUAL(false, de->getTolerance().has_value());
 
-    const xml::ModelVariables& mv = md.getModelVariables();
-//    for (const auto &v : mv) {
-//        if (v.getCausality() == xml::fmi2Causality::output) {
-//            v.asRealVariable().setStart(99);
-//        }
-//    }
-
-    vector<std::reference_wrapper<xml::ScalarVariable>> outputs;
-    mv.getByCausality(xml::fmi2Causality::output, outputs);
-    for (const xml::ScalarVariable &v : outputs) {
-        BOOST_CHECK_EQUAL(99, v.asRealVariable().getStart().value());
+    size_t count = 0;
+    xml::ModelVariables& mv = md.getModelVariables();
+    for (const auto &v : mv) {
+        if (v->getCausality() == xml::fmi2Causality::output) {
+            count++;
+        }
     }
+    BOOST_CHECK_EQUAL(2, count);
+
+    vector<std::reference_wrapper<ScalarVariable>> outputs = {};
+    md.getModelVariables().getByCausality(xml::fmi2Causality::output, outputs);
+
+    BOOST_CHECK_EQUAL(count, outputs.size());
 
 }
