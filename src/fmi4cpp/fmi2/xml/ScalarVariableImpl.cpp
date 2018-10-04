@@ -33,14 +33,14 @@ using namespace fmi4cpp::fmi2::xml;
 
 ScalarVariableImpl::ScalarVariableImpl(const ptree &node) {
 
-    name_ = node.get<string>("<xmlattr>.name");
-    description_ = node.get<string>("<xmlattr>.description", "");
+    name_ = node.get<std::string>("<xmlattr>.name");
+    description_ = node.get<std::string>("<xmlattr>.description", "");
     valueReference_ = node.get<fmi2ValueReference>("<xmlattr>.valueReference");
     canHandleMultipleSetPerTimelnstant_ = node.get<bool>("<xmlattr>.canHandleMultipleSetPerTimelnstant", false);
 
-    causality_ = parseCausality(node.get<string>("<xmlattr>.causality", ""));
-    variability_ = parseVariability(node.get<string>("<xmlattr>.variability", ""));
-    initial_ = parseInitial(node.get<string>("<xmlattr>.initial", ""));
+    causality_ = parseCausality(node.get<std::string>("<xmlattr>.causality", ""));
+    variability_ = parseVariability(node.get<std::string>("<xmlattr>.variability", ""));
+    initial_ = parseInitial(node.get<std::string>("<xmlattr>.initial", ""));
 
     for (const ptree::value_type &v : node) {
         if (v.first == "Integer") {
@@ -98,11 +98,11 @@ EnumerationVariable ScalarVariableImpl::asEnumerationVariable() const {
     return EnumerationVariable(*this, *enumerationAttribute_);
 }
 
-string ScalarVariableImpl::getName() const {
+std::string ScalarVariableImpl::getName() const {
     return name_;
 }
 
-string ScalarVariableImpl::getDescription() const {
+std::string ScalarVariableImpl::getDescription() const {
     return description_;
 }
 
@@ -147,7 +147,7 @@ bool ScalarVariableImpl::isEnumerationVariable() const {
     return enumerationAttribute_ != nullptr;
 }
 
-string fmi4cpp::fmi2::xml::ScalarVariableImpl::toString() const {
+std::string fmi4cpp::fmi2::xml::ScalarVariableImpl::toString() const {
 
     std::ostringstream os;
 
@@ -198,11 +198,11 @@ bool RealVariable::getRelativeQuantity() const {
     return attribute_.relativeQuantity;
 }
 
-std::optional<string> RealVariable::getUnit() const {
+std::optional<std::string> RealVariable::getUnit() const {
     return attribute_.unit;
 }
 
-std::optional<string> RealVariable::getDisplayUnit() const {
+std::optional<std::string> RealVariable::getDisplayUnit() const {
     return attribute_.displayUnit;
 }
 
@@ -211,7 +211,7 @@ std::optional<unsigned int> RealVariable::getDerivative() const {
 }
 
 StringVariable::StringVariable(const ScalarVariableImpl &var, const StringAttribute &attribute)
-        : ScalarVariableImpl(var), TypedVariable<string, StringAttribute>(attribute) {}
+        : ScalarVariableImpl(var), TypedVariable<std::string, StringAttribute>(attribute) {}
 
 BooleanVariable::BooleanVariable(const ScalarVariableImpl &var, const BooleanAttribute &attribute)
         : ScalarVariableImpl(var), TypedVariable<bool, BooleanAttribute>(attribute) {}

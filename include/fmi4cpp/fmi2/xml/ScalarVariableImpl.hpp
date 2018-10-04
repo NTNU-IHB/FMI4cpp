@@ -121,7 +121,7 @@ namespace fmi4cpp::fmi2::xml {
             return this->attribute_.max;
         }
 
-        std::optional<string> getQuantity() const {
+        std::optional<std::string> getQuantity() const {
             return this->attribute_.quantity;
         }
 
@@ -145,22 +145,24 @@ namespace fmi4cpp::fmi2::xml {
 
         bool getRelativeQuantity() const;
 
-        std::optional<string> getUnit() const;
+        std::optional<std::string> getUnit() const;
 
-        std::optional<string> getDisplayUnit() const;
+        std::optional<std::string> getDisplayUnit() const;
 
-        std::optional<unsigned int> getDerivative() const;
+        std::optional<size_t > getDerivative() const;
 
     };
 
-    struct StringVariable : ScalarVariableImpl, TypedVariable<string, StringAttribute> {
+    struct StringVariable : ScalarVariableImpl, TypedVariable<std::string, StringAttribute> {
 
         StringVariable(const ScalarVariableImpl &var, const StringAttribute &attribute);
+
     };
 
     struct BooleanVariable :  ScalarVariableImpl, TypedVariable<bool, BooleanAttribute> {
 
         BooleanVariable(const ScalarVariableImpl &var, const BooleanAttribute &attribute);
+
     };
 
     struct EnumerationVariable : ScalarVariableImpl, BoundedVariable<int, EnumerationAttribute> {

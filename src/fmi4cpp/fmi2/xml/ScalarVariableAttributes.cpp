@@ -40,12 +40,23 @@ namespace {
 
 }
 
-void IntegerAttribute::load(const ptree &node) {
-    min = convert(node.get_optional<int>("<xmlattr>.min"));
-    max = convert(node.get_optional<int>("<xmlattr>.max"));
-    start = convert(node.get_optional<int>("<xmlattr>.start"));
+template<typename T>
+void ScalarVariableAttribute<T>::load(const ptree &node) {
+    start = convert(node.get_optional<T>("<xmlattr>.start"));
+    declaredType = convert(node.get_optional<std::string>("<xmlattr>.declaredType"));
+}
 
-    quantity = convert(node.get_optional<string>("<xmlattr>.quantity"));
+template<typename T>
+void BoundedScalarVariableAttribute<T>::load(const ptree &node) {
+    ScalarVariableAttribute<T>::load(node);
+
+    min = convert(node.get_optional<T>("<xmlattr>.min"));
+    max = convert(node.get_optional<T>("<xmlattr>.max"));
+    quantity = convert(node.get_optional<std::string>("<xmlattr>.quantity"));
+}
+
+void IntegerAttribute::load(const ptree &node) {
+    BoundedScalarVariableAttribute::load(node);
 }
 
 ostream &fmi4cpp::fmi2::xml::operator<<(ostream &os, const IntegerAttribute &attribute) {
@@ -65,12 +76,10 @@ ostream &fmi4cpp::fmi2::xml::operator<<(ostream &os, const IntegerAttribute &att
 }
 
 void RealAttribute::load(const ptree &node) {
-    min = convert(node.get_optional<double>("<xmlattr>.min"));
-    max = convert(node.get_optional<double>("<xmlattr>.max"));
-    start = convert(node.get_optional<double>("<xmlattr>.start"));
+    BoundedScalarVariableAttribute::load(node);
+
     nominal = convert(node.get_optional<double>("<xmlattr>.nominal"));
 
-    quantity = convert(node.get_optional<string>("<xmlattr>.quantity"));
     unit = convert(node.get_optional<string>("<xmlattr>.unit"));
     displayUnit = convert(node.get_optional<string>("<xmlattr>.displayUnit"));
 
@@ -96,7 +105,7 @@ ostream &fmi4cpp::fmi2::xml::operator<<(ostream &os, const RealAttribute &attrib
 }
 
 void StringAttribute::load(const ptree &node) {
-    start = convert(node.get_optional<string>("<xmlattr>.start"));
+    ScalarVariableAttribute::load(node);
 }
 
 ostream &fmi4cpp::fmi2::xml::operator<<(ostream &os, const StringAttribute &attribute) {
@@ -107,7 +116,7 @@ ostream &fmi4cpp::fmi2::xml::operator<<(ostream &os, const StringAttribute &attr
 }
 
 void BooleanAttribute::load(const ptree &node) {
-    start = convert(node.get_optional<bool>("<xmlattr>.start"));
+    ScalarVariableAttribute::load(node);
 }
 
 ostream &fmi4cpp::fmi2::xml::operator<<(ostream &os, const BooleanAttribute &attribute) {
@@ -118,11 +127,7 @@ ostream &fmi4cpp::fmi2::xml::operator<<(ostream &os, const BooleanAttribute &att
 }
 
 void EnumerationAttribute::load(const ptree &node) {
-    min = convert(node.get_optional<int>("<xmlattr>.min"));
-    max = convert(node.get_optional<int>("<xmlattr>.max"));
-    start = convert(node.get_optional<int>("<xmlattr>.start"));
-
-    quantity = convert(node.get_optional<string>("<xmlattr>.quantity"));
+    BoundedScalarVariableAttribute::load(node);
 }
 
 ostream &fmi4cpp::fmi2::xml::operator<<(ostream &os, const EnumerationAttribute &attribute) {

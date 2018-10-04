@@ -25,54 +25,64 @@
 #ifndef FMI4CPP_SCALARVARIBALEATTRIBUTES_HPP
 #define FMI4CPP_SCALARVARIBALEATTRIBUTES_HPP
 
+#include <string>
+#include <ostream>
 #include <optional>
 #include <boost/optional.hpp>
 #include <boost/property_tree/ptree.hpp>
-#include <ostream>
 
-using std::string;
 using boost::property_tree::ptree;
 
 namespace fmi4cpp::fmi2::xml {
 
-    struct IntegerAttribute {
+    template <typename T>
+    struct ScalarVariableAttribute {
 
-        std::optional<int> min;
-        std::optional<int> max;
-        std::optional<int> start;
+        std::optional<T> start;
+        std::optional<std::string> declaredType;
 
-        std::optional<string> quantity;
+        virtual void load(const ptree &node);
 
-        void load(const ptree &node);
+    };
+
+    template <typename T>
+    struct BoundedScalarVariableAttribute: ScalarVariableAttribute<T> {
+
+        std::optional<T> min;
+        std::optional<T> max;
+        std::optional<std::string> quantity;
+
+        void load(const ptree &node) override;
+
+    };
+
+    struct IntegerAttribute: BoundedScalarVariableAttribute<int> {
+
+        void load(const ptree &node) override;
 
         friend std::ostream &operator<<(std::ostream &os, const IntegerAttribute &attribute);
 
     };
 
-    struct RealAttribute {
-        std::optional<double> min;
-        std::optional<double> max;
-        std::optional<double> start;
-        std::optional<double> nominal;
-
-        std::optional<string> quantity;
-        std::optional<string> unit;
-        std::optional<string> displayUnit;
-
-        std::optional<unsigned int> derivative;
+    struct RealAttribute: BoundedScalarVariableAttribute<double> {
 
         bool reinit;
         bool unbounded;
         bool relativeQuantity;
 
-        void load(const ptree &node);
+        std::optional<double> nominal;
+        std::optional<size_t > derivative;
+
+        std::optional<std::string> unit;
+        std::optional<std::string> displayUnit;
+
+        void load(const ptree &node) override;
 
         friend std::ostream &operator<<(std::ostream &os, const RealAttribute &attribute);
 
     };
 
-    struct StringAttribute {
-        std::optional<string> start;
+    struct StringAttribute: ScalarVariableAttribute<std::string> {
 
         void load(const ptree &node);
 
@@ -80,23 +90,17 @@ namespace fmi4cpp::fmi2::xml {
 
     };
 
-    struct BooleanAttribute {
-        std::optional<bool> start;
+    struct BooleanAttribute: ScalarVariableAttribute<bool> {
 
-        void load(const ptree &node);
+        void load(const ptree &node) override;
 
         friend std::ostream &operator<<(std::ostream &os, const BooleanAttribute &attribute);
 
     };
 
-    struct EnumerationAttribute {
-        std::optional<int> min;
-        std::optional<int> max;
-        std::optional<int> start;
+    struct EnumerationAttribute: BoundedScalarVariableAttribute<int> {
 
-        std::optional<string> quantity;
-
-        void load(const ptree &node);
+        void load(const ptree &node) override;
 
         friend std::ostream &operator<<(std::ostream &os, const EnumerationAttribute &attribute);
 
