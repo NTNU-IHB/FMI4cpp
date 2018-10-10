@@ -35,7 +35,7 @@ namespace fmi4cpp::fmi2::xml {
     template <class T>
     struct SpecificModelDescription : virtual ModelDescription {
 
-        static_assert(std::is_base_of<xml::CommonFmuAttributes, T>::value, "T must derive from FmuTypeAttributes");
+        static_assert(std::is_base_of<xml::FmuAttributes, T>::value, "T must derive from FmuTypeAttributes");
 
     private:
         const ModelDescription &modelDescription_;

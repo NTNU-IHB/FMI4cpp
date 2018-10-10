@@ -28,70 +28,65 @@
 #include <memory>
 #include <ostream>
 #include <optional>
-#include <boost/optional.hpp>
-#include <boost/property_tree/ptree.hpp>
 
 #include "../fmi2Functions.h"
 
 #include "enums.hpp"
 #include "ScalarVariableAttributes.hpp"
 
-using boost::property_tree::ptree;
-
 namespace fmi4cpp::fmi2::xml {
 
     //forward declarations
-    struct IntegerVariable;
-
-    struct RealVariable;
-
-    struct StringVariable;
-
-    struct BooleanVariable;
-
-    struct EnumerationVariable;
+//    struct IntegerVariable;
+//
+//    struct RealVariable;
+//
+//    struct StringVariable;
+//
+//    struct BooleanVariable;
+//
+//    struct EnumerationVariable;
 
     struct ScalarVariable {
 
-        virtual std::string getName() const = 0;
+        const std::string name;
 
-        virtual std::string getDescription() const = 0;
+        const std::string description;
 
-        virtual fmi2ValueReference getValueReference() const = 0;
+        const fmi2ValueReference valueReference;
 
-        virtual bool canHandleMultipleSetPerTimelnstant() const = 0;
+        const bool canHandleMultipleSetPerTimelnstant;
 
-        virtual fmi2Causality getCausality() const = 0;
+        const fmi2Causality causality;
 
-        virtual fmi2Variability getVariability() const = 0;
+        const fmi2Variability variability;
 
-        virtual fmi2Initial getInitial() const = 0;
+        const fmi2Initial initial;
 
-        virtual IntegerVariable asIntegerVariable() const = 0;
+//        IntegerVariable asIntegerVariable() const = 0;
+//
+//        RealVariable asRealVariable() const = 0;
+//
+//        StringVariable asStringVariable() const = 0;
+//
+//        BooleanVariable asBooleanVariable() const = 0;
+//
+//        EnumerationVariable asEnumerationVariable() const = 0;
 
-        virtual RealVariable asRealVariable() const = 0;
+        bool isIntegerVariable() const;
 
-        virtual StringVariable asStringVariable() const = 0;
+        bool isRealVariable() const;
 
-        virtual BooleanVariable asBooleanVariable() const = 0;
+        bool isStringVariable() const;
 
-        virtual EnumerationVariable asEnumerationVariable() const = 0;
+        bool isBooleanVariable() const;
 
-        virtual bool isIntegerVariable() const = 0;
+        bool isEnumerationVariable() const;
 
-        virtual bool isRealVariable() const = 0;
-
-        virtual bool isStringVariable() const = 0;
-
-        virtual bool isBooleanVariable() const = 0;
-
-        virtual bool isEnumerationVariable() const = 0;
-
-        virtual std::string toString() const = 0;
+        virtual std::string toString() const;
 
         friend std::ostream &operator<<(std::ostream &os, const ScalarVariable &variable) {
-            os << variable.toString();
-            return os;
+            return os << variable.toString();
         }
 
     };

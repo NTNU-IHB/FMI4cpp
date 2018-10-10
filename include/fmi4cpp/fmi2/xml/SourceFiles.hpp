@@ -33,42 +33,15 @@ using boost::property_tree::ptree;
 
 namespace fmi4cpp::fmi2::xml {
 
-    class File {
+    struct File {
 
-    private:
+        const std::string name;
 
-        std::string name_;
-
-    public:
-
-        std::string getName() const;
-
-        void load(const ptree &node);
+        explicit File(const std::string &name) : name(name) {}
 
     };
 
-    class SourceFiles {
-
-    private:
-        std::vector<File> files;
-
-    public:
-
-        const size_t size() const;
-
-        File &operator[](const size_t index);
-
-        void load(const ptree &node);
-
-        std::vector<File>::iterator begin();
-
-        std::vector<File>::iterator end();
-
-        std::vector<File>::const_iterator cbegin() const;
-
-        std::vector<File>::const_iterator cend() const;
-
-    };
+    typedef std::vector<File> SourceFiles;
 
 }
 

@@ -42,39 +42,27 @@ namespace fmi4cpp::fmi2::xml {
 
     struct ModelDescription {
 
-        virtual std::string getGuid() const = 0;
+        std::string guid() const;
+        std::string fmiVersion() const;
+        std::string modelName() const;
+        std::optional<std::string> description() const;
+        std::optional<std::string> version() const;
+        std::optional<std::string> author() const;
+        std::optional<std::string> license() const;
+        std::optional<std::string> copyright() const;
+        std::optional<std::string> generationTool() const;
+        std::optional<std::string> generationDateAndTime() const;
+        std::optional<std::string> variableNamingConvention() const;
 
-        virtual std::string getFmiVersion() const = 0;
+        size_t numberOfEventIndicators() const;
+        size_t numberOfContinuousStates() const;
 
-        virtual std::string getModelName() const = 0;
+        const ModelVariables modelVariables();
+        const ModelStructure modelStructure() const;
 
-        virtual std::string getDescription() const = 0;
+        const std::optional<DefaultExperiment> defaultExperiment();
 
-        virtual std::string getVersion() const = 0;
-
-        virtual std::string getAuthor() const = 0;
-
-        virtual std::string getLicense() const = 0;
-
-        virtual std::string getCopyright() const = 0;
-
-        virtual std::string getGenerationTool() const = 0;
-
-        virtual std::string getGenerationDateAndTime() const = 0;
-
-        virtual std::string getVariableNamingConvention() const = 0;
-
-        virtual size_t getNumberOfEventIndicators() const = 0;
-
-        virtual size_t getNumberOfContinuousStates() const = 0;
-
-        virtual ModelVariables &getModelVariables() const = 0;
-
-        virtual ModelStructure &getModelStructure() const = 0;
-
-        virtual std::optional<DefaultExperiment> getDefaultExperiment() const = 0;
-
-        virtual const ScalarVariable &getVariableByName(const std::string &name) const = 0;
+        const ScalarVariable &getVariableByName(const std::string &name) const;
 
     };
 
@@ -84,13 +72,13 @@ namespace fmi4cpp::fmi2::xml {
 
     struct ModelDescriptionProvider: virtual ModelDescription {
 
-        virtual bool supportsModelExchange() const = 0;
+        bool supportsModelExchange() const;
 
-        virtual bool supportsCoSimulation() const = 0;
+        bool supportsCoSimulation() const;
 
-        virtual const CoSimulationModelDescription asCoSimulationModelDescription() const = 0;
+        const CoSimulationModelDescription asCoSimulationModelDescription() const;
 
-        virtual const ModelExchangeModelDescription asModelExchangeModelDescription() const = 0;
+        const ModelExchangeModelDescription asModelExchangeModelDescription() const;
 
     };
 

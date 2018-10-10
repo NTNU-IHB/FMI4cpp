@@ -25,48 +25,52 @@
 #define FMI4CPP_FMUTYPESATTRIBUTE_HPP
 
 #include <string>
-#include <boost/property_tree/ptree.hpp>
 
 #include "SourceFiles.hpp"
 
-using std::string;
-
 namespace fmi4cpp::fmi2::xml {
 
-    struct CommonFmuAttributes {
+    struct FmuAttributes {
 
-        string modelIdentifier;
+        const std::string modelIdentifier;
 
-        bool canGetAndSetFMUstate;
-        bool canSerializeFMUstate;
-        bool needsExecutionTool;
-        bool canNotUseMemoryManagementFunctions;
-        bool canBeInstantiatedOnlyOncePerProcess;
-        bool providesDirectionalDerivative;
+        const bool canGetAndSetFMUstate;
+        const bool canSerializeFMUstate;
+        const bool needsExecutionTool;
+        const bool canNotUseMemoryManagementFunctions;
+        const bool canBeInstantiatedOnlyOncePerProcess;
+        const bool providesDirectionalDerivative;
 
-        SourceFiles sourceFiles;
+        const std::optional<SourceFiles> sourceFiles;
 
-        virtual void load(const ptree &node) = 0;
-
-    };
-
-    struct CoSimulationAttributes : CommonFmuAttributes {
-
-        bool canInterpolateInputs;
-        bool canRunAsynchronuously;
-        bool canHandleVariableCommunicationStepSize;
-
-        size_t maxOutputDerivativeOrder;
-
-        void load(const ptree &node) override;
+        FmuAttributes(const std::string &modelIdentifier, const bool canGetAndSetFMUstate,
+                      const bool canSerializeFMUstate, const bool needsExecutionTool,
+                      const bool canNotUseMemoryManagementFunctions, const bool canBeInstantiatedOnlyOncePerProcess,
+                      const bool providesDirectionalDerivative, const std::optional<SourceFiles> &sourceFiles);
 
     };
 
-    struct ModelExchangeAttributes : CommonFmuAttributes {
+    struct CoSimulationAttributes : FmuAttributes {
 
-        bool completedIntegratorStepNotNeeded;
+        const bool canInterpolateInputs;
+        const bool canRunAsynchronuously;
+        const bool canHandleVariableCommunicationStepSize;
 
-        void load(const ptree &node) override;
+        const size_t maxOutputDerivativeOrder;
+
+        CoSimulationAttributes(const std::string &modelIdentifier, const bool canGetAndSetFMUstate,
+                               const bool canSerializeFMUstate, const bool needsExecutionTool,
+                               const bool canNotUseMemoryManagementFunctions,
+                               const bool canBeInstantiatedOnlyOncePerProcess, const bool providesDirectionalDerivative,
+                               const std::optional<SourceFiles> &sourceFiles, const bool canInterpolateInputs,
+                               const bool canRunAsynchronuously, const bool canHandleVariableCommunicationStepSize,
+                               const size_t maxOutputDerivativeOrder);
+
+    };
+
+    struct ModelExchangeAttributes : FmuAttributes {
+
+        const bool completedIntegratorStepNotNeeded;
 
     };
 

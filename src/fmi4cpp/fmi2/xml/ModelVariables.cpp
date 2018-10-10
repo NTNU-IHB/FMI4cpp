@@ -29,15 +29,18 @@
 using namespace std;
 using namespace fmi4cpp::fmi2::xml;
 
-ModelVariablesImpl::ModelVariablesImpl(const ptree &node) {
-    for (const ptree::value_type &v : node) {
-        if (v.first == "ScalarVariable") {
-            variables_.push_back(make_shared<ScalarVariableImpl>(v.second));
-        }
-    }
-}
+ModelVariables::ModelVariables(const vector<shared_ptr<ScalarVariable>> &variables_) : variables_(variables_) {}
 
-const ScalarVariable &ModelVariablesImpl::getByName(const string &name) const {
+
+//ModelVariables::ModelVariables(const ptree &node) {
+//    for (const ptree::value_type &v : node) {
+//        if (v.first == "ScalarVariable") {
+//            variables_.push_back(make_shared<ScalarVariableImpl>(v.second));
+//        }
+//    }
+//}
+
+const ScalarVariable &ModelVariables::getByName(const string &name) const {
     for (const auto &var : variables_) {
         if (var->getName() == name) {
             return *var;
@@ -46,7 +49,7 @@ const ScalarVariable &ModelVariablesImpl::getByName(const string &name) const {
     throw runtime_error("No such variable with name '" + name + "'!");
 }
 
-const ScalarVariable &ModelVariablesImpl::getByValueReference(const fmi2ValueReference vr) const {
+const ScalarVariable &ModelVariables::getByValueReference(const fmi2ValueReference vr) const {
     for (const auto &var : variables_) {
         if (var->getValueReference() == vr) {
             return *var;
@@ -55,7 +58,7 @@ const ScalarVariable &ModelVariablesImpl::getByValueReference(const fmi2ValueRef
     throw runtime_error("No such variable with valueReference '" + std::to_string(vr) + "'!");
 }
 
-void ModelVariablesImpl::getByCausality(const fmi2Causality causality, vector<std::reference_wrapper<ScalarVariable>> &store) const {
+void ModelVariables::getByCausality(const fmi2Causality causality, vector<std::reference_wrapper<ScalarVariable>> &store) const {
     for (const auto &var : variables_) {
         if (var->getCausality() == causality) {
             store.push_back(std::ref(*var));
@@ -63,22 +66,22 @@ void ModelVariablesImpl::getByCausality(const fmi2Causality causality, vector<st
     }
 }
 
-const size_t ModelVariablesImpl::size() const {
+size_t ModelVariables::size() const {
     return variables_.size();
 }
- const ScalarVariable &ModelVariablesImpl::operator[](const size_t index) const {
+ const ScalarVariable &ModelVariables::operator[](const size_t index) const {
     return *variables_[index];
 }
- vector<shared_ptr<ScalarVariable>>::iterator ModelVariablesImpl::begin() {
+ vector<shared_ptr<ScalarVariable>>::iterator ModelVariables::begin() {
     return variables_.begin();
 }
- vector<shared_ptr<ScalarVariable>>::iterator ModelVariablesImpl::end() {
+ vector<shared_ptr<ScalarVariable>>::iterator ModelVariables::end() {
     return variables_.end();
 }
- vector<shared_ptr<ScalarVariable>>::const_iterator ModelVariablesImpl::cbegin() const{
+ vector<shared_ptr<ScalarVariable>>::const_iterator ModelVariables::cbegin() const{
     return variables_.cbegin();
 }
- vector<shared_ptr<ScalarVariable>>::const_iterator ModelVariablesImpl::cend() const {
+ vector<shared_ptr<ScalarVariable>>::const_iterator ModelVariables::cend() const {
     return variables_.cend();
 }
 

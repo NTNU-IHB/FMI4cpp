@@ -25,44 +25,49 @@
 #ifndef FMI4CPP_MODELSTRUCTURE_HPP
 #define FMI4CPP_MODELSTRUCTURE_HPP
 
+#include <string>
 #include <vector>
-#include <boost/property_tree/ptree.hpp>
+#include <optional>
 
-#include "Unknown.hpp"
 #include "../fmi2TypesPlatform.h"
-
-using boost::property_tree::ptree;
 
 namespace fmi4cpp::fmi2::xml {
 
-    class ModelStructure {
+    class Unknown {
+
+    private:
+
+        std::optional<std::vector<unsigned int >> dependencies_;
 
     public:
+        const size_t index;
+        const std::optional<std::string> dependenciesKind;
 
-        virtual const std::vector<Unknown> &getOutputs() const = 0;
+        Unknown(const size_t index, const std::optional<std::string> &dependenciesKind,
+                const std::optional<std::vector<unsigned int>> &dependencies);
 
-        virtual const std::vector<Unknown> &getDerivatives() const = 0;
-
-        virtual const std::vector<Unknown> &getInitialUnknowns() const = 0;
+        const std::optional<std::vector<unsigned int >> &dependencies() const;
 
     };
 
-    class ModelStructureImpl: public virtual ModelStructure {
+    class ModelStructure {
 
     private:
+
         std::vector<Unknown> outputs_;
         std::vector<Unknown> derivatives_;
         std::vector<Unknown> initialUnknowns_;
 
     public:
 
-        explicit ModelStructureImpl(const ptree &node);
+        ModelStructure(const std::vector<Unknown> &outputs_, const std::vector<Unknown> &derivatives_,
+                       const std::vector<Unknown> &initialUnknowns_);
 
-        const std::vector<Unknown> &getOutputs() const override;
+        const std::vector<Unknown> &getOutputs() const;
 
-        const std::vector<Unknown> &getDerivatives() const override;
+        const std::vector<Unknown> &getDerivatives() const;
 
-        const std::vector<Unknown> &getInitialUnknowns() const override;
+        const std::vector<Unknown> &getInitialUnknowns() const;
 
     };
 

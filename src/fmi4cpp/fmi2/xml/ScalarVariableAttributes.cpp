@@ -24,42 +24,15 @@
 
 #include <fmi4cpp/fmi2/xml/ScalarVariableAttributes.hpp>
 
-using namespace std;
 using namespace fmi4cpp::fmi2::xml;
 
-namespace {
+IntegerAttribute::IntegerAttribute(const std::optional<int> &start, const std::optional<std::string> &declaredType,
+                                   const std::optional<int> &min, const std::optional<int> &max,
+                                   const std::optional<std::string> &quantity)
+        : BoundedScalarVariableAttribute(start, declaredType, min, max, quantity) {}
 
-    template <class T>
-    std::optional<T> convert(boost::optional<T> opt) {
-        if (!opt) {
-            return {};
-        } else {
-            return *opt;
-        }
-    }
 
-}
-
-template<typename T>
-void ScalarVariableAttribute<T>::load(const ptree &node) {
-    start = convert(node.get_optional<T>("<xmlattr>.start"));
-    declaredType = convert(node.get_optional<std::string>("<xmlattr>.declaredType"));
-}
-
-template<typename T>
-void BoundedScalarVariableAttribute<T>::load(const ptree &node) {
-    ScalarVariableAttribute<T>::load(node);
-
-    min = convert(node.get_optional<T>("<xmlattr>.min"));
-    max = convert(node.get_optional<T>("<xmlattr>.max"));
-    quantity = convert(node.get_optional<std::string>("<xmlattr>.quantity"));
-}
-
-void IntegerAttribute::load(const ptree &node) {
-    BoundedScalarVariableAttribute::load(node);
-}
-
-ostream &fmi4cpp::fmi2::xml::operator<<(ostream &os, const IntegerAttribute &attribute) {
+std::ostream &fmi4cpp::fmi2::xml::operator<<(std::ostream &os, const IntegerAttribute &attribute) {
     if (attribute.min) {
         os << " min=" << attribute.min.value();
     }
@@ -75,23 +48,19 @@ ostream &fmi4cpp::fmi2::xml::operator<<(ostream &os, const IntegerAttribute &att
     return os;
 }
 
-void RealAttribute::load(const ptree &node) {
-    BoundedScalarVariableAttribute::load(node);
 
-    nominal = convert(node.get_optional<double>("<xmlattr>.nominal"));
+RealAttribute::RealAttribute(const std::optional<double> &start, const std::optional<std::string> &declaredType,
+                             const std::optional<double> &min, const std::optional<double> &max,
+                             const std::optional<std::string> &quantity,
+                             const bool reinit, const bool unbounded, const bool relativeQuantity,
+                             const std::optional<double> &nominal, const std::optional<size_t> &derivative,
+                             const std::optional<std::string> &unit, const std::optional<std::string> &displayUnit)
+        : BoundedScalarVariableAttribute(start, declaredType, min, max, quantity), reinit(reinit), unbounded(unbounded),
+          relativeQuantity(relativeQuantity), nominal(nominal), derivative(derivative), unit(unit),
+          displayUnit(displayUnit) {}
 
-    unit = convert(node.get_optional<string>("<xmlattr>.unit"));
-    displayUnit = convert(node.get_optional<string>("<xmlattr>.displayUnit"));
 
-    derivative = convert(node.get_optional<unsigned int>("<xmlattr>.derivative"));
-
-    reinit = node.get<bool>("<xmlattr>.reinit", false);
-    unbounded = node.get<bool>("<xmlattr>.unbounded", false);
-    relativeQuantity = node.get<bool>("<xmlattr>.relativeQuantity", false);
-
-}
-
-ostream &fmi4cpp::fmi2::xml::operator<<(ostream &os, const RealAttribute &attribute) {
+std::ostream &fmi4cpp::fmi2::xml::operator<<(std::ostream &os, const RealAttribute &attribute) {
     if (attribute.min) {
         os << " min=" << attribute.min.value();
     }
@@ -101,36 +70,43 @@ ostream &fmi4cpp::fmi2::xml::operator<<(ostream &os, const RealAttribute &attrib
     if (attribute.start) {
         os << " start=" << attribute.start.value();
     }
+    if (attribute.quantity) {
+        os << " quantity=" << attribute.quantity.value();
+    }
     return os;
 }
 
-void StringAttribute::load(const ptree &node) {
-    ScalarVariableAttribute::load(node);
-}
+StringAttribute::StringAttribute(const std::optional<std::string> &start,
+                                 const std::optional<std::string> &declaredType)
+        : ScalarVariableAttribute(start, declaredType) {}
 
-ostream &fmi4cpp::fmi2::xml::operator<<(ostream &os, const StringAttribute &attribute) {
+
+std::ostream &fmi4cpp::fmi2::xml::operator<<(std::ostream &os, const StringAttribute &attribute) {
     if (attribute.start) {
         os << " start=" << attribute.start.value();
     }
     return os;
 }
 
-void BooleanAttribute::load(const ptree &node) {
-    ScalarVariableAttribute::load(node);
-}
+BooleanAttribute::BooleanAttribute(const std::optional<bool> &start, const std::optional<std::string> &declaredType)
+        : ScalarVariableAttribute(start, declaredType) {}
 
-ostream &fmi4cpp::fmi2::xml::operator<<(ostream &os, const BooleanAttribute &attribute) {
+
+std::ostream &fmi4cpp::fmi2::xml::operator<<(std::ostream &os, const BooleanAttribute &attribute) {
     if (attribute.start) {
         os << " start=" << attribute.start.value();
     }
     return os;
 }
 
-void EnumerationAttribute::load(const ptree &node) {
-    BoundedScalarVariableAttribute::load(node);
-}
 
-ostream &fmi4cpp::fmi2::xml::operator<<(ostream &os, const EnumerationAttribute &attribute) {
+EnumerationAttribute::EnumerationAttribute(const std::optional<int> &start,
+                                           const std::optional<std::string> &declaredType,
+                                           const std::optional<int> &min, const std::optional<int> &max,
+                                           const std::optional<std::string> &quantity)
+        : BoundedScalarVariableAttribute(start, declaredType, min, max, quantity) {}
+
+std::ostream &fmi4cpp::fmi2::xml::operator<<(std::ostream &os, const EnumerationAttribute &attribute) {
     if (attribute.min) {
         os << " min=" << attribute.min.value();
     }

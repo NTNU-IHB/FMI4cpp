@@ -27,63 +27,39 @@
 
 #include <vector>
 #include <memory>
-#include <boost/property_tree/ptree.hpp>
 #include <fmi4cpp/fmi2/xml/ScalarVariable.hpp>
-
-using boost::property_tree::ptree;
 
 namespace fmi4cpp::fmi2::xml {
 
-    struct ModelVariables {
-
-        virtual const size_t size() const = 0;
-
-        virtual const ScalarVariable &operator[](size_t index) const = 0;
-
-        virtual const ScalarVariable &getByName(const std::string &name) const = 0;
-
-        virtual const ScalarVariable &getByValueReference(fmi2ValueReference vr) const = 0;
-
-        virtual void getByCausality(fmi2Causality causality, std::vector<std::reference_wrapper<ScalarVariable>> &store) const = 0;
-
-        virtual std::vector<std::shared_ptr<ScalarVariable>>::iterator begin() = 0;
-
-        virtual std::vector<std::shared_ptr<ScalarVariable>>::iterator end() = 0;
-
-        virtual std::vector<std::shared_ptr<ScalarVariable>>::const_iterator cbegin() const = 0;
-
-        virtual std::vector<std::shared_ptr<ScalarVariable>>::const_iterator cend() const = 0;
-    };
-
-
-    class ModelVariablesImpl: public virtual ModelVariables {
+    class ModelVariables {
 
     private:
-        std::vector<std::shared_ptr<ScalarVariable>> variables_;
+
+        const std::vector<std::shared_ptr<ScalarVariable>> variables_;
 
     public:
 
-        explicit ModelVariablesImpl(const ptree &node);
+        explicit ModelVariables(const std::vector<std::shared_ptr<ScalarVariable>> &variables_);
 
-        const ScalarVariable &getByName(const std::string &name) const override;
+        size_t size() const;
 
-        const ScalarVariable &getByValueReference(fmi2ValueReference vr) const override;
+        virtual const ScalarVariable &operator[](size_t index) const;
 
-        void getByCausality(fmi2Causality causality, std::vector<std::reference_wrapper<ScalarVariable>> &store) const override;
+        virtual const ScalarVariable &getByName(const std::string &name) const;
 
-        const size_t size() const override;
+        virtual const ScalarVariable &getByValueReference(fmi2ValueReference vr) const;
 
-        const ScalarVariable &operator[](size_t index) const override;
+        virtual void getByCausality(fmi2Causality causality, std::vector<std::reference_wrapper<ScalarVariable>> &store) const;
 
-        std::vector<std::shared_ptr<ScalarVariable>>::iterator begin() override;
+        virtual std::vector<std::shared_ptr<ScalarVariable>>::iterator begin();
 
-        std::vector<std::shared_ptr<ScalarVariable>>::iterator end() override;
+        virtual std::vector<std::shared_ptr<ScalarVariable>>::iterator end();
 
-        std::vector<std::shared_ptr<ScalarVariable>>::const_iterator cbegin() const override;
+        virtual std::vector<std::shared_ptr<ScalarVariable>>::const_iterator cbegin() const;
 
-        std::vector<std::shared_ptr<ScalarVariable>>::const_iterator cend() const override;
-
+        virtual std::vector<std::shared_ptr<ScalarVariable>>::const_iterator cend() const;
     };
+
 
 }
 

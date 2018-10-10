@@ -25,32 +25,19 @@
 #ifndef FMI4CPP_DEFAULTEXPERIMENT_HPP
 #define FMI4CPP_DEFAULTEXPERIMENT_HPP
 
-#include <ostream>
 #include <optional>
-#include <boost/property_tree/ptree.hpp>
-
-using boost::property_tree::ptree;
 
 namespace fmi4cpp::fmi2::xml {
 
     struct DefaultExperiment {
 
-    private:
-        std::optional<double> startTime_;
-        std::optional<double> stopTime_;
-        std::optional<double> stepSize_;
-        std::optional<double> tolerance_;
+        DefaultExperiment(const std::optional<double> &startTime, const std::optional<double> &stopTime,
+                          const std::optional<double> &stepSize, const std::optional<double> &tolerance);
 
-    public:
-        std::optional<double> getStartTime() const;
-
-        std::optional<double> getStopTime() const;
-
-        std::optional<double> getStepSize() const;
-
-        std::optional<double> getTolerance() const;
-
-        void load(const ptree &node);
+        const std::optional<double> startTime;
+        const std::optional<double> stopTime;
+        const std::optional<double> stepSize;
+        const std::optional<double> tolerance;
 
     };
 

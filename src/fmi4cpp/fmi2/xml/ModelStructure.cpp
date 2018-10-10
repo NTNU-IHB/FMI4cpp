@@ -25,49 +25,31 @@
 #include <boost/optional.hpp>
 #include <fmi4cpp/fmi2/xml/ModelStructure.hpp>
 
-using namespace std;
-using namespace fmi4cpp::fmi2::xml;
+using fmi4cpp::fmi2::xml::Unknown;
+using fmi4cpp::fmi2::xml::ModelStructure;
 
-namespace {
 
-    void loadUnknowns(const ptree &node, vector<Unknown> &vector) {
+Unknown::Unknown(const size_t index, const std::optional<std::string> &dependenciesKind,
+        const std::optional<std::vector<unsigned int>> &dependencies)
+        : index(index), dependenciesKind(dependenciesKind), dependencies_(dependencies) {}
 
-        for (const ptree::value_type &v : node) {
-            if (v.first == "Unknown") {
-                Unknown unknown;
-                unknown.load(v.second);
-                vector.push_back(unknown);
-            }
-        }
-
-    }
-
+const std::optional<std::vector<unsigned int>> &Unknown::dependencies() const {
+    return dependencies_;
 }
 
+ModelStructure::ModelStructure(const std::vector<Unknown> &outputs_, const std::vector<Unknown> &derivatives_,
+                               const std::vector<Unknown> &initialUnknowns_)
+        : outputs_(outputs_), derivatives_(derivatives_), initialUnknowns_(initialUnknowns_) {}
 
-ModelStructureImpl::ModelStructureImpl(const ptree &node) {
-
-    for (const ptree::value_type &v : node) {
-        if (v.first == "Outputs") {
-            loadUnknowns(v.second, outputs_);
-        } else if (v.first == "Derivatives") {
-            loadUnknowns(v.second, derivatives_);
-        } else if (v.first == "InitialUnknowns") {
-            loadUnknowns(v.second, initialUnknowns_);
-        }
-    }
-
-}
-
-const std::vector<Unknown> &ModelStructureImpl::getOutputs() const {
+const std::vector<Unknown> &ModelStructure::getOutputs() const {
     return outputs_;
 }
 
-const std::vector<Unknown> &ModelStructureImpl::getDerivatives() const {
+const std::vector<Unknown> &ModelStructure::getDerivatives() const {
     return derivatives_;
 }
 
-const std::vector<Unknown> &ModelStructureImpl::getInitialUnknowns() const {
+const std::vector<Unknown> &ModelStructure::getInitialUnknowns() const {
     return initialUnknowns_;
 }
 

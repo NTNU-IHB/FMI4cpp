@@ -24,40 +24,8 @@
 
 #include <fmi4cpp/fmi2/xml/DefaultExperiment.hpp>
 
-using namespace fmi4cpp::fmi2::xml;
+using fmi4cpp::fmi2::xml::DefaultExperiment;
 
-namespace {
-
-    template <class T>
-    std::optional<T> convert(boost::optional<T> opt) {
-        if (!opt) {
-            return {};
-        } else {
-            return *opt;
-        }
-    }
-
-}
-
-void DefaultExperiment::load(const ptree &node) {
-    startTime_ = convert(node.get_optional<double>("<xmlattr>.startTime"));
-    stopTime_ = convert(node.get_optional<double>("<xmlattr>.stopTime"));
-    stepSize_ = convert(node.get_optional<double>("<xmlattr>.stepSize"));
-    tolerance_ = convert(node.get_optional<double>("<xmlattr>.tolerance"));
-}
-
-std::optional<double> DefaultExperiment::getStartTime() const {
-    return startTime_;
-}
-
-std::optional<double> DefaultExperiment::getStopTime() const {
-    return stopTime_;
-}
-
-std::optional<double> DefaultExperiment::getStepSize() const {
-    return stepSize_;
-}
-
-std::optional<double> DefaultExperiment::getTolerance() const {
-    return tolerance_;
-}
+DefaultExperiment::DefaultExperiment(const std::optional<double> &startTime, const std::optional<double> &stopTime,
+                                     const std::optional<double> &stepSize, const std::optional<double> &tolerance)
+        : startTime(startTime), stopTime(stopTime), stepSize(stepSize), tolerance(tolerance) {}
