@@ -30,7 +30,6 @@
 
 #include "xml/enums.hpp"
 #include "xml/ModelDescription.hpp"
-#include "xml/ScalarVariableImpl.hpp"
 
 #include "import/Fmu.hpp"
 #include "import/FmuInstance.hpp"

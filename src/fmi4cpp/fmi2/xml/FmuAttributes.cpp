@@ -25,51 +25,14 @@
 #include <fmi4cpp/fmi2/xml/FmuAttributes.hpp>
 #include <optional>
 
-using namespace std;
 using namespace fmi4cpp::fmi2::xml;
 
-void FmuAttributes::load(const ptree &node) {
-
-    modelIdentifier = node.get<string>("<xmlattr>.modelIdentifier");
-
-    needsExecutionTool = node.get<bool>("xmlattr>.needsExecutionTool", false);
-    canGetAndSetFMUstate = node.get<bool>("xmlattr>.canGetAndSetFMUstate", false);
-    canSerializeFMUstate = node.get<bool>("xmlattr>.canSerializeFMUstate", false);
-    providesDirectionalDerivative = node.get<bool>("xmlattr>.providesDirectionalDerivative", false);
-    canNotUseMemoryManagementFunctions = node.get<bool>("xmlattr>.canNotUseMemoryManagementFunctions", false);
-    canBeInstantiatedOnlyOncePerProcess = node.get<bool>("xmlattr>.canBeInstantiatedOnlyOncePerProcess", false);
-
-    for (const ptree::value_type &v : node) {
-        if (v.first == "SourceFiles") {
-            sourceFiles.load(v.second);
-        }
-    }
-
-}
-
-void CoSimulationAttributes::load(const ptree &node) {
-    FmuAttributes::load(node);
-
-    maxOutputDerivativeOrder = node.get<size_t>("<xmlattr>.maxOutputDerivativeOrder", 0);
-
-    canInterpolateInputs = node.get<bool>("<xmlattr>.canInterpolateInputs", false);
-    canRunAsynchronuously = node.get<bool>("<xmlattr>.canRunAsynchronuously", false);
-    canHandleVariableCommunicationStepSize = node.get<bool>("<xmlattr>.canHandleVariableCommunicationStepSize", false);
-
-}
-
-void ModelExchangeAttributes::load(const ptree &node) {
-    FmuAttributes::load(node);
-
-    completedIntegratorStepNotNeeded = node.get<bool>("<xmlattr>.completedIntegratorStepNotNeeded", false);
-
-}
-
-FmuAttributes::FmuAttributes(const string &modelIdentifier, const bool canGetAndSetFMUstate,
+FmuAttributes::FmuAttributes(const std::string &modelIdentifier, const bool canGetAndSetFMUstate,
                              const bool canSerializeFMUstate, const bool needsExecutionTool,
                              const bool canNotUseMemoryManagementFunctions,
-                             const bool canBeInstantiatedOnlyOncePerProcess, const bool providesDirectionalDerivative,
-                             const std::optional<SourceFiles> &sourceFiles)
+                             const bool canBeInstantiatedOnlyOncePerProcess,
+                             const bool providesDirectionalDerivative,
+                             const SourceFiles &sourceFiles)
         : modelIdentifier(modelIdentifier),
           canGetAndSetFMUstate(canGetAndSetFMUstate),
           canSerializeFMUstate(canSerializeFMUstate),
@@ -79,24 +42,17 @@ FmuAttributes::FmuAttributes(const string &modelIdentifier, const bool canGetAnd
           providesDirectionalDerivative(providesDirectionalDerivative),
           sourceFiles(sourceFiles) {}
 
-CoSimulationAttributes::CoSimulationAttributes(const string &modelIdentifier, const bool canGetAndSetFMUstate,
-                                               const bool canSerializeFMUstate, const bool needsExecutionTool,
-                                               const bool canNotUseMemoryManagementFunctions,
-                                               const bool canBeInstantiatedOnlyOncePerProcess,
-                                               const bool providesDirectionalDerivative,
-                                               const optional<SourceFiles> &sourceFiles,
-                                               const bool canInterpolateInputs, const bool canRunAsynchronuously,
+CoSimulationAttributes::CoSimulationAttributes(const FmuAttributes &attributes,
+                                               const bool canInterpolateInputs,
+                                               const bool canRunAsynchronuously,
                                                const bool canHandleVariableCommunicationStepSize,
                                                const size_t maxOutputDerivativeOrder)
-        : FmuAttributes(modelIdentifier,
-                        canGetAndSetFMUstate,
-                        canSerializeFMUstate,
-                        needsExecutionTool,
-                        canNotUseMemoryManagementFunctions,
-                        canBeInstantiatedOnlyOncePerProcess,
-                        providesDirectionalDerivative,
-                        sourceFiles),
+        : FmuAttributes(attributes),
           canInterpolateInputs(canInterpolateInputs),
           canRunAsynchronuously(canRunAsynchronuously),
           canHandleVariableCommunicationStepSize(canHandleVariableCommunicationStepSize),
           maxOutputDerivativeOrder(maxOutputDerivativeOrder) {}
+
+ModelExchangeAttributes::ModelExchangeAttributes(const FmuAttributes &attributes,
+                                                 const bool completedIntegratorStepNotNeeded)
+        : FmuAttributes(attributes), completedIntegratorStepNotNeeded(completedIntegratorStepNotNeeded) {}

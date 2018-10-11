@@ -26,70 +26,88 @@
 #define FMI4CPP_SCALARVARIABLE_HPP
 
 #include <memory>
-#include <ostream>
 #include <optional>
 
-#include "../fmi2Functions.h"
-
 #include "enums.hpp"
+#include "../fmi2Functions.h"
 #include "ScalarVariableAttributes.hpp"
 
 namespace fmi4cpp::fmi2::xml {
 
-    //forward declarations
-//    struct IntegerVariable;
-//
-//    struct RealVariable;
-//
-//    struct StringVariable;
-//
-//    struct BooleanVariable;
-//
-//    struct EnumerationVariable;
+    const std::string INTEGER_TYPE = "Integer";
+    const std::string REAL_TYPE = "Real";
+    const std::string STRING_TYPE = "String";
+    const std::string BOOLEAN_TYPE = "Boolean";
+    const std::string ENUMERATION_TYPE = "Enumeration";
 
-    struct ScalarVariable {
+    class ScalarVariable {
 
-        const std::string name;
+    private:
+        std::string name_;
+        std::string description_;
 
-        const std::string description;
+        fmi2ValueReference valueReference_;
 
-        const fmi2ValueReference valueReference;
+        fmi2Causality causality_;
+        fmi2Variability variability_;
+        fmi2Initial initial_;
 
-        const bool canHandleMultipleSetPerTimelnstant;
+        bool canHandleMultipleSetPerTimelnstant_;
 
-        const fmi2Causality causality;
+        std::optional<IntegerAttribute> integer_;
+        std::optional<RealAttribute> real_;
+        std::optional<StringAttribute> string_;
+        std::optional<BooleanAttribute> boolean_;
+        std::optional< EnumerationAttribute> enumeration_;
 
-        const fmi2Variability variability;
+    public:
 
-        const fmi2Initial initial;
+        ScalarVariable(const std::string &name, const std::string &description, const fmi2ValueReference valueReference,
+                       const bool canHandleMultipleSetPerTimelnstant, const fmi2Causality causality,
+                       const fmi2Variability variability, const fmi2Initial initial,
+                       const IntegerAttribute &integer);
 
-//        IntegerVariable asIntegerVariable() const = 0;
-//
-//        RealVariable asRealVariable() const = 0;
-//
-//        StringVariable asStringVariable() const = 0;
-//
-//        BooleanVariable asBooleanVariable() const = 0;
-//
-//        EnumerationVariable asEnumerationVariable() const = 0;
+        ScalarVariable(const std::string &name, const std::string &description, const fmi2ValueReference valueReference,
+                       const bool canHandleMultipleSetPerTimelnstant, const fmi2Causality causality,
+                       const fmi2Variability variability, const fmi2Initial initial,
+                       const RealAttribute &real);
 
-        bool isIntegerVariable() const;
+        ScalarVariable(const std::string &name, const std::string &description, const fmi2ValueReference valueReference,
+                       const bool canHandleMultipleSetPerTimelnstant, const fmi2Causality causality,
+                       const fmi2Variability variability, const fmi2Initial initial,
+                       const StringAttribute &string);
 
-        bool isRealVariable() const;
+        ScalarVariable(const std::string &name, const std::string &description, const fmi2ValueReference valueReference,
+                       const bool canHandleMultipleSetPerTimelnstant, const fmi2Causality causality,
+                       const fmi2Variability variability, const fmi2Initial initial,
+                       const BooleanAttribute &enumeration);
 
-        bool isStringVariable() const;
+        ScalarVariable(const std::string &name, const std::string &description, const fmi2ValueReference valueReference,
+                       const bool canHandleMultipleSetPerTimelnstant, const fmi2Causality causality,
+                       const fmi2Variability variability, const fmi2Initial initial,
+                       const EnumerationAttribute &enumeration);
 
-        bool isBooleanVariable() const;
+        std::string name() const;
+        std::string description() const;
 
-        bool isEnumerationVariable() const;
+        fmi2ValueReference valueReference() const;
 
-        virtual std::string toString() const;
+        fmi2Causality causality() const;
+        fmi2Variability variability() const;
+        fmi2Initial initial() const;
 
-        friend std::ostream &operator<<(std::ostream &os, const ScalarVariable &variable) {
-            return os << variable.toString();
-        }
+        bool canHandleMultipleSetPerTimelnstant() const;
+
+        std::optional<IntegerAttribute> integer() const;
+        std::optional<RealAttribute> real() const;
+        std::optional<StringAttribute> string() const;
+        std::optional<BooleanAttribute> boolean() const;
+        std::optional< EnumerationAttribute> enumeration() const;
+
+        std::string typeName() const;
 
     };
+
 
 }
 

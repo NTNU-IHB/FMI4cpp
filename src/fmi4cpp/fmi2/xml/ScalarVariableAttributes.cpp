@@ -26,98 +26,39 @@
 
 using namespace fmi4cpp::fmi2::xml;
 
-IntegerAttribute::IntegerAttribute(const std::optional<int> &start, const std::optional<std::string> &declaredType,
-                                   const std::optional<int> &min, const std::optional<int> &max,
-                                   const std::optional<std::string> &quantity)
-        : BoundedScalarVariableAttribute(start, declaredType, min, max, quantity) {}
+template<typename T>
+ScalarVariableAttributes<T>::ScalarVariableAttributes(const std::optional<T> &start,
+                                                      const std::optional<std::string> &declaredType)
+        : start(start), declaredType(declaredType) {}
 
 
-std::ostream &fmi4cpp::fmi2::xml::operator<<(std::ostream &os, const IntegerAttribute &attribute) {
-    if (attribute.min) {
-        os << " min=" << attribute.min.value();
-    }
-    if (attribute.max) {
-        os << " max=" << attribute.max.value();
-    }
-    if (attribute.start) {
-        os << " start=" << attribute.start.value();
-    }
-    if (attribute.quantity) {
-        os << " quantity=" << attribute.quantity.value();
-    }
-    return os;
-}
+template<typename T>
+BoundedScalarVariableAttributes<T>::BoundedScalarVariableAttributes(const ScalarVariableAttributes<T> &attributes,
+                                                                    const std::optional<T> &min,
+                                                                    const std::optional<T> &max,
+                                                                    const std::optional<std::string> &quantity)
+        : ScalarVariableAttributes<T>(attributes), min(min), max(max), quantity(quantity) {}
 
 
-RealAttribute::RealAttribute(const std::optional<double> &start, const std::optional<std::string> &declaredType,
-                             const std::optional<double> &min, const std::optional<double> &max,
-                             const std::optional<std::string> &quantity,
+IntegerAttribute::IntegerAttribute(const BoundedScalarVariableAttributes<int> &attributes))
+        : BoundedScalarVariableAttributes(attributes) {}
+
+
+RealAttribute::RealAttribute(const BoundedScalarVariableAttributes<double> &attributes,
                              const bool reinit, const bool unbounded, const bool relativeQuantity,
                              const std::optional<double> &nominal, const std::optional<size_t> &derivative,
                              const std::optional<std::string> &unit, const std::optional<std::string> &displayUnit)
-        : BoundedScalarVariableAttribute(start, declaredType, min, max, quantity), reinit(reinit), unbounded(unbounded),
+        : BoundedScalarVariableAttributes(attributes), reinit(reinit), unbounded(unbounded),
           relativeQuantity(relativeQuantity), nominal(nominal), derivative(derivative), unit(unit),
           displayUnit(displayUnit) {}
 
+StringAttribute::StringAttribute(const ScalarVariableAttributes<std::string> &attributes)
+        : ScalarVariableAttributes(attributes) {}
 
-std::ostream &fmi4cpp::fmi2::xml::operator<<(std::ostream &os, const RealAttribute &attribute) {
-    if (attribute.min) {
-        os << " min=" << attribute.min.value();
-    }
-    if (attribute.max) {
-        os << " max=" << attribute.max.value();
-    }
-    if (attribute.start) {
-        os << " start=" << attribute.start.value();
-    }
-    if (attribute.quantity) {
-        os << " quantity=" << attribute.quantity.value();
-    }
-    return os;
-}
-
-StringAttribute::StringAttribute(const std::optional<std::string> &start,
-                                 const std::optional<std::string> &declaredType)
-        : ScalarVariableAttribute(start, declaredType) {}
+BooleanAttribute::BooleanAttribute(const ScalarVariableAttributes<bool> &attributes)
+        : ScalarVariableAttributes(attributes) {}
 
 
-std::ostream &fmi4cpp::fmi2::xml::operator<<(std::ostream &os, const StringAttribute &attribute) {
-    if (attribute.start) {
-        os << " start=" << attribute.start.value();
-    }
-    return os;
-}
+EnumerationAttribute::EnumerationAttribute(const ScalarVariableAttributes<int> &attributes)
+        : ScalarVariableAttributes(attributes) {}
 
-BooleanAttribute::BooleanAttribute(const std::optional<bool> &start, const std::optional<std::string> &declaredType)
-        : ScalarVariableAttribute(start, declaredType) {}
-
-
-std::ostream &fmi4cpp::fmi2::xml::operator<<(std::ostream &os, const BooleanAttribute &attribute) {
-    if (attribute.start) {
-        os << " start=" << attribute.start.value();
-    }
-    return os;
-}
-
-
-EnumerationAttribute::EnumerationAttribute(const std::optional<int> &start,
-                                           const std::optional<std::string> &declaredType,
-                                           const std::optional<int> &min, const std::optional<int> &max,
-                                           const std::optional<std::string> &quantity)
-        : BoundedScalarVariableAttribute(start, declaredType, min, max, quantity) {}
-
-std::ostream &fmi4cpp::fmi2::xml::operator<<(std::ostream &os, const EnumerationAttribute &attribute) {
-    if (attribute.min) {
-        os << " min=" << attribute.min.value();
-    }
-    if (attribute.max) {
-        os << " max=" << attribute.max.value();
-    }
-    if (attribute.start) {
-        os << " start=" << attribute.start.value();
-    }
-    if (attribute.quantity) {
-        os << " quantity=" << attribute.quantity.value();
-    }
-    return os;
-}

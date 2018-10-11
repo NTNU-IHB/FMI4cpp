@@ -25,8 +25,10 @@
 #ifndef FMI4CPP_MODELVARIABLES_HPP
 #define FMI4CPP_MODELVARIABLES_HPP
 
+
 #include <vector>
 #include <memory>
+
 #include <fmi4cpp/fmi2/xml/ScalarVariable.hpp>
 
 namespace fmi4cpp::fmi2::xml {
@@ -35,29 +37,25 @@ namespace fmi4cpp::fmi2::xml {
 
     private:
 
-        const std::vector<std::shared_ptr<ScalarVariable>> variables_;
+        const std::vector<ScalarVariable> variables_;
 
     public:
 
-        explicit ModelVariables(const std::vector<std::shared_ptr<ScalarVariable>> &variables_);
+        explicit ModelVariables(const std::vector<ScalarVariable> &variables);
 
         size_t size() const;
 
-        virtual const ScalarVariable &operator[](size_t index) const;
+        const ScalarVariable &operator[](size_t index) const;
 
-        virtual const ScalarVariable &getByName(const std::string &name) const;
+        const ScalarVariable &getByName(const std::string &name) const;
 
-        virtual const ScalarVariable &getByValueReference(fmi2ValueReference vr) const;
+        const ScalarVariable &getByValueReference(fmi2ValueReference vr) const;
 
-        virtual void getByCausality(fmi2Causality causality, std::vector<std::reference_wrapper<ScalarVariable>> &store) const;
+        void getByCausality(fmi2Causality causality, std::vector<ScalarVariable> &store) const;
 
-        virtual std::vector<std::shared_ptr<ScalarVariable>>::iterator begin();
+        std::vector<ScalarVariable>::const_iterator cbegin() const;
 
-        virtual std::vector<std::shared_ptr<ScalarVariable>>::iterator end();
-
-        virtual std::vector<std::shared_ptr<ScalarVariable>>::const_iterator cbegin() const;
-
-        virtual std::vector<std::shared_ptr<ScalarVariable>>::const_iterator cend() const;
+        std::vector<ScalarVariable>::const_iterator cend() const;
     };
 
 

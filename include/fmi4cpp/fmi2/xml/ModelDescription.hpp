@@ -40,7 +40,44 @@ using boost::property_tree::ptree;
 
 namespace fmi4cpp::fmi2::xml {
 
-    struct ModelDescription {
+    class ModelDescription {
+
+    private:
+        std::string guid_ ;
+        std::string fmiVersion_;
+        std::string modelName_;
+        std::optional<std::string> description_;
+        std::optional<std::string> version_;
+        std::optional<std::string> author_;
+        std::optional<std::string> license_;
+        std::optional<std::string> copyright_;
+        std::optional<std::string> generationTool_;
+        std::optional<std::string> generationDateAndTime_;
+        std::optional<std::string> variableNamingConvention_;
+
+        size_t numberOfEventIndicators_;
+
+        ModelVariables modelVariables_;
+        ModelStructure modelStructure_;
+
+        std::optional<DefaultExperiment> defaultExperiment_;
+
+        std::optional<CoSimulationAttributes> coSimulation_;
+        std::optional<ModelExchangeAttributes> modelExchange_;
+
+    public:
+
+        ModelDescription(const std::string &guid, const std::string &fmiVersion, const std::string &modelName,
+                         const std::optional<std::string> &description, const std::optional<std::string> &version,
+                         const std::optional<std::string> &author, const std::optional<std::string> &license,
+                         const std::optional<std::string> &copyright, const std::optional<std::string> &generationTool,
+                         const std::optional<std::string> &generationDateAndTime,
+                         const std::optional<std::string> &variableNamingConvention,
+                         const size_t numberOfEventIndicators,
+                         const ModelVariables &modelVariables, const ModelStructure &modelStructure,
+                         const std::optional<DefaultExperiment> &defaultExperiment,
+                         const std::optional<CoSimulationAttributes> &coSimulation,
+                         const std::optional<ModelExchangeAttributes> &modelExchange);
 
         std::string guid() const;
         std::string fmiVersion() const;
@@ -57,28 +94,15 @@ namespace fmi4cpp::fmi2::xml {
         size_t numberOfEventIndicators() const;
         size_t numberOfContinuousStates() const;
 
-        const ModelVariables modelVariables();
-        const ModelStructure modelStructure() const;
+        ModelVariables modelVariables() const;
+        ModelStructure modelStructure() const;
 
-        const std::optional<DefaultExperiment> defaultExperiment();
+        std::optional<DefaultExperiment> defaultExperiment() const;
+
+        std::optional<CoSimulationAttributes> coSimulation() const;
+        std::optional<ModelExchangeAttributes> modelExchange() const;
 
         const ScalarVariable &getVariableByName(const std::string &name) const;
-
-    };
-
-    struct CoSimulationModelDescription;
-
-    struct ModelExchangeModelDescription;
-
-    struct ModelDescriptionProvider: virtual ModelDescription {
-
-        bool supportsModelExchange() const;
-
-        bool supportsCoSimulation() const;
-
-        const CoSimulationModelDescription asCoSimulationModelDescription() const;
-
-        const ModelExchangeModelDescription asModelExchangeModelDescription() const;
 
     };
 

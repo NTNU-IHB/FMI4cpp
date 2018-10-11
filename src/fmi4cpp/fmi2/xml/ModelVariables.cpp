@@ -22,46 +22,35 @@
  * THE SOFTWARE.
  */
 
+#include <stdexcept>
 #include <fmi4cpp/fmi2/xml/enums.hpp>
-#include <fmi4cpp/fmi2/xml/ScalarVariableImpl.hpp>
 #include <fmi4cpp/fmi2/xml/ModelVariables.hpp>
 
-using namespace std;
 using namespace fmi4cpp::fmi2::xml;
 
-ModelVariables::ModelVariables(const vector<shared_ptr<ScalarVariable>> &variables_) : variables_(variables_) {}
 
-
-//ModelVariables::ModelVariables(const ptree &node) {
-//    for (const ptree::value_type &v : node) {
-//        if (v.first == "ScalarVariable") {
-//            variables_.push_back(make_shared<ScalarVariableImpl>(v.second));
-//        }
-//    }
-//}
-
-const ScalarVariable &ModelVariables::getByName(const string &name) const {
-    for (const auto &var : variables_) {
-        if (var->getName() == name) {
-            return *var;
+const ScalarVariable &ModelVariables::getByName(const std::string &name) const {
+    for (auto &v : variables_) {
+        if (v.name() == name) {
+            return v;
         }
     }
-    throw runtime_error("No such variable with name '" + name + "'!");
+    throw std::runtime_error("No such variable with name '" + name + "'!");
 }
 
 const ScalarVariable &ModelVariables::getByValueReference(const fmi2ValueReference vr) const {
     for (const auto &var : variables_) {
-        if (var->getValueReference() == vr) {
-            return *var;
+        if (var.valueReference() == vr) {
+            return var;
         }
     }
-    throw runtime_error("No such variable with valueReference '" + std::to_string(vr) + "'!");
+    throw std::runtime_error("No such variable with valueReference '" + std::to_string(vr) + "'!");
 }
 
-void ModelVariables::getByCausality(const fmi2Causality causality, vector<std::reference_wrapper<ScalarVariable>> &store) const {
+void ModelVariables::getByCausality(const fmi2Causality causality, std::vector<ScalarVariable> &store) const {
     for (const auto &var : variables_) {
-        if (var->getCausality() == causality) {
-            store.push_back(std::ref(*var));
+        if (var.causality() == causality) {
+            store.push_back(var);
         }
     }
 }
@@ -70,18 +59,12 @@ size_t ModelVariables::size() const {
     return variables_.size();
 }
  const ScalarVariable &ModelVariables::operator[](const size_t index) const {
-    return *variables_[index];
-}
- vector<shared_ptr<ScalarVariable>>::iterator ModelVariables::begin() {
-    return variables_.begin();
-}
- vector<shared_ptr<ScalarVariable>>::iterator ModelVariables::end() {
-    return variables_.end();
-}
- vector<shared_ptr<ScalarVariable>>::const_iterator ModelVariables::cbegin() const{
-    return variables_.cbegin();
-}
- vector<shared_ptr<ScalarVariable>>::const_iterator ModelVariables::cend() const {
-    return variables_.cend();
+    return variables_[index];
 }
 
+std::vector<ScalarVariable>::const_iterator ModelVariables::cbegin() const{
+    return variables_.cbegin();
+}
+std::vector<ScalarVariable>::const_iterator ModelVariables::cend() const {
+    return variables_.cend();
+}

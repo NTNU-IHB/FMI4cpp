@@ -21,6 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 #ifndef FMI4CPP_FMUTYPESATTRIBUTE_HPP
 #define FMI4CPP_FMUTYPESATTRIBUTE_HPP
 
@@ -41,12 +42,12 @@ namespace fmi4cpp::fmi2::xml {
         const bool canBeInstantiatedOnlyOncePerProcess;
         const bool providesDirectionalDerivative;
 
-        const std::optional<SourceFiles> sourceFiles;
+        const SourceFiles sourceFiles;
 
         FmuAttributes(const std::string &modelIdentifier, const bool canGetAndSetFMUstate,
                       const bool canSerializeFMUstate, const bool needsExecutionTool,
                       const bool canNotUseMemoryManagementFunctions, const bool canBeInstantiatedOnlyOncePerProcess,
-                      const bool providesDirectionalDerivative, const std::optional<SourceFiles> &sourceFiles);
+                      const bool providesDirectionalDerivative, const SourceFiles &sourceFiles);
 
     };
 
@@ -58,17 +59,16 @@ namespace fmi4cpp::fmi2::xml {
 
         const size_t maxOutputDerivativeOrder;
 
-        CoSimulationAttributes(const std::string &modelIdentifier, const bool canGetAndSetFMUstate,
-                               const bool canSerializeFMUstate, const bool needsExecutionTool,
-                               const bool canNotUseMemoryManagementFunctions,
-                               const bool canBeInstantiatedOnlyOncePerProcess, const bool providesDirectionalDerivative,
-                               const std::optional<SourceFiles> &sourceFiles, const bool canInterpolateInputs,
+        CoSimulationAttributes(const FmuAttributes &attributes, const bool canInterpolateInputs,
                                const bool canRunAsynchronuously, const bool canHandleVariableCommunicationStepSize,
                                const size_t maxOutputDerivativeOrder);
 
     };
 
     struct ModelExchangeAttributes : FmuAttributes {
+
+        ModelExchangeAttributes(const FmuAttributes &attributes,
+                                const bool completedIntegratorStepNotNeeded);
 
         const bool completedIntegratorStepNotNeeded;
 

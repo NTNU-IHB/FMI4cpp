@@ -28,97 +28,76 @@
 #include <string>
 #include <ostream>
 #include <optional>
-#include <boost/optional.hpp>
-#include <boost/property_tree/ptree.hpp>
-
-using boost::property_tree::ptree;
 
 namespace fmi4cpp::fmi2::xml {
 
-    template <typename T>
-    struct ScalarVariableAttribute {
+    template<typename T>
+    struct ScalarVariableAttributes {
 
         const std::optional<T> start;
         const std::optional<std::string> declaredType;
 
-        ScalarVariableAttribute(const std::optional<T> &start, const std::optional<std::string> &declaredType) : start(
-                start), declaredType(declaredType) {}
+        ScalarVariableAttributes(const std::optional<T> &start, const std::optional<std::string> &declaredType);
 
     };
 
-    template <typename T>
-    struct BoundedScalarVariableAttribute: ScalarVariableAttribute<T> {
+
+    template<typename T>
+    struct BoundedScalarVariableAttributes : ScalarVariableAttributes<T> {
 
         const std::optional<T> min;
         const std::optional<T> max;
         const std::optional<std::string> quantity;
 
-        BoundedScalarVariableAttribute(const std::optional<T> &start, const std::optional<std::string> &declaredType,
-                                       const std::optional<T> &min, const std::optional<T> &max,
-                                       const std::optional<std::string> &quantity) : ScalarVariableAttribute(start,
-                                                                                                             declaredType),
-                                                                                     min(min), max(max),
-                                                                                     quantity(quantity) {}
+        BoundedScalarVariableAttributes(const ScalarVariableAttributes<T> &attributes,
+                                        const std::optional<T> &min, const std::optional<T> &max,
+                                        const std::optional<std::string> &quantity);
 
 
     };
 
-    struct IntegerAttribute: BoundedScalarVariableAttribute<int> {
+    struct IntegerAttribute: BoundedScalarVariableAttributes<int> {
 
-        IntegerAttribute(const std::optional<int> &start, const std::optional<std::string> &declaredType,
-                         const std::optional<int> &min, const std::optional<int> &max,
-                         const std::optional<std::string> &quantity);
 
-        friend std::ostream &operator<<(std::ostream &os, const IntegerAttribute &attribute);
+        IntegerAttribute(const BoundedScalarVariableAttributes<int> &attributes);
 
     };
 
-    struct RealAttribute: BoundedScalarVariableAttribute<double> {
+    struct RealAttribute : BoundedScalarVariableAttributes<double> {
 
         const bool reinit;
         const bool unbounded;
         const bool relativeQuantity;
 
         const std::optional<double> nominal;
-        const std::optional<size_t > derivative;
+        const std::optional<size_t> derivative;
 
         const std::optional<std::string> unit;
         const std::optional<std::string> displayUnit;
 
-        RealAttribute(const std::optional<double> &start, const std::optional<std::string> &declaredType,
-                      const std::optional<double> &min, const std::optional<double> &max,
-                      const std::optional<std::string> &quantity, const bool reinit, const bool unbounded,
-                      const bool relativeQuantity, const std::optional<double> &nominal,
-                      const std::optional<size_t> &derivative, const std::optional<std::string> &unit,
-                      const std::optional<std::string> &displayUnit);
-
-        friend std::ostream &operator<<(std::ostream &os, const RealAttribute &attribute);
+        RealAttribute(const BoundedScalarVariableAttributes<double> &attribute, const bool reinit,
+                       const bool unbounded,
+                       const bool relativeQuantity, const std::optional<double> &nominal,
+                       const std::optional<size_t> &derivative, const std::optional<std::string> &unit,
+                       const std::optional<std::string> &displayUnit);
 
     };
 
-    struct StringAttribute: ScalarVariableAttribute<std::string> {
+    struct StringAttribute: ScalarVariableAttributes<std::string> {
 
-        StringAttribute(const std::optional<std::string> &start, const std::optional<std::string> &declaredType);
-
-        friend std::ostream &operator<<(std::ostream &os, const StringAttribute &attribute);
+        StringAttribute(const ScalarVariableAttributes<std::string> &attributes);
 
     };
 
-    struct BooleanAttribute: ScalarVariableAttribute<bool> {
+    struct BooleanAttribute: ScalarVariableAttributes<bool> {
 
-        BooleanAttribute(const std::optional<bool> &start, const std::optional<std::string> &declaredType);
-
-        friend std::ostream &operator<<(std::ostream &os, const BooleanAttribute &attribute);
+        BooleanAttribute(const ScalarVariableAttributes<bool> &attributes);
 
     };
 
-    struct EnumerationAttribute: BoundedScalarVariableAttribute<int> {
+    struct EnumerationAttribute: ScalarVariableAttributes<int> {
 
-        EnumerationAttribute(const std::optional<int> &start, const std::optional<std::string> &declaredType,
-                             const std::optional<int> &min, const std::optional<int> &max,
-                             const std::optional<std::string> &quantity);
-
-        friend std::ostream &operator<<(std::ostream &os, const EnumerationAttribute &attribute);
+        EnumerationAttribute(const ScalarVariableAttributes<int> &attributes);
 
     };
 

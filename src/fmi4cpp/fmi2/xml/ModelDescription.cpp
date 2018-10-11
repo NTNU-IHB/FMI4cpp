@@ -24,6 +24,8 @@
 
 #include <fmi4cpp/fmi2/xml/ModelDescriptionImpl.hpp>
 #include <fmi4cpp/fmi2/xml/SpecificModelDescription.hpp>
+#include <fmi4cpp/fmi2/xml/ModelDescription.hpp>
+
 
 using namespace std;
 using namespace fmi4cpp::fmi2::xml;
@@ -34,124 +36,113 @@ namespace {
 
 }
 
-ModelDescriptionImpl::ModelDescriptionImpl(const string &fileName) {
+ModelDescription::ModelDescription(const string &guid,
+                                   const string &fmiVersion, 
+                                   const string &modelName,
+                                   const optional<string> &description,
+                                   const optional<string> &version,
+                                   const optional<string> &author,
+                                   const optional<string> &license,
+                                   const optional<string> &copyright,
+                                   const optional<string> &generationTool,
+                                   const optional<string> &generationDateAndTime,
+                                   const optional<string> &variableNamingConvention,
+                                   const size_t numberOfEventIndicators,
+                                   const ModelVariables &modelVariables, 
+                                   const ModelStructure &modelStructure,
+                                   const optional<DefaultExperiment> &defaultExperiment,
+                                   const optional<CoSimulationAttributes> &coSimulation,
+                                   const optional<ModelExchangeAttributes> &modelExchange)
+        : guid_(guid),
+          fmiVersion_(fmiVersion),
+          modelName_(modelName),
+          description_(description),
+          version_(version),
+          author_(author),
+          license_(license),
+          copyright_(copyright),
+          generationTool_(generationTool),
+          generationDateAndTime_(generationDateAndTime),
+          variableNamingConvention_(variableNamingConvention),
+          numberOfEventIndicators_(numberOfEventIndicators),
+          modelVariables_(modelVariables),
+          modelStructure_(modelStructure),
+          defaultExperiment_(defaultExperiment),
+          coSimulation_(coSimulation),
+          modelExchange_(modelExchange) {}
 
-    ptree tree;
-    read_xml(fileName, tree);
-
-    ptree root = tree.get_child("fmiModelDescription");
-
-    guid_ = root.get<string>("<xmlattr>.guid");
-    fmiVersion_ = root.get<string>("<xmlattr>.fmiVersion");
-    modelName_ = root.get<string>("<xmlattr>.modelName");
-    description_ = root.get<string>("<xmlattr>.description", "");
-    author_ = root.get<string>("<xmlattr>.author", "");
-    version_ = root.get<string>("<xmlattr>.version", "");
-    license_ = root.get<string>("<xmlattr>.license", "");
-    generationTool_ = root.get<string>("<xmlattr>.generationTool", "");
-    generationDateAndTime_ = root.get<string>("<xmlattr>.generationDateAndTime", "");
-    numberOfEventIndicators_ = root.get<unsigned int>("<xmlattr>.numberOfEventIndicators", 0);
-    variableNamingConvention_ = root.get<string>("<xmlattr>.variableNamingConvention", DEFAULT_VARIABLE_NAMING_CONVENTION);
-
-    for (const ptree::value_type &v : root) {
-
-        if (v.first == "CoSimulation") {
-            coSimulation_ = CoSimulationAttributes();
-            coSimulation_->load(v.second);
-        } else if (v.first == "ModelExchange") {
-            modelExchange_ = ModelExchangeAttributes();
-            modelExchange_->load(v.second);
-        } else if (v.first == "DefaultExperiment") {
-            defaultExperiment_ = DefaultExperiment();
-            defaultExperiment_->load(v.second);
-        } else if (v.first == "ModelVariables") {
-            modelVariables_ = make_shared<ModelVariablesImpl>(v.second);
-        } else if (v.first == "ModelStructure") {
-            modelStructure_ = make_shared<ModelStructureImpl>(v.second);
-        }
-
-    }
-
-}
-
-string ModelDescriptionImpl::getGuid() const {
+std::string ModelDescription::guid() const {
     return guid_;
 }
 
-string ModelDescriptionImpl::getFmiVersion() const {
+std::string ModelDescription::fmiVersion() const {
     return fmiVersion_;
 }
 
-string ModelDescriptionImpl::getModelName() const {
+std::string ModelDescription::modelName() const {
     return modelName_;
 }
 
-string ModelDescriptionImpl::getDescription() const {
+std::optional<std::string> ModelDescription::description() const {
     return description_;
 }
 
-string ModelDescriptionImpl::getVersion() const {
+std::optional<std::string> ModelDescription::version() const {
     return version_;
 }
 
-string ModelDescriptionImpl::getAuthor() const {
+std::optional<std::string> ModelDescription::author() const {
     return author_;
 }
 
-string ModelDescriptionImpl::getLicense() const {
+std::optional<std::string> ModelDescription::license() const {
     return license_;
 }
 
-string ModelDescriptionImpl::getCopyright() const {
+std::optional<std::string> ModelDescription::copyright() const {
     return copyright_;
 }
 
-string ModelDescriptionImpl::getGenerationTool() const {
+std::optional<std::string> ModelDescription::generationTool() const {
     return generationTool_;
 }
 
-string ModelDescriptionImpl::getGenerationDateAndTime() const {
+std::optional<std::string> ModelDescription::generationDateAndTime() const {
     return generationDateAndTime_;
 }
 
-string ModelDescriptionImpl::getVariableNamingConvention() const {
-    return variableNamingConvention_;
+std::optional<std::string> ModelDescription::variableNamingConvention() const {
+    return variableNamingConvention_
 }
 
-size_t ModelDescriptionImpl::getNumberOfEventIndicators() const {
+size_t ModelDescription::numberOfEventIndicators() const {
     return numberOfEventIndicators_;
 }
 
-size_t ModelDescriptionImpl::getNumberOfContinuousStates() const {
-    return modelStructure_->getDerivatives().size();
-}
- ModelVariables &ModelDescriptionImpl::getModelVariables() const {
-    return *modelVariables_;
-}
- ModelStructure &ModelDescriptionImpl::getModelStructure() const {
-    return *modelStructure_;
+size_t ModelDescription::numberOfContinuousStates() const {
+    return modelStructure().getDerivatives().size();
 }
 
-std::optional<DefaultExperiment> ModelDescriptionImpl::getDefaultExperiment() const {
+ModelVariables ModelDescription::modelVariables() const {
+    return modelVariables_;
+}
+
+ModelStructure ModelDescription::modelStructure() const {
+    return modelStructure_;
+}
+
+std::optional<DefaultExperiment> ModelDescription::defaultExperiment() const {
     return defaultExperiment_;
 }
 
-bool ModelDescriptionImpl::supportsModelExchange() const {
-    return modelExchange_.has_value();
+std::optional<CoSimulationAttributes> ModelDescription::coSimulation() const {
+    return coSimulation_;
 }
 
-bool ModelDescriptionImpl::supportsCoSimulation() const {
-    return coSimulation_.has_value();
+std::optional<ModelExchangeAttributes> ModelDescription::modelExchange() const {
+    return modelExchange_;
 }
 
-const ScalarVariable &ModelDescriptionImpl::getVariableByName(const string &name) const{
-    return modelVariables_->getByName(name);
-}
-
-const CoSimulationModelDescription ModelDescriptionImpl::asCoSimulationModelDescription() const {
-    return CoSimulationModelDescription(*this, *coSimulation_);
-}
-
-const ModelExchangeModelDescription ModelDescriptionImpl::asModelExchangeModelDescription() const {
-    return ModelExchangeModelDescription(*this, *modelExchange_);
+const ScalarVariable &ModelDescription::getVariableByName(const std::string &name) const {
+    return modelVariables_.getByName(name);
 }
