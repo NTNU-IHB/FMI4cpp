@@ -58,22 +58,18 @@ int main() {
    
     double t;
     fmi2Real value;
-    fmi2Status status;
-    fmi2ValueReference vr = var.valueReference();
     while ( (t = slave->getSimulationTime()) <= stop) {
-    
-        status = slave->doStep(stepSize);
-        if (status != fmi2OK) {
+
+        if (slave->doStep(stepSize) != fmi2OK) {
             //error handling
             break;
         }
         
-        status = slave->readReal(vr, value);
-        if (status != fmi2OK) {
+        if (var.read(*slave, value) != fmi2OK) {
             //error handling
             break;
         }
-        std::cout << "t=" << t << ", " << var.getName() << "=" << value << std::endl;
+        std::cout << "t=" << t << ", " << var.name() << "=" << value << std::endl;
      
     }
     
