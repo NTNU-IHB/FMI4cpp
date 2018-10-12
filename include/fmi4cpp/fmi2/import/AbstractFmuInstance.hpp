@@ -165,7 +165,7 @@ namespace fmi4cpp::fmi2::import {
             return modelDescription_;
         }
 
-        fmi2Status setDebugLogging(const bool loggingOn, const vector<const char *> categories) const {
+        fmi2Status setDebugLogging(const bool loggingOn, const std::vector<const char *> categories) const {
             return library_->setDebugLogging(c_, loggingOn, categories);
         }
 
@@ -242,18 +242,18 @@ namespace fmi4cpp::fmi2::import {
             return library_->getSerializedFMUstateSize(c_, state, size);
         }
 
-        fmi2Status serializeFMUstate(const fmi2FMUstate &state, vector<fmi2Byte> &serializedState) override {
+        fmi2Status serializeFMUstate(const fmi2FMUstate &state, std::vector<fmi2Byte> &serializedState) override {
             return library_->serializeFMUstate(c_, state, serializedState);
         }
 
         fmi2Status
-        deSerializeFMUstate(fmi2FMUstate &state, const vector<fmi2Byte> &serializedState) override {
+        deSerializeFMUstate(fmi2FMUstate &state, const std::vector<fmi2Byte> &serializedState) override {
             return library_->deSerializeFMUstate(c_, state, serializedState);
         }
 
         fmi2Status getDirectionalDerivative(
-                const vector<fmi2ValueReference> &vUnkownRef, const vector<fmi2ValueReference> &vKnownRef,
-                const vector<fmi2Real> &dvKnownRef, vector<fmi2Real> &dvUnknownRef) const override {
+                const std::vector<fmi2ValueReference> &vUnkownRef, const std::vector<fmi2ValueReference> &vKnownRef,
+                const std::vector<fmi2Real> &dvKnownRef, std::vector<fmi2Real> &dvUnknownRef) const override {
             return library_->getDirectionalDerivative(c_, vUnkownRef, vKnownRef, dvKnownRef, dvUnknownRef);
         }
 
@@ -261,7 +261,7 @@ namespace fmi4cpp::fmi2::import {
             return library_->readInteger(c_, vr, ref);
         }
 
-        fmi2Status readInteger(const vector<fmi2ValueReference> &vr, vector<fmi2Integer> &ref) const override {
+        fmi2Status readInteger(const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Integer> &ref) const override {
             return library_->readInteger(c_, vr, ref);
         }
 
@@ -269,7 +269,7 @@ namespace fmi4cpp::fmi2::import {
             return library_->readReal(c_, vr, ref);
         }
 
-        fmi2Status readReal(const vector<fmi2ValueReference> &vr, vector<fmi2Real> &ref) const override {
+        fmi2Status readReal(const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Real> &ref) const override {
             return library_->readReal(c_, vr, ref);
         }
 
@@ -277,7 +277,7 @@ namespace fmi4cpp::fmi2::import {
             return library_->readString(c_, vr, ref);
         }
 
-        fmi2Status readString(const vector<fmi2ValueReference> &vr, vector<fmi2String> &ref) const override {
+        fmi2Status readString(const std::vector<fmi2ValueReference> &vr, std::vector<fmi2String> &ref) const override {
             return library_->readString(c_, vr, ref);
         }
 
@@ -285,7 +285,7 @@ namespace fmi4cpp::fmi2::import {
             return library_->readBoolean(c_, vr, ref);
         }
 
-        fmi2Status readBoolean(const vector<fmi2ValueReference> &vr, vector<fmi2Boolean> &ref) const override {
+        fmi2Status readBoolean(const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Boolean> &ref) const override {
             return library_->readBoolean(c_, vr, ref);
         }
 
@@ -293,7 +293,7 @@ namespace fmi4cpp::fmi2::import {
             return library_->writeInteger(c_, vr, value);
         }
 
-        fmi2Status writeInteger(const vector<fmi2ValueReference> &vr, const vector<fmi2Integer> &values) override {
+        fmi2Status writeInteger(const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2Integer> &values) override {
             return library_->writeInteger(c_, vr, values);
         }
 
@@ -301,7 +301,7 @@ namespace fmi4cpp::fmi2::import {
             return library_->writeReal(c_, vr, value);
         }
 
-        fmi2Status writeReal(const vector<fmi2ValueReference> &vr, const vector<fmi2Real> &values) override {
+        fmi2Status writeReal(const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2Real> &values) override {
             return library_->writeReal(c_, vr, values);
         }
 
@@ -309,7 +309,7 @@ namespace fmi4cpp::fmi2::import {
             return library_->writeString(c_, vr, value);
         }
 
-        fmi2Status writeString(const vector<fmi2ValueReference> &vr, const vector<fmi2String> &values) override {
+        fmi2Status writeString(const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2String> &values) override {
             return library_->writeString(c_, vr, values);
         }
 
@@ -317,7 +317,7 @@ namespace fmi4cpp::fmi2::import {
             return library_->writeBoolean(c_, vr, value);
         }
 
-        fmi2Status writeBoolean(const vector<fmi2ValueReference> &vr, const vector<fmi2Boolean> &values) override {
+        fmi2Status writeBoolean(const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2Boolean> &values) override {
             return library_->writeBoolean(c_, vr, values);
         }
 

@@ -49,7 +49,7 @@ namespace fmi4cpp::fmi2::import {
 
     public:
 
-        explicit CoSimulationLibrary(const std::string &libName);
+        explicit CoSimulationLibrary(const std::string &modelIdentifier, const std::shared_ptr<FmuResource> &resource);
 
         fmi2Status doStep(const fmi2Component c, const fmi2Real currentCommunicationPoint,
                           const fmi2Real communicationStepSize, const bool noSetFMUStatePriorToCurrentPoint) const;

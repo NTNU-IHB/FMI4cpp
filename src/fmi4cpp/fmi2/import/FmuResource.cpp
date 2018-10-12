@@ -22,25 +22,42 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMI4CPP_TEMPORALFOLDER_HPP
-#define FMI4CPP_TEMPORALFOLDER_HPP
+#if FMI4CPP_DEBUG_LOGGING_ENABLED
+#include <iostream>
+#endif
 
-#include <experimental/filesystem>
+#include <fmi4cpp/fmi2/import/FmuResource.hpp>
 
-namespace fs = std::experimental::filesystem;
+#include "../../tools/os_util.hpp"
 
-namespace fmi4cpp::fmi2::import {
+using namespace fmi4cpp::fmi2::import;
 
-class TemporalFolder: public fs::path {
+FmuResource::FmuResource(fs::path &path): path_(path){}
 
-    public:
-        explicit TemporalFolder(fs::path &path);
-
-        ~TemporalFolder();
-
-    };
-
+const std::string FmuResource::getModelDescriptionPath() const {
+    return path_.string() + "/modelDescription.xml";
 }
 
+const std::string FmuResource::getResourcePath() const {
+    return "file:/" + path_.string() + "/resources/" + getOs() + "/" + getLibExt();
+}
 
-#endif //FMI4CPP_TEMPORALFOLDER_HPP
+const std::string FmuResource::getAbsoluteLibraryPath(const std::string &modelIdentifier) const {
+    return path_.string() + "/binaries/" + getOs() + "/" + modelIdentifier + getLibExt();
+}
+
+FmuResource::~FmuResource() {
+
+    std::error_code success {};
+    fs::remove_all(path_, success);
+#if FMI4CPP_DEBUG_LOGGING_ENABLED
+    if (!success) {
+        std::cout << "Deleted temporal folder '" << path_.string() << "'" <<  std::endl;
+    } else {
+        std::cout << "Unable to delete temporal folder '" <<  path_.string() << "'" <<  std::endl;
+    }
+#endif
+
+
+
+}

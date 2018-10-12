@@ -22,21 +22,34 @@
  * THE SOFTWARE.
  */
 
-#if FMI4CPP_DEBUG_LOGGING_ENABLED
-#include <iostream>
-#endif
+#ifndef FMI4CPP_TEMPORALFOLDER_HPP
+#define FMI4CPP_TEMPORALFOLDER_HPP
 
-#include <fmi4cpp/fmi2/import/TemporalFolder.hpp>
+#include <experimental/filesystem>
 
-using namespace fmi4cpp::fmi2::import;
+namespace fs = std::experimental::filesystem;
 
-TemporalFolder::TemporalFolder(fs::path &path): fs::path(path){}
+namespace fmi4cpp::fmi2::import {
 
-TemporalFolder::~TemporalFolder() {
-    fs::remove_all(*this);
+class FmuResource {
 
-#if FMI4CPP_DEBUG_LOGGING_ENABLED
-    std::cout << "Deleted temporal folder '" << string() << "'" <<  std::endl;
-#endif
+private:
+    fs::path path_;
+
+    public:
+        explicit FmuResource(fs::path &path);
+
+        const std::string getResourcePath() const;
+
+        const std::string getModelDescriptionPath() const;
+
+        const std::string getAbsoluteLibraryPath(const std::string &modelIdentifier) const;
+
+        ~FmuResource();
+
+    };
 
 }
+
+
+#endif //FMI4CPP_TEMPORALFOLDER_HPP

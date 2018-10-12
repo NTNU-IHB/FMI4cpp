@@ -23,7 +23,7 @@ Install [vcpkg](https://github.com/Microsoft/vcpkg) and run:
 ./vcpkg install boost-property-tree libzip
 ``` 
 
-On linux you _might_ also need to install some additional libraries:
+On linux you _might_ need to install some additional libraries:
 
 ```
 ./vcpkg install bzip2 openssl
@@ -47,11 +47,11 @@ int main() {
 
     import::Fmu fmu("path/to/fmu.fmu");
     
-    auto& md = fmu.getModelDescription();
+    auto md = fmu.getModelDescription();
     xml::ScalarVariable var = md->getVariableByName("my_var");
     
-    auto md_cs = md.asCoSimulationModelDescription();
-    std::cout << "modelIdentifier=" << md_cs.getModelIdentifier() << std::endl;
+    auto md_cs = md->asCoSimulationModelDescription();
+    std::cout << "modelIdentifier=" << md_cs.modelIdentifier() << std::endl;
     
     auto slave = fmu.asCoSimulationFmu()->newInstance();
     slave->init();

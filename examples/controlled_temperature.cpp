@@ -39,10 +39,9 @@ int main() {
                             + "/FMI_2.0/CoSimulation/" + getOs() +
                             "/20sim/4.6.4.8004/ControlledTemperature/ControlledTemperature.fmu";
 
-    auto fmu = import::Fmu(fmu_path);
-    auto cs_fmu = fmu.asCoSimulationFmu();
+    auto fmu = import::Fmu(fmu_path).asCoSimulationFmu();
 
-    auto slave = cs_fmu->newInstance();
+    auto slave = fmu->newInstance();
     slave->init();
 
     clock_t begin = clock();

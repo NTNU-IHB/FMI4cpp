@@ -31,7 +31,7 @@
 #include <type_traits>
 
 #include "FmuSlave.hpp"
-#include "TemporalFolder.hpp"
+#include "FmuResource.hpp"
 #include "ModelExchangeInstance.hpp"
 #include "CoSimulationLibrary.hpp"
 #include "ModelExchangeLibrary.hpp"
@@ -85,8 +85,7 @@ namespace fmi4cpp::fmi2::import {
 
     private:
 
-        const std::string fmuFile_;
-        std::shared_ptr<TemporalFolder> tmpFolder_;
+        std::shared_ptr<FmuResource> resource_;
         std::shared_ptr<ModelDescription> modelDescription_;
 
     public:
@@ -103,6 +102,8 @@ namespace fmi4cpp::fmi2::import {
         std::unique_ptr<CoSimulationFmu> asCoSimulationFmu() const override;
 
         std::unique_ptr<ModelExchangeFmu> asModelExchangeFmu() const override;
+
+        ~Fmu();
         
     };
 
@@ -111,17 +112,19 @@ namespace fmi4cpp::fmi2::import {
     private:
 
         std::shared_ptr<CoSimulationLibrary> lib_;
-        const std::shared_ptr<TemporalFolder> tmpFolder_;
-        const std::shared_ptr<xml::CoSimulationModelDescription> modelDescription_;
+        std::shared_ptr<FmuResource> resource_;
+        std::shared_ptr<xml::CoSimulationModelDescription> modelDescription_;
 
     public:
 
-        explicit CoSimulationFmu(const std::shared_ptr<TemporalFolder> &tmpFolder,
+        explicit CoSimulationFmu(const std::shared_ptr<FmuResource> &resource,
                                  const std::shared_ptr<xml::CoSimulationModelDescription> &md);
 
         std::shared_ptr<xml::CoSimulationModelDescription> getModelDescription() const override;
 
         std::unique_ptr<import::FmuSlave> newInstance(bool visible = false, bool loggingOn = false);
+
+        virtual ~CoSimulationFmu();
 
     };
 
@@ -130,17 +133,19 @@ namespace fmi4cpp::fmi2::import {
     private:
 
         std::shared_ptr<ModelExchangeLibrary> lib_;
-        std::shared_ptr<TemporalFolder> tmpFolder_;
+        std::shared_ptr<FmuResource> resource_;
         std::shared_ptr<xml::ModelExchangeModelDescription> modelDescription_;
 
     public:
 
-        explicit ModelExchangeFmu(const std::shared_ptr<TemporalFolder> &tmpFolder,
+        explicit ModelExchangeFmu(const std::shared_ptr<FmuResource> &resource,
                                   const std::shared_ptr<xml::ModelExchangeModelDescription> &md);
 
         std::shared_ptr<xml::ModelExchangeModelDescription> getModelDescription() const override;
 
         std::unique_ptr<import::ModelExchangeInstance> newInstance(bool visible = false, bool loggingOn = false);
+
+        virtual ~ModelExchangeFmu();
 
     };
 
