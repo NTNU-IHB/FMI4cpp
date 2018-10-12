@@ -30,7 +30,15 @@ using fmi4cpp::fmi2::xml::ModelStructure;
 
 Unknown::Unknown(const size_t index, const std::optional<std::string> &dependenciesKind,
         const std::optional<std::vector<unsigned int>> &dependencies)
-        : index(index), dependenciesKind(dependenciesKind), dependencies_(dependencies) {}
+        : index_(index), dependenciesKind_(dependenciesKind), dependencies_(dependencies) {}
+
+const size_t fmi4cpp::fmi2::xml::Unknown::index() {
+    return index_;
+}
+
+const std::optional<std::string> fmi4cpp::fmi2::xml::Unknown::dependenciesKind() {
+    return dependenciesKind_;
+}
 
 const std::optional<std::vector<unsigned int>> &Unknown::dependencies() const {
     return dependencies_;
@@ -42,15 +50,15 @@ ModelStructure::ModelStructure(const std::vector<Unknown> &outputs_, const std::
                                const std::vector<Unknown> &initialUnknowns_)
         : outputs_(outputs_), derivatives_(derivatives_), initialUnknowns_(initialUnknowns_) {}
 
-const std::vector<Unknown> &ModelStructure::getOutputs() const {
+const std::vector<Unknown> &ModelStructure::outputs() const {
     return outputs_;
 }
 
-const std::vector<Unknown> &ModelStructure::getDerivatives() const {
+const std::vector<Unknown> &ModelStructure::derivatives() const {
     return derivatives_;
 }
 
-const std::vector<Unknown> &ModelStructure::getInitialUnknowns() const {
+const std::vector<Unknown> &ModelStructure::initialUnknowns() const {
     return initialUnknowns_;
 }
 

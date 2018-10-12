@@ -105,7 +105,7 @@ namespace fmi4cpp::fmi2::xml {
 
         size_t numberOfContinuousStates() const;
 
-        const ModelVariables &modelVariables() const;
+        ModelVariables &modelVariables();
 
         const ModelStructure &modelStructure() const;
 

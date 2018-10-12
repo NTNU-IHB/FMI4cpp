@@ -64,13 +64,19 @@ namespace {
         return id;
     }
 
-    const std::string getAbsoluteLibraryPath(const fs::path &path, const std::string &modelIdentifier) {
-        return path.string() + "/binaries/" + getOs() + "/" + modelIdentifier + getLibExt();
+    const std::string getModelDescriptionPath(const fs::path &path) {
+        return path.string() + "/modelDescription.xml";
     }
 
     const std::string getResourcePath(const fs::path &path) {
         return "file:/" + path.string() + "/resources/" + getOs() + "/" + getLibExt();
     }
+
+    const std::string getAbsoluteLibraryPath(const fs::path &path, const std::string &modelIdentifier) {
+        return path.string() + "/binaries/" + getOs() + "/" + modelIdentifier + getLibExt();
+    }
+
+
 
 }
 
@@ -92,12 +98,13 @@ Fmu::Fmu(const string &fmuFile) : fmuFile_(fmuFile) {
     }
 
     tmpFolder_ = make_shared<TemporalFolder>(tmpPath);
-    modelDescription_ = std::move(xml::parseModelDescription(getModelDescriptionPath()));
+    modelDescription_ = std::move(xml::parseModelDescription(getModelDescriptionPath(*tmpFolder_)));
 
 }
 
+
 const string Fmu::getModelDescriptionXml() const {
-    ifstream stream(getModelDescriptionPath());
+    ifstream stream(getModelDescriptionPath(*tmpFolder_));
     return string((istreambuf_iterator<char>(stream)), istreambuf_iterator<char>());
 }
 
@@ -123,17 +130,13 @@ unique_ptr<ModelExchangeFmu> Fmu::asModelExchangeFmu() const {
     return make_unique<ModelExchangeFmu>(tmpFolder_, me);
 }
 
-const string Fmu::getModelDescriptionPath() const {
-    return tmpFolder_->string() + "/modelDescription.xml";
-}
-
-Fmu::~Fmu() {
-
-#if FMI4CPP_DEBUG_LOGGING_ENABLED
-    cout << "FMU '" << modelName() << "' disposed.." << endl;
-#endif
-
-}
+//Fmu::~Fmu() {
+//
+//#if FMI4CPP_DEBUG_LOGGING_ENABLED
+//    cout << "FMU '" << modelName() << "' disposed.." << endl;
+//#endif
+//
+//}
 
 import::CoSimulationFmu::CoSimulationFmu(const shared_ptr<import::TemporalFolder> &tmpFolder,
                                          const shared_ptr<xml::CoSimulationModelDescription> &md)

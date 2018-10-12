@@ -96,10 +96,10 @@ size_t ModelDescriptionBase::numberOfEventIndicators() const {
 }
 
 size_t ModelDescriptionBase::numberOfContinuousStates() const {
-    return modelStructure().getDerivatives().size();
+    return modelStructure().derivatives().size();
 }
 
-const ModelVariables &ModelDescriptionBase::modelVariables() const {
+ModelVariables &ModelDescriptionBase::modelVariables() {
     return modelVariables_;
 }
 
@@ -118,7 +118,7 @@ const ScalarVariable &ModelDescriptionBase::getVariableByName(const std::string 
 ModelDescription::ModelDescription(const ModelDescriptionBase &base,
                                    const std::optional<CoSimulationAttributes> &coSimulation,
                                    const std::optional<ModelExchangeAttributes> &modelExchange)
-        : ModelDescriptionBase(base), coSimulation_(coSimulation_), modelExchange_(modelExchange_) {}
+        : ModelDescriptionBase(base), coSimulation_(coSimulation), modelExchange_(modelExchange) {}
 
 bool ModelDescription::supportsCoSimulation() const {
     return coSimulation_.has_value();
@@ -129,13 +129,18 @@ bool ModelDescription::supportsModelExchange() const {
 }
 
 std::unique_ptr<CoSimulationModelDescription> ModelDescription::asCoSimulationModelDescription() const {
+    if (!supportsCoSimulation()) {
+        throw std::runtime_error("CoSimulation not supported!");
+    }
     return std::make_unique<CoSimulationModelDescription>(*this, *coSimulation_);
 }
 
 std::unique_ptr<ModelExchangeModelDescription> ModelDescription::asModelExchangeModelDescription() const {
+    if (!supportsModelExchange()) {
+        throw std::runtime_error("ModelExchange not supported!");
+    }
     return std::make_unique<ModelExchangeModelDescription>(*this, *modelExchange_);
 }
-
 
 CoSimulationModelDescription::CoSimulationModelDescription(const ModelDescriptionBase &base,
                                                            const CoSimulationAttributes &attributes)

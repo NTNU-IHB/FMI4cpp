@@ -58,7 +58,7 @@ namespace fmi4cpp::fmi2::import {
         }
 
         const fmi2ValueReference getValueReference(const std::string &name) {
-            return getModelDescription().getVariableByName(name).getValueReference();
+            return getModelDescription()->getVariableByName(name).valueReference();
         }
 
         virtual std::shared_ptr<T> getModelDescription() const = 0;

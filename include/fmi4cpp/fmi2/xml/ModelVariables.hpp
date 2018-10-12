@@ -53,8 +53,8 @@ namespace fmi4cpp::fmi2::xml {
 
         void getByCausality(fmi2Causality causality, std::vector<ScalarVariable> &store) const;
 
-        std::vector<ScalarVariable>::const_iterator begin();
-        std::vector<ScalarVariable>::const_iterator end();
+        std::vector<ScalarVariable>::iterator begin();
+        std::vector<ScalarVariable>::iterator end();
 
         std::vector<ScalarVariable>::const_iterator cbegin() const;
         std::vector<ScalarVariable>::const_iterator cend() const;

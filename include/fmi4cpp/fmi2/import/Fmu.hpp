@@ -89,8 +89,6 @@ namespace fmi4cpp::fmi2::import {
         std::shared_ptr<TemporalFolder> tmpFolder_;
         std::shared_ptr<ModelDescription> modelDescription_;
 
-        const std::string getModelDescriptionPath() const;
-
     public:
         explicit Fmu(const std::string &fmuFile);
 
@@ -106,7 +104,7 @@ namespace fmi4cpp::fmi2::import {
 
         std::unique_ptr<ModelExchangeFmu> asModelExchangeFmu() const override;
 
-        ~Fmu();
+//        ~Fmu();
 
     };
 
@@ -134,8 +132,8 @@ namespace fmi4cpp::fmi2::import {
     private:
 
         std::shared_ptr<ModelExchangeLibrary> lib_;
-        const std::shared_ptr<TemporalFolder> tmpFolder_;
-        const std::shared_ptr<xml::ModelExchangeModelDescription> modelDescription_;
+        std::shared_ptr<TemporalFolder> tmpFolder_;
+        std::shared_ptr<xml::ModelExchangeModelDescription> modelDescription_;
 
     public:
 
