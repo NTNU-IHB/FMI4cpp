@@ -49,7 +49,6 @@ using fmi4cpp::fmi2::import::ModelExchangeFmu;
 
 namespace fs = std::experimental::filesystem;
 
-
 namespace {
 
     std::random_device rd;

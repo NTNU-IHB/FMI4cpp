@@ -37,7 +37,8 @@ namespace fmi4cpp::fmi2::xml {
         const std::optional<T> start;
         const std::optional<std::string> declaredType;
 
-        ScalarVariableAttributes(const std::optional<T> &start, const std::optional<std::string> &declaredType);
+        ScalarVariableAttributes(const std::optional<T> &start, const std::optional<std::string> &declaredType)
+                : start(start), declaredType(declaredType) {}
 
     };
 
@@ -49,14 +50,17 @@ namespace fmi4cpp::fmi2::xml {
         const std::optional<T> max;
         const std::optional<std::string> quantity;
 
+
         BoundedScalarVariableAttributes(const ScalarVariableAttributes<T> &attributes,
-                                        const std::optional<T> &min, const std::optional<T> &max,
-                                        const std::optional<std::string> &quantity);
+                                        const std::optional<T> &min,
+                                        const std::optional<T> &max,
+                                        const std::optional<std::string> &quantity)
+                : ScalarVariableAttributes<T>(attributes), min(min), max(max), quantity(quantity) {}
 
 
     };
 
-    struct IntegerAttribute: BoundedScalarVariableAttributes<int> {
+    struct IntegerAttribute : BoundedScalarVariableAttributes<int> {
 
         IntegerAttribute(const BoundedScalarVariableAttributes<int> &attributes);
 
@@ -75,26 +79,26 @@ namespace fmi4cpp::fmi2::xml {
         const std::optional<std::string> displayUnit;
 
         RealAttribute(const BoundedScalarVariableAttributes<double> &attribute, const bool reinit,
-                       const bool unbounded,
-                       const bool relativeQuantity, const std::optional<double> &nominal,
-                       const std::optional<size_t> &derivative, const std::optional<std::string> &unit,
-                       const std::optional<std::string> &displayUnit);
+                      const bool unbounded,
+                      const bool relativeQuantity, const std::optional<double> &nominal,
+                      const std::optional<size_t> &derivative, const std::optional<std::string> &unit,
+                      const std::optional<std::string> &displayUnit);
 
     };
 
-    struct StringAttribute: ScalarVariableAttributes<std::string> {
+    struct StringAttribute : ScalarVariableAttributes<std::string> {
 
         StringAttribute(const ScalarVariableAttributes<std::string> &attributes);
 
     };
 
-    struct BooleanAttribute: ScalarVariableAttributes<bool> {
+    struct BooleanAttribute : ScalarVariableAttributes<bool> {
 
         BooleanAttribute(const ScalarVariableAttributes<bool> &attributes);
 
     };
 
-    struct EnumerationAttribute: ScalarVariableAttributes<int> {
+    struct EnumerationAttribute : ScalarVariableAttributes<int> {
 
         EnumerationAttribute(const ScalarVariableAttributes<int> &attributes);
 

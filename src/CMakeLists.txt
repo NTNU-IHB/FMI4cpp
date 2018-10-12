@@ -12,13 +12,11 @@ SET(SOURCES
         fmi4cpp/fmi2/xml/enums.cpp
         fmi4cpp/fmi2/xml/FmuAttributes.cpp
         fmi4cpp/fmi2/xml/ModelDescription.cpp
-        fmi4cpp/fmi2/xml/ModelDescriptionParser.cpp
         fmi4cpp/fmi2/xml/ModelVariables.cpp
         fmi4cpp/fmi2/xml/ScalarVariable.cpp
         fmi4cpp/fmi2/xml/ScalarVariableAttributes.cpp
         fmi4cpp/fmi2/xml/DefaultExperiment.cpp
         fmi4cpp/fmi2/xml/ModelStructure.cpp
-        fmi4cpp/fmi2/xml/optional_converter.cpp
 
 )
 

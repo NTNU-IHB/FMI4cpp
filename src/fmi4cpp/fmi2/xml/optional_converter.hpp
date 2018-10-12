@@ -29,6 +29,12 @@
 #include <boost/optional/optional.hpp>
 
 template<class T>
-std::optional<T> convert(boost::optional<T> opt);
+std::optional<T> convert(boost::optional<T> opt) {
+    if (!opt) {
+        return {};
+    } else {
+        return *opt;
+    }
+}
 
 #endif //FMI4CPP_OPTIONAL_CONVERTER_HPP

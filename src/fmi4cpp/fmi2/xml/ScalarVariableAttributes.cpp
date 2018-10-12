@@ -26,19 +26,6 @@
 
 using namespace fmi4cpp::fmi2::xml;
 
-template<typename T>
-ScalarVariableAttributes<T>::ScalarVariableAttributes(const std::optional<T> &start,
-                                                      const std::optional<std::string> &declaredType)
-        : start(start), declaredType(declaredType) {}
-
-
-template<typename T>
-BoundedScalarVariableAttributes<T>::BoundedScalarVariableAttributes(const ScalarVariableAttributes<T> &attributes,
-                                                                    const std::optional<T> &min,
-                                                                    const std::optional<T> &max,
-                                                                    const std::optional<std::string> &quantity)
-        : ScalarVariableAttributes<T>(attributes), min(min), max(max), quantity(quantity) {}
-
 
 IntegerAttribute::IntegerAttribute(const BoundedScalarVariableAttributes<int> &attributes)
         : BoundedScalarVariableAttributes<int>(attributes) {}

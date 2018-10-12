@@ -27,6 +27,8 @@
 
 #include <vector>
 #include <string>
+#include <memory>
+
 #include "../fmi2Functions.h"
 
 namespace fmi4cpp::fmi2::import {
