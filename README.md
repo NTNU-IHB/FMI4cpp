@@ -45,7 +45,7 @@ const double stepSize = 1.0/100;
 
 int main() {
 
-    auto fmu("path/to/fmu.fmu").asCoSimulationFmu();
+    auto fmu = import::Fmu("path/to/fmu.fmu").asCoSimulationFmu();
     
     auto md = fmu->getModelDescription();
     std::cout << "modelIdentifier=" << md.modelIdentifier() << std::endl;
