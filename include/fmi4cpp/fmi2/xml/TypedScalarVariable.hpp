@@ -71,18 +71,18 @@ namespace fmi4cpp::fmi2::xml {
 
     public:
         BoundedScalarVariable(const ScalarVariable &variable, const U &attribute)
-                : TypedScalarVariable(variable, attribute) {}
+                : TypedScalarVariable<T, U>(variable, attribute) {}
 
         std::optional<T> min() const {
-            return attribute_.min;
+            return this->attribute_.min;
         }
 
         std::optional<T> max() const {
-            return attribute_.max;
+            return this->attribute_.max;
         }
 
         std::optional<std::string> quantity() const {
-            return attribute_.quantity;
+            return this->attribute_.quantity;
         }
 
     };
