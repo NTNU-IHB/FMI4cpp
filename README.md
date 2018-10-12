@@ -47,10 +47,8 @@ int main() {
 
     auto fmu("path/to/fmu.fmu").asCoSimulationFmu();
     
-    
-    
-    auto md = md->asCoSimulationModelDescription();
-    std::cout << "modelIdentifier=" << md_cs.modelIdentifier() << std::endl;
+    auto md = fmu->getModelDescription();
+    std::cout << "modelIdentifier=" << md.modelIdentifier() << std::endl;
     
     auto var = md->getVariableByName("my_var").asRealVariable();
     cout << "Name=" << var.name() << ", start=" var.start().value_or(0) << endl;
