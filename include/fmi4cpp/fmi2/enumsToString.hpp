@@ -26,17 +26,14 @@
 #define FMI4CPP_ENUMSTOSTRING_HPP
 
 #include <string>
-#include <stdexcept>
-
-#include "fmi2Functions.h"
 #include "xml/enums.hpp"
-
-using std::string;
-using namespace fmi4cpp::fmi2::xml;
+#include "fmi2FunctionTypes.h"
 
 namespace {
 
-    const string to_string(fmi2Status status) {
+    using namespace fmi4cpp::fmi2::xml;
+
+    const std::string to_string(fmi2Status status) {
 
         switch (status) {
             case fmi2OK:
@@ -52,16 +49,21 @@ namespace {
             case fmi2Pending:
                 return "Pending";
             default:
-                throw std::runtime_error("Invalid fmi2Status encountered!");
+                return "Unknown";
         }
 
     }
 
-    const string to_string(fmi2Causality causality) {
+
+
+
+    const std::string to_string(fmi2Causality causality) {
 
         switch (causality) {
             case fmi2Causality::calculatedParameter:
-                return "Warning";
+                return "calculatedParameter";
+            case fmi2Causality::parameter:
+                return "parameter";
             case fmi2Causality::input:
                 return "input";
             case fmi2Causality::output:
@@ -71,12 +73,12 @@ namespace {
             case fmi2Causality::independent:
                 return "independent";
             default:
-                throw std::runtime_error("Invalid fmi2Causality encountered");
+                return "unknown";
         }
 
     }
 
-    const string to_string(fmi2Variability variability) {
+    const std::string to_string(fmi2Variability variability) {
 
         switch (variability) {
             case fmi2Variability::constant:
@@ -90,13 +92,12 @@ namespace {
             case fmi2Variability::continuous:
                 return "continuous";
             default:
-                throw std::runtime_error("Invalid fmi2Variability encountered");
+                return "unknown";
         }
 
     }
 
-    const string to_string(fmi2Initial initial) {
-
+    const std::string to_string(fmi2Initial initial) {
         switch (initial) {
             case fmi2Initial::exact:
                 return "exact";
@@ -104,11 +105,12 @@ namespace {
                 return "approx";
             case fmi2Initial::calculated:
                 return "calculated";
+            case fmi2Initial::unknown:
             default:
-                throw std::runtime_error("Invalid fmi2Initial encountered");
+                return "unknown";
         }
-
     }
+
 
 }
 

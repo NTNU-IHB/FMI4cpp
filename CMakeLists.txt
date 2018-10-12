@@ -7,7 +7,7 @@ if (DEFINED VCPKG_ROOT AND NOT DEFINED CMAKE_TOOLCHAIN_FILE AND EXISTS "${VCPKG_
 endif ()
 
 project(FMI4cpp
-        VERSION 0.1.0)
+        VERSION 0.2.0)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
@@ -18,6 +18,7 @@ option(BUILD_EXAMPLES "Build examples" ON)
 
 if (MSVC)
     set(CMAKE_DEBUG_POSTFIX "d")
+    add_definitions(-DNOMINMAX)
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 endif ()
 

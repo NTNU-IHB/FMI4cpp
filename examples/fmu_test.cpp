@@ -37,36 +37,32 @@ int main() {
                            "/20sim/4.6.4.8004/ControlledTemperature/ControlledTemperature.fmu";
 
     import::Fmu fmu(fmuPath);
+    auto cs_fmu = fmu.asCoSimulationFmu();
 
-    cout << "Supports CoSimulation=" << fmu.supportsCoSimulation() << endl;
-    cout << "Supports ModelExchange=" << fmu.supportsModelExchange() << endl;
+    auto md = cs_fmu->getModelDescription();
 
-    auto md = fmu.getModelDescription();
-    xml::ScalarVariable var = md.getVariableByValueReference(47);
-    cout << "Causality=" << to_string(var.getCausality()) << ", variability=" << to_string(var.getVariability())
-         << endl;
+    auto var = md->modelVariables().getByValueReference(47).asReal();
+    cout << "Name=" << var.name() << ", start=" << var.start().value_or(0) << endl;
 
-    auto md_cs = md.asCoSimulationModelDescription();
-    cout << "modelIdentifier=" << md_cs->modelIdentifier() << endl;
-
-    auto slave1 = fmu.asCoSimulationFmu().newInstance();
-    auto slave2 = fmu.asCoSimulationFmu().newInstance();
+    auto slave1 = cs_fmu->newInstance();
+    auto slave2 = cs_fmu->newInstance();
+    
+    cout << "modelIdentifier= " << slave1->getModelDescription()->modelIdentifier() << endl;
 
     slave1->init();
     slave2->init();
 
-    double t = 0;
-    double stop = 1.0;
-    double stepSize = 1E-3;
-    
     vector<fmi2Real> ref(2);
-    vector<fmi2ValueReference> vr = {md.getVariableByName("Temperature_Reference").getValueReference(),
-                                     md.getVariableByName("Temperature_Room").getValueReference()};
-    
+    vector<fmi2ValueReference> vr = {md->getVariableByName("Temperature_Reference").valueReference(),
+                                     md->getVariableByName("Temperature_Room").valueReference()};
+
+    double t = 0;
+    double stop = 0.1;
+    double stepSize = 1E-3;
     fmi2Status status;
     while ((t = slave1->getSimulationTime()) <= stop) {
         status = slave1->doStep(stepSize);
-        if (!status == fmi2OK) {
+        if (status != fmi2OK) {
             break;
         }
         status = slave1->readReal(vr, ref);
@@ -77,10 +73,10 @@ int main() {
     }
 
     status = slave1->terminate();
-    cout << "FMU '" << fmu.getModelName() << "' terminated with status: " << to_string(status) << endl;
+    cout << "FMU '" << fmu.modelName() << "' terminated with status: " << to_string(status) << endl;
 
     status = slave2->terminate();
-    cout << "FMU '" << fmu.getModelName() << "' terminated with status: " << to_string(status) << endl;
+    cout << "FMU '" << fmu.modelName() << "' terminated with status: " << to_string(status) << endl;
 
     return 0;
 

@@ -22,24 +22,19 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMI4CPP_COSIMULATIONSLAVEBUILDER_HPP
-#define FMI4CPP_COSIMULATIONSLAVEBUILDER_HPP
+#ifndef FMI4CPP_OPTIONAL_CONVERTER_HPP
+#define FMI4CPP_OPTIONAL_CONVERTER_HPP
 
-#include "InstanceBuilder.hpp"
-#include "CoSimulationSlave.hpp"
+#include <optional>
+#include <boost/optional/optional.hpp>
 
-namespace fmi4cpp::fmi2::import {
-
-    class CoSimulationSlaveBuilder : private InstanceBuilder<CoSimulationLibrary, CoSimulationSlave> {
-
-    public:
-        explicit CoSimulationSlaveBuilder(Fmu &fmu);
-
-        std::unique_ptr<CoSimulationSlave>
-        newInstance(const bool visible = false, const bool loggingOn = false) override;
-
-    };
-
+template<class T>
+std::optional<T> convert(boost::optional<T> opt) {
+    if (!opt) {
+        return {};
+    } else {
+        return *opt;
+    }
 }
 
-#endif //FMI4CPP_COSIMULATIONSLAVEBUILDER_HPP
+#endif //FMI4CPP_OPTIONAL_CONVERTER_HPP

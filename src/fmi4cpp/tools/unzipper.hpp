@@ -78,7 +78,7 @@ namespace {
 
             }
         }
-        delete contents;
+        free(contents);
         zip_close(za);
 
         return true;

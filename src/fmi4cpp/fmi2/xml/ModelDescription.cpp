@@ -23,135 +23,149 @@
  */
 
 #include <fmi4cpp/fmi2/xml/ModelDescription.hpp>
-#include <fmi4cpp/fmi2/xml/SpecificModelDescription.hpp>
 
-using namespace std;
 using namespace fmi4cpp::fmi2::xml;
 
-void ModelDescription::load(const string &fileName) {
+ModelDescriptionBase::ModelDescriptionBase(const std::string &guid,
+                                           const std::string &fmiVersion,
+                                           const std::string &modelName,
+                                           const std::optional<std::string> &description,
+                                           const std::optional<std::string> &version,
+                                           const std::optional<std::string> &author,
+                                           const std::optional<std::string> &license,
+                                           const std::optional<std::string> &copyright,
+                                           const std::optional<std::string> &generationTool,
+                                           const std::optional<std::string> &generationDateAndTime,
+                                           const std::optional<std::string> &variableNamingConvention,
+                                           const size_t numberOfEventIndicators,
+                                           const ModelVariables &modelVariables,
+                                           const ModelStructure &modelStructure,
+                                           const std::optional<DefaultExperiment> defaultExperiment)
+        : guid_(guid), fmiVersion_(fmiVersion), modelName_(modelName), description_(description),
+        version_(version), author_(author), license_(license), copyright_(copyright), generationTool_(generationTool),
+        generationDateAndTime_(generationDateAndTime), variableNamingConvention_(variableNamingConvention),
+        numberOfEventIndicators_(numberOfEventIndicators), modelVariables_(modelVariables),
+        modelStructure_(modelStructure), defaultExperiment_(defaultExperiment) {}
 
-    ptree tree;
-    read_xml(fileName, tree);
-
-    ptree root = tree.get_child("fmiModelDescription");
-
-    guid_ = root.get<string>("<xmlattr>.guid");
-    fmiVersion_ = root.get<string>("<xmlattr>.fmiVersion");
-    modelName_ = root.get<string>("<xmlattr>.modelName");
-    description_ = root.get<string>("<xmlattr>.description", "");
-    author_ = root.get<string>("<xmlattr>.author", "");
-    version_ = root.get<string>("<xmlattr>.version", "");
-    license_ = root.get<string>("<xmlattr>.license", "");
-    generationTool_ = root.get<string>("<xmlattr>.generationTool", "");
-    generationDateAndTime_ = root.get<string>("<xmlattr>.generationDateAndTime", "");
-    variableNamingConvention_ = root.get<string>("<xmlattr>.variableNamingConvention", "flat");
-    numberOfEventIndicators_ = root.get<unsigned int>("<xmlattr>.numberOfEventIndicators", 0);
-
-    for (const ptree::value_type &v : root) {
-
-        if (v.first == "CoSimulation") {
-            coSimulation_ = make_shared<CoSimulationAttributes>();
-            coSimulation_->load(v.second);
-        } else if (v.first == "ModelExchange") {
-            modelExchange_ = make_shared<ModelExchangeAttributes>();
-            modelExchange_->load(v.second);
-        } else if (v.first == "DefaultExperiment") {
-            defaultExperiment_ = DefaultExperiment();
-            defaultExperiment_->load(v.second);
-        } else if (v.first == "ModelVariables") {
-            modelVariables_.load(v.second);
-        } else if (v.first == "ModelStructure") {
-            modelStructure_.load(v.second);
-        }
-
-    }
-
-}
-
-string ModelDescription::guid() const {
+std::string ModelDescriptionBase::guid() const {
     return guid_;
 }
 
-string ModelDescription::fmiVersion() const {
+std::string ModelDescriptionBase::fmiVersion() const {
     return fmiVersion_;
 }
 
-string ModelDescription::modelName() const {
+std::string ModelDescriptionBase::modelName() const {
     return modelName_;
 }
 
-string ModelDescription::description() const {
+std::optional<std::string> ModelDescriptionBase::description() const {
     return description_;
 }
 
-string ModelDescription::version() const {
+std::optional<std::string> ModelDescriptionBase::version() const {
     return version_;
 }
 
-string ModelDescription::author() const {
+std::optional<std::string> ModelDescriptionBase::author() const {
     return author_;
 }
 
-string ModelDescription::license() const {
+std::optional<std::string> ModelDescriptionBase::license() const {
     return license_;
 }
 
-string ModelDescription::copyright() const {
+std::optional<std::string> ModelDescriptionBase::copyright() const {
     return copyright_;
 }
 
-string ModelDescription::generationTool() const {
+std::optional<std::string> ModelDescriptionBase::generationTool() const {
     return generationTool_;
 }
 
-string ModelDescription::generationDateAndTime() const {
+std::optional<std::string> ModelDescriptionBase::generationDateAndTime() const {
     return generationDateAndTime_;
 }
 
-string ModelDescription::variableNamingConvention() const {
+std::optional<std::string> ModelDescriptionBase::variableNamingConvention() const {
     return variableNamingConvention_;
 }
 
-unsigned int ModelDescription::numberOfEventIndicators() const {
+size_t ModelDescriptionBase::numberOfEventIndicators() const {
     return numberOfEventIndicators_;
 }
 
-unsigned int ModelDescription::numberOfContinuousStates() const {
-    return modelStructure_.derivatives().size();
+size_t ModelDescriptionBase::numberOfContinuousStates() const {
+    return modelStructure().derivatives().size();
 }
 
-const ModelVariables &ModelDescription::modelVariables() const {
+ModelVariables &ModelDescriptionBase::modelVariables() {
     return modelVariables_;
 }
 
-const ModelStructure &ModelDescription::modelStructure() const {
+const ModelStructure &ModelDescriptionBase::modelStructure() const {
     return modelStructure_;
 }
 
-const std::optional<DefaultExperiment> ModelDescription::defaultExperiment() const {
+std::optional<DefaultExperiment> ModelDescriptionBase::defaultExperiment() const {
     return defaultExperiment_;
 }
 
-bool ModelDescription::supportsModelExchange() const {
-    return modelExchange_ != nullptr;
-}
-
-bool ModelDescription::supportsCoSimulation() const {
-    return coSimulation_ != nullptr;
-}
-
-shared_ptr<CoSimulationModelDescription> ModelDescription::asCoSimulationModelDescription() const {
-    return make_shared<CoSimulationModelDescription>(*this, *coSimulation_);
-}
-
-shared_ptr<ModelExchangeModelDescription> ModelDescription::asModelExchangeModelDescription() const {
-    return make_shared<ModelExchangeModelDescription>(*this, *modelExchange_);
-}
-
-ScalarVariable ModelDescription::getVariableByName(const string &name) const {
+const ScalarVariable &ModelDescriptionBase::getVariableByName(const std::string &name) const {
     return modelVariables_.getByName(name);
 }
 
-ScalarVariable ModelDescription::getVariableByValueReference(const fmi2ValueReference vr) const {
-    return modelVariables_.getByValueReference(vr);
+ModelDescription::ModelDescription(const ModelDescriptionBase &base,
+                                   const std::optional<CoSimulationAttributes> &coSimulation,
+                                   const std::optional<ModelExchangeAttributes> &modelExchange)
+        : ModelDescriptionBase(base), coSimulation_(coSimulation), modelExchange_(modelExchange) {}
+
+bool ModelDescription::supportsCoSimulation() const {
+    return coSimulation_.has_value();
+}
+
+bool ModelDescription::supportsModelExchange() const {
+    return modelExchange_.has_value();
+}
+
+std::unique_ptr<CoSimulationModelDescription> ModelDescription::asCoSimulationModelDescription() const {
+    if (!supportsCoSimulation()) {
+        throw std::runtime_error("CoSimulation not supported!");
+    }
+    return std::make_unique<CoSimulationModelDescription>(*this, *coSimulation_);
+}
+
+std::unique_ptr<ModelExchangeModelDescription> ModelDescription::asModelExchangeModelDescription() const {
+    if (!supportsModelExchange()) {
+        throw std::runtime_error("ModelExchange not supported!");
+    }
+    return std::make_unique<ModelExchangeModelDescription>(*this, *modelExchange_);
+}
+
+CoSimulationModelDescription::CoSimulationModelDescription(const ModelDescriptionBase &base,
+                                                           const CoSimulationAttributes &attributes)
+        : SpecificModelDescription(base, attributes) {}
+
+bool CoSimulationModelDescription::canInterpolateInputs() const {
+    return attributes_.canInterpolateInputs();
+}
+
+bool CoSimulationModelDescription::canRunAsynchronuously() const {
+    return attributes_.canRunAsynchronuously();
+}
+
+bool CoSimulationModelDescription::canHandleVariableCommunicationStepSize() const {
+    return attributes_.canHandleVariableCommunicationStepSize();
+}
+
+size_t CoSimulationModelDescription::maxOutputDerivativeOrder() const {
+    return attributes_.maxOutputDerivativeOrder();
+}
+
+ModelExchangeModelDescription::ModelExchangeModelDescription(const ModelDescriptionBase &base,
+                                                             const ModelExchangeAttributes &attributes)
+        : SpecificModelDescription(base, attributes) {}
+
+bool ModelExchangeModelDescription::completedIntegratorStepNotNeeded() const {
+    return attributes_.completedIntegratorStepNotNeeded();
 }

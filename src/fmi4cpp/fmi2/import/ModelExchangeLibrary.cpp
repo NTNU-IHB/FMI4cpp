@@ -25,8 +25,11 @@
 #include "FmiLibraryHelper.hpp"
 #include <fmi4cpp/fmi2/import/ModelExchangeLibrary.hpp>
 
+using namespace fmi4cpp::fmi2::import;
 
-ModelExchangeLibrary::ModelExchangeLibrary(const string &libName) : FmiLibrary(libName) {
+ModelExchangeLibrary::ModelExchangeLibrary(const std::string &modelIdentifier,
+                                           const std::shared_ptr<FmuResource> &resource)
+        : FmiLibrary(modelIdentifier, resource) {
 
     fmi2EnterEventMode_ = loadFunction<fmi2EnterEventModeTYPE *>(handle_, "fmi2EnterEventMode");
     fmi2EnterContinuousTimeMode_ = loadFunction<fmi2EnterContinuousTimeModeTYPE *>(
@@ -38,7 +41,8 @@ ModelExchangeLibrary::ModelExchangeLibrary(const string &libName) : FmiLibrary(l
     fmi2GetContinuousStates_ = loadFunction<fmi2GetContinuousStatesTYPE *>(handle_, "fmi2GetContinuousStates");
     fmi2GetNominalsOfContinuousStates_ = loadFunction<fmi2GetNominalsOfContinuousStatesTYPE *>(
             handle_, "fmi2GetNominalsOfContinuousStates");
-    fmi2CompletedIntegratorStep_ = loadFunction<fmi2CompletedIntegratorStepTYPE *>(handle_, "fmi2CompletedIntegratorStep");
+    fmi2CompletedIntegratorStep_ = loadFunction<fmi2CompletedIntegratorStepTYPE *>(handle_,
+                                                                                   "fmi2CompletedIntegratorStep");
     fmi2NewDiscreteStates_ = loadFunction<fmi2NewDiscreteStatesTYPE *>(handle_, "fmi2NewDiscreteStates");
 
 }
@@ -55,29 +59,29 @@ fmi2Status ModelExchangeLibrary::setTime(const fmi2Component c, const double tim
     return fmi2SetTime_(c, time);
 }
 
-fmi2Status ModelExchangeLibrary::setContinuousStates(const fmi2Component c, const vector<fmi2Real> &x) const {
+fmi2Status ModelExchangeLibrary::setContinuousStates(const fmi2Component c, const std::vector <fmi2Real> &x) const {
     return fmi2SetContinuousStates_(c, x.data(), x.size());
 }
 
-fmi2Status ModelExchangeLibrary::getDerivatives(const fmi2Component c, vector<fmi2Real> &derivatives) const {
+fmi2Status ModelExchangeLibrary::getDerivatives(const fmi2Component c, std::vector <fmi2Real> &derivatives) const {
     return fmi2GetDerivatives_(c, derivatives.data(), derivatives.size());
 }
 
-fmi2Status ModelExchangeLibrary::getEventIndicators(const fmi2Component c, vector<fmi2Real> &eventIndicators) const {
+fmi2Status ModelExchangeLibrary::getEventIndicators(const fmi2Component c, std::vector <fmi2Real> &eventIndicators) const {
     return fmi2GetEventIndicators_(c, eventIndicators.data(), eventIndicators.size());
 }
 
-fmi2Status ModelExchangeLibrary::getContinuousStates(const fmi2Component c, vector<fmi2Real> &x) const {
+fmi2Status ModelExchangeLibrary::getContinuousStates(const fmi2Component c, std::vector <fmi2Real> &x) const {
     return fmi2GetContinuousStates_(c, x.data(), x.size());
 }
 
 fmi2Status
-ModelExchangeLibrary::getNominalsOfContinuousStates(const fmi2Component c, vector<fmi2Real> &x_nominal) const {
+ModelExchangeLibrary::getNominalsOfContinuousStates(const fmi2Component c, std::vector <fmi2Real> &x_nominal) const {
     return fmi2GetNominalsOfContinuousStates_(c, x_nominal.data(), x_nominal.size());
 }
 
 fmi2Status ModelExchangeLibrary::completedIntegratorStep(const fmi2Component c,
-                                                         fmi2Boolean noSetFMUStatePriorToCurrentPoint,
+                                                         const fmi2Boolean noSetFMUStatePriorToCurrentPoint,
                                                          fmi2Boolean &enterEventMode,
                                                          fmi2Boolean &terminateSimulation) const {
     return fmi2CompletedIntegratorStep_(c, noSetFMUStatePriorToCurrentPoint, &enterEventMode, &terminateSimulation);

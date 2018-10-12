@@ -24,40 +24,27 @@
 
 #include <fmi4cpp/fmi2/xml/DefaultExperiment.hpp>
 
-using namespace fmi4cpp::fmi2::xml;
+using fmi4cpp::fmi2::xml::DefaultExperiment;
 
-namespace {
+fmi4cpp::fmi2::xml::DefaultExperiment::DefaultExperiment() {}
 
-    template <class T>
-    std::optional<T> convert(boost::optional<T> opt) {
-        if (!opt) {
-            return {};
-        } else {
-            return *opt;
-        }
-    }
+DefaultExperiment::DefaultExperiment(const std::optional<double> &startTime, const std::optional<double> &stopTime,
+                                     const std::optional<double> &stepSize, const std::optional<double> &tolerance)
+        : startTime_(startTime), stopTime_(stopTime), stepSize_(stepSize), tolerance_(tolerance) {}
 
-}
 
-void DefaultExperiment::load(const ptree &node) {
-    startTime_ = convert(node.get_optional<double>("<xmlattr>.startTime"));
-    stopTime_ = convert(node.get_optional<double>("<xmlattr>.stopTime"));
-    stepSize_ = convert(node.get_optional<double>("<xmlattr>.stepSize"));
-    tolerance_ = convert(node.get_optional<double>("<xmlattr>.tolerance"));
-}
-
-std::optional<double> DefaultExperiment::startTime() const {
+std::optional<double> fmi4cpp::fmi2::xml::DefaultExperiment::startTime() const {
     return startTime_;
 }
 
-std::optional<double> DefaultExperiment::stopTime() const {
+std::optional<double> fmi4cpp::fmi2::xml::DefaultExperiment::stopTime() const {
     return stopTime_;
 }
 
-std::optional<double> DefaultExperiment::stepSize() const {
+std::optional<double> fmi4cpp::fmi2::xml::DefaultExperiment::stepSize() const {
     return stepSize_;
 }
 
-std::optional<double> DefaultExperiment::tolerance() const {
+std::optional<double> fmi4cpp::fmi2::xml::DefaultExperiment::tolerance() const {
     return tolerance_;
 }

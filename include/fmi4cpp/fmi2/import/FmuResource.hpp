@@ -21,38 +21,35 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include <fmi4cpp/fmi2/xml/SourceFiles.hpp>
-#include <iostream>
 
-using std::string;
-using namespace fmi4cpp::fmi2::xml;
+#ifndef FMI4CPP_TEMPORALFOLDER_HPP
+#define FMI4CPP_TEMPORALFOLDER_HPP
 
-void File::load(const ptree &node) {
-    name_ = node.get<string>("<xmlattr>.name");
-}
+#include <experimental/filesystem>
 
-std::string File::name() const {
-    return name_;
-}
+namespace fs = std::experimental::filesystem;
 
-const size_t SourceFiles::size() const {
-    return vector::size();
-}
+namespace fmi4cpp::fmi2::import {
 
-File &SourceFiles::operator[](const size_type index) {
-    return vector::operator[]( index );
-}
+class FmuResource {
 
-void SourceFiles::load(const ptree &node) {
+private:
+    fs::path path_;
 
-    for (const ptree::value_type &v : node) {
+    public:
+        explicit FmuResource(fs::path &path);
 
-        if (v.first == "File") {
-            File file;
-            file.load(v.second);
-            push_back(file);
-        }
+        const std::string getResourcePath() const;
 
-    }
+        const std::string getModelDescriptionPath() const;
+
+        const std::string getAbsoluteLibraryPath(const std::string &modelIdentifier) const;
+
+        ~FmuResource();
+
+    };
 
 }
+
+
+#endif //FMI4CPP_TEMPORALFOLDER_HPP

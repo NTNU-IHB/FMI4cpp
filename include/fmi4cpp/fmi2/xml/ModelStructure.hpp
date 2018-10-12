@@ -28,48 +28,51 @@
 #include <string>
 #include <vector>
 #include <optional>
-#include <boost/property_tree/ptree.hpp>
 
 #include "../fmi2TypesPlatform.h"
-
-using boost::property_tree::ptree;
 
 namespace fmi4cpp::fmi2::xml {
 
     class Unknown {
 
     private:
-        unsigned int index_;
+
+        size_t index_;
         std::optional<std::string> dependenciesKind_;
         std::optional<std::vector<unsigned int >> dependencies_;
 
     public:
-        unsigned int index() const;
 
-        std::optional<std::string> dependenciesKind() const;
+        Unknown(const size_t index, const std::optional<std::string> &dependenciesKind,
+                const std::optional<std::vector<unsigned int>> &dependencies);
 
-        const std::optional<std::vector<unsigned int>> &dependencies() const;
-
-        void load(const ptree &node);
+        const size_t index();
+        const std::optional<std::string> dependenciesKind();
+        const std::optional<std::vector<unsigned int >> &dependencies() const;
 
     };
 
     class ModelStructure {
 
     private:
+
         std::vector<Unknown> outputs_;
         std::vector<Unknown> derivatives_;
         std::vector<Unknown> initialUnknowns_;
 
+
     public:
+
+        ModelStructure();
+
+        ModelStructure(const std::vector<Unknown> &outputs_, const std::vector<Unknown> &derivatives_,
+                       const std::vector<Unknown> &initialUnknowns_);
 
         const std::vector<Unknown> &outputs() const;
 
         const std::vector<Unknown> &derivatives() const;
 
         const std::vector<Unknown> &initialUnknowns() const;
-
-        void load(const ptree &node);
 
     };
 

@@ -1,25 +1,23 @@
 
 SET(SOURCES
 
-    fmi4cpp/fmi2/import/Fmu.cpp
-    fmi4cpp/fmi2/import/FmiLibrary.cpp
-    fmi4cpp/fmi2/import/CoSimulationLibrary.cpp
-    fmi4cpp/fmi2/import/ModelExchangeLibrary.cpp
-    fmi4cpp/fmi2/import/CoSimulationSlave.cpp
-    fmi4cpp/fmi2/import/CoSimulationSlaveBuilder.cpp
-    fmi4cpp/fmi2/import/ModelExchangeInstance.cpp
-    fmi4cpp/fmi2/import/ModelExchangeInstanceBuilder.cpp
+        fmi4cpp/fmi2/import/Fmu.cpp
+        fmi4cpp/fmi2/import/FmiLibrary.cpp
+        fmi4cpp/fmi2/import/CoSimulationLibrary.cpp
+        fmi4cpp/fmi2/import/ModelExchangeLibrary.cpp
+        fmi4cpp/fmi2/import/CoSimulationSlave.cpp
+        fmi4cpp/fmi2/import/ModelExchangeInstance.cpp
+        fmi4cpp/fmi2/import/FmuResource.cpp
 
-    fmi4cpp/fmi2/xml/enums.cpp
-    fmi4cpp/fmi2/xml/FmuTypeAttributes.cpp
-    fmi4cpp/fmi2/xml/ModelDescription.cpp
-    fmi4cpp/fmi2/xml/SpecificModelDescription.cpp
-    fmi4cpp/fmi2/xml/ModelVariables.cpp
-    fmi4cpp/fmi2/xml/ScalarVariable.cpp
-    fmi4cpp/fmi2/xml/ScalarVariableAttributes.cpp
-    fmi4cpp/fmi2/xml/DefaultExperiment.cpp
-    fmi4cpp/fmi2/xml/SourceFiles.cpp
-    fmi4cpp/fmi2/xml/ModelStructure.cpp
+        fmi4cpp/fmi2/xml/enums.cpp
+        fmi4cpp/fmi2/xml/FmuAttributes.cpp
+        fmi4cpp/fmi2/xml/ModelDescription.cpp
+        fmi4cpp/fmi2/xml/ModelVariables.cpp
+        fmi4cpp/fmi2/xml/ScalarVariable.cpp
+        fmi4cpp/fmi2/xml/TypedScalarVariable.cpp
+        fmi4cpp/fmi2/xml/ScalarVariableAttributes.cpp
+        fmi4cpp/fmi2/xml/DefaultExperiment.cpp
+        fmi4cpp/fmi2/xml/ModelStructure.cpp
 
 )
 

@@ -43,28 +43,27 @@ int main() {
     import::Fmu fmu1(fmu_path1);
     import::Fmu fmu2(fmu_path2);
     
-    const auto slave1 = fmu1.asCoSimulationFmu().newInstance();
+    const auto slave1 = fmu1.asCoSimulationFmu()->newInstance();
     slave1->init();
 
-    const auto slave2 = fmu2.asCoSimulationFmu().newInstance();
+    const auto slave2 = fmu2.asCoSimulationFmu()->newInstance();
     slave2->init();
 
     slave1->doStep(1E-5);
     slave2->doStep(1E-4);
 
     double ref;
-    double vr = slave1->getValueReference("MotorDiskRev");
-    assert(vr == 105);
-    slave1->readReal(vr, ref);
+    auto var = slave1->getModelDescription()->getVariableByName("MotorDiskRev").asReal();
+    assert(var.valueReference() == 105);
+    var.read(*slave1, ref);
     cout << "MotorDiskRev=" << ref << endl;
 
-    vr = slave2->getValueReference("Temperature_Room");
+    auto vr = slave2->getValueReference("Temperature_Room");
     assert(vr == 47);
     slave2->readReal(vr, ref);
     cout << "Temperature_Room=" << ref << endl;
 
     slave1->terminate();
     slave2->terminate();
-
-
+    
 }

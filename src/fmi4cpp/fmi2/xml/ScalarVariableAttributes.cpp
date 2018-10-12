@@ -24,60 +24,30 @@
 
 #include <fmi4cpp/fmi2/xml/ScalarVariableAttributes.hpp>
 
-using namespace std;
 using namespace fmi4cpp::fmi2::xml;
 
-namespace {
 
-    template <class T>
-    std::optional<T> convert(boost::optional<T> opt) {
-        if (!opt) {
-            return {};
-        } else {
-            return *opt;
-        }
-    }
+IntegerAttribute::IntegerAttribute(const BoundedScalarVariableAttributes<int> &attributes)
+        : BoundedScalarVariableAttributes<int>(attributes) {}
 
-}
 
-void IntegerAttribute::load(const ptree &node) {
-    min = convert(node.get_optional<int>("<xmlattr>.min"));
-    max = convert(node.get_optional<int>("<xmlattr>.max"));
-    start = convert(node.get_optional<int>("<xmlattr>.start"));
+RealAttribute::RealAttribute(const BoundedScalarVariableAttributes<double> &attributes,
+                             const bool reinit, const bool unbounded, const bool relativeQuantity,
+                             const std::optional<double> &nominal, const std::optional<size_t> &derivative,
+                             const std::optional<std::string> &unit, const std::optional<std::string> &displayUnit)
+        : BoundedScalarVariableAttributes<double>(attributes), reinit(reinit), unbounded(unbounded),
+          relativeQuantity(relativeQuantity), nominal(nominal), derivative(derivative), unit(unit),
+          displayUnit(displayUnit) {}
 
-    quantity = convert(node.get_optional<string>("<xmlattr>.quantity"));
-}
 
-void RealAttribute::load(const ptree &node) {
-    min = convert(node.get_optional<double>("<xmlattr>.min"));
-    max = convert(node.get_optional<double>("<xmlattr>.max"));
-    start = convert(node.get_optional<double>("<xmlattr>.start"));
-    nominal = convert(node.get_optional<double>("<xmlattr>.nominal"));
+StringAttribute::StringAttribute(const ScalarVariableAttributes<std::string> &attributes)
+        : ScalarVariableAttributes<std::string>(attributes) {}
 
-    quantity = convert(node.get_optional<string>("<xmlattr>.quantity"));
-    unit = convert(node.get_optional<string>("<xmlattr>.unit"));
-    displayUnit = convert(node.get_optional<string>("<xmlattr>.displayUnit"));
 
-    derivative = convert(node.get_optional<unsigned int>("<xmlattr>.derivative"));
+BooleanAttribute::BooleanAttribute(const ScalarVariableAttributes<bool> &attributes)
+        : ScalarVariableAttributes<bool>(attributes) {}
 
-    reinit = node.get<bool>("<xmlattr>.reinit", false);
-    unbounded = node.get<bool>("<xmlattr>.unbounded", false);
-    relativeQuantity = node.get<bool>("<xmlattr>.relativeQuantity", false);
 
-}
+EnumerationAttribute::EnumerationAttribute(const ScalarVariableAttributes<int> &attributes)
+        : ScalarVariableAttributes<int>(attributes) {}
 
-void StringAttribute::load(const ptree &node) {
-    start = convert(node.get_optional<string>("<xmlattr>.start"));
-}
-
-void BooleanAttribute::load(const ptree &node) {
-    start = convert(node.get_optional<bool>("<xmlattr>.start"));
-}
-
-void EnumerationAttribute::load(const ptree &node) {
-    min = convert(node.get_optional<int>("<xmlattr>.min"));
-    max = convert(node.get_optional<int>("<xmlattr>.max"));
-    start = convert(node.get_optional<int>("<xmlattr>.start"));
-
-    quantity = convert(node.get_optional<string>("<xmlattr>.quantity"));
-}

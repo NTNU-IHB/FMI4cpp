@@ -25,6 +25,7 @@
 #ifndef FMI4CPP_MODELEXCHANGEINSTANCE_HPP
 #define FMI4CPP_MODELEXCHANGEINSTANCE_HPP
 
+#include <vector>
 #include "ModelExchangeLibrary.hpp"
 #include "AbstractFmuInstance.hpp"
 
@@ -32,31 +33,29 @@
 
 namespace fmi4cpp::fmi2::import {
 
-    using xml::ModelExchangeModelDescription;
-
-    class ModelExchangeInstance : public AbstractFmuInstance<ModelExchangeLibrary, ModelExchangeModelDescription> {
+class ModelExchangeInstance : public AbstractFmuInstance<ModelExchangeLibrary, xml::ModelExchangeModelDescription> {
 
     public:
         ModelExchangeInstance(const fmi2Component c,
-                              const shared_ptr<ModelExchangeModelDescription> &modelDescription,
-                              const shared_ptr<ModelExchangeLibrary> &library);
+                              const std::shared_ptr<ModelExchangeLibrary> &library,
+                              const std::shared_ptr<xml::ModelExchangeModelDescription> &modelDescription);
 
 
         fmi2Status enterEventMode() const;
 
         fmi2Status enterContinuousTimeMode() const;
 
-        fmi2Status setTime(const double time) const;
+        fmi2Status setTime(double time) const;
 
-        fmi2Status setContinuousStates(const vector<fmi2Real> &x) const;
+        fmi2Status setContinuousStates(const std::vector<fmi2Real> &x) const;
 
-        fmi2Status getDerivatives(vector<fmi2Real> &derivatives) const;
+        fmi2Status getDerivatives(std::vector<fmi2Real> &derivatives) const;
 
-        fmi2Status getEventIndicators(vector<fmi2Real> &eventIndicators) const;
+        fmi2Status getEventIndicators(std::vector<fmi2Real> &eventIndicators) const;
 
-        fmi2Status getContinuousStates(vector<fmi2Real> &x) const;
+        fmi2Status getContinuousStates(std::vector<fmi2Real> &x) const;
 
-        fmi2Status getNominalsOfContinuousStates(vector<fmi2Real> &x_nominal) const;
+        fmi2Status getNominalsOfContinuousStates(std::vector<fmi2Real> &x_nominal) const;
 
         fmi2Status completedIntegratorStep(
                 fmi2Boolean noSetFMUStatePriorToCurrentPoint,

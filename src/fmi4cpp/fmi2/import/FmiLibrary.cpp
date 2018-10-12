@@ -24,19 +24,24 @@
 
 
 #if FMI4CPP_DEBUG_LOGGING_ENABLED
+
 #include <experimental/filesystem>
+
 namespace fs = std::experimental::filesystem;
 #endif
 
 #include <sstream>
 #include <iostream>
+
 #include <fmi4cpp/fmi2/enumsToString.hpp>
 #include <fmi4cpp/fmi2/import/FmiLibrary.hpp>
 
 #include "FmiLibraryHelper.hpp"
 
+
 using namespace std;
 using fmi4cpp::fmi2::import::FmiLibrary;
+using fmi4cpp::fmi2::import::FmuResource;
 
 namespace {
 
@@ -53,18 +58,20 @@ namespace {
 }
 
 
-FmiLibrary::FmiLibrary(const string &libName) {
+FmiLibrary::FmiLibrary(const std::string &modelIdentifier, const std::shared_ptr<FmuResource> &resource)
+        : resource_(resource) {
+
+    const auto libName = resource->getAbsoluteLibraryPath(modelIdentifier);
 
 #if FMI4CPP_DEBUG_LOGGING_ENABLED
-    cout << "Loading shared library " << fs::path(libName).stem() << endl;
+    cout << "Loading shared library '" << fs::path(libName).stem() << "'" << endl;
 #endif
 
     handle_ = loadLibrary(libName);
 
     if (!handle_) {
         cerr << getLastError() << endl;
-        string msg = "Unable to load dynamic library '" + libName + "'!";
-        throw runtime_error(msg);
+        throw runtime_error("Unable to load dynamic library '" + libName + "'!");
     }
 
     fmi2GetVersion_ = loadFunction<fmi2GetVersionTYPE *>(handle_, "fmi2GetVersion");
@@ -74,7 +81,8 @@ FmiLibrary::FmiLibrary(const string &libName) {
 
     fmi2Instantiate_ = loadFunction<fmi2InstantiateTYPE *>(handle_, "fmi2Instantiate");
     fmi2SetupExperiment_ = loadFunction<fmi2SetupExperimentTYPE *>(handle_, "fmi2SetupExperiment");
-    fmi2EnterInitializationMode_ = loadFunction<fmi2EnterInitializationModeTYPE *>(handle_, "fmi2EnterInitializationMode");
+    fmi2EnterInitializationMode_ = loadFunction<fmi2EnterInitializationModeTYPE *>(handle_,
+                                                                                   "fmi2EnterInitializationMode");
     fmi2ExitInitializationMode_ = loadFunction<fmi2ExitInitializationModeTYPE *>(handle_, "fmi2ExitInitializationMode");
 
     fmi2Reset_ = loadFunction<fmi2ResetTYPE *>(handle_, "fmi2Reset");
@@ -96,7 +104,8 @@ FmiLibrary::FmiLibrary(const string &libName) {
     fmi2SerializeFMUstate_ = loadFunction<fmi2SerializeFMUstateTYPE *>(handle_, "fmi2SerializeFMUstate");
     fmi2DeSerializeFMUstate_ = loadFunction<fmi2DeSerializeFMUstateTYPE *>(handle_, "fmi2DeSerializeFMUstate");
 
-    fmi2GetDirectionalDerivative_ = loadFunction<fmi2GetDirectionalDerivativeTYPE *>(handle_, "fmi2GetDirectionalDerivative");
+    fmi2GetDirectionalDerivative_ = loadFunction<fmi2GetDirectionalDerivativeTYPE *>(handle_,
+                                                                                     "fmi2GetDirectionalDerivative");
 
     fmi2FreeInstance_ = loadFunction<fmi2FreeInstanceTYPE *>(handle_, "fmi2FreeInstance");
 
@@ -111,7 +120,7 @@ fmi2String FmiLibrary::getTypesPlatform() const {
 }
 
 fmi2Status fmi4cpp::fmi2::import::FmiLibrary::setDebugLogging(const fmi2Component c, const bool loggingOn,
-                                                                  const vector<const char*> categories) const {
+                                                              const vector<const char *> categories) const {
     return fmi2SetDebugLogging_(c, loggingOn, categories.size(), categories.data());
 }
 
@@ -246,7 +255,10 @@ fmi2Status fmi4cpp::fmi2::import::FmiLibrary::getSerializedFMUstateSize(const fm
 
 fmi2Status FmiLibrary::serializeFMUstate(const fmi2Component c,
                                          const fmi2FMUstate &state, vector<fmi2Byte> &serializedState) const {
-    return fmi2SerializeFMUstate_(c, state, serializedState.data(), serializedState.size());
+    size_t size = 0;
+    getSerializedFMUstateSize(c, state, size);
+    serializedState.reserve(size);
+    return fmi2SerializeFMUstate_(c, state, serializedState.data(), size);
 }
 
 fmi2Status FmiLibrary::deSerializeFMUstate(const fmi2Component c,
@@ -286,9 +298,13 @@ FmiLibrary::~FmiLibrary() {
 #else
         success = (dlclose(handle_) == 0);
 #endif
+
+#if FMI4CPP_DEBUG_LOGGING_ENABLED
         if (!success) {
             cout << getLastError() << endl;
         }
+#endif
+
         handle_ = nullptr;
     }
 }

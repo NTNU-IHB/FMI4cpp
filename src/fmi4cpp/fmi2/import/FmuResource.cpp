@@ -22,28 +22,42 @@
  * THE SOFTWARE.
  */
 
-#include <fmi4cpp/fmi2/import/ModelExchangeInstanceBuilder.hpp>
+#if FMI4CPP_DEBUG_LOGGING_ENABLED
+#include <iostream>
+#endif
 
-using std::make_unique;
-using std::make_shared;
+#include <fmi4cpp/fmi2/import/FmuResource.hpp>
+
+#include "../../tools/os_util.hpp"
+
 using namespace fmi4cpp::fmi2::import;
 
-ModelExchangeInstanceBuilder::ModelExchangeInstanceBuilder(Fmu &fmu) : InstanceBuilder(fmu) {}
+FmuResource::FmuResource(fs::path &path): path_(path){}
 
-unique_ptr<ModelExchangeInstance> ModelExchangeInstanceBuilder::newInstance(const bool visible, const bool loggingOn) {
-    shared_ptr<ModelExchangeModelDescription> modelDescription
-            = fmu_.getModelDescription().asModelExchangeModelDescription();
-    shared_ptr<ModelExchangeLibrary> lib = nullptr;
-    string modelIdentifier = modelDescription->modelIdentifier();
-    if (modelDescription->canBeInstantiatedOnlyOncePerProcess()) {
-        lib = make_shared<ModelExchangeLibrary>(fmu_.getAbsoluteLibraryPath(modelIdentifier));
+const std::string FmuResource::getModelDescriptionPath() const {
+    return path_.string() + "/modelDescription.xml";
+}
+
+const std::string FmuResource::getResourcePath() const {
+    return "file:/" + path_.string() + "/resources/" + getOs() + "/" + getLibExt();
+}
+
+const std::string FmuResource::getAbsoluteLibraryPath(const std::string &modelIdentifier) const {
+    return path_.string() + "/binaries/" + getOs() + "/" + modelIdentifier + getLibExt();
+}
+
+FmuResource::~FmuResource() {
+
+    std::error_code success {};
+    fs::remove_all(path_, success);
+#if FMI4CPP_DEBUG_LOGGING_ENABLED
+    if (!success) {
+        std::cout << "Deleted temporal folder '" << path_.string() << "'" <<  std::endl;
     } else {
-        if (lib_ == nullptr) {
-            lib_ = make_shared<ModelExchangeLibrary>(fmu_.getAbsoluteLibraryPath(modelIdentifier));
-        }
-        lib = lib_;
+        std::cout << "Unable to delete temporal folder '" <<  path_.string() << "'" <<  std::endl;
     }
-    fmi2Component c = lib->instantiate(modelIdentifier, fmi2ModelExchange, modelDescription->guid(),
-                                       fmu_.getResourcePath(), visible, loggingOn);
-    return make_unique<ModelExchangeInstance>(c, modelDescription, lib);
+#endif
+
+
+
 }

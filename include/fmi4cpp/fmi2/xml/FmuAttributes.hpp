@@ -22,86 +22,79 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMI4CPP_SPECIFICMODELDESCRIPTION_HPP
-#define FMI4CPP_SPECIFICMODELDESCRIPTION_HPP
+#ifndef FMI4CPP_FMUTYPESATTRIBUTE_HPP
+#define FMI4CPP_FMUTYPESATTRIBUTE_HPP
 
-#include "ModelDescription.hpp"
+#include <string>
+
 #include "SourceFiles.hpp"
 
 namespace fmi4cpp::fmi2::xml {
 
-    class SpecificModelDescription : public ModelDescription {
+    class FmuAttributes {
 
     private:
-        const string modelIdentifier_;
 
-        const bool canGetAndSetFMUstate_;
-        const bool canSerializeFMUstate_;
-        const bool needsExecutionTool_;
-        const bool canNotUseMemoryManagementFunctions_;
-        const bool canBeInstantiatedOnlyOncePerProcess_;
-        const bool providesDirectionalDerivative_;
+        bool canGetAndSetFMUstate_;
+        bool canSerializeFMUstate_;
+        bool needsExecutionTool_;
+        bool canNotUseMemoryManagementFunctions_;
+        bool canBeInstantiatedOnlyOncePerProcess_;
+        bool providesDirectionalDerivative_;
 
-        const SourceFiles sourceFiles_;
+        SourceFiles sourceFiles_;
+        std::string modelIdentifier_;
 
     public:
 
-        explicit SpecificModelDescription(
-                const ModelDescription &modelDescription,
-                const FmuTypeAttributes &data);
-
-        string modelIdentifier() const;
-
-        bool canGetAndSetFMUstate() const;
-
-        bool canSerializeFMUstate() const;
-
-        bool needsExecutionTool() const;
-
-        bool canNotUseMemoryManagementFunctions() const;
-
-        bool canBeInstantiatedOnlyOncePerProcess() const;
-
-        bool providesDirectionalDerivative() const;
+        FmuAttributes(const std::string &modelIdentifier, const bool canGetAndSetFMUstate,
+                      const bool canSerializeFMUstate, const bool needsExecutionTool,
+                      const bool canNotUseMemoryManagementFunctions, const bool canBeInstantiatedOnlyOncePerProcess,
+                      const bool providesDirectionalDerivative, const SourceFiles &sourceFiles);
 
         SourceFiles sourceFiles() const;
+        std::string modelIdentifier() const;
+
+        bool canGetAndSetFMUstate() const;
+        bool canSerializeFMUstate() const;
+        bool needsExecutionTool() const;
+        bool canNotUseMemoryManagementFunctions() const;
+        bool canBeInstantiatedOnlyOncePerProcess() const;
+        bool providesDirectionalDerivative() const;
 
     };
 
-    class CoSimulationModelDescription : public SpecificModelDescription {
+    class CoSimulationAttributes : public FmuAttributes {
 
     private:
-        const bool canInterpolateInputs_;
-        const bool canRunAsynchronuously_;
-        const bool canHandleVariableCommunicationStepSize_;
+        bool canInterpolateInputs_;
+        bool canRunAsynchronuously_;
+        bool canHandleVariableCommunicationStepSize_;
 
-        const unsigned int maxOutputDerivativeOrder_;
+        size_t maxOutputDerivativeOrder_;
 
     public:
 
-        explicit CoSimulationModelDescription(
-                const ModelDescription &modelDescription,
-                const CoSimulationAttributes &data);
+        CoSimulationAttributes(const FmuAttributes &attributes, const bool canInterpolateInputs,
+                               const bool canRunAsynchronuously, const bool canHandleVariableCommunicationStepSize,
+                               const size_t maxOutputDerivativeOrder);
 
         bool canInterpolateInputs() const;
-
         bool canRunAsynchronuously() const;
-
         bool canHandleVariableCommunicationStepSize() const;
 
-        const unsigned int maxOutputDerivativeOrder() const;
+        size_t maxOutputDerivativeOrder() const;
 
     };
 
-    class ModelExchangeModelDescription : public SpecificModelDescription {
+    class ModelExchangeAttributes : public FmuAttributes {
 
     private:
-        const bool completedIntegratorStepNotNeeded_;
+        bool completedIntegratorStepNotNeeded_;
 
     public:
-        explicit ModelExchangeModelDescription(
-                const ModelDescription &modelDescription,
-                const ModelExchangeAttributes &data);
+        ModelExchangeAttributes(const FmuAttributes &attributes,
+                                const bool completedIntegratorStepNotNeeded);
 
         bool completedIntegratorStepNotNeeded() const;
 
@@ -109,5 +102,4 @@ namespace fmi4cpp::fmi2::xml {
 
 }
 
-
-#endif //FMI4CPP_SPECIFICMODELDESCRIPTION_HPP
+#endif //FMI4CPP_FMUTYPESATTRIBUTE_HPP

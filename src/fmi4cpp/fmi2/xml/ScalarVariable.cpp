@@ -22,222 +22,89 @@
  * THE SOFTWARE.
  */
 
+#include <stdexcept>
+
 #include <fmi4cpp/fmi2/xml/ScalarVariable.hpp>
 
-using namespace std;
 using namespace fmi4cpp::fmi2::xml;
 
 
-void ScalarVariable::load(const ptree &node) {
-
-    name_ = node.get<string>("<xmlattr>.name");
-    description_ = node.get<string>("<xmlattr>.description", "");
-    valueReference_ = node.get<fmi2ValueReference>("<xmlattr>.valueReference");
-    canHandleMultipleSetPerTimelnstant_ = node.get<bool>("<xmlattr>.canHandleMultipleSetPerTimelnstant", false);
-
-    causality_ = parseCausality(node.get<string>("<xmlattr>.causality", ""));
-    variability_ = parseVariability(node.get<string>("<xmlattr>.variability", ""));
-    initial_ = parseInitial(node.get<string>("<xmlattr>.initial", ""));
-
-    for (const ptree::value_type &v : node) {
-        if (v.first == "Integer") {
-            integerAttribute_ = make_unique<IntegerAttribute>(IntegerAttribute());
-            integerAttribute_->load(v.second);
-        } else if (v.first == "Real") {
-            realAttribute_ = make_unique<RealAttribute>(RealAttribute());
-            realAttribute_->load(v.second);
-        } else if (v.first == "String") {
-            stringAttribute_ = make_unique<StringAttribute>(StringAttribute());
-            stringAttribute_->load(v.second);
-        } else if (v.first == "Boolean") {
-            booleanAttribute_ = make_unique<BooleanAttribute>(BooleanAttribute());
-            booleanAttribute_->load(v.second);
-        } else if (v.first == "Enumeration") {
-            enumerationAttribute_ = make_unique<EnumerationAttribute>(EnumerationAttribute());
-            enumerationAttribute_->load(v.second);
-        }
-    }
-
-}
-
-IntegerVariable ScalarVariable::asIntegerVariable() {
-    if (integerAttribute_ == nullptr) {
-        throw runtime_error(getName() + "is not of type Integer!");
-    }
-    return IntegerVariable(*this, *integerAttribute_);
-}
-
-RealVariable ScalarVariable::asRealVariable() {
-    if (realAttribute_ == nullptr) {
-        throw runtime_error(getName() + "is not of type Real!");
-    }
-    return RealVariable(*this, *realAttribute_);
-}
-
-StringVariable ScalarVariable::asStringVariable() {
-    if (stringAttribute_ == nullptr) {
-        throw runtime_error(getName() + "is not of type String!");
-    }
-    return StringVariable(*this, *stringAttribute_);
-}
-
-BooleanVariable ScalarVariable::asBooleanVariable() {
-    if (booleanAttribute_ == nullptr) {
-        throw runtime_error(getName() + "is not of type Boolean!");
-    }
-    return BooleanVariable(*this, *booleanAttribute_);
-}
-
-EnumerationVariable ScalarVariable::asEnumerationVariable() {
-    if (enumerationAttribute_ == nullptr) {
-        throw runtime_error(getName() + "is not of type Enumeration!");
-    }
-    return EnumerationVariable(*this, *enumerationAttribute_);
-}
-
-string ScalarVariable::getName() const {
+std::string ScalarVariableBase::name() const {
     return name_;
 }
 
-string ScalarVariable::getDescription() const {
+std::string ScalarVariableBase::description() const {
     return description_;
 }
 
-fmi2ValueReference ScalarVariable::getValueReference() const {
+fmi2ValueReference ScalarVariableBase::valueReference() const {
     return valueReference_;
 }
 
-bool ScalarVariable::canHandleMultipleSetPerTimelnstant() const {
-    return canHandleMultipleSetPerTimelnstant_;
-}
-
-fmi2Causality ScalarVariable::getCausality() const {
+fmi2Causality ScalarVariableBase::causality() const {
     return causality_;
 }
 
-fmi2Variability ScalarVariable::getVariability() const {
+fmi2Variability ScalarVariableBase::variability() const {
     return variability_;
 }
 
-fmi2Initial ScalarVariable::getInitial() const {
+fmi2Initial ScalarVariableBase::initial() const {
     return initial_;
 }
 
-IntegerVariable::IntegerVariable(const ScalarVariable &var, IntegerAttribute &attribute)
-        : ScalarVariable(var), attribute_(attribute) {}
-
-std::optional<int> IntegerVariable::getMin() const {
-    return attribute_.min;
+bool ScalarVariableBase::canHandleMultipleSetPerTimelnstant() const {
+    return canHandleMultipleSetPerTimelnstant_;
 }
 
-std::optional<int> IntegerVariable::getMax() const {
-    return attribute_.max;
-}
+ScalarVariableBase::ScalarVariableBase(const std::string &name,
+                                       const std::string &description,
+                                       fmi2ValueReference valueReference,
+                                       bool canHandleMultipleSetPerTimelnstant,
+                                       fmi2Causality causality,
+                                       fmi2Variability variability,
+                                       fmi2Initial initial)
+        : name_(name),
+          description_(description),
+          valueReference_(valueReference),
+          canHandleMultipleSetPerTimelnstant_(canHandleMultipleSetPerTimelnstant),
+          causality_(causality),
+          variability_(variability),
+          initial_(initial) {}
 
-std::optional<int> IntegerVariable::getStart() const {
-    return attribute_.start;
-}
+ScalarVariable::ScalarVariable(const ScalarVariableBase &base,
+                               const IntegerAttribute &integer)
+        : ScalarVariableBase(base), integer_(integer) {}
 
-void IntegerVariable::setStart(const int start) {
-    attribute_.start = start;
-}
+ScalarVariable::ScalarVariable(const ScalarVariableBase &base,
+                               const RealAttribute &real)
+        : ScalarVariableBase(base), real_(real) {}
 
-std::optional<string> IntegerVariable::getQuantity() const {
-    return attribute_.quantity;
-}
+ScalarVariable::ScalarVariable(const ScalarVariableBase &base,
+                               const StringAttribute &string)
+        : ScalarVariableBase(base), string_(string) {}
 
-RealVariable::RealVariable(const ScalarVariable &var, RealAttribute &attribute)
-        : ScalarVariable(var), attribute_(attribute) {}
+ScalarVariable::ScalarVariable(const ScalarVariableBase &base,
+                               const BooleanAttribute &boolean)
+        : ScalarVariableBase(base), boolean_(boolean) {}
 
-std::optional<double> RealVariable::getMin() const {
-    return attribute_.min;
-}
+ScalarVariable::ScalarVariable(const ScalarVariableBase &base,
+                               const EnumerationAttribute &enumeration)
+        : ScalarVariableBase(base), enumeration_(enumeration) {}
 
-std::optional<double> RealVariable::getMax() const {
-    return attribute_.max;
-}
 
-std::optional<double> RealVariable::getStart() const {
-    return attribute_.start;
-}
-
-void RealVariable::setStart(const double start) {
-    attribute_.start = start;
-}
-
-std::optional<double> RealVariable::getNominal() const {
-    return attribute_.nominal;
-}
-
-bool RealVariable::getReinit() const {
-    return attribute_.reinit;
-}
-
-bool RealVariable::getUnbounded() const {
-    return attribute_.unbounded;
-}
-
-bool RealVariable::getRelativeQuantity() const {
-    return attribute_.relativeQuantity;
-}
-
-std::optional<string> RealVariable::getQuantity() const {
-    return attribute_.quantity;
-}
-
-std::optional<string> RealVariable::getUnit() const {
-    return attribute_.unit;
-}
-
-std::optional<string> RealVariable::getDisplayUnit() const {
-    return attribute_.displayUnit;
-}
-
-std::optional<unsigned int> RealVariable::getDerivative() const {
-    return attribute_.derivative;
-}
-
-StringVariable::StringVariable(const ScalarVariable &var, StringAttribute &attribute)
-        : ScalarVariable(var), attribute_(attribute) {}
-
-std::optional<string> StringVariable::getStart() const {
-    return attribute_.start;
-}
-
-void StringVariable::setStart(const string &start) {
-    attribute_.start = start;
-}
-
-BooleanVariable::BooleanVariable(const ScalarVariable &var, BooleanAttribute &attribute)
-        : ScalarVariable(var), attribute_(attribute) {}
-
-std::optional<bool> BooleanVariable::getStart() const {
-    return attribute_.start;
-}
-
-void BooleanVariable::setStart(const bool start) {
-    attribute_.start = start;
-}
-
-EnumerationVariable::EnumerationVariable(const ScalarVariable &var, EnumerationAttribute &attribute)
-        : ScalarVariable(var), attribute_(attribute) {}
-
-std::optional<int> EnumerationVariable::getMin() const {
-    return attribute_.min;
-}
-
-std::optional<int> EnumerationVariable::getMax() const {
-    return attribute_.max;
-}
-
-std::optional<int> EnumerationVariable::getStart() const {
-    return attribute_.start;
-}
-
-void EnumerationVariable::setStart(const int start) {
-    attribute_.start = start;
-}
-
-std::optional<string> EnumerationVariable::getQuantity() const {
-    return attribute_.quantity;
+std::string ScalarVariable::typeName() const {
+    if (integer_) {
+        return INTEGER_TYPE;
+    } else if (real_) {
+        return REAL_TYPE;
+    } else if (string_) {
+        return STRING_TYPE;
+    } else if (boolean_) {
+        return BOOLEAN_TYPE;
+    } else if (enumeration_) {
+        return ENUMERATION_TYPE;
+    } else {
+        throw std::runtime_error("FATAL: No attribute set for ScalarVariable!");
+    }
 }
