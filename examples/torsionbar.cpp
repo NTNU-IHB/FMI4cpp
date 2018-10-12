@@ -40,7 +40,7 @@ int main() {
                             "/20sim/4.6.4.8004/TorsionBar/TorsionBar.fmu";
 
     import::Fmu fmu(fmu_path);
-    const auto slave = fmu.asCoSimulationFmu().newInstance();
+    const auto slave = fmu.asCoSimulationFmu()->newInstance();
     slave->init();
 
     clock_t begin = clock();

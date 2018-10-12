@@ -22,26 +22,21 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMI4CPP_FMUSLAVE_HPP
-#define FMI4CPP_FMUSLAVE_HPP
+#if FMI4CPP_DEBUG_LOGGING_ENABLED
+#include <iostream>
+#endif
 
-#include "FmuInstance.hpp"
-#include "fmi4cpp/fmi2/xml/ModelDescription.hpp"
+#include <fmi4cpp/fmi2/import/TemporalFolder.hpp>
 
-namespace fmi4cpp::fmi2::import {
+using namespace fmi4cpp::fmi2::import;
 
-    class FmuSlave : virtual public FmuInstance<xml::CoSimulationModelDescription> {
+TemporalFolder::TemporalFolder(fs::path &path): fs::path(path){}
 
-    public:
+TemporalFolder::~TemporalFolder() {
+    fs::remove_all(*this);
 
-        virtual fmi2Status doStep(double stepSize) = 0;
-
-        virtual fmi2Status cancelStep() = 0;
-
-        ~FmuSlave() override = default;
-
-    };
+#if FMI4CPP_DEBUG_LOGGING_ENABLED
+    std::cout << "Deleted temporal folder '" << string() << "'" <<  std::endl;
+#endif
 
 }
-
-#endif //FMI4CPP_FMUSLAVE_HPP

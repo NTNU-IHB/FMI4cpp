@@ -33,14 +33,12 @@
 
 namespace fmi4cpp::fmi2::import {
 
-    using xml::ModelExchangeModelDescription;
-
-    class ModelExchangeInstance : public AbstractFmuInstance<ModelExchangeLibrary, ModelExchangeModelDescription> {
+class ModelExchangeInstance : public AbstractFmuInstance<ModelExchangeLibrary, xml::ModelExchangeModelDescription> {
 
     public:
         ModelExchangeInstance(const fmi2Component c,
                               const std::shared_ptr<ModelExchangeLibrary> &library,
-                              const ModelExchangeModelDescription &modelDescription);
+                              const std::shared_ptr<xml::ModelExchangeModelDescription> &modelDescription);
 
 
         fmi2Status enterEventMode() const;

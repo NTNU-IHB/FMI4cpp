@@ -58,7 +58,6 @@ namespace fmi4cpp::fmi2::xml {
 
     struct IntegerAttribute: BoundedScalarVariableAttributes<int> {
 
-
         IntegerAttribute(const BoundedScalarVariableAttributes<int> &attributes);
 
     };

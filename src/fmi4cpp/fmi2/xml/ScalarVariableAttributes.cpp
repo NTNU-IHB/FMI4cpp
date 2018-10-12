@@ -40,25 +40,25 @@ BoundedScalarVariableAttributes<T>::BoundedScalarVariableAttributes(const Scalar
         : ScalarVariableAttributes<T>(attributes), min(min), max(max), quantity(quantity) {}
 
 
-IntegerAttribute::IntegerAttribute(const BoundedScalarVariableAttributes<int> &attributes))
-        : BoundedScalarVariableAttributes(attributes) {}
+IntegerAttribute::IntegerAttribute(const BoundedScalarVariableAttributes<int> &attributes)
+        : BoundedScalarVariableAttributes<int>(attributes) {}
 
 
 RealAttribute::RealAttribute(const BoundedScalarVariableAttributes<double> &attributes,
                              const bool reinit, const bool unbounded, const bool relativeQuantity,
                              const std::optional<double> &nominal, const std::optional<size_t> &derivative,
                              const std::optional<std::string> &unit, const std::optional<std::string> &displayUnit)
-        : BoundedScalarVariableAttributes(attributes), reinit(reinit), unbounded(unbounded),
+        : BoundedScalarVariableAttributes<double>(attributes), reinit(reinit), unbounded(unbounded),
           relativeQuantity(relativeQuantity), nominal(nominal), derivative(derivative), unit(unit),
           displayUnit(displayUnit) {}
 
 StringAttribute::StringAttribute(const ScalarVariableAttributes<std::string> &attributes)
-        : ScalarVariableAttributes(attributes) {}
+        : ScalarVariableAttributes<std::string>(attributes) {}
 
 BooleanAttribute::BooleanAttribute(const ScalarVariableAttributes<bool> &attributes)
-        : ScalarVariableAttributes(attributes) {}
+        : ScalarVariableAttributes<bool>(attributes) {}
 
 
 EnumerationAttribute::EnumerationAttribute(const ScalarVariableAttributes<int> &attributes)
-        : ScalarVariableAttributes(attributes) {}
+        : ScalarVariableAttributes<int>(attributes) {}
 

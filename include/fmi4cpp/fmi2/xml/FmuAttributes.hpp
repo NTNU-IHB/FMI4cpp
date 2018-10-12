@@ -31,46 +31,72 @@
 
 namespace fmi4cpp::fmi2::xml {
 
-    struct FmuAttributes {
+    class FmuAttributes {
 
-        const std::string modelIdentifier;
+    private:
 
-        const bool canGetAndSetFMUstate;
-        const bool canSerializeFMUstate;
-        const bool needsExecutionTool;
-        const bool canNotUseMemoryManagementFunctions;
-        const bool canBeInstantiatedOnlyOncePerProcess;
-        const bool providesDirectionalDerivative;
+        bool canGetAndSetFMUstate_;
+        bool canSerializeFMUstate_;
+        bool needsExecutionTool_;
+        bool canNotUseMemoryManagementFunctions_;
+        bool canBeInstantiatedOnlyOncePerProcess_;
+        bool providesDirectionalDerivative_;
 
-        const SourceFiles sourceFiles;
+        SourceFiles sourceFiles_;
+        std::string modelIdentifier_;
+
+    public:
 
         FmuAttributes(const std::string &modelIdentifier, const bool canGetAndSetFMUstate,
                       const bool canSerializeFMUstate, const bool needsExecutionTool,
                       const bool canNotUseMemoryManagementFunctions, const bool canBeInstantiatedOnlyOncePerProcess,
                       const bool providesDirectionalDerivative, const SourceFiles &sourceFiles);
 
+        SourceFiles sourceFiles() const;
+        std::string modelIdentifier() const;
+
+        bool canGetAndSetFMUstate() const;
+        bool canSerializeFMUstate() const;
+        bool needsExecutionTool() const;
+        bool canNotUseMemoryManagementFunctions() const;
+        bool canBeInstantiatedOnlyOncePerProcess() const;
+        bool providesDirectionalDerivative() const;
+
     };
 
-    struct CoSimulationAttributes : FmuAttributes {
+    class CoSimulationAttributes : public FmuAttributes {
 
-        const bool canInterpolateInputs;
-        const bool canRunAsynchronuously;
-        const bool canHandleVariableCommunicationStepSize;
+    private:
+        bool canInterpolateInputs_;
+        bool canRunAsynchronuously_;
+        bool canHandleVariableCommunicationStepSize_;
 
-        const size_t maxOutputDerivativeOrder;
+        size_t maxOutputDerivativeOrder_;
+
+    public:
 
         CoSimulationAttributes(const FmuAttributes &attributes, const bool canInterpolateInputs,
                                const bool canRunAsynchronuously, const bool canHandleVariableCommunicationStepSize,
                                const size_t maxOutputDerivativeOrder);
 
+        bool canInterpolateInputs() const;
+        bool canRunAsynchronuously() const;
+        bool canHandleVariableCommunicationStepSize() const;
+
+        size_t maxOutputDerivativeOrder() const;
+
     };
 
-    struct ModelExchangeAttributes : FmuAttributes {
+    class ModelExchangeAttributes : public FmuAttributes {
 
+    private:
+        bool completedIntegratorStepNotNeeded_;
+
+    public:
         ModelExchangeAttributes(const FmuAttributes &attributes,
                                 const bool completedIntegratorStepNotNeeded);
 
-        const bool completedIntegratorStepNotNeeded;
+        bool completedIntegratorStepNotNeeded() const;
 
     };
 

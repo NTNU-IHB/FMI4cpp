@@ -24,9 +24,6 @@
 
 #include <boost/property_tree/ptree.hpp>
 
-//#include "FmuAttributesParser.hpp"
-//#include "ScalarVariableParser.hpp"
-//#include "ModelStructureParser.hpp"
 #include "optional_converter.hpp"
 
 
@@ -160,14 +157,14 @@ namespace {
         return ModelExchangeAttributes(commonAttributes, completedIntegratorStepNotNeeded);
     }
 
-    template <typename T>
+    template<typename T>
     ScalarVariableAttributes<T> parseScalarVariableAttributes(const ptree &node) {
         auto start = convert(node.get_optional<T>("<xmlattr>.start"));
         auto declaredType = convert(node.get_optional<std::string>("<xmlattr>.declaredType"));
         return ScalarVariableAttributes<T>(start, declaredType);
     }
 
-    template <typename T>
+    template<typename T>
     BoundedScalarVariableAttributes<T> parseBoundedScalarVariableAttributes(const ptree &node) {
         auto attributes = parseScalarVariableAttributes<T>(node);
         auto min = convert(node.get_optional<T>("<xmlattr>.min"));
@@ -196,7 +193,7 @@ namespace {
         auto relativeQuantity = node.get<bool>("<xmlattr>.relativeQuantity", false);
 
         return RealAttribute(attributes, reinit, unbounded, relativeQuantity, nominal,
-                              derivative, unit, displayUnit);
+                             derivative, unit, displayUnit);
 
     }
 
@@ -225,23 +222,23 @@ namespace {
         auto initial = parseInitial(node.get<std::string>("<xmlattr>.initial", ""));
 
         for (const ptree::value_type &v : node) {
-            if (v.first == "Integer") {
+            if (v.first == INTEGER_TYPE) {
                 auto attribute = parseIntegerAttribute(v.second);
                 return ScalarVariable(name, description, valueReference, canHandleMultipleSetPerTimelnstant, causality,
                                       variability, initial, attribute);
-            } else if (v.first == "Real") {
+            } else if (v.first == REAL_TYPE) {
                 auto attribute = parseRealAttribute(v.second);
                 return ScalarVariable(name, description, valueReference, canHandleMultipleSetPerTimelnstant, causality,
                                       variability, initial, attribute);
-            } else if (v.first == "String") {
+            } else if (v.first == STRING_TYPE) {
                 auto attribute = parseStringAttribute(v.second);
                 return ScalarVariable(name, description, valueReference, canHandleMultipleSetPerTimelnstant, causality,
                                       variability, initial, attribute);
-            } else if (v.first == "Boolean") {
+            } else if (v.first == BOOLEAN_TYPE) {
                 auto attribute = parseBooleanAttribute(v.second);
                 return ScalarVariable(name, description, valueReference, canHandleMultipleSetPerTimelnstant, causality,
                                       variability, initial, attribute);
-            } else if (v.first == "Enumeration") {
+            } else if (v.first == ENUMERATION_TYPE) {
                 auto attribute = parseEnumerationAttribute(v.second);
                 return ScalarVariable(name, description, valueReference, canHandleMultipleSetPerTimelnstant, causality,
                                       variability, initial, attribute);
@@ -252,57 +249,80 @@ namespace {
 
     }
 
-    void parseModelVariables(const ptree &node, std::vector<ScalarVariable> variables) {
+    ModelVariables parseModelVariables(const ptree &node) {
+        std::vector<ScalarVariable> variables;
         for (const ptree::value_type &v : node) {
             if (v.first == "ScalarVariable") {
                 auto var = parseScalarVariable(v.second);
                 variables.push_back(var);
             }
         }
+        return ModelVariables(variables);
     }
-
 
 }
 
-
-
-ModelDescription parseModelDescription(std::string &fileName) {
+std::unique_ptr<ModelDescription> parseModelDescription(std::string &fileName) {
 
     ptree tree;
     read_xml(fileName, tree);
-
     ptree root = tree.get_child("fmiModelDescription");
 
     auto guid = root.get<std::string>("<xmlattr>.guid");
-    auto fmiVersion_= root.get<std::string>("<xmlattr>.fmiVersion");
+    auto fmiVersion = root.get<std::string>("<xmlattr>.fmiVersion");
     auto modelName = root.get<std::string>("<xmlattr>.modelName");
     auto description = root.get<std::string>("<xmlattr>.description", "");
     auto author = root.get<std::string>("<xmlattr>.author", "");
     auto version = root.get<std::string>("<xmlattr>.version", "");
     auto license = root.get<std::string>("<xmlattr>.license", "");
-    auto generationTool_= root.get<std::string>("<xmlattr>.generationTool", "");
+    auto copyright = root.get<std::string>("<xmlattr>.copyright", "");
+    auto generationTool = root.get<std::string>("<xmlattr>.generationTool", "");
     auto generationDateAndTime = root.get<std::string>("<xmlattr>.generationDateAndTime", "");
-    auto numberOfEventIndicators = root.get<size_t >("<xmlattr>.numberOfEventIndicators", 0);
-    auto variableNamingConvention = root.get<std::string>("<xmlattr>.variableNamingConvention", DEFAULT_VARIABLE_NAMING_CONVENTION);
+    auto numberOfEventIndicators = root.get<size_t>("<xmlattr>.numberOfEventIndicators", 0);
+    auto variableNamingConvention = root.get<std::string>("<xmlattr>.variableNamingConvention",
+                                                          DEFAULT_VARIABLE_NAMING_CONVENTION);
 
+    ModelVariables modelVariables;
+    ModelStructure modelStructure;
     std::optional<DefaultExperiment> defaultExperiment;
-    std::vector<ScalarVariable> variables;
-
+    std::optional<CoSimulationAttributes> coSimulation;
+    std::optional<ModelExchangeAttributes> modelExchange;
 
     for (const ptree::value_type &v : root) {
 
         if (v.first == "CoSimulation") {
-            auto cs = parseCoSimulationAttributes(v.second);
+            coSimulation = parseCoSimulationAttributes(v.second);
         } else if (v.first == "ModelExchange") {
-            auto me = parseModelExchangeAttributes(v.second);
+            modelExchange = parseModelExchangeAttributes(v.second);
         } else if (v.first == "DefaultExperiment") {
             defaultExperiment = parseDefaultExperiment(v.second);
         } else if (v.first == "ModelVariables") {
-            parseModelVariables(v.second, variables);
+            modelVariables = parseModelVariables(v.second);
         } else if (v.first == "ModelStructure") {
-            auto modelStructure = parseModelStructure(v.second);
+            modelStructure = parseModelStructure(v.second);
         }
 
     }
+
+    const ModelDescriptionBase base(guid,
+                                    fmiVersion,
+                                    modelName,
+                                    description,
+                                    version,
+                                    author,
+                                    license,
+                                    copyright,
+                                    generationTool,
+                                    generationDateAndTime,
+                                    variableNamingConvention,
+                                    numberOfEventIndicators,
+                                    modelVariables,
+                                    modelStructure,
+                                    defaultExperiment);
+
+    return std::make_unique<ModelDescription>(
+            base,
+            coSimulation,
+            modelExchange);
 
 }

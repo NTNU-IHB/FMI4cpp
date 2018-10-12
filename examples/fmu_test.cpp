@@ -37,26 +37,26 @@ int main() {
                            "/20sim/4.6.4.8004/ControlledTemperature/ControlledTemperature.fmu";
 
     import::Fmu fmu(fmuPath);
-    import::CoSimulationFmu cs_fmu = fmu.asCoSimulationFmu();
+    auto cs_fmu = fmu.asCoSimulationFmu();
 
-    auto& md = cs_fmu.getModelDescription();
+    auto md = cs_fmu->getModelDescription();
 
-    const auto& var = md.getModelVariables().getByValueReference(47);
-    cout << var << endl;
+    const auto& var = md->modelVariables().getByValueReference(47);
+    cout << var.typeName() << endl;
 
-    cout << "modelIdentifier=" << md.getModelIdentifier() << endl;
+    cout << "modelIdentifier=" << md->modelIdentifier() << endl;
 
-    auto slave1 = cs_fmu.newInstance();
-    auto slave2 = cs_fmu.newInstance();
+    auto slave1 = cs_fmu->newInstance();
+    auto slave2 = cs_fmu->newInstance();
     
-    cout << "modelIdentifier= " << slave1->getModelDescription().getModelIdentifier() << endl;
+    cout << "modelIdentifier= " << slave1->getModelDescription()->modelIdentifier() << endl;
 
     slave1->init();
     slave2->init();
 
     vector<fmi2Real> ref(2);
-    vector<fmi2ValueReference> vr = {md.getVariableByName("Temperature_Reference").getValueReference(),
-                                     md.getVariableByName("Temperature_Room").getValueReference()};
+    vector<fmi2ValueReference> vr = {md->getVariableByName("Temperature_Reference").valueReference(),
+                                     md->getVariableByName("Temperature_Room").valueReference()};
 
     double t = 0;
     double stop = 0.1;
@@ -75,10 +75,10 @@ int main() {
     }
 
     status = slave1->terminate();
-    cout << "FMU '" << fmu.getModelName() << "' terminated with status: " << to_string(status) << endl;
+    cout << "FMU '" << fmu.modelName() << "' terminated with status: " << to_string(status) << endl;
 
     status = slave2->terminate();
-    cout << "FMU '" << fmu.getModelName() << "' terminated with status: " << to_string(status) << endl;
+    cout << "FMU '" << fmu.modelName() << "' terminated with status: " << to_string(status) << endl;
 
     return 0;
 

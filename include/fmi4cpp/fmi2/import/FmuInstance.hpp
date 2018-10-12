@@ -59,7 +59,7 @@ namespace fmi4cpp::fmi2::import {
             return getModelDescription().getVariableByName(name).getValueReference();
         }
 
-        virtual const T &getModelDescription() const = 0;
+        virtual std::shared_ptr<T> getModelDescription() const = 0;
 
         virtual void init(double start = 0, double stop = 0) = 0;
 

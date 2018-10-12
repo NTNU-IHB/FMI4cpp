@@ -58,7 +58,10 @@ namespace fmi4cpp::fmi2::xml {
         std::vector<Unknown> derivatives_;
         std::vector<Unknown> initialUnknowns_;
 
+
     public:
+
+        ModelStructure();
 
         ModelStructure(const std::vector<Unknown> &outputs_, const std::vector<Unknown> &derivatives_,
                        const std::vector<Unknown> &initialUnknowns_);

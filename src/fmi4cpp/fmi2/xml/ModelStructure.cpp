@@ -28,7 +28,6 @@
 using fmi4cpp::fmi2::xml::Unknown;
 using fmi4cpp::fmi2::xml::ModelStructure;
 
-
 Unknown::Unknown(const size_t index, const std::optional<std::string> &dependenciesKind,
         const std::optional<std::vector<unsigned int>> &dependencies)
         : index(index), dependenciesKind(dependenciesKind), dependencies_(dependencies) {}
@@ -36,6 +35,8 @@ Unknown::Unknown(const size_t index, const std::optional<std::string> &dependenc
 const std::optional<std::vector<unsigned int>> &Unknown::dependencies() const {
     return dependencies_;
 }
+
+fmi4cpp::fmi2::xml::ModelStructure::ModelStructure() {}
 
 ModelStructure::ModelStructure(const std::vector<Unknown> &outputs_, const std::vector<Unknown> &derivatives_,
                                const std::vector<Unknown> &initialUnknowns_)

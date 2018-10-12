@@ -7,24 +7,18 @@ SET(SOURCES
         fmi4cpp/fmi2/import/ModelExchangeLibrary.cpp
         fmi4cpp/fmi2/import/CoSimulationSlave.cpp
         fmi4cpp/fmi2/import/ModelExchangeInstance.cpp
+        fmi4cpp/fmi2/import/TemporalFolder.cpp
 
         fmi4cpp/fmi2/xml/enums.cpp
         fmi4cpp/fmi2/xml/FmuAttributes.cpp
         fmi4cpp/fmi2/xml/ModelDescription.cpp
         fmi4cpp/fmi2/xml/ModelDescriptionParser.cpp
-        fmi4cpp/fmi2/xml/SpecificModelDescription.cpp
         fmi4cpp/fmi2/xml/ModelVariables.cpp
         fmi4cpp/fmi2/xml/ScalarVariable.cpp
         fmi4cpp/fmi2/xml/ScalarVariableAttributes.cpp
         fmi4cpp/fmi2/xml/DefaultExperiment.cpp
         fmi4cpp/fmi2/xml/ModelStructure.cpp
         fmi4cpp/fmi2/xml/optional_converter.cpp
-
-#    fmi4cpp/fmi2/xml/ModelDescriptionParser.hpp
-#    fmi4cpp/fmi2/xml/ScalarVariableAttributesParser.hpp
-#    fmi4cpp/fmi2/xml/ScalarVariableParser.hpp
-#    fmi4cpp/fmi2/xml/FmuAttributesParser.hpp
-#    fmi4cpp/fmi2/xml/ModelStructureParser.hpp
 
 )
 
@@ -34,10 +28,10 @@ add_library(FMI4cpp::${FMI4CPP_LIB} ALIAS fmi4cpp)
 
 target_include_directories(${FMI4CPP_LIB}
     PUBLIC
+        ${Boost_INCLUDE_DIRS}
         $<INSTALL_INTERFACE:include>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>
     PRIVATE
-        ${Boost_INCLUDE_DIRS}
         ${LIBZIP_INCLUDE_DIRS}
         ${CURRENT_CMAKE_SOURCE_DIR}/../src
 )

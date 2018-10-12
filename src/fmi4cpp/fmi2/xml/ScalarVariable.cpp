@@ -28,7 +28,6 @@
 
 using namespace fmi4cpp::fmi2::xml;
 
-
 ScalarVariable::ScalarVariable(const std::string &name, const std::string &description,
                                                    const fmi2ValueReference valueReference,
                                                    const bool canHandleMultipleSetPerTimelnstant,
@@ -128,7 +127,6 @@ std::optional<EnumerationAttribute> ScalarVariable::enumeration() const {
 }
 
 std::string ScalarVariable::typeName() const {
-
     if (integer_) {
         return INTEGER_TYPE;
     } else if (real_) {
@@ -142,5 +140,4 @@ std::string ScalarVariable::typeName() const {
     } else {
         throw std::runtime_error("FATAL: No attribute set for ScalarVariable!");
     }
-
 }

@@ -37,24 +37,26 @@ namespace fmi4cpp::fmi2::xml {
 
     private:
 
-        const std::vector<ScalarVariable> variables_;
+        std::vector<ScalarVariable> variables_;
 
     public:
+
+        ModelVariables();
 
         explicit ModelVariables(const std::vector<ScalarVariable> &variables);
 
         size_t size() const;
 
         const ScalarVariable &operator[](size_t index) const;
-
         const ScalarVariable &getByName(const std::string &name) const;
-
         const ScalarVariable &getByValueReference(fmi2ValueReference vr) const;
 
         void getByCausality(fmi2Causality causality, std::vector<ScalarVariable> &store) const;
 
-        std::vector<ScalarVariable>::const_iterator cbegin() const;
+        std::vector<ScalarVariable>::const_iterator begin();
+        std::vector<ScalarVariable>::const_iterator end();
 
+        std::vector<ScalarVariable>::const_iterator cbegin() const;
         std::vector<ScalarVariable>::const_iterator cend() const;
     };
 

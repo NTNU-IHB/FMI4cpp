@@ -26,13 +26,13 @@
 #define FMI4CPP_MODELDESCRIPTIONPARSER_HPP
 
 #include <string>
+#include <memory>
 
 #include <fmi4cpp/fmi2/xml/ModelDescription.hpp>
 
 namespace fmi4cpp::fmi2::xml {
 
-
-    ModelDescription parseModelDescription(std::string &fileName);
+    std::unique_ptr<ModelDescription> parseModelDescription(const std::string &fileName);
 
 }
 

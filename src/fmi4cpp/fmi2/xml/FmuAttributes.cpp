@@ -33,14 +33,46 @@ FmuAttributes::FmuAttributes(const std::string &modelIdentifier, const bool canG
                              const bool canBeInstantiatedOnlyOncePerProcess,
                              const bool providesDirectionalDerivative,
                              const SourceFiles &sourceFiles)
-        : modelIdentifier(modelIdentifier),
-          canGetAndSetFMUstate(canGetAndSetFMUstate),
-          canSerializeFMUstate(canSerializeFMUstate),
-          needsExecutionTool(needsExecutionTool),
-          canNotUseMemoryManagementFunctions(canNotUseMemoryManagementFunctions),
-          canBeInstantiatedOnlyOncePerProcess(canBeInstantiatedOnlyOncePerProcess),
-          providesDirectionalDerivative(providesDirectionalDerivative),
-          sourceFiles(sourceFiles) {}
+        : modelIdentifier_(modelIdentifier),
+          canGetAndSetFMUstate_(canGetAndSetFMUstate),
+          canSerializeFMUstate_(canSerializeFMUstate),
+          needsExecutionTool_(needsExecutionTool),
+          canNotUseMemoryManagementFunctions_(canNotUseMemoryManagementFunctions),
+          canBeInstantiatedOnlyOncePerProcess_(canBeInstantiatedOnlyOncePerProcess),
+          providesDirectionalDerivative_(providesDirectionalDerivative),
+          sourceFiles_(sourceFiles) {}
+
+bool FmuAttributes::canGetAndSetFMUstate() const {
+    return canGetAndSetFMUstate_;
+}
+
+bool FmuAttributes::canSerializeFMUstate() const {
+    return canSerializeFMUstate_;
+}
+
+bool FmuAttributes::needsExecutionTool() const {
+    return needsExecutionTool_;
+}
+
+bool FmuAttributes::canNotUseMemoryManagementFunctions() const {
+    return canNotUseMemoryManagementFunctions_;
+}
+
+bool FmuAttributes::canBeInstantiatedOnlyOncePerProcess() const {
+    return canBeInstantiatedOnlyOncePerProcess_;
+}
+
+bool FmuAttributes::providesDirectionalDerivative() const {
+    return providesDirectionalDerivative_;
+}
+
+SourceFiles FmuAttributes::sourceFiles() const {
+    return sourceFiles_;
+}
+
+std::string FmuAttributes::modelIdentifier() const {
+    return modelIdentifier_;
+}
 
 CoSimulationAttributes::CoSimulationAttributes(const FmuAttributes &attributes,
                                                const bool canInterpolateInputs,
@@ -48,11 +80,31 @@ CoSimulationAttributes::CoSimulationAttributes(const FmuAttributes &attributes,
                                                const bool canHandleVariableCommunicationStepSize,
                                                const size_t maxOutputDerivativeOrder)
         : FmuAttributes(attributes),
-          canInterpolateInputs(canInterpolateInputs),
-          canRunAsynchronuously(canRunAsynchronuously),
-          canHandleVariableCommunicationStepSize(canHandleVariableCommunicationStepSize),
-          maxOutputDerivativeOrder(maxOutputDerivativeOrder) {}
+          canInterpolateInputs_(canInterpolateInputs),
+          canRunAsynchronuously_(canRunAsynchronuously),
+          canHandleVariableCommunicationStepSize_(canHandleVariableCommunicationStepSize),
+          maxOutputDerivativeOrder_(maxOutputDerivativeOrder) {}
+
+bool CoSimulationAttributes::canInterpolateInputs() const {
+    return canInterpolateInputs_;
+}
+
+bool CoSimulationAttributes::canRunAsynchronuously() const {
+    return canRunAsynchronuously_;
+}
+
+bool CoSimulationAttributes::canHandleVariableCommunicationStepSize() const {
+    return canHandleVariableCommunicationStepSize_;
+}
+
+size_t CoSimulationAttributes::maxOutputDerivativeOrder() const {
+    return maxOutputDerivativeOrder_;
+}
 
 ModelExchangeAttributes::ModelExchangeAttributes(const FmuAttributes &attributes,
                                                  const bool completedIntegratorStepNotNeeded)
-        : FmuAttributes(attributes), completedIntegratorStepNotNeeded(completedIntegratorStepNotNeeded) {}
+        : FmuAttributes(attributes), completedIntegratorStepNotNeeded_(completedIntegratorStepNotNeeded) {}
+
+bool ModelExchangeAttributes::completedIntegratorStepNotNeeded() const {
+    return completedIntegratorStepNotNeeded_;
+}

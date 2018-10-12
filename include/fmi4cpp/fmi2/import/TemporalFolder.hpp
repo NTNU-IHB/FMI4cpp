@@ -22,26 +22,25 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMI4CPP_FMUSLAVE_HPP
-#define FMI4CPP_FMUSLAVE_HPP
+#ifndef FMI4CPP_TEMPORALFOLDER_HPP
+#define FMI4CPP_TEMPORALFOLDER_HPP
 
-#include "FmuInstance.hpp"
-#include "fmi4cpp/fmi2/xml/ModelDescription.hpp"
+#include <experimental/filesystem>
+
+namespace fs = std::experimental::filesystem;
 
 namespace fmi4cpp::fmi2::import {
 
-    class FmuSlave : virtual public FmuInstance<xml::CoSimulationModelDescription> {
+class TemporalFolder: public fs::path {
 
     public:
+        explicit TemporalFolder(fs::path &path);
 
-        virtual fmi2Status doStep(double stepSize) = 0;
-
-        virtual fmi2Status cancelStep() = 0;
-
-        ~FmuSlave() override = default;
+        ~TemporalFolder();
 
     };
 
 }
 
-#endif //FMI4CPP_FMUSLAVE_HPP
+
+#endif //FMI4CPP_TEMPORALFOLDER_HPP

@@ -36,7 +36,6 @@
 #include "FmuInstance.hpp"
 #include "FmiLibrary.hpp"
 #include "../enumsToString.hpp"
-#include "fmi4cpp/fmi2/xml/SpecificModelDescription.hpp"
 
 using fmi4cpp::fmi2::import::FmuInstance;
 
@@ -146,23 +145,23 @@ namespace fmi4cpp::fmi2::import {
 
     private:
 
-//        StartQueue queue_;
         bool instanceFreed_ = false;
-
 
     protected:
 
         fmi2Component c_;
         std::shared_ptr<T> library_;
-        const U modelDescription_;
+        const std::shared_ptr<U> modelDescription_;
 
     public:
 
-        AbstractFmuInstance(const fmi2Component c, const std::shared_ptr<T> &library, const U &modelDescription)
+        AbstractFmuInstance(const fmi2Component c,
+                            const std::shared_ptr<T> &library,
+                            const std::shared_ptr<U> &modelDescription)
                 : c_(c), library_(library), modelDescription_(modelDescription) {}
 
 
-        const U &getModelDescription() const override {
+        std::shared_ptr<U> getModelDescription() const override {
             return modelDescription_;
         }
 
@@ -174,43 +173,9 @@ namespace fmi4cpp::fmi2::import {
 
             if (!this->instantiated_) {
 
-                unsigned int count = 0;
-//                queue_.assignStartValues(*this);
-//                for (ScalarVariable &v: modelDescription_.getModelVariables()) {
-//                    if (v.getVariability() != fmi2Variability::constant && v.getInitial() == fmi2Initial::exact ||
-//                        v.getInitial() == fmi2Initial::approx) {
-//                        if (assignStart(v, *this)) {
-//                            count++;
-//                        }
-//                    }
-//                }
-
-#if FMI4CPP_DEBUG_LOGGING_ENABLED
-                if (count > 0) {
-                    std::cout << "Assigned modified start values to" << count << " variables with variability != constant and initial == exact or approx" << std::endl;
-                }
-#endif
-
                 checkStatus(library_->setupExperiment(c_, false, 1E-4, start, stop), "setupExperiment");
 
                 checkStatus(library_->enterInitializationMode(c_), "enterInitializationMode");
-
-                count = 0;
-//                for (ScalarVariable &v: modelDescription_.getModelVariables()) {
-//                    if (v.getVariability() != fmi2Variability::constant && v.getInitial() == fmi2Initial::exact ||
-//                        v.getCausality() == fmi2Causality::input) {
-//                        if (assignStart(v, *this)) {
-//                            count++;
-//                        }
-//                    }
-//                }
-
-#if FMI4CPP_DEBUG_LOGGING_ENABLED
-                if (count > 0) {
-                    std::cout << "Assigned modified start values to" << count << " variables with variability != constant and initial == exact or causality == input" << std::endl;
-                }
-#endif
-
                 checkStatus(library_->exitInitializationMode(c_), "exitInitializationMode");
 
                 this->instantiated_ = true;
@@ -249,15 +214,15 @@ namespace fmi4cpp::fmi2::import {
         }
 
         bool canGetAndSetFMUstate() const override {
-            return modelDescription_.canGetAndSetFMUstate();
+            return modelDescription_->canGetAndSetFMUstate();
         }
 
         bool canSerializeFMUstate() const override {
-            return modelDescription_.canSerializeFMUstate();
+            return modelDescription_->canSerializeFMUstate();
         }
 
         bool providesDirectionalDerivative() const override {
-            return modelDescription_.providesDirectionalDerivative();
+            return modelDescription_->providesDirectionalDerivative();
         }
 
         fmi2Status getFMUstate(fmi2FMUstate &state) override {
