@@ -34,13 +34,23 @@
 
 namespace fmi4cpp::fmi2::xml {
 
+    class IntegerVariable;
+
+    class RealVariable;
+
+    class StringVariable;
+
+    class BooleanVariable;
+
+    class EnumerationVariable;
+
     const std::string INTEGER_TYPE = "Integer";
     const std::string REAL_TYPE = "Real";
     const std::string STRING_TYPE = "String";
     const std::string BOOLEAN_TYPE = "Boolean";
     const std::string ENUMERATION_TYPE = "Enumeration";
 
-    class ScalarVariable {
+    class ScalarVariableBase {
 
     private:
         std::string name_;
@@ -54,60 +64,69 @@ namespace fmi4cpp::fmi2::xml {
 
         bool canHandleMultipleSetPerTimelnstant_;
 
-        std::optional<IntegerAttribute> integer_;
-        std::optional<RealAttribute> real_;
-        std::optional<StringAttribute> string_;
-        std::optional<BooleanAttribute> boolean_;
-        std::optional< EnumerationAttribute> enumeration_;
-
     public:
 
-        ScalarVariable(const std::string &name, const std::string &description, const fmi2ValueReference valueReference,
-                       const bool canHandleMultipleSetPerTimelnstant, const fmi2Causality causality,
-                       const fmi2Variability variability, const fmi2Initial initial,
-                       const IntegerAttribute &integer);
-
-        ScalarVariable(const std::string &name, const std::string &description, const fmi2ValueReference valueReference,
-                       const bool canHandleMultipleSetPerTimelnstant, const fmi2Causality causality,
-                       const fmi2Variability variability, const fmi2Initial initial,
-                       const RealAttribute &real);
-
-        ScalarVariable(const std::string &name, const std::string &description, const fmi2ValueReference valueReference,
-                       const bool canHandleMultipleSetPerTimelnstant, const fmi2Causality causality,
-                       const fmi2Variability variability, const fmi2Initial initial,
-                       const StringAttribute &string);
-
-        ScalarVariable(const std::string &name, const std::string &description, const fmi2ValueReference valueReference,
-                       const bool canHandleMultipleSetPerTimelnstant, const fmi2Causality causality,
-                       const fmi2Variability variability, const fmi2Initial initial,
-                       const BooleanAttribute &enumeration);
-
-        ScalarVariable(const std::string &name, const std::string &description, const fmi2ValueReference valueReference,
-                       const bool canHandleMultipleSetPerTimelnstant, const fmi2Causality causality,
-                       const fmi2Variability variability, const fmi2Initial initial,
-                       const EnumerationAttribute &enumeration);
+        ScalarVariableBase(const std::string &name, const std::string &description,
+                           fmi2ValueReference valueReference, bool canHandleMultipleSetPerTimelnstant,
+                           fmi2Causality causality, fmi2Variability variability,
+                           fmi2Initial initial);
 
         std::string name() const;
+
         std::string description() const;
 
         fmi2ValueReference valueReference() const;
 
         fmi2Causality causality() const;
+
         fmi2Variability variability() const;
+
         fmi2Initial initial() const;
 
         bool canHandleMultipleSetPerTimelnstant() const;
 
-        std::optional<IntegerAttribute> integer() const;
-        std::optional<RealAttribute> real() const;
-        std::optional<StringAttribute> string() const;
-        std::optional<BooleanAttribute> boolean() const;
-        std::optional< EnumerationAttribute> enumeration() const;
+    };
+
+    class ScalarVariable : public ScalarVariableBase {
+
+    private:
+        std::optional<IntegerAttribute> integer_;
+        std::optional<RealAttribute> real_;
+        std::optional<StringAttribute> string_;
+        std::optional<BooleanAttribute> boolean_;
+        std::optional<EnumerationAttribute> enumeration_;
+
+    public:
+
+        ScalarVariable(const ScalarVariableBase &base,
+                       const IntegerAttribute &integer);
+
+        ScalarVariable(const ScalarVariableBase &base,
+                       const RealAttribute &real);
+
+        ScalarVariable(const ScalarVariableBase &base,
+                       const StringAttribute &string);
+
+        ScalarVariable(const ScalarVariableBase &base,
+                       const BooleanAttribute &enumeration);
+
+        ScalarVariable(const ScalarVariableBase &base,
+                       const EnumerationAttribute &enumeration);
 
         std::string typeName() const;
 
-    };
+        IntegerVariable asInteger() const;
 
+        RealVariable asReal() const;
+
+        StringVariable asString() const;
+
+        BooleanVariable asBoolean() const;
+
+        EnumerationVariable asEnumeration() const;
+
+
+    };
 
 }
 

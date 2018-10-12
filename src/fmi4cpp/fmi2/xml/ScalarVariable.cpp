@@ -28,103 +28,70 @@
 
 using namespace fmi4cpp::fmi2::xml;
 
-ScalarVariable::ScalarVariable(const std::string &name, const std::string &description,
-                                                   const fmi2ValueReference valueReference,
-                                                   const bool canHandleMultipleSetPerTimelnstant,
-                                                   const fmi2Causality causality, const fmi2Variability variability,
-                                                   const fmi2Initial initial,
-                                                   const IntegerAttribute &integer)
-        : name_(name), description_(description), valueReference_(valueReference),
-          canHandleMultipleSetPerTimelnstant_(canHandleMultipleSetPerTimelnstant), causality_(causality),
-          variability_(variability), initial_(initial), integer_(integer) {}
 
-ScalarVariable::ScalarVariable(const std::string &name, const std::string &description,
-                               const fmi2ValueReference valueReference,
-                               const bool canHandleMultipleSetPerTimelnstant,
-                               const fmi2Causality causality, const fmi2Variability variability,
-                               const fmi2Initial initial,
-                               const RealAttribute &real)
-        : name_(name), description_(description), valueReference_(valueReference),
-          canHandleMultipleSetPerTimelnstant_(canHandleMultipleSetPerTimelnstant), causality_(causality),
-          variability_(variability), initial_(initial), real_(real) {}
-
-ScalarVariable::ScalarVariable(const std::string &name, const std::string &description,
-                               const fmi2ValueReference valueReference,
-                               const bool canHandleMultipleSetPerTimelnstant,
-                               const fmi2Causality causality, const fmi2Variability variability,
-                               const fmi2Initial initial,
-                               const StringAttribute &string)
-        : name_(name), description_(description), valueReference_(valueReference),
-          canHandleMultipleSetPerTimelnstant_(canHandleMultipleSetPerTimelnstant), causality_(causality),
-          variability_(variability), initial_(initial), string_(string) {}
-
-ScalarVariable::ScalarVariable(const std::string &name, const std::string &description,
-                               const fmi2ValueReference valueReference,
-                               const bool canHandleMultipleSetPerTimelnstant,
-                               const fmi2Causality causality, const fmi2Variability variability,
-                               const fmi2Initial initial,
-                               const BooleanAttribute &boolean)
-        : name_(name), description_(description), valueReference_(valueReference),
-          canHandleMultipleSetPerTimelnstant_(canHandleMultipleSetPerTimelnstant), causality_(causality),
-          variability_(variability), initial_(initial), boolean_(boolean) {}
-
-ScalarVariable::ScalarVariable(const std::string &name, const std::string &description,
-                               const fmi2ValueReference valueReference,
-                               const bool canHandleMultipleSetPerTimelnstant,
-                               const fmi2Causality causality, const fmi2Variability variability,
-                               const fmi2Initial initial,
-                               const EnumerationAttribute &enumeration)
-        : name_(name), description_(description), valueReference_(valueReference),
-          canHandleMultipleSetPerTimelnstant_(canHandleMultipleSetPerTimelnstant), causality_(causality),
-          variability_(variability), initial_(initial), enumeration_(enumeration) {}
-
-std::string ScalarVariable::name() const {
+std::string ScalarVariableBase::name() const {
     return name_;
 }
 
-std::string ScalarVariable::description() const {
+std::string ScalarVariableBase::description() const {
     return description_;
 }
 
-fmi2ValueReference ScalarVariable::valueReference() const {
+fmi2ValueReference ScalarVariableBase::valueReference() const {
     return valueReference_;
 }
 
-fmi2Causality ScalarVariable::causality() const {
+fmi2Causality ScalarVariableBase::causality() const {
     return causality_;
 }
 
-fmi2Variability ScalarVariable::variability() const {
+fmi2Variability ScalarVariableBase::variability() const {
     return variability_;
 }
 
-fmi2Initial ScalarVariable::initial() const {
+fmi2Initial ScalarVariableBase::initial() const {
     return initial_;
 }
 
-bool ScalarVariable::canHandleMultipleSetPerTimelnstant() const {
+bool ScalarVariableBase::canHandleMultipleSetPerTimelnstant() const {
     return canHandleMultipleSetPerTimelnstant_;
 }
 
-std::optional<IntegerAttribute> ScalarVariable::integer() const {
-    return integer_;
-}
+ScalarVariableBase::ScalarVariableBase(const std::string &name,
+                                       const std::string &description,
+                                       fmi2ValueReference valueReference,
+                                       bool canHandleMultipleSetPerTimelnstant,
+                                       fmi2Causality causality,
+                                       fmi2Variability variability,
+                                       fmi2Initial initial)
+        : name_(name),
+          description_(description),
+          valueReference_(valueReference),
+          canHandleMultipleSetPerTimelnstant_(canHandleMultipleSetPerTimelnstant),
+          causality_(causality),
+          variability_(variability),
+          initial_(initial) {}
 
-std::optional<RealAttribute> ScalarVariable::real() const {
-    return real_;
-}
+ScalarVariable::ScalarVariable(const ScalarVariableBase &base,
+                               const IntegerAttribute &integer)
+        : ScalarVariableBase(base), integer_(integer) {}
 
-std::optional<StringAttribute> ScalarVariable::string() const {
-    return string_;
-}
+ScalarVariable::ScalarVariable(const ScalarVariableBase &base,
+                               const RealAttribute &real)
+        : ScalarVariableBase(base), real_(real) {}
 
-std::optional<BooleanAttribute> ScalarVariable::boolean() const {
-    return boolean_;
-}
+ScalarVariable::ScalarVariable(const ScalarVariableBase &base,
+                               const StringAttribute &string)
+        : ScalarVariableBase(base), string_(string) {}
 
-std::optional<EnumerationAttribute> ScalarVariable::enumeration() const {
-    return enumeration_;
-}
+ScalarVariable::ScalarVariable(const ScalarVariableBase &base,
+                               const BooleanAttribute &boolean)
+        : ScalarVariableBase(base), boolean_(boolean) {}
+
+ScalarVariable::ScalarVariable(const ScalarVariableBase &base,
+                               const EnumerationAttribute &enumeration)
+        : ScalarVariableBase(base), enumeration_(enumeration) {}
+
 
 std::string ScalarVariable::typeName() const {
     if (integer_) {

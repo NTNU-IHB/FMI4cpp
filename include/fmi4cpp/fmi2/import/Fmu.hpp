@@ -103,9 +103,7 @@ namespace fmi4cpp::fmi2::import {
         std::unique_ptr<CoSimulationFmu> asCoSimulationFmu() const override;
 
         std::unique_ptr<ModelExchangeFmu> asModelExchangeFmu() const override;
-
-//        ~Fmu();
-
+        
     };
 
     class CoSimulationFmu : public virtual IFmu<xml::CoSimulationModelDescription> {

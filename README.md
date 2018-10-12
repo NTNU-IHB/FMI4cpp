@@ -48,18 +48,18 @@ int main() {
     import::Fmu fmu("path/to/fmu.fmu");
     
     auto& md = fmu.getModelDescription();
-    xml::ScalarVariable var = md.getVariableByName("my_var");
+    xml::ScalarVariable var = md->getVariableByName("my_var");
     
     auto md_cs = md.asCoSimulationModelDescription();
     std::cout << "modelIdentifier=" << md_cs.getModelIdentifier() << std::endl;
     
-    auto slave = fmu.asCoSimulationFmu().newInstance();
+    auto slave = fmu.asCoSimulationFmu()->newInstance();
     slave->init();
    
     double t;
     fmi2Real value;
     fmi2Status status;
-    fmi2ValueReference vr = var.getValueReference();
+    fmi2ValueReference vr = var.valueReference();
     while ( (t = slave->getSimulationTime()) <= stop) {
     
         status = slave->doStep(stepSize);

@@ -25,6 +25,7 @@
 #define BOOST_TEST_MODULE ControlledTemperature_Modeldescription_Test
 
 #include <string>
+#include <iostream>
 #include <boost/test/unit_test.hpp>
 #include <fmi4cpp/tools/os_util.hpp>
 #include <fmi4cpp/fmi2/fmi4cpp.hpp>
@@ -56,14 +57,14 @@ BOOST_AUTO_TEST_CASE(ControlledTemperature_test1) {
     BOOST_CHECK_EQUAL(120, md->modelVariables().size());
     BOOST_CHECK_EQUAL(120, md_cs->modelVariables().size());
 
-    const ScalarVariable& heatCapacity1 = md->getVariableByName("HeatCapacity1.T0");
+    const RealVariable& heatCapacity1 = md->getVariableByName("HeatCapacity1.T0").asReal();
     BOOST_CHECK_EQUAL(1, heatCapacity1.valueReference());
-    BOOST_CHECK_EQUAL(false, heatCapacity1.real()->min.has_value());
-    BOOST_CHECK_EQUAL(false, heatCapacity1.real()->max.has_value());
-    BOOST_CHECK_EQUAL(true, heatCapacity1.real()->start.has_value());
-    BOOST_CHECK_EQUAL(298.0, heatCapacity1.real()->start.value());
+    BOOST_CHECK_EQUAL(false, heatCapacity1.min().has_value());
+    BOOST_CHECK_EQUAL(false, heatCapacity1.max().has_value());
+    BOOST_CHECK_EQUAL(true, heatCapacity1.start().has_value());
+    BOOST_CHECK_EQUAL(298.0, heatCapacity1.start().value());
     BOOST_CHECK_EQUAL("starting temperature", heatCapacity1.description());
-    BOOST_CHECK_EQUAL(false, heatCapacity1.real()->quantity.has_value());
+    BOOST_CHECK_EQUAL(false, heatCapacity1.quantity().has_value());
 
     auto& thermalConductor = md->modelVariables().getByValueReference(12);
     BOOST_CHECK_EQUAL("TemperatureSource.T", thermalConductor.name());

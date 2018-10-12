@@ -130,14 +130,6 @@ unique_ptr<ModelExchangeFmu> Fmu::asModelExchangeFmu() const {
     return make_unique<ModelExchangeFmu>(tmpFolder_, me);
 }
 
-//Fmu::~Fmu() {
-//
-//#if FMI4CPP_DEBUG_LOGGING_ENABLED
-//    cout << "FMU '" << modelName() << "' disposed.." << endl;
-//#endif
-//
-//}
-
 import::CoSimulationFmu::CoSimulationFmu(const shared_ptr<import::TemporalFolder> &tmpFolder,
                                          const shared_ptr<xml::CoSimulationModelDescription> &md)
         : tmpFolder_(tmpFolder), modelDescription_(md) {}

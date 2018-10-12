@@ -223,27 +223,25 @@ namespace {
         auto variability = parseVariability(node.get<std::string>("<xmlattr>.variability", ""));
         auto initial = parseInitial(node.get<std::string>("<xmlattr>.initial", ""));
 
+        ScalarVariableBase base(name, description, valueReference, canHandleMultipleSetPerTimelnstant, causality,
+                                variability, initial);
+
         for (const ptree::value_type &v : node) {
             if (v.first == INTEGER_TYPE) {
                 auto attribute = parseIntegerAttribute(v.second);
-                return ScalarVariable(name, description, valueReference, canHandleMultipleSetPerTimelnstant, causality,
-                                      variability, initial, attribute);
+                return ScalarVariable(base, attribute);
             } else if (v.first == REAL_TYPE) {
                 auto attribute = parseRealAttribute(v.second);
-                return ScalarVariable(name, description, valueReference, canHandleMultipleSetPerTimelnstant, causality,
-                                      variability, initial, attribute);
+                return ScalarVariable(base, attribute);
             } else if (v.first == STRING_TYPE) {
                 auto attribute = parseStringAttribute(v.second);
-                return ScalarVariable(name, description, valueReference, canHandleMultipleSetPerTimelnstant, causality,
-                                      variability, initial, attribute);
+                return ScalarVariable(base, attribute);
             } else if (v.first == BOOLEAN_TYPE) {
                 auto attribute = parseBooleanAttribute(v.second);
-                return ScalarVariable(name, description, valueReference, canHandleMultipleSetPerTimelnstant, causality,
-                                      variability, initial, attribute);
+                return ScalarVariable(base, attribute);
             } else if (v.first == ENUMERATION_TYPE) {
                 auto attribute = parseEnumerationAttribute(v.second);
-                return ScalarVariable(name, description, valueReference, canHandleMultipleSetPerTimelnstant, causality,
-                                      variability, initial, attribute);
+                return ScalarVariable(base, attribute);
             }
         }
 

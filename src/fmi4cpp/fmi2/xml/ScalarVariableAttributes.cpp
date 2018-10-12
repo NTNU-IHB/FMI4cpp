@@ -39,8 +39,10 @@ RealAttribute::RealAttribute(const BoundedScalarVariableAttributes<double> &attr
           relativeQuantity(relativeQuantity), nominal(nominal), derivative(derivative), unit(unit),
           displayUnit(displayUnit) {}
 
+
 StringAttribute::StringAttribute(const ScalarVariableAttributes<std::string> &attributes)
         : ScalarVariableAttributes<std::string>(attributes) {}
+
 
 BooleanAttribute::BooleanAttribute(const ScalarVariableAttributes<bool> &attributes)
         : ScalarVariableAttributes<bool>(attributes) {}
