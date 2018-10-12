@@ -41,10 +41,8 @@ int main() {
 
     auto md = cs_fmu->getModelDescription();
 
-    const auto& var = md->modelVariables().getByValueReference(47);
-    cout << var.typeName() << endl;
-
-    cout << "modelIdentifier=" << md->modelIdentifier() << endl;
+    auto var = md->modelVariables().getByValueReference(47).asReal();
+    cout << "Name=" << var.name() << ", start=" << var.start().value_or(0) << endl;
 
     auto slave1 = cs_fmu->newInstance();
     auto slave2 = cs_fmu->newInstance();
