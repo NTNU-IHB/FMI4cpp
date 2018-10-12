@@ -53,12 +53,12 @@ int main() {
     slave2->doStep(1E-4);
 
     double ref;
-    fmi2ValueReference vr = slave1->getValueReference("MotorDiskRev");
-    assert(vr == 105);
-    slave1->readReal(vr, ref);
+    auto var = slave1->getModelDescription()->getVariableByName("MotorDiskRev").asReal();
+    assert(var.valueReference() == 105);
+    var.read(*slave1, ref);
     cout << "MotorDiskRev=" << ref << endl;
 
-    vr = slave2->getValueReference("Temperature_Room");
+    auto vr = slave2->getValueReference("Temperature_Room");
     assert(vr == 47);
     slave2->readReal(vr, ref);
     cout << "Temperature_Room=" << ref << endl;
