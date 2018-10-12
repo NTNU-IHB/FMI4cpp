@@ -45,15 +45,17 @@ const double stepSize = 1.0/100;
 
 int main() {
 
-    import::Fmu fmu("path/to/fmu.fmu");
+    auto fmu("path/to/fmu.fmu").asCoSimulationFmu();
     
-    auto md = fmu.getModelDescription();
-    xml::ScalarVariable var = md->getVariableByName("my_var");
     
-    auto md_cs = md->asCoSimulationModelDescription();
+    
+    auto md = md->asCoSimulationModelDescription();
     std::cout << "modelIdentifier=" << md_cs.modelIdentifier() << std::endl;
     
-    auto slave = fmu.asCoSimulationFmu()->newInstance();
+    auto var = md->getVariableByName("my_var").asRealVariable();
+    cout << "Name=" << var.name() << ", start=" var.start().value_or(0) << endl;
+    
+    auto slave = fmu->newInstance();
     slave->init();
    
     double t;
