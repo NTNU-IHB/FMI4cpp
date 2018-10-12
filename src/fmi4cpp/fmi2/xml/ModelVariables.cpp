@@ -22,78 +22,59 @@
  * THE SOFTWARE.
  */
 
+#include <stdexcept>
+#include <fmi4cpp/fmi2/xml/enums.hpp>
 #include <fmi4cpp/fmi2/xml/ModelVariables.hpp>
 
-using namespace std;
 using namespace fmi4cpp::fmi2::xml;
 
-const size_t ModelVariables::size() const {
-    return variables.size();
-}
+ModelVariables::ModelVariables() {}
 
-void ModelVariables::load(const ptree &node) {
+ModelVariables::ModelVariables(const std::vector<ScalarVariable> &variables): variables_(variables) {}
 
-    for (const ptree::value_type &v : node) {
-
-        if (v.first == "ScalarVariable") {
-            ScalarVariable var;
-            var.load(v.second);
-            variables.push_back(var);
+const ScalarVariable &ModelVariables::getByName(const std::string &name) const {
+    for (auto &v : variables_) {
+        if (v.name() == name) {
+            return v;
         }
-
     }
-
+    throw std::runtime_error("No such variable with name '" + name + "'!");
 }
 
-ScalarVariable &ModelVariables::operator[](const size_t index) {
-    return variables.operator[](index);
-}
-
-ScalarVariable &ModelVariables::getByName(const string &name) {
-
-    for (ScalarVariable &var : variables) {
-        if (var.getName() == name) {
+const ScalarVariable &ModelVariables::getByValueReference(const fmi2ValueReference vr) const {
+    for (const auto &var : variables_) {
+        if (var.valueReference() == vr) {
             return var;
         }
     }
-
-    string errorMsg = "No such variable with name '" + name + "'!";
-    throw runtime_error(errorMsg);
+    throw std::runtime_error("No such variable with valueReference '" + std::to_string(vr) + "'!");
 }
 
-ScalarVariable &ModelVariables::getByValueReference(const fmi2ValueReference vr) {
-
-    for (ScalarVariable &var : variables) {
-        if (var.getValueReference() == vr) {
-            return var;
-        }
-    }
-
-    string errorMsg = "No such variable with valueReference '" + to_string(vr) + "'!";
-    throw runtime_error(errorMsg);
-}
-
-void ModelVariables::getByCausality(const fmi2Causality causality, std::vector<ScalarVariable> &store) {
-    for (ScalarVariable &var : variables) {
-        if (var.getCausality() == causality) {
+void ModelVariables::getByCausality(const fmi2Causality causality, std::vector<ScalarVariable> &store) const {
+    for (const auto &var : variables_) {
+        if (var.causality() == causality) {
             store.push_back(var);
         }
     }
 }
 
-std::vector<ScalarVariable>::iterator ModelVariables::begin() {
-    return variables.begin();
+size_t ModelVariables::size() const {
+    return variables_.size();
+}
+ const ScalarVariable &ModelVariables::operator[](const size_t index) const {
+    return variables_[index];
 }
 
+std::vector<ScalarVariable>::iterator ModelVariables::begin() {
+    return variables_.begin();
+}
 std::vector<ScalarVariable>::iterator ModelVariables::end() {
-    return variables.end();
+    return variables_.end();
 }
 
 std::vector<ScalarVariable>::const_iterator ModelVariables::cbegin() const{
-    return variables.cbegin();
+    return variables_.cbegin();
 }
-
 std::vector<ScalarVariable>::const_iterator ModelVariables::cend() const {
-    return variables.cend();
+    return variables_.cend();
 }
-

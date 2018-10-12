@@ -34,66 +34,178 @@
 #include "ModelStructure.hpp"
 #include "ModelVariables.hpp"
 #include "DefaultExperiment.hpp"
-#include "FmuTypeAttributes.hpp"
+#include "FmuAttributes.hpp"
 
-using std::string;
-using std::unique_ptr;
-using std::shared_ptr;
 using boost::property_tree::ptree;
 
 namespace fmi4cpp::fmi2::xml {
 
-    class CoSimulationModelDescription;
+    class ModelDescriptionBase {
 
+    private:
+        std::string guid_;
+        std::string fmiVersion_;
+        std::string modelName_;
+        std::optional<std::string> description_;
+        std::optional<std::string> version_;
+        std::optional<std::string> author_;
+        std::optional<std::string> license_;
+        std::optional<std::string> copyright_;
+        std::optional<std::string> generationTool_;
+        std::optional<std::string> generationDateAndTime_;
+        std::optional<std::string> variableNamingConvention_;
+
+        size_t numberOfEventIndicators_;
+
+        ModelVariables modelVariables_;
+        ModelStructure modelStructure_;
+
+        std::optional<DefaultExperiment> defaultExperiment_;
+
+    public:
+        ModelDescriptionBase(const std::string &guid,
+                             const std::string &fmiVersion,
+                             const std::string &modelName,
+                             const std::optional<std::string> &description,
+                             const std::optional<std::string> &version,
+                             const std::optional<std::string> &author,
+                             const std::optional<std::string> &license,
+                             const std::optional<std::string> &copyright,
+                             const std::optional<std::string> &generationTool,
+                             const std::optional<std::string> &generationDateAndTime,
+                             const std::optional<std::string> &variableNamingConvention,
+                             const size_t numberOfEventIndicators,
+                             const ModelVariables &modelVariables,
+                             const ModelStructure &modelStructure,
+                             const std::optional<DefaultExperiment> defaultExperiment);
+
+        std::string guid() const;
+
+        std::string fmiVersion() const;
+
+        std::string modelName() const;
+
+        std::optional<std::string> description() const;
+
+        std::optional<std::string> version() const;
+
+        std::optional<std::string> author() const;
+
+        std::optional<std::string> license() const;
+
+        std::optional<std::string> copyright() const;
+
+        std::optional<std::string> generationTool() const;
+
+        std::optional<std::string> generationDateAndTime() const;
+
+        std::optional<std::string> variableNamingConvention() const;
+
+        size_t numberOfEventIndicators() const;
+
+        size_t numberOfContinuousStates() const;
+
+        ModelVariables &modelVariables();
+
+        const ModelStructure &modelStructure() const;
+
+        std::optional<DefaultExperiment> defaultExperiment() const;
+
+        const ScalarVariable &getVariableByName(const std::string &name) const;
+
+    };
+
+    class CoSimulationModelDescription;
     class ModelExchangeModelDescription;
 
-    class ModelDescription {
+    class ModelDescription : public ModelDescriptionBase {
+
+    protected:
+        std::optional<CoSimulationAttributes> coSimulation_;
+        std::optional<ModelExchangeAttributes> modelExchange_;
 
     public:
 
-        virtual string getGuid() const = 0;
+        ModelDescription(const ModelDescriptionBase &base,
+                         const std::optional<CoSimulationAttributes> &coSimulation,
+                         const std::optional<ModelExchangeAttributes> &modelExchange);
 
-        virtual string getFmiVersion() const = 0;
+        bool supportsCoSimulation() const;
 
-        virtual string getModelName() const = 0;
+        bool supportsModelExchange() const;
 
-        virtual string getDescription() const = 0;
+        std::unique_ptr<CoSimulationModelDescription> asCoSimulationModelDescription() const;
 
-        virtual string getVersion() const = 0;
+        std::unique_ptr<ModelExchangeModelDescription> asModelExchangeModelDescription() const;
 
-        virtual string getAuthor() const = 0;
+    };
 
-        virtual string getLicense() const = 0;
+    template <typename T>
+    class SpecificModelDescription : public ModelDescriptionBase {
 
-        virtual string getCopyright() const = 0;
+    protected:
 
-        virtual string getGenerationTool() const = 0;
+        const T attributes_;
 
-        virtual string getGenerationDateAndTime() const = 0;
+    public:
 
-        virtual string getVariableNamingConvention() const = 0;
+        SpecificModelDescription(const ModelDescriptionBase &base, const T &attributes)
+                : ModelDescriptionBase(base), attributes_(attributes) {}
 
-        virtual unsigned int getNumberOfEventIndicators() const = 0;
+        SourceFiles sourceFiles() const {
+            return attributes_.sourceFiles();
+        }
 
-        virtual unsigned int getNumberOfContinuousStates() const = 0;
+        std::string modelIdentifier() const {
+            return attributes_.modelIdentifier();
+        }
 
-        virtual ModelVariables &getModelVariables() = 0;
+        bool canGetAndSetFMUstate() const {
+            return attributes_.canGetAndSetFMUstate();
+        }
 
-        virtual const ModelStructure &getModelStructure() const = 0;
+        bool canSerializeFMUstate() const {
+            return attributes_.canSerializeFMUstate();
+        }
 
-        virtual const std::optional<DefaultExperiment> getDefaultExperiment() const = 0;
+        bool needsExecutionTool() const {
+            return attributes_.needsExecutionTool();
+        }
 
-        virtual bool supportsModelExchange() const = 0;
+        bool canNotUseMemoryManagementFunctions() const {
+            return attributes_.canNotUseMemoryManagementFunctions();
+        }
 
-        virtual bool supportsCoSimulation() const = 0;
+        bool canBeInstantiatedOnlyOncePerProcess() const {
+            return attributes_.canBeInstantiatedOnlyOncePerProcess();
+        }
 
-        virtual ScalarVariable &getVariableByName(const string &name) = 0;
+        bool providesDirectionalDerivative() const {
+            return attributes_.providesDirectionalDerivative();
+        }
 
-        virtual ScalarVariable &getVariableByValueReference(const fmi2ValueReference vr) = 0;
+    };
 
-        virtual CoSimulationModelDescription asCoSimulationModelDescription() = 0;
+    class CoSimulationModelDescription : public SpecificModelDescription<CoSimulationAttributes> {
 
-        virtual ModelExchangeModelDescription asModelExchangeModelDescription() = 0;
+    public:
+
+        CoSimulationModelDescription(const ModelDescriptionBase &base, const CoSimulationAttributes &attributes);
+
+        bool canInterpolateInputs() const;
+        bool canRunAsynchronuously() const;
+        bool canHandleVariableCommunicationStepSize() const;
+
+        size_t maxOutputDerivativeOrder() const;
+
+    };
+
+    class ModelExchangeModelDescription: public SpecificModelDescription<ModelExchangeAttributes> {
+
+    public:
+        ModelExchangeModelDescription(const ModelDescriptionBase &base, const ModelExchangeAttributes &attributes);
+
+        bool completedIntegratorStepNotNeeded() const;
 
     };
 

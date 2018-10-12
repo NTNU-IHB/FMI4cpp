@@ -27,62 +27,120 @@
 
 #include <memory>
 #include <vector>
-#include <experimental/filesystem>
-#include "../xml/ModelDescriptionImpl.hpp"
+#include <string>
+#include <type_traits>
 
-using std::string;
-using std::unique_ptr;
+#include "FmuSlave.hpp"
+#include "TemporalFolder.hpp"
+#include "ModelExchangeInstance.hpp"
+#include "CoSimulationLibrary.hpp"
+#include "ModelExchangeLibrary.hpp"
+#include "../xml/ModelDescription.hpp"
+
 using fmi4cpp::fmi2::xml::ModelDescription;
-using fmi4cpp::fmi2::xml::ModelDescriptionImpl;
-
-namespace fs = std::experimental::filesystem;
 
 namespace fmi4cpp::fmi2::import {
 
-    class CoSimulationSlaveBuilder;
+    class CoSimulationFmu;
 
-    class ModelExchangeInstanceBuilder;
+    class ModelExchangeFmu;
 
-    class Fmu {
+    template<class T>
+    class IFmu {
 
-        friend class CoSimulationSlaveBuilder;
-
-        friend class ModelExchangeInstanceBuilder;
+        static_assert(std::is_base_of<xml::ModelDescriptionBase, T>::value, "T must derive from ModelDescription");
 
     public:
-        explicit Fmu(const string &fmu_file);
+        std::string guid() const {
+            return getModelDescription()->guid();
+        }
 
-        const string getGuid() const;
+        std::string modelName() const {
+            return getModelDescription()->modelName();
+        }
 
-        const string getModelName() const;
+        virtual std::shared_ptr<T> getModelDescription() const = 0;
 
-        const string getModelDescriptionXml() const;
+    };
 
-        ModelDescription &getModelDescription();
+    class FmuProvider : public virtual IFmu<xml::ModelDescription> {
 
-        const bool supportsModelExchange() const;
+    public:
+        virtual bool supportsCoSimulation() const = 0;
 
-        const bool supportsCoSimulation() const;
+        virtual bool supportsModelExchange() const = 0;
 
-        CoSimulationSlaveBuilder &asCoSimulationFmu();
+        virtual std::unique_ptr<CoSimulationFmu> asCoSimulationFmu() const = 0;
 
-        ModelExchangeInstanceBuilder &asModelExchangeFmu();
+        virtual std::unique_ptr<ModelExchangeFmu> asModelExchangeFmu() const = 0;
 
-        ~Fmu();
+    };
+
+
+    class Fmu : public virtual FmuProvider {
+
+        friend class CoSimulationFmu;
+
+        friend class ModelExchangeFmu;
 
     private:
 
-        fs::path tmp_path_;
-        const string fmu_file_;
-        unique_ptr<ModelDescriptionImpl> modelDescription_;
-        unique_ptr<CoSimulationSlaveBuilder> csBuilder_;
-        unique_ptr<ModelExchangeInstanceBuilder> meBuilder_;
+        const std::string fmuFile_;
+        std::shared_ptr<TemporalFolder> tmpFolder_;
+        std::shared_ptr<ModelDescription> modelDescription_;
 
-        const string getResourcePath() const;
+    public:
+        explicit Fmu(const std::string &fmuFile);
 
-        const string getModelDescriptionPath() const;
+        const std::string getModelDescriptionXml() const;
 
-        const string getAbsoluteLibraryPath(const string modelIdentifier) const;
+        std::shared_ptr<ModelDescription> getModelDescription() const override;
+
+        bool supportsModelExchange() const override;
+
+        bool supportsCoSimulation() const override;
+
+        std::unique_ptr<CoSimulationFmu> asCoSimulationFmu() const override;
+
+        std::unique_ptr<ModelExchangeFmu> asModelExchangeFmu() const override;
+        
+    };
+
+    class CoSimulationFmu : public virtual IFmu<xml::CoSimulationModelDescription> {
+
+    private:
+
+        std::shared_ptr<CoSimulationLibrary> lib_;
+        const std::shared_ptr<TemporalFolder> tmpFolder_;
+        const std::shared_ptr<xml::CoSimulationModelDescription> modelDescription_;
+
+    public:
+
+        explicit CoSimulationFmu(const std::shared_ptr<TemporalFolder> &tmpFolder,
+                                 const std::shared_ptr<xml::CoSimulationModelDescription> &md);
+
+        std::shared_ptr<xml::CoSimulationModelDescription> getModelDescription() const override;
+
+        std::unique_ptr<import::FmuSlave> newInstance(bool visible = false, bool loggingOn = false);
+
+    };
+
+    class ModelExchangeFmu : public virtual IFmu<xml::ModelExchangeModelDescription> {
+
+    private:
+
+        std::shared_ptr<ModelExchangeLibrary> lib_;
+        std::shared_ptr<TemporalFolder> tmpFolder_;
+        std::shared_ptr<xml::ModelExchangeModelDescription> modelDescription_;
+
+    public:
+
+        explicit ModelExchangeFmu(const std::shared_ptr<TemporalFolder> &tmpFolder,
+                                  const std::shared_ptr<xml::ModelExchangeModelDescription> &md);
+
+        std::shared_ptr<xml::ModelExchangeModelDescription> getModelDescription() const override;
+
+        std::unique_ptr<import::ModelExchangeInstance> newInstance(bool visible = false, bool loggingOn = false);
 
     };
 

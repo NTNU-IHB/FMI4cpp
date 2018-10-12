@@ -23,116 +23,159 @@
  */
 
 #if FMI4CPP_DEBUG_LOGGING_ENABLED
+
 #include <iostream>
+
 #endif
 
 #include <random>
+#include <experimental/filesystem>
+
 #include <fmi4cpp/fmi2/import/Fmu.hpp>
-#include <fmi4cpp/fmi2/import/CoSimulationSlaveBuilder.hpp>
-#include <fmi4cpp/fmi2/import/ModelExchangeInstanceBuilder.hpp>
+#include <fmi4cpp/fmi2/import/CoSimulationSlave.hpp>
+#include <fmi4cpp/fmi2/import/ModelExchangeInstance.hpp>
+
+#include "../xml/ModelDescriptionParser.hpp"
 
 #include "../../tools/unzipper.hpp"
 #include "../../tools/os_util.hpp"
 
 using namespace std;
-using namespace fmi4cpp::fmi2::import;
+using namespace fmi4cpp::fmi2;
+
+using fmi4cpp::fmi2::import::Fmu;
+using fmi4cpp::fmi2::import::CoSimulationFmu;
+using fmi4cpp::fmi2::import::ModelExchangeFmu;
+
+namespace fs = std::experimental::filesystem;
 
 namespace {
 
     std::random_device rd;
     std::mt19937 mt(rd());
-    
-    string generate_simple_id() {
-       
-        std::uniform_int_distribution<int> dist(0, 10);
-        string id;
+
+    const std::string generate_simple_id() {
+
+        std::string id;
+        std::uniform_int_distribution<int> dist(0, 9);
         for (int i = 0; i < 8; i++) {
             id += std::to_string(dist(mt));
         }
         return id;
     }
 
+    const std::string getModelDescriptionPath(const fs::path &path) {
+        return path.string() + "/modelDescription.xml";
+    }
+
+    const std::string getResourcePath(const fs::path &path) {
+        return "file:/" + path.string() + "/resources/" + getOs() + "/" + getLibExt();
+    }
+
+    const std::string getAbsoluteLibraryPath(const fs::path &path, const std::string &modelIdentifier) {
+        return path.string() + "/binaries/" + getOs() + "/" + modelIdentifier + getLibExt();
+    }
+
+
+
 }
 
-Fmu::Fmu(const string &fmu_file) : fmu_file_(fmu_file) {
+Fmu::Fmu(const string &fmuFile) : fmuFile_(fmuFile) {
 
-    const string fmuName = fs::path(fmu_file).stem().string();
-    tmp_path_ = fs::temp_directory_path() /= fs::path("fmi4cpp_" + fmuName + "_" + generate_simple_id());
+    const string fmuName = fs::path(fmuFile).stem().string();
+    fs::path tmpPath(fs::temp_directory_path() /= fs::path("fmi4cpp_" + fmuName + "_" + generate_simple_id()));
 
-    if (!create_directories(tmp_path_)) {
+    if (!create_directories(tmpPath)) {
         throw runtime_error("Failed to create temporary directory!");
     }
 
 #if FMI4CPP_DEBUG_LOGGING_ENABLED
-    cout << "Created temporary directory '" << tmp_path_.string()  << "'" << endl;
+    cout << "Created temporary directory '" << tmpPath.string() << "'" << endl;
 #endif
-    if (!extractContents(fmu_file, tmp_path_.string())) {
+
+    if (!extractContents(fmuFile, tmpPath.string())) {
         throw runtime_error("Failed to extract FMU!");
     }
 
-    modelDescription_ = make_unique<ModelDescriptionImpl>(getModelDescriptionPath());
+    tmpFolder_ = make_shared<TemporalFolder>(tmpPath);
+    modelDescription_ = std::move(xml::parseModelDescription(getModelDescriptionPath(*tmpFolder_)));
 
 }
 
-const string Fmu::getGuid() const {
-    return modelDescription_->getGuid();
-}
-
-const string Fmu::getModelName() const {
-    return modelDescription_->getModelName();
-}
 
 const string Fmu::getModelDescriptionXml() const {
-    ifstream stream(getModelDescriptionPath());
-    const string xml = string((istreambuf_iterator<char>(stream)), istreambuf_iterator<char>());
-    return xml;
+    ifstream stream(getModelDescriptionPath(*tmpFolder_));
+    return string((istreambuf_iterator<char>(stream)), istreambuf_iterator<char>());
 }
 
-ModelDescription &Fmu::getModelDescription() {
-    return *modelDescription_;
+shared_ptr<ModelDescription> Fmu::getModelDescription() const {
+    return modelDescription_;
 }
 
-const bool Fmu::supportsModelExchange() const {
+bool Fmu::supportsModelExchange() const {
     return modelDescription_->supportsModelExchange();
 }
 
-const bool Fmu::supportsCoSimulation() const {
+bool Fmu::supportsCoSimulation() const {
     return modelDescription_->supportsCoSimulation();
 }
 
-CoSimulationSlaveBuilder &Fmu::asCoSimulationFmu() {
-    if (csBuilder_ == nullptr) {
-        csBuilder_ = make_unique<CoSimulationSlaveBuilder>(*this);
+unique_ptr<CoSimulationFmu> Fmu::asCoSimulationFmu() const {
+    shared_ptr<CoSimulationModelDescription> cs = std::move(modelDescription_->asCoSimulationModelDescription());
+    return make_unique<CoSimulationFmu>(tmpFolder_, cs);
+}
+
+unique_ptr<ModelExchangeFmu> Fmu::asModelExchangeFmu() const {
+    shared_ptr<ModelExchangeModelDescription> me = std::move(modelDescription_->asModelExchangeModelDescription());
+    return make_unique<ModelExchangeFmu>(tmpFolder_, me);
+}
+
+import::CoSimulationFmu::CoSimulationFmu(const shared_ptr<import::TemporalFolder> &tmpFolder,
+                                         const shared_ptr<xml::CoSimulationModelDescription> &md)
+        : tmpFolder_(tmpFolder), modelDescription_(md) {}
+
+shared_ptr<xml::CoSimulationModelDescription> CoSimulationFmu::getModelDescription() const {
+    return modelDescription_;
+}
+
+unique_ptr<import::FmuSlave> CoSimulationFmu::newInstance(const bool visible, const bool loggingOn) {
+    shared_ptr<import::CoSimulationLibrary> lib = nullptr;
+    string modelIdentifier = modelDescription_->modelIdentifier();
+    if (modelDescription_->canBeInstantiatedOnlyOncePerProcess()) {
+        lib = make_shared<CoSimulationLibrary>(getAbsoluteLibraryPath(*tmpFolder_, modelIdentifier));
+    } else {
+        if (lib_ == nullptr) {
+            lib_ = make_shared<CoSimulationLibrary>(getAbsoluteLibraryPath(*tmpFolder_, modelIdentifier));
+        }
+        lib = lib_;
     }
-    return *csBuilder_;
+    fmi2Component c = lib->instantiate(modelIdentifier, fmi2CoSimulation, guid(),
+                                       getResourcePath(*tmpFolder_), visible, loggingOn);
+    return make_unique<CoSimulationSlave>(c, lib, modelDescription_);
 }
 
-ModelExchangeInstanceBuilder &Fmu::asModelExchangeFmu() {
-    if (meBuilder_ == nullptr) {
-        meBuilder_ = make_unique<ModelExchangeInstanceBuilder>(*this);
+import::ModelExchangeFmu::ModelExchangeFmu(const shared_ptr<import::TemporalFolder> &tmpFolder,
+                                           const shared_ptr<xml::ModelExchangeModelDescription> &md)
+        : tmpFolder_(tmpFolder), modelDescription_(md) {}
+
+
+shared_ptr<xml::ModelExchangeModelDescription> ModelExchangeFmu::getModelDescription() const {
+    return modelDescription_;
+}
+
+std::unique_ptr<import::ModelExchangeInstance> ModelExchangeFmu::newInstance(const bool visible, const bool loggingOn) {
+    shared_ptr<ModelExchangeLibrary> lib = nullptr;
+    string modelIdentifier = modelDescription_->modelIdentifier();
+    if (modelDescription_->canBeInstantiatedOnlyOncePerProcess()) {
+        lib = make_shared<ModelExchangeLibrary>(getAbsoluteLibraryPath(*tmpFolder_, modelIdentifier));
+    } else {
+        if (lib_ == nullptr) {
+            lib_ = make_shared<ModelExchangeLibrary>(getAbsoluteLibraryPath(*tmpFolder_, modelIdentifier));
+        }
+        lib = lib_;
     }
-    return *meBuilder_;
+    fmi2Component c = lib->instantiate(modelIdentifier, fmi2ModelExchange, guid(),
+                                       getResourcePath(*tmpFolder_), visible, loggingOn);
+    return make_unique<ModelExchangeInstance>(c, lib, modelDescription_);
 }
 
-const string Fmu::getAbsoluteLibraryPath(const string modelIdentifier) const {
-    return tmp_path_.string() + "/binaries/" + getOs() + "/" + modelIdentifier + getLibExt();
-}
-
-const string Fmu::getResourcePath() const {
-    return "file:/" + tmp_path_.string() + "/resources/" + getOs() + "/" + getLibExt();
-}
-
-const string Fmu::getModelDescriptionPath() const {
-    return tmp_path_.string() + "/modelDescription.xml";
-}
-
-Fmu::~Fmu() {
-    meBuilder_ = nullptr;
-    csBuilder_ = nullptr;
-    remove_all(tmp_path_);
-
-#if FMI4CPP_DEBUG_LOGGING_ENABLED
-    cout << "Fmu '" << getModelName() << "' disposed.." << endl;
-#endif
-
-}

@@ -21,54 +21,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include <fmi4cpp/fmi2/xml/SourceFiles.hpp>
+
+#if FMI4CPP_DEBUG_LOGGING_ENABLED
 #include <iostream>
+#endif
 
-using std::string;
-using namespace fmi4cpp::fmi2::xml;
+#include <fmi4cpp/fmi2/import/TemporalFolder.hpp>
 
-void File::load(const ptree &node) {
-    name_ = node.get<string>("<xmlattr>.name");
-}
+using namespace fmi4cpp::fmi2::import;
 
-std::string File::getName() const {
-    return name_;
-}
+TemporalFolder::TemporalFolder(fs::path &path): fs::path(path){}
 
-const size_t SourceFiles::size() const {
-    return files.size();
-}
+TemporalFolder::~TemporalFolder() {
+    fs::remove_all(*this);
 
-File &SourceFiles::operator[](const size_t index) {
-    return files[index];
-}
+#if FMI4CPP_DEBUG_LOGGING_ENABLED
+    std::cout << "Deleted temporal folder '" << string() << "'" <<  std::endl;
+#endif
 
-void SourceFiles::load(const ptree &node) {
-
-    for (const ptree::value_type &v : node) {
-
-        if (v.first == "File") {
-            File file;
-            file.load(v.second);
-            files.push_back(file);
-        }
-
-    }
-
-}
-
-std::vector<File>::iterator SourceFiles::begin() {
-    return files.begin();
-}
-
-std::vector<File>::iterator SourceFiles::end() {
-    return files.end();
-}
-
-std::vector<File>::const_iterator SourceFiles::cbegin() const {
-    return files.cbegin();
-}
-
-std::vector<File>::const_iterator SourceFiles::cend() const {
-    return files.cend();
 }

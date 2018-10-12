@@ -26,14 +26,12 @@
 #define FMI4CPP_ENUMSTOSTRING_HPP
 
 #include <string>
-#include <stdexcept>
-
-#include "fmi2Functions.h"
 #include "xml/enums.hpp"
-
-using namespace fmi4cpp::fmi2::xml;
+#include "fmi2FunctionTypes.h"
 
 namespace {
+
+    using namespace fmi4cpp::fmi2::xml;
 
     const std::string to_string(fmi2Status status) {
 
@@ -51,10 +49,13 @@ namespace {
             case fmi2Pending:
                 return "Pending";
             default:
-                return "unknown";
+                return "Unknown";
         }
 
     }
+
+
+
 
     const std::string to_string(fmi2Causality causality) {
 
@@ -97,7 +98,6 @@ namespace {
     }
 
     const std::string to_string(fmi2Initial initial) {
-
         switch (initial) {
             case fmi2Initial::exact:
                 return "exact";
@@ -109,8 +109,8 @@ namespace {
             default:
                 return "unknown";
         }
-
     }
+
 
 }
 

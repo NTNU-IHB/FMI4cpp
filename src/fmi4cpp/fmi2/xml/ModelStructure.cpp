@@ -22,98 +22,44 @@
  * THE SOFTWARE.
  */
 
-#include <sstream>
-#include <iostream>
 #include <boost/optional.hpp>
 #include <fmi4cpp/fmi2/xml/ModelStructure.hpp>
 
-using namespace std;
-using namespace fmi4cpp::fmi2::xml;
+using fmi4cpp::fmi2::xml::Unknown;
+using fmi4cpp::fmi2::xml::ModelStructure;
 
-namespace {
+Unknown::Unknown(const size_t index, const std::optional<std::string> &dependenciesKind,
+        const std::optional<std::vector<unsigned int>> &dependencies)
+        : index_(index), dependenciesKind_(dependenciesKind), dependencies_(dependencies) {}
 
-    void loadUnknowns(const ptree &node, vector<Unknown> &vector) {
-
-        for (const ptree::value_type &v : node) {
-            if (v.first == "Unknown") {
-                Unknown unknown;
-                unknown.load(v.second);
-                vector.push_back(unknown);
-            }
-        }
-
-    }
-
-    template <class T>
-    std::optional<T> convert(boost::optional<T> opt) {
-        if (!opt) {
-            return {};
-        } else {
-            return *opt;
-        }
-    }
-
-    vector<unsigned int> parse(const string str) {
-        int i;
-        stringstream ss(str);
-        vector<unsigned int> result;
-        while (ss >> i) {
-            result.push_back(i);
-            if (ss.peek() == ',' || ss.peek() == ' ') {
-                ss.ignore();
-            }
-        }
-        return result;
-    }
-
-}
-
-unsigned int Unknown::getIndex() const {
+const size_t fmi4cpp::fmi2::xml::Unknown::index() {
     return index_;
 }
 
-std::optional<std::string> Unknown::getDependenciesKind() const {
+const std::optional<std::string> fmi4cpp::fmi2::xml::Unknown::dependenciesKind() {
     return dependenciesKind_;
 }
 
-const std::optional<std::vector<unsigned int>> &Unknown::getDependencies() const {
+const std::optional<std::vector<unsigned int>> &Unknown::dependencies() const {
     return dependencies_;
 }
 
-void Unknown::load(const ptree &node) {
-    index_ = node.get<unsigned int>("<xmlattr>.index");
-    dependenciesKind_ = convert(node.get_optional<string>("<xmlattr>.dependenciesKind"));
+fmi4cpp::fmi2::xml::ModelStructure::ModelStructure() {}
 
-    auto dependencies = node.get_optional<string>("<xmlattr>.dependencies");
-    if (dependencies) {
-        dependencies_ = parse(*dependencies);
-    }
+ModelStructure::ModelStructure(const std::vector<Unknown> &outputs_, const std::vector<Unknown> &derivatives_,
+                               const std::vector<Unknown> &initialUnknowns_)
+        : outputs_(outputs_), derivatives_(derivatives_), initialUnknowns_(initialUnknowns_) {}
 
-}
-
-
-const std::vector<Unknown> &ModelStructure::getOutputs() const {
+const std::vector<Unknown> &ModelStructure::outputs() const {
     return outputs_;
 }
 
-const std::vector<Unknown> &ModelStructure::getDerivatives() const {
+const std::vector<Unknown> &ModelStructure::derivatives() const {
     return derivatives_;
 }
 
-const std::vector<Unknown> &ModelStructure::getInitialUnknowns() const {
+const std::vector<Unknown> &ModelStructure::initialUnknowns() const {
     return initialUnknowns_;
 }
 
-void ModelStructure::load(const ptree &node) {
 
-    for (const ptree::value_type &v : node) {
-        if (v.first == "Outputs") {
-            loadUnknowns(v.second, outputs_);
-        } else if (v.first == "Derivatives") {
-            loadUnknowns(v.second, derivatives_);
-        } else if (v.first == "InitialUnknowns") {
-            loadUnknowns(v.second, initialUnknowns_);
-        }
-    }
-
-}

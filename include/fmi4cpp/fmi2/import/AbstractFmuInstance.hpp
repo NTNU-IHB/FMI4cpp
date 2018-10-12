@@ -29,90 +29,139 @@
 #include <iostream>
 #endif
 
+#include <utility>
+#include <queue>
+#include <string>
 #include <type_traits>
 #include "FmuInstance.hpp"
 #include "FmiLibrary.hpp"
 #include "../enumsToString.hpp"
-#include "../xml/SpecificModelDescription.hpp"
+
+using fmi4cpp::fmi2::import::FmuInstance;
 
 namespace {
 
-    void checkStatus(const fmi2Status status, const string &function_name) {
+    void checkStatus(const fmi2Status status, const std::string &function_name) {
         if (status != fmi2OK) {
             throw std::runtime_error(function_name + " failed with status: " + to_string(status));
         }
     }
 
-    bool assignStart(const fmi4cpp::fmi2::xml::ScalarVariable &v, const fmi4cpp::fmi2::import::FmuInstance &instance) {
-
-        if (v.isIntegerVariable()) {
-            IntegerVariable v = v.asIntegerVariable();
-            auto start = v.getStart();
-            if (v.hasStartChanged() && start) {
-                instance.writeInteger(v.getValueReference(), start.value());
-                return true;
-            }
-        } else if (v.isRealVariable()) {
-            RealVariable v = v.asRealVariable();
-            auto start = v.getStart();
-            if (v.hasStartChanged() && start) {
-                instance.writeReal(v.getValueReference(), start.value());
-                return true;
-            }
-        } else if (v.isStringVariable()) {
-            StringVariable v = v.asStringVariable();
-            auto start = v.getStart();
-            if (v.hasStartChanged() && start) {
-                instance.writeString(v.getValueReference(), start.value().c_str());
-                return true;
-            }
-        } else if (v.isBooleanVariable()) {
-            BooleanVariable v = v.asBooleanVariable();
-            auto start = v.getStart();
-            if (v.hasStartChanged() && start) {
-                instance.writeBoolean(v.getValueReference(), start.value());
-                return true;
-            }
-        } else if (v.isEnumerationVariable()) {
-            EnumerationVariable v = v.asEnumerationVariable();
-            auto start = v.getStart();
-            if (v.hasStartChanged() && start) {
-                instance.writeInteger(v.getValueReference(), start.value());
-                return true;
-            }
-        } else {
-            return false;
-        }
-
-    }
+//    bool canApplyStart1(const ScalarVariable &v) {
+//        return v.getVariability() != fmi2Variability::constant && v.getInitial() == fmi2Initial::exact ||
+//                    v.getCausality() == fmi2Causality::input;
+//    }
+//    bool canApplyStart2(const ScalarVariable &v) {
+//        return v.getVariability() != fmi2Variability::constant && v.getInitial() == fmi2Initial::exact ||
+//                    v.getInitial() == fmi2Initial::approx;
+//    }
 
 }
 
 namespace fmi4cpp::fmi2::import {
 
+//    class StartQueue {
+//
+//    private:
+//
+//        std::queue<std::pair<fmi2ValueReference, fmi2Integer > > integerQueue_;
+//        std::queue<std::pair<fmi2ValueReference, fmi2Real > > realQueue_;
+//        std::queue<std::pair<fmi2ValueReference, fmi2String > > stringQueue_;
+//        std::queue<std::pair<fmi2ValueReference, fmi2Boolean > > booleanQueue_;
+//
+//    public:
+//
+//        fmi2Status putInteger(const fmi2ValueReference vr, const fmi2Integer value) {
+//            integerQueue_.push(std::make_pair(vr, value));
+//            return fmi2OK;
+//        }
+//
+//        fmi2Status putReal(const fmi2ValueReference vr, const fmi2Real value) {
+//            realQueue_.push(std::make_pair(vr, value));
+//            return fmi2OK;
+//        }
+//
+//        fmi2Status putString(const fmi2ValueReference vr, fmi2String value) {
+//            stringQueue_.push(std::make_pair(vr, value));
+//            return fmi2OK;
+//        }
+//
+//        fmi2Status putBoolean(const fmi2ValueReference vr, const fmi2Boolean value) {
+//            booleanQueue_.push(std::make_pair(vr, value));
+//            return fmi2OK;
+//        }
+//
+//        template <class T>
+//        bool assignStartValues(fmi4cpp::fmi2::import::FmuInstance<T> &instance) {
+//
+//            while (!integerQueue_.empty()) {
+//                const auto &pair = integerQueue_.front();
+//                fmi2Status status = instance.writeInteger(pair.first, pair.second);
+//                if (status != fmi2OK) {
+//                    return false;
+//                }
+//                integerQueue_.pop();
+//            }
+//
+//            while (!realQueue_.empty()) {
+//                const auto &pair = realQueue_.front();
+//                fmi2Status status = instance.writeReal(pair.first, pair.second);
+//                if (status != fmi2OK) {
+//                    return false;
+//                }
+//                realQueue_.pop();
+//            }
+//
+//            while (!stringQueue_.empty()) {
+//                const auto &pair = stringQueue_.front();
+//                fmi2Status status = instance.writeString(pair.first, pair.second);
+//                if (status != fmi2OK) {
+//                    return false;
+//                }
+//                stringQueue_.pop();
+//            }
+//
+//            while (!booleanQueue_.empty()) {
+//                const auto &pair = booleanQueue_.front();
+//                fmi2Status status = instance.writeBoolean(pair.first, pair.second);
+//                if (!status == fmi2OK) {
+//                    return false;
+//                }
+//                booleanQueue_.pop();
+//            }
+//
+//            return true;
+//
+//        }
+//
+//    };
+
     template<typename T, typename U>
-    class AbstractFmuInstance : virtual public FmuInstance {
+    class AbstractFmuInstance : public virtual FmuInstance<U> {
 
         static_assert(std::is_base_of<FmiLibrary, T>::value, "T must derive from FmiLibrary");
 //        static_assert(std::is_base_of<xml::SpecificModelDescription<xml::FmuTypeAttributes>, U>::value,
 //                      "U must derive from SpecificModelDescription");
 
     private:
-        bool instanceFreed;
+
+        bool instanceFreed_ = false;
 
     protected:
 
         fmi2Component c_;
-        U modelDescription_;
         std::shared_ptr<T> library_;
+        const std::shared_ptr<U> modelDescription_;
 
     public:
 
-        AbstractFmuInstance(const fmi2Component c, const shared_ptr<T> &library, U &modelDescription)
+        AbstractFmuInstance(const fmi2Component c,
+                            const std::shared_ptr<T> &library,
+                            const std::shared_ptr<U> &modelDescription)
                 : c_(c), library_(library), modelDescription_(modelDescription) {}
 
 
-        U &getModelDescription() override {
+        std::shared_ptr<U> getModelDescription() const override {
             return modelDescription_;
         }
 
@@ -120,50 +169,17 @@ namespace fmi4cpp::fmi2::import {
             return library_->setDebugLogging(c_, loggingOn, categories);
         }
 
-        void init(const double start = 0, const double stop = 0) override {
+        void init(const double start, const double stop) override {
 
-            if (!instantiated_) {
-
-                unsigned int count = 0;
-                for (ScalarVariable &v: modelDescription_.getModelVariables()) {
-                    if (v.getVariability() != fmi2Variability::constant && v.getInitial() == fmi2Initial::exact ||
-                        v.getInitial() == fmi2Initial::approx) {
-                        if (assignStart(v, *this)) {
-                            count++;
-                        }
-                    }
-                }
-
-#if FMI4CPP_DEBUG_LOGGING_ENABLED
-                if (count > 0) {
-                    std::cout << "Assigned modified start values to" << count << " variables with variability != constant and initial == exact or approx" << std::endl;
-                }
-#endif
+            if (!this->instantiated_) {
 
                 checkStatus(library_->setupExperiment(c_, false, 1E-4, start, stop), "setupExperiment");
 
                 checkStatus(library_->enterInitializationMode(c_), "enterInitializationMode");
-
-                count = 0;
-                for (ScalarVariable &v: modelDescription_.getModelVariables()) {
-                    if (v.getVariability() != fmi2Variability::constant && v.getInitial() == fmi2Initial::exact ||
-                        v.getCausality() == fmi2Causality::input) {
-                        if (assignStart(v, *this)) {
-                            count++;
-                        }
-                    }
-                }
-
-#if FMI4CPP_DEBUG_LOGGING_ENABLED
-                if (count > 0) {
-                    std::cout << "Assigned modified start values to" << count << " variables with variability != constant and initial == exact or causality == input" << std::endl;
-                }
-#endif
-
                 checkStatus(library_->exitInitializationMode(c_), "exitInitializationMode");
 
-                instantiated_ = true;
-                simulationTime_ = start;
+                this->instantiated_ = true;
+                this->simulationTime_ = start;
 
             }
 
@@ -178,8 +194,8 @@ namespace fmi4cpp::fmi2::import {
         }
 
         fmi2Status terminate(bool freeInstance) {
-            if (!terminated_) {
-                terminated_ = true;
+            if (!this->terminated_) {
+                this->terminated_ = true;
                 fmi2Status status = library_->terminate(c_);
                 if (freeInstance) {
                     this->freeInstance();
@@ -190,15 +206,23 @@ namespace fmi4cpp::fmi2::import {
         }
 
         void freeInstance() {
-            if (!instanceFreed) {
-                instanceFreed = true;
+            if (!instanceFreed_) {
+                instanceFreed_ = true;
                 library_->freeInstance(c_);
                 c_ = nullptr;
             }
         }
 
         bool canGetAndSetFMUstate() const override {
-            return modelDescription_.canGetAndSetFMUstate();
+            return modelDescription_->canGetAndSetFMUstate();
+        }
+
+        bool canSerializeFMUstate() const override {
+            return modelDescription_->canSerializeFMUstate();
+        }
+
+        bool providesDirectionalDerivative() const override {
+            return modelDescription_->providesDirectionalDerivative();
         }
 
         fmi2Status getFMUstate(fmi2FMUstate &state) override {
@@ -213,9 +237,6 @@ namespace fmi4cpp::fmi2::import {
             return library_->freeFMUstate(c_, state);
         }
 
-        bool canSerializeFMUstate() const override {
-            return modelDescription_.canSerializeFMUstate();
-        }
 
         fmi2Status getSerializedFMUstateSize(const fmi2FMUstate state, size_t &size) const {
             return library_->getSerializedFMUstateSize(c_, state, size);
@@ -228,10 +249,6 @@ namespace fmi4cpp::fmi2::import {
         fmi2Status
         deSerializeFMUstate(fmi2FMUstate &state, const vector<fmi2Byte> &serializedState) override {
             return library_->deSerializeFMUstate(c_, state, serializedState);
-        }
-
-        bool providesDirectionalDerivative() const override {
-            return modelDescription_.providesDirectionalDerivative();
         }
 
         fmi2Status getDirectionalDerivative(
@@ -272,37 +289,35 @@ namespace fmi4cpp::fmi2::import {
             return library_->readBoolean(c_, vr, ref);
         }
 
-        fmi2Status writeInteger(const fmi2ValueReference vr, const fmi2Integer value) const override {
+        fmi2Status writeInteger(const fmi2ValueReference vr, const fmi2Integer value) override {
             return library_->writeInteger(c_, vr, value);
         }
 
-        fmi2Status
-        writeInteger(const vector<fmi2ValueReference> &vr, const vector<fmi2Integer> &values) const override {
+        fmi2Status writeInteger(const vector<fmi2ValueReference> &vr, const vector<fmi2Integer> &values) override {
             return library_->writeInteger(c_, vr, values);
         }
 
-        fmi2Status writeReal(const fmi2ValueReference vr, const fmi2Real value) const override {
+        fmi2Status writeReal(const fmi2ValueReference vr, const fmi2Real value) override {
             return library_->writeReal(c_, vr, value);
         }
 
-        fmi2Status writeReal(const vector<fmi2ValueReference> &vr, const vector<fmi2Real> &values) const override {
+        fmi2Status writeReal(const vector<fmi2ValueReference> &vr, const vector<fmi2Real> &values) override {
             return library_->writeReal(c_, vr, values);
         }
 
-        fmi2Status writeString(const fmi2ValueReference vr, fmi2String value) const override {
+        fmi2Status writeString(const fmi2ValueReference vr, fmi2String value) override {
             return library_->writeString(c_, vr, value);
         }
 
-        fmi2Status writeString(const vector<fmi2ValueReference> &vr, const vector<fmi2String> &values) const override {
+        fmi2Status writeString(const vector<fmi2ValueReference> &vr, const vector<fmi2String> &values) override {
             return library_->writeString(c_, vr, values);
         }
 
-        fmi2Status writeBoolean(const fmi2ValueReference vr, const fmi2Boolean value) const override {
+        fmi2Status writeBoolean(const fmi2ValueReference vr, const fmi2Boolean value) override {
             return library_->writeBoolean(c_, vr, value);
         }
 
-        fmi2Status
-        writeBoolean(const vector<fmi2ValueReference> &vr, const vector<fmi2Boolean> &values) const override {
+        fmi2Status writeBoolean(const vector<fmi2ValueReference> &vr, const vector<fmi2Boolean> &values) override {
             return library_->writeBoolean(c_, vr, values);
         }
 

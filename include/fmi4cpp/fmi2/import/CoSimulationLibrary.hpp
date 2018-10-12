@@ -49,7 +49,7 @@ namespace fmi4cpp::fmi2::import {
 
     public:
 
-        explicit CoSimulationLibrary(const string &libName);
+        explicit CoSimulationLibrary(const std::string &libName);
 
         fmi2Status doStep(const fmi2Component c, const fmi2Real currentCommunicationPoint,
                           const fmi2Real communicationStepSize, const bool noSetFMUStatePriorToCurrentPoint) const;
@@ -57,12 +57,12 @@ namespace fmi4cpp::fmi2::import {
         fmi2Status cancelStep(const fmi2Component c) const;
 
         fmi2Status setRealInputDerivatives(const fmi2Component c,
-                                           const vector<fmi2ValueReference> &vr, const vector<fmi2Integer> &order,
-                                           const vector<fmi2Real> &value) const;
+                                           const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2Integer> &order,
+                                           const std::vector<fmi2Real> &value) const;
 
         fmi2Status getRealOutputDerivatives(const fmi2Component c,
-                                            const vector<fmi2ValueReference> &vr, const vector<fmi2Integer> &order,
-                                            vector<fmi2Real> &value) const;
+                                            const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2Integer> &order,
+                                            std::vector<fmi2Real> &value) const;
 
         fmi2Status getStatus(const fmi2Component c, const fmi2StatusKind s, fmi2Status &value) const;
 

@@ -25,42 +25,41 @@
 #ifndef FMI4CPP_MODELVARIABLES_HPP
 #define FMI4CPP_MODELVARIABLES_HPP
 
+
 #include <vector>
 #include <memory>
-#include <boost/property_tree/ptree.hpp>
-#include <fmi4cpp/fmi2/xml/ScalarVariable.hpp>
 
-using boost::property_tree::ptree;
+#include <fmi4cpp/fmi2/xml/ScalarVariable.hpp>
 
 namespace fmi4cpp::fmi2::xml {
 
     class ModelVariables {
 
     private:
-        std::vector<ScalarVariable> variables;
+
+        std::vector<ScalarVariable> variables_;
 
     public:
-        void load(const ptree &node);
 
-        const size_t size() const;
+        ModelVariables();
 
-        ScalarVariable &operator[](const size_t index);
+        explicit ModelVariables(const std::vector<ScalarVariable> &variables);
 
-        ScalarVariable &getByName(const std::string &name);
+        size_t size() const;
 
-        ScalarVariable &getByValueReference(const fmi2ValueReference vr);
+        const ScalarVariable &operator[](size_t index) const;
+        const ScalarVariable &getByName(const std::string &name) const;
+        const ScalarVariable &getByValueReference(fmi2ValueReference vr) const;
 
-        void getByCausality(const fmi2Causality causality, std::vector<ScalarVariable> &store);
+        void getByCausality(fmi2Causality causality, std::vector<ScalarVariable> &store) const;
 
         std::vector<ScalarVariable>::iterator begin();
-
         std::vector<ScalarVariable>::iterator end();
 
         std::vector<ScalarVariable>::const_iterator cbegin() const;
-
         std::vector<ScalarVariable>::const_iterator cend() const;
-
     };
+
 
 }
 

@@ -27,14 +27,49 @@
 
 #include <vector>
 #include <string>
-#include "../xml/ModelDescription.hpp"
-#include "../fmi2Functions.h"
+#include <memory>
 
-using std::vector;
+#include "../fmi2Functions.h"
 
 namespace fmi4cpp::fmi2::import {
 
-    class FmuInstance {
+    class FmuReader {
+
+    public:
+
+        virtual fmi2Status readInteger(fmi2ValueReference vr, fmi2Integer &ref) const = 0;
+        virtual fmi2Status readInteger(const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Integer> &ref) const = 0;
+
+        virtual fmi2Status readReal(fmi2ValueReference vr, fmi2Real &ref) const = 0;
+        virtual fmi2Status readReal(const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Real> &ref) const = 0;
+
+        virtual fmi2Status readString(fmi2ValueReference vr, fmi2String &ref) const = 0;
+        virtual fmi2Status readString(const std::vector<fmi2ValueReference> &vr, std::vector<fmi2String> &ref) const = 0;
+
+        virtual fmi2Status readBoolean(fmi2ValueReference vr, fmi2Boolean &ref) const = 0;
+        virtual fmi2Status readBoolean(const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Boolean > &ref) const = 0;
+
+    };
+
+    class FmuWriter {
+
+    public:
+
+        virtual fmi2Status writeInteger(fmi2ValueReference vr, fmi2Integer value) = 0;
+        virtual fmi2Status writeInteger(const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2Integer > &values) = 0;
+
+        virtual fmi2Status writeReal(fmi2ValueReference vr, fmi2Real value) = 0;
+        virtual fmi2Status writeReal(const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2Real > &values) = 0;
+
+        virtual fmi2Status writeString(fmi2ValueReference vr, fmi2String value) = 0;
+        virtual fmi2Status writeString(const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2String > &values) = 0;
+
+        virtual fmi2Status writeBoolean(fmi2ValueReference vr, fmi2Boolean value) = 0;
+        virtual fmi2Status writeBoolean(const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2Boolean > &values) = 0;
+    };
+
+    template <typename T>
+    class FmuInstance: public FmuReader, public FmuWriter {
 
     protected:
 
@@ -45,25 +80,25 @@ namespace fmi4cpp::fmi2::import {
 
     public:
 
-        virtual const double getSimulationTime() const {
+        const double getSimulationTime() const {
             return simulationTime_;
         }
 
-        virtual const bool isInstantiated() const {
+        const bool isInstantiated() const {
             return instantiated_;
         }
 
-        virtual const bool isTerminated() const {
+        const bool isTerminated() const {
             return terminated_;
         }
 
-        virtual const fmi2ValueReference getValueReference(const std::string &name) {
-            return getModelDescription().getVariableByName(name).getValueReference();
+        const fmi2ValueReference getValueReference(const std::string &name) {
+            return getModelDescription()->getVariableByName(name).valueReference();
         }
 
-        virtual xml::ModelDescription &getModelDescription() = 0;
+        virtual std::shared_ptr<T> getModelDescription() const = 0;
 
-        virtual void init(const double start = 0, const double stop = 0) = 0;
+        virtual void init(double start = 0, double stop = 0) = 0;
 
         virtual fmi2Status reset() = 0;
 
@@ -71,46 +106,21 @@ namespace fmi4cpp::fmi2::import {
 
         virtual bool canGetAndSetFMUstate() const = 0;
         virtual fmi2Status getFMUstate(fmi2FMUstate &state) = 0;
-        virtual fmi2Status setFMUstate(const fmi2FMUstate state) = 0;
+        virtual fmi2Status setFMUstate(fmi2FMUstate state) = 0;
         virtual fmi2Status freeFMUstate(fmi2FMUstate &state) = 0;
 
         virtual bool canSerializeFMUstate() const = 0;
-        virtual fmi2Status serializeFMUstate(const fmi2FMUstate &state, vector<fmi2Byte> &serializedState) = 0;
-        virtual fmi2Status deSerializeFMUstate(fmi2FMUstate &state, const vector<fmi2Byte> &serializedState) = 0;
+        virtual fmi2Status serializeFMUstate(const fmi2FMUstate &state, std::vector<fmi2Byte> &serializedState) = 0;
+        virtual fmi2Status deSerializeFMUstate(fmi2FMUstate &state, const std::vector<fmi2Byte> &serializedState) = 0;
 
         virtual bool providesDirectionalDerivative() const = 0;
         virtual fmi2Status getDirectionalDerivative(
-                const vector<fmi2ValueReference> &vUnkownRef,
-                const vector<fmi2ValueReference> &vKnownRef,
-                const vector<fmi2Real> &dvKnownRef,
-                vector<fmi2Real> &dvUnknownRef) const = 0;
+                const std::vector<fmi2ValueReference> &vUnkownRef,
+                const std::vector<fmi2ValueReference> &vKnownRef,
+                const std::vector<fmi2Real> &dvKnownRef,
+                std::vector<fmi2Real> &dvUnknownRef) const = 0;
 
-
-        virtual fmi2Status readInteger(const fmi2ValueReference vr, fmi2Integer &ref) const = 0;
-        virtual fmi2Status readInteger(const vector<fmi2ValueReference> &vr, vector<fmi2Integer> &ref) const = 0;
-
-        virtual fmi2Status readReal(const fmi2ValueReference vr, fmi2Real &ref) const = 0;
-        virtual fmi2Status readReal(const vector<fmi2ValueReference> &vr, vector<fmi2Real> &ref) const = 0;
-
-        virtual fmi2Status readString(const fmi2ValueReference vr, fmi2String &ref) const = 0;
-        virtual fmi2Status readString(const vector<fmi2ValueReference> &vr, vector<fmi2String> &ref) const = 0;
-
-        virtual fmi2Status readBoolean(const fmi2ValueReference vr, fmi2Boolean &ref) const = 0;
-        virtual fmi2Status readBoolean(const vector<fmi2ValueReference> &vr, vector<fmi2Boolean> &ref) const = 0;
-
-        virtual fmi2Status writeInteger(const fmi2ValueReference vr, const fmi2Integer value) const = 0;
-        virtual fmi2Status writeInteger(const vector<fmi2ValueReference> &vr, const vector<fmi2Integer > &values) const = 0;
-
-        virtual fmi2Status writeReal(const fmi2ValueReference vr, const fmi2Real value) const = 0;
-        virtual fmi2Status writeReal(const vector<fmi2ValueReference> &vr, const vector<fmi2Real > &values) const = 0;
-
-        virtual fmi2Status writeString(const fmi2ValueReference vr, fmi2String value) const = 0;
-        virtual fmi2Status writeString(const vector<fmi2ValueReference> &vr, const vector<fmi2String > &values) const = 0;
-
-        virtual fmi2Status writeBoolean(const fmi2ValueReference vr, const fmi2Boolean value) const = 0;
-        virtual fmi2Status writeBoolean(const vector<fmi2ValueReference> &vr, const vector<fmi2Boolean > &values) const = 0;
-
-        virtual ~FmuInstance() {};
+        virtual ~FmuInstance() = default;
 
     };
 

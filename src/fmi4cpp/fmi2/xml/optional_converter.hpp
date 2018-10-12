@@ -22,24 +22,19 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMI4CPP_MODELEXCHANGEINSTANCEBUILDER_HPP
-#define FMI4CPP_MODELEXCHANGEINSTANCEBUILDER_HPP
+#ifndef FMI4CPP_OPTIONAL_CONVERTER_HPP
+#define FMI4CPP_OPTIONAL_CONVERTER_HPP
 
-#include "InstanceBuilder.hpp"
-#include "ModelExchangeInstance.hpp"
+#include <optional>
+#include <boost/optional/optional.hpp>
 
-namespace fmi4cpp::fmi2::import {
-
-    class ModelExchangeInstanceBuilder : private InstanceBuilder<ModelExchangeLibrary, ModelExchangeInstance> {
-
-    public:
-        explicit ModelExchangeInstanceBuilder(Fmu &fmu);
-
-        std::unique_ptr<ModelExchangeInstance>
-        newInstance(const bool visible = false, const bool loggingOn = false) override;
-
-    };
-
+template<class T>
+std::optional<T> convert(boost::optional<T> opt) {
+    if (!opt) {
+        return {};
+    } else {
+        return *opt;
+    }
 }
 
-#endif //FMI4CPP_MODELEXCHANGEINSTANCEBUILDER_HPP
+#endif //FMI4CPP_OPTIONAL_CONVERTER_HPP

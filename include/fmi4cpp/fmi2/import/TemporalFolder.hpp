@@ -22,24 +22,25 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMI4CPP_COSIMULATIONSLAVEBUILDER_HPP
-#define FMI4CPP_COSIMULATIONSLAVEBUILDER_HPP
+#ifndef FMI4CPP_TEMPORALFOLDER_HPP
+#define FMI4CPP_TEMPORALFOLDER_HPP
 
-#include "InstanceBuilder.hpp"
-#include "CoSimulationSlave.hpp"
+#include <experimental/filesystem>
+
+namespace fs = std::experimental::filesystem;
 
 namespace fmi4cpp::fmi2::import {
 
-    class CoSimulationSlaveBuilder : private InstanceBuilder<CoSimulationLibrary, CoSimulationSlave> {
+class TemporalFolder: public fs::path {
 
     public:
-        explicit CoSimulationSlaveBuilder(Fmu &fmu);
+        explicit TemporalFolder(fs::path &path);
 
-        std::unique_ptr<CoSimulationSlave>
-        newInstance(const bool visible = false, const bool loggingOn = false) override;
+        ~TemporalFolder();
 
     };
 
 }
 
-#endif //FMI4CPP_COSIMULATIONSLAVEBUILDER_HPP
+
+#endif //FMI4CPP_TEMPORALFOLDER_HPP

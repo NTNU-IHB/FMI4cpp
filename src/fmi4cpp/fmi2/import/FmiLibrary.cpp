@@ -30,6 +30,7 @@ namespace fs = std::experimental::filesystem;
 
 #include <sstream>
 #include <iostream>
+
 #include <fmi4cpp/fmi2/enumsToString.hpp>
 #include <fmi4cpp/fmi2/import/FmiLibrary.hpp>
 
@@ -56,15 +57,14 @@ namespace {
 FmiLibrary::FmiLibrary(const string &libName) {
 
 #if FMI4CPP_DEBUG_LOGGING_ENABLED
-    cout << "Loading shared library " << fs::path(libName).stem() << endl;
+    cout << "Loading shared library '" << fs::path(libName).stem() << "'" << endl;
 #endif
 
     handle_ = loadLibrary(libName);
 
     if (!handle_) {
         cerr << getLastError() << endl;
-        string msg = "Unable to load dynamic library '" + libName + "'!";
-        throw runtime_error(msg);
+        throw runtime_error("Unable to load dynamic library '" + libName + "'!");
     }
 
     fmi2GetVersion_ = loadFunction<fmi2GetVersionTYPE *>(handle_, "fmi2GetVersion");

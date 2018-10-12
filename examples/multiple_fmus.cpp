@@ -43,10 +43,10 @@ int main() {
     import::Fmu fmu1(fmu_path1);
     import::Fmu fmu2(fmu_path2);
     
-    const auto slave1 = fmu1.asCoSimulationFmu().newInstance();
+    const auto slave1 = fmu1.asCoSimulationFmu()->newInstance();
     slave1->init();
 
-    const auto slave2 = fmu2.asCoSimulationFmu().newInstance();
+    const auto slave2 = fmu2.asCoSimulationFmu()->newInstance();
     slave2->init();
 
     slave1->doStep(1E-5);
@@ -65,6 +65,5 @@ int main() {
 
     slave1->terminate();
     slave2->terminate();
-
-
+    
 }

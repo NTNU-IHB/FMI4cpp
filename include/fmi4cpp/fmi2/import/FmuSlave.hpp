@@ -26,18 +26,19 @@
 #define FMI4CPP_FMUSLAVE_HPP
 
 #include "FmuInstance.hpp"
+#include "fmi4cpp/fmi2/xml/ModelDescription.hpp"
 
 namespace fmi4cpp::fmi2::import {
 
-    class FmuSlave : virtual public FmuInstance {
+    class FmuSlave : virtual public FmuInstance<xml::CoSimulationModelDescription> {
 
     public:
 
-        virtual fmi2Status doStep(const double stepSize) = 0;
+        virtual fmi2Status doStep(double stepSize) = 0;
 
         virtual fmi2Status cancelStep() = 0;
 
-        virtual ~FmuSlave() {};
+        ~FmuSlave() override = default;
 
     };
 
