@@ -96,7 +96,7 @@ size_t ModelDescriptionBase::numberOfEventIndicators() const {
 }
 
 size_t ModelDescriptionBase::numberOfContinuousStates() const {
-    return modelStructure().derivatives().size();
+    return modelStructure_.derivatives().size();
 }
 
 ModelVariables &ModelDescriptionBase::modelVariables() {
@@ -113,6 +113,10 @@ std::optional<DefaultExperiment> ModelDescriptionBase::defaultExperiment() const
 
 const ScalarVariable &ModelDescriptionBase::getVariableByName(const std::string &name) const {
     return modelVariables_.getByName(name);
+}
+
+fmi2ValueReference ModelDescriptionBase::getValueReference(const std::string &name) const {
+    return getVariableByName(name).valueReference();
 }
 
 ModelDescription::ModelDescription(const ModelDescriptionBase &base,

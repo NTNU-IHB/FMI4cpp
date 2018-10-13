@@ -36,6 +36,7 @@
 #include "FmuInstance.hpp"
 #include "FmiLibrary.hpp"
 #include "../enumsToString.hpp"
+#include "../xml/ModelDescription.hpp"
 
 using fmi4cpp::fmi2::import::FmuInstance;
 
@@ -140,8 +141,8 @@ namespace fmi4cpp::fmi2::import {
     class AbstractFmuInstance : public virtual FmuInstance<U> {
 
         static_assert(std::is_base_of<FmiLibrary, T>::value, "T must derive from FmiLibrary");
-//        static_assert(std::is_base_of<xml::SpecificModelDescription<xml::FmuTypeAttributes>, U>::value,
-//                      "U must derive from SpecificModelDescription");
+        static_assert(std::is_base_of<xml::ModelDescriptionBase, U>::value,
+                      "U must derive from ModelDescriptionBase");
 
     private:
 
@@ -150,7 +151,7 @@ namespace fmi4cpp::fmi2::import {
     protected:
 
         fmi2Component c_;
-        std::shared_ptr<T> library_;
+        const std::shared_ptr<T> library_;
         const std::shared_ptr<U> modelDescription_;
 
     public:
@@ -213,18 +214,6 @@ namespace fmi4cpp::fmi2::import {
             }
         }
 
-        bool canGetAndSetFMUstate() const override {
-            return modelDescription_->canGetAndSetFMUstate();
-        }
-
-        bool canSerializeFMUstate() const override {
-            return modelDescription_->canSerializeFMUstate();
-        }
-
-        bool providesDirectionalDerivative() const override {
-            return modelDescription_->providesDirectionalDerivative();
-        }
-
         fmi2Status getFMUstate(fmi2FMUstate &state) override {
             return library_->getFMUstate(c_, state);
         }
@@ -261,7 +250,8 @@ namespace fmi4cpp::fmi2::import {
             return library_->readInteger(c_, vr, ref);
         }
 
-        fmi2Status readInteger(const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Integer> &ref) const override {
+        fmi2Status
+        readInteger(const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Integer> &ref) const override {
             return library_->readInteger(c_, vr, ref);
         }
 
@@ -285,7 +275,8 @@ namespace fmi4cpp::fmi2::import {
             return library_->readBoolean(c_, vr, ref);
         }
 
-        fmi2Status readBoolean(const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Boolean> &ref) const override {
+        fmi2Status
+        readBoolean(const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Boolean> &ref) const override {
             return library_->readBoolean(c_, vr, ref);
         }
 
@@ -293,7 +284,8 @@ namespace fmi4cpp::fmi2::import {
             return library_->writeInteger(c_, vr, value);
         }
 
-        fmi2Status writeInteger(const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2Integer> &values) override {
+        fmi2Status
+        writeInteger(const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2Integer> &values) override {
             return library_->writeInteger(c_, vr, values);
         }
 
@@ -309,7 +301,8 @@ namespace fmi4cpp::fmi2::import {
             return library_->writeString(c_, vr, value);
         }
 
-        fmi2Status writeString(const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2String> &values) override {
+        fmi2Status
+        writeString(const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2String> &values) override {
             return library_->writeString(c_, vr, values);
         }
 
@@ -317,13 +310,13 @@ namespace fmi4cpp::fmi2::import {
             return library_->writeBoolean(c_, vr, value);
         }
 
-        fmi2Status writeBoolean(const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2Boolean> &values) override {
+        fmi2Status
+        writeBoolean(const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2Boolean> &values) override {
             return library_->writeBoolean(c_, vr, values);
         }
 
         ~AbstractFmuInstance() {
             terminate();
-            freeInstance();
         }
 
     };
