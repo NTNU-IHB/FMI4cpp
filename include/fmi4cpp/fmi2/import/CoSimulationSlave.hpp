@@ -54,21 +54,15 @@ namespace fmi4cpp::fmi2::import {
 
         fmi2Status terminate() override;
 
-        bool canGetAndSetFMUstate() const override;
-
         fmi2Status getFMUstate(fmi2FMUstate &state) override;
 
         fmi2Status setFMUstate(fmi2FMUstate state) override;
 
         fmi2Status freeFMUstate(fmi2FMUstate &state) override;
 
-        bool canSerializeFMUstate() const override;
-
         fmi2Status serializeFMUstate(const fmi2FMUstate &state, std::vector<fmi2Byte> &serializedState) override;
 
         fmi2Status deSerializeFMUstate(fmi2FMUstate &state, const std::vector<fmi2Byte> &serializedState) override;
-
-        bool providesDirectionalDerivative() const override;
 
         fmi2Status getDirectionalDerivative(const std::vector<fmi2ValueReference> &vUnkownRef,
                                             const std::vector<fmi2ValueReference> &vKnownRef,

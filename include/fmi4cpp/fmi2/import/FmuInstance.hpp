@@ -64,24 +64,12 @@ namespace fmi4cpp::fmi2::import {
 
         virtual fmi2Status terminate() = 0;
 
-        virtual bool canGetAndSetFMUstate() const {
-            return getModelDescription()->canGetAndSetFMUstate();
-        };
-
         virtual fmi2Status getFMUstate(fmi2FMUstate &state) = 0;
         virtual fmi2Status setFMUstate(fmi2FMUstate state) = 0;
         virtual fmi2Status freeFMUstate(fmi2FMUstate &state) = 0;
 
-        virtual bool canSerializeFMUstate() const {
-            return getModelDescription()->canSerializeFMUstate();
-        };
-
         virtual fmi2Status serializeFMUstate(const fmi2FMUstate &state, std::vector<fmi2Byte> &serializedState) = 0;
         virtual fmi2Status deSerializeFMUstate(fmi2FMUstate &state, const std::vector<fmi2Byte> &serializedState) = 0;
-
-        virtual bool providesDirectionalDerivative() const {
-            return getModelDescription()->providesDirectionalDerivative();
-        };
 
         virtual fmi2Status getDirectionalDerivative(
                 const std::vector<fmi2ValueReference> &vUnkownRef,
