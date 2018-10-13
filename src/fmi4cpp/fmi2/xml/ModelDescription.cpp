@@ -115,6 +115,10 @@ const ScalarVariable &ModelDescriptionBase::getVariableByName(const std::string 
     return modelVariables_.getByName(name);
 }
 
+fmi2ValueReference ModelDescriptionBase::getValueReference(const std::string &name) const {
+    return getVariableByName(name).valueReference();
+}
+
 ModelDescription::ModelDescription(const ModelDescriptionBase &base,
                                    const std::optional<CoSimulationAttributes> &coSimulation,
                                    const std::optional<ModelExchangeAttributes> &modelExchange)

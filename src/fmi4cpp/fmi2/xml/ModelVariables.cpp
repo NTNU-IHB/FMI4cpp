@@ -50,6 +50,14 @@ const ScalarVariable &ModelVariables::getByValueReference(const fmi2ValueReferen
     throw std::runtime_error("No such variable with valueReference '" + std::to_string(vr) + "'!");
 }
 
+void ModelVariables::getByValueReference(const fmi2ValueReference vr, std::vector<ScalarVariable> &store) const {
+    for (const auto &var : variables_) {
+        if (var.valueReference() == vr) {
+            store.push_back(var);
+        }
+    }
+}
+
 void ModelVariables::getByCausality(const fmi2Causality causality, std::vector<ScalarVariable> &store) const {
     for (const auto &var : variables_) {
         if (var.causality() == causality) {

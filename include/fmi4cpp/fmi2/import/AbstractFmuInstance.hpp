@@ -213,18 +213,6 @@ namespace fmi4cpp::fmi2::import {
             }
         }
 
-        bool canGetAndSetFMUstate() const override {
-            return modelDescription_->canGetAndSetFMUstate();
-        }
-
-        bool canSerializeFMUstate() const override {
-            return modelDescription_->canSerializeFMUstate();
-        }
-
-        bool providesDirectionalDerivative() const override {
-            return modelDescription_->providesDirectionalDerivative();
-        }
-
         fmi2Status getFMUstate(fmi2FMUstate &state) override {
             return library_->getFMUstate(c_, state);
         }
@@ -323,7 +311,6 @@ namespace fmi4cpp::fmi2::import {
 
         ~AbstractFmuInstance() {
             terminate();
-            freeInstance();
         }
 
     };
