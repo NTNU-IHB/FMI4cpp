@@ -26,7 +26,79 @@
 
 using namespace fmi4cpp::fmi2::import;
 
-fmi4cpp::fmi2::import::ModelExchangeSlave::ModelExchangeSlave(
+ModelExchangeSlave::ModelExchangeSlave(
         std::unique_ptr<import::ModelExchangeInstance> &instance,
         std::unique_ptr<Solver> &solver)
         : instance_(std::move(instance)), solver_(std::move(solver)) {}
+
+fmi2Status ModelExchangeSlave::readInteger(fmi2ValueReference vr, fmi2Integer &ref) const {
+    return instance_->readInteger(vr, ref);
+}
+
+fmi2Status ModelExchangeSlave::readInteger(const std::vector<fmi2ValueReference> &vr,
+                                           std::vector<fmi2Integer> &ref) const {
+    return instance_->readInteger(vr, ref);
+}
+
+fmi2Status ModelExchangeSlave::readReal(fmi2ValueReference vr, fmi2Real &ref) const {
+    return instance_->readReal(vr, ref);
+}
+
+fmi2Status ModelExchangeSlave::readReal(const std::vector<fmi2ValueReference> &vr,
+                                        std::vector<fmi2Real> &ref) const {
+    return instance_->readReal(vr, ref);
+}
+
+fmi2Status ModelExchangeSlave::readString(fmi2ValueReference vr, fmi2String &ref) const {
+    return instance_->readString(vr, ref);
+}
+
+fmi2Status ModelExchangeSlave::readString(const std::vector<fmi2ValueReference> &vr,
+                                          std::vector<fmi2String> &ref) const {
+    return instance_->readString(vr, ref);
+}
+
+fmi2Status ModelExchangeSlave::readBoolean(fmi2ValueReference vr, fmi2Boolean &ref) const {
+    return instance_->readBoolean(vr, ref);
+}
+
+fmi2Status ModelExchangeSlave::readBoolean(const std::vector<fmi2ValueReference> &vr,
+                                           std::vector<fmi2Boolean> &ref) const {
+    return instance_->readBoolean(vr, ref);
+}
+
+fmi2Status ModelExchangeSlave::writeInteger(fmi2ValueReference vr, fmi2Integer value) {
+    return instance_->writeInteger(vr, value);
+}
+
+fmi2Status ModelExchangeSlave::writeInteger(const std::vector<fmi2ValueReference> &vr,
+                                            const std::vector<fmi2Integer> &values) {
+    return instance_->writeInteger(vr, values);
+}
+
+fmi2Status ModelExchangeSlave::writeReal(fmi2ValueReference vr, fmi2Real value) {
+    return instance_->writeReal(vr, value);
+}
+
+fmi2Status ModelExchangeSlave::writeReal(const std::vector<fmi2ValueReference> &vr,
+                                         const std::vector<fmi2Real> &values) {
+    return instance_->writeReal(vr, values);
+}
+
+fmi2Status ModelExchangeSlave::writeString(fmi2ValueReference vr, fmi2String value) {
+    return instance_->writeString(vr, value);
+}
+
+fmi2Status ModelExchangeSlave::writeString(const std::vector<fmi2ValueReference> &vr,
+                                           const std::vector<fmi2String> &values) {
+    return instance_->writeString(vr, values);
+}
+
+fmi2Status ModelExchangeSlave::writeBoolean(fmi2ValueReference vr, fmi2Boolean value) {
+    return instance_->writeBoolean(vr, value);
+}
+
+fmi2Status ModelExchangeSlave::writeBoolean(const std::vector<fmi2ValueReference> &vr,
+                                            const std::vector<fmi2Boolean> &values) {
+    return instance_->writeBoolean(vr, values);
+}
