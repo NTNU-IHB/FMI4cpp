@@ -96,7 +96,7 @@ size_t ModelDescriptionBase::numberOfEventIndicators() const {
 }
 
 size_t ModelDescriptionBase::numberOfContinuousStates() const {
-    return modelStructure().derivatives().size();
+    return modelStructure_.derivatives().size();
 }
 
 ModelVariables &ModelDescriptionBase::modelVariables() {
