@@ -56,10 +56,6 @@ namespace fmi4cpp::fmi2::import {
             return terminated_;
         }
 
-        const fmi2ValueReference getValueReference(const std::string &name) {
-            return getModelDescription()->getVariableByName(name).valueReference();
-        }
-
         virtual std::shared_ptr<T> getModelDescription() const = 0;
 
         virtual void init(double start = 0, double stop = 0) = 0;
@@ -68,16 +64,25 @@ namespace fmi4cpp::fmi2::import {
 
         virtual fmi2Status terminate() = 0;
 
-        virtual bool canGetAndSetFMUstate() const = 0;
+        virtual bool canGetAndSetFMUstate() const {
+            return getModelDescription()->canGetAndSetFMUstate();
+        };
+
         virtual fmi2Status getFMUstate(fmi2FMUstate &state) = 0;
         virtual fmi2Status setFMUstate(fmi2FMUstate state) = 0;
         virtual fmi2Status freeFMUstate(fmi2FMUstate &state) = 0;
 
-        virtual bool canSerializeFMUstate() const = 0;
+        virtual bool canSerializeFMUstate() const {
+            return getModelDescription()->canSerializeFMUstate();
+        };
+
         virtual fmi2Status serializeFMUstate(const fmi2FMUstate &state, std::vector<fmi2Byte> &serializedState) = 0;
         virtual fmi2Status deSerializeFMUstate(fmi2FMUstate &state, const std::vector<fmi2Byte> &serializedState) = 0;
 
-        virtual bool providesDirectionalDerivative() const = 0;
+        virtual bool providesDirectionalDerivative() const {
+            return getModelDescription()->providesDirectionalDerivative();
+        };
+
         virtual fmi2Status getDirectionalDerivative(
                 const std::vector<fmi2ValueReference> &vUnkownRef,
                 const std::vector<fmi2ValueReference> &vKnownRef,
