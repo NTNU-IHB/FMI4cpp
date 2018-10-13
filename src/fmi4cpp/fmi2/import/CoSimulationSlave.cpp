@@ -62,10 +62,6 @@ fmi2Status CoSimulationSlave::terminate() {
     return AbstractFmuInstance::terminate();
 }
 
-bool CoSimulationSlave::canGetAndSetFMUstate() const {
-    return AbstractFmuInstance::canGetAndSetFMUstate();
-}
-
 fmi2Status CoSimulationSlave::getFMUstate(fmi2FMUstate &state) {
     return AbstractFmuInstance::getFMUstate(state);
 }
@@ -78,20 +74,12 @@ fmi2Status CoSimulationSlave::freeFMUstate(fmi2FMUstate &state) {
     return AbstractFmuInstance::freeFMUstate(state);
 }
 
-bool CoSimulationSlave::canSerializeFMUstate() const {
-    return AbstractFmuInstance::canSerializeFMUstate();
-}
-
 fmi2Status CoSimulationSlave::serializeFMUstate(const fmi2FMUstate &state, vector<fmi2Byte> &serializedState) {
     return AbstractFmuInstance::serializeFMUstate(state, serializedState);
 }
 
 fmi2Status CoSimulationSlave::deSerializeFMUstate(fmi2FMUstate &state, const vector<fmi2Byte> &serializedState) {
     return AbstractFmuInstance::deSerializeFMUstate(state, serializedState);
-}
-
-bool CoSimulationSlave::providesDirectionalDerivative() const {
-    return AbstractFmuInstance::providesDirectionalDerivative();
 }
 
 fmi2Status CoSimulationSlave::getDirectionalDerivative(const vector<fmi2ValueReference> &vUnkownRef,
