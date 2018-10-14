@@ -37,6 +37,13 @@ namespace fmi4cpp::fmi2::xml {
         std::optional<T> start;
         std::optional<std::string> declaredType;
 
+        ScalarVariableAttributes() {}
+
+        ScalarVariableAttributes(const std::optional<T> &start) : start(start) {}
+
+        ScalarVariableAttributes(const std::optional<T> &start, const std::optional<std::string> &declaredType)
+                : start(start), declaredType(declaredType) {}
+
     };
 
 
