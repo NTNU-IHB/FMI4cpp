@@ -48,7 +48,7 @@ namespace fmi4cpp::fmi2::xml {
         std::optional<std::string> quantity;
 
         explicit BoundedScalarVariableAttributes(const ScalarVariableAttributes<T> &attributes)
-                : ScalarVariableAttributes(attributes) {}
+                : ScalarVariableAttributes<T>(attributes) {}
 
     };
 
