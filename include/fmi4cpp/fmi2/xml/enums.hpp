@@ -35,7 +35,8 @@ namespace fmi4cpp::fmi2::xml {
         input,
         output,
         local,
-        independent
+        independent,
+        unknown
     };
 
     enum class fmi2Variability {
@@ -43,7 +44,8 @@ namespace fmi4cpp::fmi2::xml {
         fixed,
         tunable,
         discrete,
-        continuous
+        continuous,
+        unknown
     };
 
     enum class fmi2Initial {
