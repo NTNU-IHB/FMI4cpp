@@ -57,6 +57,10 @@ namespace fmi4cpp::fmi2::xml {
         explicit BoundedScalarVariableAttribute(const ScalarVariableAttribute<T> &attributes)
                 : ScalarVariableAttribute<T>(attributes) {}
 
+        BoundedScalarVariableAttribute(const ScalarVariableAttribute<T> &attributes, const std::optional<T> &min,
+                                       const std::optional<T> &max, const std::optional<std::string> &quantity)
+                : min(min), max(max), quantity(quantity) {}
+
     };
 
     struct IntegerAttribute : BoundedScalarVariableAttribute<int> {
