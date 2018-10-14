@@ -17,7 +17,7 @@ SET(SOURCES
         fmi4cpp/fmi2/xml/ModelVariables.cpp
         fmi4cpp/fmi2/xml/ScalarVariable.cpp
         fmi4cpp/fmi2/xml/TypedScalarVariable.cpp
-        fmi4cpp/fmi2/xml/ScalarVariableAttributes.cpp
+        fmi4cpp/fmi2/xml/ScalarVariableAttribute.cpp
         fmi4cpp/fmi2/xml/DefaultExperiment.cpp
         fmi4cpp/fmi2/xml/ModelStructure.cpp
 

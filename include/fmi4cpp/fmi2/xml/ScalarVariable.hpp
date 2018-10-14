@@ -29,7 +29,7 @@
 
 #include "enums.hpp"
 #include "../fmi2Functions.h"
-#include "ScalarVariableAttributes.hpp"
+#include "ScalarVariableAttribute.hpp"
 
 namespace fmi4cpp::fmi2::xml {
 

@@ -30,7 +30,7 @@
 
 #include "optional_converter.hpp"
 #include <fmi4cpp/fmi2/xml/ModelDescription.hpp>
-#include <fmi4cpp/fmi2/xml/ScalarVariableAttributes.hpp>
+#include <fmi4cpp/fmi2/xml/ScalarVariableAttribute.hpp>
 
 
 using boost::property_tree::ptree;
@@ -162,16 +162,16 @@ namespace {
     }
 
     template<typename T>
-    ScalarVariableAttributes<T> parseScalarVariableAttributes(const ptree &node) {
-        ScalarVariableAttributes<T> attributes;
+    ScalarVariableAttribute<T> parseScalarVariableAttributes(const ptree &node) {
+        ScalarVariableAttribute<T> attributes;
         attributes.start = convert(node.get_optional<T>("<xmlattr>.start"));
         attributes.declaredType = convert(node.get_optional<std::string>("<xmlattr>.declaredType"));
         return attributes;
     }
 
     template<typename T>
-    BoundedScalarVariableAttributes<T> parseBoundedScalarVariableAttributes(const ptree &node) {
-        BoundedScalarVariableAttributes<T> attributes(parseScalarVariableAttributes<T>(node));
+    BoundedScalarVariableAttribute<T> parseBoundedScalarVariableAttributes(const ptree &node) {
+        BoundedScalarVariableAttribute<T> attributes(parseScalarVariableAttributes<T>(node));
         attributes.min = convert(node.get_optional<T>("<xmlattr>.min"));
         attributes.max = convert(node.get_optional<T>("<xmlattr>.max"));
         attributes.quantity = convert(node.get_optional<std::string>("<xmlattr>.quantity"));

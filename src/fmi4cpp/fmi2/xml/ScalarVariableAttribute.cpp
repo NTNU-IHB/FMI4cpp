@@ -22,27 +22,27 @@
  * THE SOFTWARE.
  */
 
-#include <fmi4cpp/fmi2/xml/ScalarVariableAttributes.hpp>
+#include <fmi4cpp/fmi2/xml/ScalarVariableAttribute.hpp>
 
 using namespace fmi4cpp::fmi2::xml;
 
 
-IntegerAttribute::IntegerAttribute(const BoundedScalarVariableAttributes<int> &attributes)
-        : BoundedScalarVariableAttributes<int>(attributes) {}
+IntegerAttribute::IntegerAttribute(const BoundedScalarVariableAttribute<int> &attributes)
+        : BoundedScalarVariableAttribute<int>(attributes) {}
         
         
-RealAttribute::RealAttribute(const BoundedScalarVariableAttributes<double> &attributes)
-        : BoundedScalarVariableAttributes<double>(attributes) {}
+RealAttribute::RealAttribute(const BoundedScalarVariableAttribute<double> &attributes)
+        : BoundedScalarVariableAttribute<double>(attributes) {}
 
 
-StringAttribute::StringAttribute(const ScalarVariableAttributes<std::string> &attributes)
-        : ScalarVariableAttributes<std::string>(attributes) {}
+StringAttribute::StringAttribute(const ScalarVariableAttribute<std::string> &attributes)
+        : ScalarVariableAttribute<std::string>(attributes) {}
 
 
-BooleanAttribute::BooleanAttribute(const ScalarVariableAttributes<bool> &attributes)
-        : ScalarVariableAttributes<bool>(attributes) {}
+BooleanAttribute::BooleanAttribute(const ScalarVariableAttribute<bool> &attributes)
+        : ScalarVariableAttribute<bool>(attributes) {}
         
         
-EnumerationAttribute::EnumerationAttribute(const ScalarVariableAttributes<int> &attributes)
-        : ScalarVariableAttributes<int>(attributes) {}
+EnumerationAttribute::EnumerationAttribute(const ScalarVariableAttribute<int> &attributes)
+        : ScalarVariableAttribute<int>(attributes) {}
         

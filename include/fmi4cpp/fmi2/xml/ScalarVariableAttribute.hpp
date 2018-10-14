@@ -32,40 +32,40 @@
 namespace fmi4cpp::fmi2::xml {
 
     template<typename T>
-    struct ScalarVariableAttributes {
+    struct ScalarVariableAttribute {
 
         std::optional<T> start;
         std::optional<std::string> declaredType;
 
-        ScalarVariableAttributes() {}
+        ScalarVariableAttribute() {}
 
-        ScalarVariableAttributes(const std::optional<T> &start) : start(start) {}
+        ScalarVariableAttribute(const std::optional<T> &start) : start(start) {}
 
-        ScalarVariableAttributes(const std::optional<T> &start, const std::optional<std::string> &declaredType)
+        ScalarVariableAttribute(const std::optional<T> &start, const std::optional<std::string> &declaredType)
                 : start(start), declaredType(declaredType) {}
 
     };
 
 
     template<typename T>
-    struct BoundedScalarVariableAttributes : ScalarVariableAttributes<T> {
+    struct BoundedScalarVariableAttribute : ScalarVariableAttribute<T> {
 
         std::optional<T> min;
         std::optional<T> max;
         std::optional<std::string> quantity;
 
-        explicit BoundedScalarVariableAttributes(const ScalarVariableAttributes<T> &attributes)
-                : ScalarVariableAttributes<T>(attributes) {}
+        explicit BoundedScalarVariableAttribute(const ScalarVariableAttribute<T> &attributes)
+                : ScalarVariableAttribute<T>(attributes) {}
 
     };
 
-    struct IntegerAttribute : BoundedScalarVariableAttributes<int> {
+    struct IntegerAttribute : BoundedScalarVariableAttribute<int> {
 
-        IntegerAttribute(const BoundedScalarVariableAttributes<int> &attributes);
+        IntegerAttribute(const BoundedScalarVariableAttribute<int> &attributes);
 
     };
 
-    struct RealAttribute : BoundedScalarVariableAttributes<double> {
+    struct RealAttribute : BoundedScalarVariableAttribute<double> {
 
         bool reinit;
         bool unbounded;
@@ -77,25 +77,25 @@ namespace fmi4cpp::fmi2::xml {
         std::optional<std::string> unit;
         std::optional<std::string> displayUnit;
 
-        RealAttribute(const BoundedScalarVariableAttributes<double> &attributes);
+        RealAttribute(const BoundedScalarVariableAttribute<double> &attributes);
 
     };
 
-    struct StringAttribute : ScalarVariableAttributes<std::string> {
+    struct StringAttribute : ScalarVariableAttribute<std::string> {
 
-        StringAttribute(const ScalarVariableAttributes<std::string> &attributes);
-
-    };
-
-    struct BooleanAttribute : ScalarVariableAttributes<bool> {
-
-        BooleanAttribute(const ScalarVariableAttributes<bool> &attributes);
+        StringAttribute(const ScalarVariableAttribute<std::string> &attributes);
 
     };
 
-    struct EnumerationAttribute : ScalarVariableAttributes<int> {
+    struct BooleanAttribute : ScalarVariableAttribute<bool> {
 
-        EnumerationAttribute(const ScalarVariableAttributes<int> &attributes);
+        BooleanAttribute(const ScalarVariableAttribute<bool> &attributes);
+
+    };
+
+    struct EnumerationAttribute : ScalarVariableAttribute<int> {
+
+        EnumerationAttribute(const ScalarVariableAttribute<int> &attributes);
 
     };
 
