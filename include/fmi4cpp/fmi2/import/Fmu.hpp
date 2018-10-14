@@ -32,9 +32,10 @@
 
 #include "FmuSlave.hpp"
 #include "FmuResource.hpp"
-#include "ModelExchangeInstance.hpp"
 #include "CoSimulationLibrary.hpp"
 #include "ModelExchangeLibrary.hpp"
+#include "ModelExchangeInstance.hpp"
+
 #include "../xml/ModelDescription.hpp"
 
 using fmi4cpp::fmi2::xml::ModelDescription;
@@ -111,8 +112,8 @@ namespace fmi4cpp::fmi2::import {
 
     private:
 
-        std::shared_ptr<CoSimulationLibrary> lib_;
         std::shared_ptr<FmuResource> resource_;
+        std::shared_ptr<CoSimulationLibrary> lib_;
         std::shared_ptr<xml::CoSimulationModelDescription> modelDescription_;
 
     public:
@@ -132,8 +133,8 @@ namespace fmi4cpp::fmi2::import {
 
     private:
 
-        std::shared_ptr<ModelExchangeLibrary> lib_;
         std::shared_ptr<FmuResource> resource_;
+        std::shared_ptr<ModelExchangeLibrary> lib_;
         std::shared_ptr<xml::ModelExchangeModelDescription> modelDescription_;
 
     public:

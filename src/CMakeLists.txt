@@ -2,6 +2,8 @@
 SET(SOURCES
 
         fmi4cpp/fmi2/import/Fmu.cpp
+        fmi4cpp/fmi2/import/CoSimulationFmu.cpp
+        fmi4cpp/fmi2/import/ModelExchangeFmu.cpp
         fmi4cpp/fmi2/import/FmiLibrary.cpp
         fmi4cpp/fmi2/import/CoSimulationLibrary.cpp
         fmi4cpp/fmi2/import/ModelExchangeLibrary.cpp
