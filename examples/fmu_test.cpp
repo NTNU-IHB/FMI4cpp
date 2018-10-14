@@ -30,23 +30,27 @@
 using namespace std;
 using namespace fmi4cpp::fmi2;
 
-int main() {
+const double stop = 0.01;
+const double stepSize = 1E-3;
 
-    const string fmuPath = string(getenv("TEST_FMUs"))
-                           + "/FMI_2.0/CoSimulation/" + getOs() +
-                           "/20sim/4.6.4.8004/ControlledTemperature/ControlledTemperature.fmu";
+const string fmuPath = string(getenv("TEST_FMUs"))
+                       + "/FMI_2.0/CoSimulation/" + getOs() +
+                       "/20sim/4.6.4.8004/ControlledTemperature/ControlledTemperature.fmu";
+
+
+int main() {
 
     import::Fmu fmu(fmuPath);
     auto cs_fmu = fmu.asCoSimulationFmu();
 
     auto md = cs_fmu->getModelDescription();
 
-    auto var = md->modelVariables().getByValueReference(47).asReal();
+    auto var = md->modelVariables()->getByValueReference(47).asReal();
     cout << "Name=" << var.name() << ", start=" << var.start().value_or(0) << endl;
 
     auto slave1 = cs_fmu->newInstance();
     auto slave2 = cs_fmu->newInstance();
-    
+
     cout << "modelIdentifier= " << slave1->getModelDescription()->modelIdentifier() << endl;
 
     slave1->init();
@@ -57,26 +61,16 @@ int main() {
                                      md->getVariableByName("Temperature_Room").valueReference()};
 
     double t = 0;
-    double stop = 0.1;
-    double stepSize = 1E-3;
-    fmi2Status status;
     while ((t = slave1->getSimulationTime()) <= stop) {
-        status = slave1->doStep(stepSize);
-        if (status != fmi2OK) {
-            break;
-        }
-        status = slave1->readReal(vr, ref);
-        if (status != fmi2OK) {
-            break;
-        }
+
+        if (slave1->doStep(stepSize) != fmi2OK) { break; }
+        if (slave1->readReal(vr, ref) != fmi2OK) { break; }
         cout << "t=" << t << ", Temperature_Reference=" << ref[0] << ", Temperature_Room=" << ref[1] << endl;
+
     }
 
-    status = slave1->terminate();
-    cout << "FMU '" << fmu.modelName() << "' terminated with status: " << to_string(status) << endl;
-
-    status = slave2->terminate();
-    cout << "FMU '" << fmu.modelName() << "' terminated with status: " << to_string(status) << endl;
+    cout << "FMU '" << fmu.modelName() << "' terminated with status: " << to_string(slave1->terminate()) << endl;
+    cout << "FMU '" << fmu.modelName() << "' terminated with status: " << to_string(slave2->terminate()) << endl;
 
     return 0;
 

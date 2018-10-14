@@ -59,8 +59,8 @@ namespace fmi4cpp::fmi2::xml {
 
         std::vector<ScalarVariable>::const_iterator cbegin() const;
         std::vector<ScalarVariable>::const_iterator cend() const;
-    };
 
+    };
 
 }
 

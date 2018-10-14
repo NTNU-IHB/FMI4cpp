@@ -29,11 +29,12 @@ add_library(FMI4cpp::${FMI4CPP_LIB} ALIAS fmi4cpp)
 
 target_include_directories(${FMI4CPP_LIB}
     PUBLIC
-        ${Boost_INCLUDE_DIRS}
         $<INSTALL_INTERFACE:include>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>
-    PRIVATE
+    INTERFACE
+        ${Boost_INCLUDE_DIRS}
         ${LIBZIP_INCLUDE_DIRS}
+    PRIVATE
         ${CURRENT_CMAKE_SOURCE_DIR}/../src
 )
 

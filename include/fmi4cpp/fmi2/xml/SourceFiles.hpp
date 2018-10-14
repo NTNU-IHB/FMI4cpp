@@ -27,9 +27,6 @@
 
 #include <string>
 #include <vector>
-#include <boost/property_tree/ptree.hpp>
-
-using boost::property_tree::ptree;
 
 namespace fmi4cpp::fmi2::xml {
 

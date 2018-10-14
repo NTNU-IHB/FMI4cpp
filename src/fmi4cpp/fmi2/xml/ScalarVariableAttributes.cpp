@@ -29,15 +29,10 @@ using namespace fmi4cpp::fmi2::xml;
 
 IntegerAttribute::IntegerAttribute(const BoundedScalarVariableAttributes<int> &attributes)
         : BoundedScalarVariableAttributes<int>(attributes) {}
-
-
-RealAttribute::RealAttribute(const BoundedScalarVariableAttributes<double> &attributes,
-                             const bool reinit, const bool unbounded, const bool relativeQuantity,
-                             const std::optional<double> &nominal, const std::optional<size_t> &derivative,
-                             const std::optional<std::string> &unit, const std::optional<std::string> &displayUnit)
-        : BoundedScalarVariableAttributes<double>(attributes), reinit(reinit), unbounded(unbounded),
-          relativeQuantity(relativeQuantity), nominal(nominal), derivative(derivative), unit(unit),
-          displayUnit(displayUnit) {}
+        
+        
+RealAttribute::RealAttribute(const BoundedScalarVariableAttributes<double> &attributes)
+        : BoundedScalarVariableAttributes<double>(attributes) {}
 
 
 StringAttribute::StringAttribute(const ScalarVariableAttributes<std::string> &attributes)
@@ -46,8 +41,8 @@ StringAttribute::StringAttribute(const ScalarVariableAttributes<std::string> &at
 
 BooleanAttribute::BooleanAttribute(const ScalarVariableAttributes<bool> &attributes)
         : ScalarVariableAttributes<bool>(attributes) {}
-
-
+        
+        
 EnumerationAttribute::EnumerationAttribute(const ScalarVariableAttributes<int> &attributes)
         : ScalarVariableAttributes<int>(attributes) {}
-
+        

@@ -28,15 +28,11 @@
 #include <memory>
 #include <string>
 #include <optional>
-#include <boost/property_tree/ptree.hpp>
-#include <boost/property_tree/xml_parser.hpp>
 
 #include "ModelStructure.hpp"
 #include "ModelVariables.hpp"
 #include "DefaultExperiment.hpp"
 #include "FmuAttributes.hpp"
-
-using boost::property_tree::ptree;
 
 namespace fmi4cpp::fmi2::xml {
 
@@ -57,8 +53,8 @@ namespace fmi4cpp::fmi2::xml {
 
         size_t numberOfEventIndicators_;
 
-        ModelVariables modelVariables_;
-        ModelStructure modelStructure_;
+        std::shared_ptr<ModelVariables> modelVariables_;
+        std::shared_ptr<ModelStructure> modelStructure_;
 
         std::optional<DefaultExperiment> defaultExperiment_;
 
@@ -75,8 +71,8 @@ namespace fmi4cpp::fmi2::xml {
                              const std::optional<std::string> &generationDateAndTime,
                              const std::optional<std::string> &variableNamingConvention,
                              const size_t numberOfEventIndicators,
-                             const ModelVariables &modelVariables,
-                             const ModelStructure &modelStructure,
+                             const std::shared_ptr<ModelVariables> &modelVariables,
+                             const std::shared_ptr<ModelStructure> &modelStructure,
                              const std::optional<DefaultExperiment> defaultExperiment);
 
         std::string guid() const;
@@ -105,9 +101,9 @@ namespace fmi4cpp::fmi2::xml {
 
         size_t numberOfContinuousStates() const;
 
-        ModelVariables &modelVariables();
+        const std::shared_ptr<ModelVariables> &modelVariables() const;
 
-        const ModelStructure &modelStructure() const;
+        const std::shared_ptr<ModelStructure> &modelStructure() const;
 
         std::optional<DefaultExperiment> defaultExperiment() const;
 

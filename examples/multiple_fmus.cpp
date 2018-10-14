@@ -22,6 +22,7 @@
  * THE SOFTWARE.
  */
 
+#include <assert.h>
 #include <iostream>
 #include <fmi4cpp/tools/os_util.hpp>
 #include <fmi4cpp/fmi2/fmi4cpp.hpp>
@@ -29,17 +30,16 @@
 using namespace std;
 using namespace fmi4cpp::fmi2;
 
+const string fmu_path1 = string(getenv("TEST_FMUs"))
+                         + "/FMI_2.0/CoSimulation/" + getOs() +
+                         "/20sim/4.6.4.8004/TorsionBar/TorsionBar.fmu";
+
+const string fmu_path2 = string(getenv("TEST_FMUs"))
+                         + "/FMI_2.0/CoSimulation/" + getOs() +
+                         "/20sim/4.6.4.8004/ControlledTemperature/ControlledTemperature.fmu";
+
 int main() {
-
-    const string fmu_path1 = string(getenv("TEST_FMUs"))
-                            + "/FMI_2.0/CoSimulation/" + getOs() +
-                            "/20sim/4.6.4.8004/TorsionBar/TorsionBar.fmu";
-
-    const string fmu_path2 = string(getenv("TEST_FMUs"))
-                             + "/FMI_2.0/CoSimulation/" + getOs() +
-                             "/20sim/4.6.4.8004/ControlledTemperature/ControlledTemperature.fmu";
-
-
+    
     import::Fmu fmu1(fmu_path1);
     import::Fmu fmu2(fmu_path2);
     

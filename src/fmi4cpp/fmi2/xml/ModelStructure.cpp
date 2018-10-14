@@ -22,7 +22,6 @@
  * THE SOFTWARE.
  */
 
-#include <boost/optional.hpp>
 #include <fmi4cpp/fmi2/xml/ModelStructure.hpp>
 
 using fmi4cpp::fmi2::xml::Unknown;

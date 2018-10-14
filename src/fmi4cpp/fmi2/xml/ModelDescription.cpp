@@ -38,8 +38,8 @@ ModelDescriptionBase::ModelDescriptionBase(const std::string &guid,
                                            const std::optional<std::string> &generationDateAndTime,
                                            const std::optional<std::string> &variableNamingConvention,
                                            const size_t numberOfEventIndicators,
-                                           const ModelVariables &modelVariables,
-                                           const ModelStructure &modelStructure,
+                                           const std::shared_ptr<ModelVariables> &modelVariables,
+                                           const std::shared_ptr<ModelStructure> &modelStructure,
                                            const std::optional<DefaultExperiment> defaultExperiment)
         : guid_(guid), fmiVersion_(fmiVersion), modelName_(modelName), description_(description),
         version_(version), author_(author), license_(license), copyright_(copyright), generationTool_(generationTool),
@@ -96,14 +96,14 @@ size_t ModelDescriptionBase::numberOfEventIndicators() const {
 }
 
 size_t ModelDescriptionBase::numberOfContinuousStates() const {
-    return modelStructure_.derivatives().size();
+    return modelStructure_->derivatives().size();
 }
-
-ModelVariables &ModelDescriptionBase::modelVariables() {
+ 
+const std::shared_ptr<ModelVariables> &ModelDescriptionBase::modelVariables() const {
     return modelVariables_;
 }
 
-const ModelStructure &ModelDescriptionBase::modelStructure() const {
+const std::shared_ptr<ModelStructure> &ModelDescriptionBase::modelStructure() const {
     return modelStructure_;
 }
 
@@ -112,11 +112,11 @@ std::optional<DefaultExperiment> ModelDescriptionBase::defaultExperiment() const
 }
 
 const ScalarVariable &ModelDescriptionBase::getVariableByName(const std::string &name) const {
-    return modelVariables_.getByName(name);
+    return modelVariables_->getByName(name);
 }
 
 fmi2ValueReference ModelDescriptionBase::getValueReference(const std::string &name) const {
-    return getVariableByName(name).valueReference();
+    return modelVariables_->getByName(name).valueReference();
 }
 
 ModelDescription::ModelDescription(const ModelDescriptionBase &base,

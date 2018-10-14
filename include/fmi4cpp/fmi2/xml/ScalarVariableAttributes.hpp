@@ -34,11 +34,8 @@ namespace fmi4cpp::fmi2::xml {
     template<typename T>
     struct ScalarVariableAttributes {
 
-        const std::optional<T> start;
-        const std::optional<std::string> declaredType;
-
-        ScalarVariableAttributes(const std::optional<T> &start, const std::optional<std::string> &declaredType)
-                : start(start), declaredType(declaredType) {}
+        std::optional<T> start;
+        std::optional<std::string> declaredType;
 
     };
 
@@ -46,17 +43,12 @@ namespace fmi4cpp::fmi2::xml {
     template<typename T>
     struct BoundedScalarVariableAttributes : ScalarVariableAttributes<T> {
 
-        const std::optional<T> min;
-        const std::optional<T> max;
-        const std::optional<std::string> quantity;
+        std::optional<T> min;
+        std::optional<T> max;
+        std::optional<std::string> quantity;
 
-
-        BoundedScalarVariableAttributes(const ScalarVariableAttributes<T> &attributes,
-                                        const std::optional<T> &min,
-                                        const std::optional<T> &max,
-                                        const std::optional<std::string> &quantity)
-                : ScalarVariableAttributes<T>(attributes), min(min), max(max), quantity(quantity) {}
-
+        explicit BoundedScalarVariableAttributes(const ScalarVariableAttributes<T> &attributes)
+                : ScalarVariableAttributes(attributes) {}
 
     };
 
@@ -68,21 +60,17 @@ namespace fmi4cpp::fmi2::xml {
 
     struct RealAttribute : BoundedScalarVariableAttributes<double> {
 
-        const bool reinit;
-        const bool unbounded;
-        const bool relativeQuantity;
+        bool reinit;
+        bool unbounded;
+        bool relativeQuantity;
 
-        const std::optional<double> nominal;
-        const std::optional<size_t> derivative;
+        std::optional<double> nominal;
+        std::optional<size_t> derivative;
 
-        const std::optional<std::string> unit;
-        const std::optional<std::string> displayUnit;
+        std::optional<std::string> unit;
+        std::optional<std::string> displayUnit;
 
-        RealAttribute(const BoundedScalarVariableAttributes<double> &attribute, const bool reinit,
-                      const bool unbounded,
-                      const bool relativeQuantity, const std::optional<double> &nominal,
-                      const std::optional<size_t> &derivative, const std::optional<std::string> &unit,
-                      const std::optional<std::string> &displayUnit);
+        RealAttribute(const BoundedScalarVariableAttributes<double> &attributes);
 
     };
 

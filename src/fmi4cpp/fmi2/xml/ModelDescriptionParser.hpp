@@ -26,9 +26,11 @@
 #define FMI4CPP_MODELDESCRIPTIONPARSER_HPP
 
 #include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/xml_parser.hpp>
 
 #include "optional_converter.hpp"
 #include <fmi4cpp/fmi2/xml/ModelDescription.hpp>
+#include <fmi4cpp/fmi2/xml/ScalarVariableAttributes.hpp>
 
 
 using boost::property_tree::ptree;
@@ -95,7 +97,7 @@ namespace {
 
     }
 
-    ModelStructure parseModelStructure(const ptree &node) {
+    std::unique_ptr<ModelStructure> parseModelStructure(const ptree &node) {
 
         std::vector<Unknown> outputs;
         std::vector<Unknown> derivatives;
@@ -111,7 +113,7 @@ namespace {
             }
         }
 
-        return ModelStructure(outputs, derivatives, initialUnknowns);
+        return std::make_unique<ModelStructure>(outputs, derivatives, initialUnknowns);
 
     }
 
@@ -161,18 +163,19 @@ namespace {
 
     template<typename T>
     ScalarVariableAttributes<T> parseScalarVariableAttributes(const ptree &node) {
-        auto start = convert(node.get_optional<T>("<xmlattr>.start"));
-        auto declaredType = convert(node.get_optional<std::string>("<xmlattr>.declaredType"));
-        return ScalarVariableAttributes<T>(start, declaredType);
+        ScalarVariableAttributes<T> attributes;
+        attributes.start = convert(node.get_optional<T>("<xmlattr>.start"));
+        attributes.declaredType = convert(node.get_optional<std::string>("<xmlattr>.declaredType"));
+        return attributes;
     }
 
     template<typename T>
     BoundedScalarVariableAttributes<T> parseBoundedScalarVariableAttributes(const ptree &node) {
-        auto attributes = parseScalarVariableAttributes<T>(node);
-        auto min = convert(node.get_optional<T>("<xmlattr>.min"));
-        auto max = convert(node.get_optional<T>("<xmlattr>.max"));
-        auto quantity = convert(node.get_optional<std::string>("<xmlattr>.quantity"));
-        return BoundedScalarVariableAttributes<T>(attributes, min, max, quantity);
+        BoundedScalarVariableAttributes<T> attributes(parseScalarVariableAttributes<T>(node));
+        attributes.min = convert(node.get_optional<T>("<xmlattr>.min"));
+        attributes.max = convert(node.get_optional<T>("<xmlattr>.max"));
+        attributes.quantity = convert(node.get_optional<std::string>("<xmlattr>.quantity"));
+        return attributes;
     }
 
     IntegerAttribute parseIntegerAttribute(const ptree &node) {
@@ -180,23 +183,14 @@ namespace {
     }
 
     RealAttribute parseRealAttribute(const ptree &node) {
-
-        auto attributes = parseBoundedScalarVariableAttributes<double>(node);
-
-        auto nominal = convert(node.get_optional<double>("<xmlattr>.nominal"));
-
-        auto unit = convert(node.get_optional<std::string>("<xmlattr>.unit"));
-        auto displayUnit = convert(node.get_optional<std::string>("<xmlattr>.displayUnit"));
-
-        auto derivative = convert(node.get_optional<unsigned int>("<xmlattr>.derivative"));
-
-        auto reinit = node.get<bool>("<xmlattr>.reinit", false);
-        auto unbounded = node.get<bool>("<xmlattr>.unbounded", false);
-        auto relativeQuantity = node.get<bool>("<xmlattr>.relativeQuantity", false);
-
-        return RealAttribute(attributes, reinit, unbounded, relativeQuantity, nominal,
-                             derivative, unit, displayUnit);
-
+        RealAttribute attributes(parseBoundedScalarVariableAttributes<double>(node));
+        attributes.nominal = convert(node.get_optional<double>("<xmlattr>.nominal"));
+        attributes.unit = convert(node.get_optional<std::string>("<xmlattr>.unit"));
+        attributes.derivative = convert(node.get_optional<unsigned int>("<xmlattr>.derivative"));
+        attributes.reinit = node.get<bool>("<xmlattr>.reinit", false);
+        attributes.unbounded = node.get<bool>("<xmlattr>.unbounded", false);
+        attributes.relativeQuantity = node.get<bool>("<xmlattr>.relativeQuantity", false);
+        return attributes;
     }
 
     StringAttribute parseStringAttribute(const ptree &node) {
@@ -228,20 +222,15 @@ namespace {
 
         for (const ptree::value_type &v : node) {
             if (v.first == INTEGER_TYPE) {
-                auto attribute = parseIntegerAttribute(v.second);
-                return ScalarVariable(base, attribute);
+                return ScalarVariable(base, parseIntegerAttribute(v.second));
             } else if (v.first == REAL_TYPE) {
-                auto attribute = parseRealAttribute(v.second);
-                return ScalarVariable(base, attribute);
+                return ScalarVariable(base, parseRealAttribute(v.second));
             } else if (v.first == STRING_TYPE) {
-                auto attribute = parseStringAttribute(v.second);
-                return ScalarVariable(base, attribute);
+                return ScalarVariable(base, parseStringAttribute(v.second));
             } else if (v.first == BOOLEAN_TYPE) {
-                auto attribute = parseBooleanAttribute(v.second);
-                return ScalarVariable(base, attribute);
+                return ScalarVariable(base, parseBooleanAttribute(v.second));
             } else if (v.first == ENUMERATION_TYPE) {
-                auto attribute = parseEnumerationAttribute(v.second);
-                return ScalarVariable(base, attribute);
+                return ScalarVariable(base, parseEnumerationAttribute(v.second));
             }
         }
 
@@ -249,7 +238,7 @@ namespace {
 
     }
 
-    ModelVariables parseModelVariables(const ptree &node) {
+    std::unique_ptr<ModelVariables> parseModelVariables(const ptree &node) {
         std::vector<ScalarVariable> variables;
         for (const ptree::value_type &v : node) {
             if (v.first == "ScalarVariable") {
@@ -257,7 +246,7 @@ namespace {
                 variables.push_back(var);
             }
         }
-        return ModelVariables(variables);
+        return std::make_unique<ModelVariables>(variables);
     }
 
 }
@@ -285,8 +274,8 @@ namespace fmi4cpp::fmi2::xml {
         auto variableNamingConvention = root.get<std::string>("<xmlattr>.variableNamingConvention",
                                                               DEFAULT_VARIABLE_NAMING_CONVENTION);
 
-        ModelVariables modelVariables;
-        ModelStructure modelStructure;
+        std::shared_ptr<ModelVariables> modelVariables;
+        std::shared_ptr<ModelStructure> modelStructure;
         std::optional<DefaultExperiment> defaultExperiment;
         std::optional<CoSimulationAttributes> coSimulation;
         std::optional<ModelExchangeAttributes> modelExchange;
@@ -300,9 +289,9 @@ namespace fmi4cpp::fmi2::xml {
             } else if (v.first == "DefaultExperiment") {
                 defaultExperiment = parseDefaultExperiment(v.second);
             } else if (v.first == "ModelVariables") {
-                modelVariables = parseModelVariables(v.second);
+                modelVariables = std::move(parseModelVariables(v.second));
             } else if (v.first == "ModelStructure") {
-                modelStructure = parseModelStructure(v.second);
+                modelStructure = std::move(parseModelStructure(v.second));
             }
 
         }
