@@ -31,72 +31,68 @@
 
 namespace fmi4cpp::fmi2::xml {
 
-    class FmuAttributes {
+    struct FmuAttributes {
 
-    private:
+        bool canGetAndSetFMUstate;
+        bool canSerializeFMUstate;
+        bool needsExecutionTool;
+        bool canNotUseMemoryManagementFunctions;
+        bool canBeInstantiatedOnlyOncePerProcess;
+        bool providesDirectionalDerivative;
 
-        bool canGetAndSetFMUstate_;
-        bool canSerializeFMUstate_;
-        bool needsExecutionTool_;
-        bool canNotUseMemoryManagementFunctions_;
-        bool canBeInstantiatedOnlyOncePerProcess_;
-        bool providesDirectionalDerivative_;
+        SourceFiles sourceFiles;
+        std::string modelIdentifier;
 
-        SourceFiles sourceFiles_;
-        std::string modelIdentifier_;
-
-    public:
+        FmuAttributes() {}
 
         FmuAttributes(const std::string &modelIdentifier, const bool canGetAndSetFMUstate,
                       const bool canSerializeFMUstate, const bool needsExecutionTool,
                       const bool canNotUseMemoryManagementFunctions, const bool canBeInstantiatedOnlyOncePerProcess,
-                      const bool providesDirectionalDerivative, const SourceFiles &sourceFiles);
-
-        const SourceFiles &sourceFiles() const;
-        std::string modelIdentifier() const;
-
-        bool canGetAndSetFMUstate() const;
-        bool canSerializeFMUstate() const;
-        bool needsExecutionTool() const;
-        bool canNotUseMemoryManagementFunctions() const;
-        bool canBeInstantiatedOnlyOncePerProcess() const;
-        bool providesDirectionalDerivative() const;
+                      const bool providesDirectionalDerivative, const SourceFiles &sourceFiles)
+                : modelIdentifier(modelIdentifier),
+                  canGetAndSetFMUstate(canGetAndSetFMUstate),
+                  canSerializeFMUstate(canSerializeFMUstate),
+                  needsExecutionTool(needsExecutionTool),
+                  canNotUseMemoryManagementFunctions(canNotUseMemoryManagementFunctions),
+                  canBeInstantiatedOnlyOncePerProcess(canBeInstantiatedOnlyOncePerProcess),
+                  providesDirectionalDerivative(providesDirectionalDerivative),
+                  sourceFiles(sourceFiles) {};
 
     };
 
-    class CoSimulationAttributes : public FmuAttributes {
+    struct CoSimulationAttributes : FmuAttributes {
 
-    private:
-        bool canInterpolateInputs_;
-        bool canRunAsynchronuously_;
-        bool canHandleVariableCommunicationStepSize_;
+        bool canInterpolateInputs;
+        bool canRunAsynchronuously;
+        bool canHandleVariableCommunicationStepSize;
 
-        size_t maxOutputDerivativeOrder_;
+        size_t maxOutputDerivativeOrder;
 
-    public:
+        CoSimulationAttributes() {}
+
+        CoSimulationAttributes(const FmuAttributes &attributes) : FmuAttributes(attributes) {}
 
         CoSimulationAttributes(const FmuAttributes &attributes, const bool canInterpolateInputs,
                                const bool canRunAsynchronuously, const bool canHandleVariableCommunicationStepSize,
-                               const size_t maxOutputDerivativeOrder);
-
-        bool canInterpolateInputs() const;
-        bool canRunAsynchronuously() const;
-        bool canHandleVariableCommunicationStepSize() const;
-
-        size_t maxOutputDerivativeOrder() const;
+                               const size_t maxOutputDerivativeOrder)
+                : FmuAttributes(attributes),
+                  canInterpolateInputs(canInterpolateInputs),
+                  canRunAsynchronuously(canRunAsynchronuously),
+                  canHandleVariableCommunicationStepSize(canHandleVariableCommunicationStepSize),
+                  maxOutputDerivativeOrder(maxOutputDerivativeOrder) {};
 
     };
 
-    class ModelExchangeAttributes : public FmuAttributes {
+    struct ModelExchangeAttributes : FmuAttributes {
 
-    private:
-        bool completedIntegratorStepNotNeeded_;
+        bool completedIntegratorStepNotNeeded;
 
-    public:
-        ModelExchangeAttributes(const FmuAttributes &attributes,
-                                const bool completedIntegratorStepNotNeeded);
+        ModelExchangeAttributes() {}
 
-        bool completedIntegratorStepNotNeeded() const;
+        ModelExchangeAttributes(const FmuAttributes &attributes) : FmuAttributes(attributes) {}
+
+        ModelExchangeAttributes(const FmuAttributes &attributes, const bool completedIntegratorStepNotNeeded)
+                : FmuAttributes(attributes), completedIntegratorStepNotNeeded(completedIntegratorStepNotNeeded) {};
 
     };
 

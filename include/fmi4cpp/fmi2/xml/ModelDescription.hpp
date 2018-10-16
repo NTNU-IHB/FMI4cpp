@@ -150,36 +150,36 @@ namespace fmi4cpp::fmi2::xml {
         SpecificModelDescription(const ModelDescriptionBase &base, const T &attributes)
                 : ModelDescriptionBase(base), attributes_(attributes) {}
 
-        SourceFiles sourceFiles() const {
-            return attributes_.sourceFiles();
+        const SourceFiles &sourceFiles() const {
+            return attributes_.sourceFiles;
         }
 
         std::string modelIdentifier() const {
-            return attributes_.modelIdentifier();
+            return attributes_.modelIdentifier;
         }
 
         bool canGetAndSetFMUstate() const {
-            return attributes_.canGetAndSetFMUstate();
+            return attributes_.canGetAndSetFMUstate;
         }
 
         bool canSerializeFMUstate() const {
-            return attributes_.canSerializeFMUstate();
+            return attributes_.canSerializeFMUstate;
         }
 
         bool needsExecutionTool() const {
-            return attributes_.needsExecutionTool();
+            return attributes_.needsExecutionTool;
         }
 
         bool canNotUseMemoryManagementFunctions() const {
-            return attributes_.canNotUseMemoryManagementFunctions();
+            return attributes_.canNotUseMemoryManagementFunctions;
         }
 
         bool canBeInstantiatedOnlyOncePerProcess() const {
-            return attributes_.canBeInstantiatedOnlyOncePerProcess();
+            return attributes_.canBeInstantiatedOnlyOncePerProcess;
         }
 
         bool providesDirectionalDerivative() const {
-            return attributes_.providesDirectionalDerivative();
+            return attributes_.providesDirectionalDerivative;
         }
 
     };
