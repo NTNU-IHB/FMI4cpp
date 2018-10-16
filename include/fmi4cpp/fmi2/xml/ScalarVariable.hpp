@@ -25,12 +25,11 @@
 #ifndef FMI4CPP_SCALARVARIABLE_HPP
 #define FMI4CPP_SCALARVARIABLE_HPP
 
-#include <memory>
 #include <optional>
 
 #include "enums.hpp"
 #include "../fmi2Functions.h"
-#include "ScalarVariableAttributes.hpp"
+#include "ScalarVariableAttribute.hpp"
 
 namespace fmi4cpp::fmi2::xml {
 
@@ -115,6 +114,16 @@ namespace fmi4cpp::fmi2::xml {
 
         std::string typeName() const;
 
+        bool isInteger() const;
+
+        bool isReal() const;
+
+        bool isString() const;
+
+        bool isBoolean() const;
+
+        bool isEnumeration() const;
+
         IntegerVariable asInteger() const;
 
         RealVariable asReal() const;
@@ -124,7 +133,6 @@ namespace fmi4cpp::fmi2::xml {
         BooleanVariable asBoolean() const;
 
         EnumerationVariable asEnumeration() const;
-
 
     };
 

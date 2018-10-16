@@ -46,6 +46,8 @@ namespace fmi4cpp::fmi2::xml {
         explicit ModelVariables(const std::vector<ScalarVariable> &variables);
 
         size_t size() const;
+        
+        const std::vector<ScalarVariable> variables() const;
 
         const ScalarVariable &operator[](size_t index) const;
         const ScalarVariable &getByName(const std::string &name) const;
@@ -57,10 +59,10 @@ namespace fmi4cpp::fmi2::xml {
         std::vector<ScalarVariable>::iterator begin();
         std::vector<ScalarVariable>::iterator end();
 
-        std::vector<ScalarVariable>::const_iterator cbegin() const;
-        std::vector<ScalarVariable>::const_iterator cend() const;
-    };
+        std::vector<ScalarVariable>::const_iterator begin() const;
+        std::vector<ScalarVariable>::const_iterator end() const;
 
+    };
 
 }
 

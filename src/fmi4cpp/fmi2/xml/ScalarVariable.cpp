@@ -22,9 +22,8 @@
  * THE SOFTWARE.
  */
 
-#include <stdexcept>
-
 #include <fmi4cpp/fmi2/xml/ScalarVariable.hpp>
+#include <fmi4cpp/fmi2/xml/TypedScalarVariable.hpp>
 
 using namespace fmi4cpp::fmi2::xml;
 
@@ -105,6 +104,48 @@ std::string ScalarVariable::typeName() const {
     } else if (enumeration_) {
         return ENUMERATION_TYPE;
     } else {
-        throw std::runtime_error("FATAL: No attribute set for ScalarVariable!");
+        return "Unknown";
     }
 }
+
+
+IntegerVariable ScalarVariable::asInteger() const {
+    return IntegerVariable(*this, *integer_);
+}
+
+RealVariable ScalarVariable::asReal() const {
+    return RealVariable(*this, *real_);
+}
+
+StringVariable ScalarVariable::asString() const {
+    return StringVariable(*this, *string_);
+}
+
+BooleanVariable ScalarVariable::asBoolean() const {
+    return BooleanVariable(*this, *boolean_);
+}
+
+EnumerationVariable ScalarVariable::asEnumeration() const {
+    return EnumerationVariable(*this, *enumeration_);
+}
+
+bool ScalarVariable::isInteger() const {
+    return integer_.has_value();
+}
+
+bool ScalarVariable::isReal() const {
+    return real_.has_value();
+}
+
+bool ScalarVariable::isString() const {
+    return string_.has_value();
+}
+
+bool ScalarVariable::isBoolean() const {
+    return boolean_.has_value();
+}
+
+bool ScalarVariable::isEnumeration() const {
+    return enumeration_.has_value();
+}
+

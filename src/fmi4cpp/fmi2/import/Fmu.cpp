@@ -43,10 +43,6 @@
 using namespace std;
 using namespace fmi4cpp::fmi2;
 
-using fmi4cpp::fmi2::import::Fmu;
-using fmi4cpp::fmi2::import::CoSimulationFmu;
-using fmi4cpp::fmi2::import::ModelExchangeFmu;
-
 namespace fs = std::experimental::filesystem;
 
 namespace {
@@ -66,7 +62,7 @@ namespace {
 
 }
 
-Fmu::Fmu(const string &fmuFile) {
+import::Fmu::Fmu(const string &fmuFile) {
 
     const string fmuName = fs::path(fmuFile).stem().string();
     fs::path tmpPath(fs::temp_directory_path() /= fs::path("fmi4cpp_" + fmuName + "_" + generate_simple_id()));
@@ -89,97 +85,28 @@ Fmu::Fmu(const string &fmuFile) {
 }
 
 
-const string Fmu::getModelDescriptionXml() const {
+const string import::Fmu::getModelDescriptionXml() const {
     ifstream stream(resource_->getModelDescriptionPath());
     return string((istreambuf_iterator<char>(stream)), istreambuf_iterator<char>());
 }
 
-shared_ptr<ModelDescription> Fmu::getModelDescription() const {
+shared_ptr<ModelDescription> import::Fmu::getModelDescription() const {
     return modelDescription_;
 }
 
-bool Fmu::supportsModelExchange() const {
+bool import::Fmu::supportsModelExchange() const {
     return modelDescription_->supportsModelExchange();
 }
 
-bool Fmu::supportsCoSimulation() const {
+bool import::Fmu::supportsCoSimulation() const {
     return modelDescription_->supportsCoSimulation();
 }
 
-Fmu::~Fmu() {
+import::Fmu::~Fmu() {
 //#if  FMI4CPP_DEBUG_LOGGING_ENABLED
 //    cout << "~Fmu()" << endl;
 //#endif
 }
 
-unique_ptr<CoSimulationFmu> Fmu::asCoSimulationFmu() const {
-    shared_ptr<CoSimulationModelDescription> cs = std::move(modelDescription_->asCoSimulationModelDescription());
-    return make_unique<CoSimulationFmu>(resource_, cs);
-}
 
-unique_ptr<ModelExchangeFmu> Fmu::asModelExchangeFmu() const {
-    shared_ptr<ModelExchangeModelDescription> me = std::move(modelDescription_->asModelExchangeModelDescription());
-    return make_unique<ModelExchangeFmu>(resource_, me);
-}
-
-import::CoSimulationFmu::CoSimulationFmu(const shared_ptr<import::FmuResource> &resource,
-                                         const shared_ptr<xml::CoSimulationModelDescription> &md)
-        : resource_(resource), modelDescription_(md) {}
-
-shared_ptr<xml::CoSimulationModelDescription> CoSimulationFmu::getModelDescription() const {
-    return modelDescription_;
-}
-
-unique_ptr<import::FmuSlave> CoSimulationFmu::newInstance(const bool visible, const bool loggingOn) {
-    shared_ptr<import::CoSimulationLibrary> lib = nullptr;
-    string modelIdentifier = modelDescription_->modelIdentifier();
-    if (modelDescription_->canBeInstantiatedOnlyOncePerProcess()) {
-        lib = make_shared<CoSimulationLibrary>(modelIdentifier, resource_);
-    } else {
-        if (lib_ == nullptr) {
-            lib_ = make_shared<CoSimulationLibrary>(modelIdentifier, resource_);
-        }
-        lib = lib_;
-    }
-    fmi2Component c = lib->instantiate(modelIdentifier, fmi2CoSimulation, guid(),
-                                       resource_->getResourcePath(), visible, loggingOn);
-    return make_unique<CoSimulationSlave>(c, lib, modelDescription_);
-}
-
-import::CoSimulationFmu::~CoSimulationFmu() {
-//#if FMI4CPP_DEBUG_LOGGING_ENABLED
-//    cout << "~CoSimulationFmu()" << endl;
-//#endif
-}
-
-import::ModelExchangeFmu::ModelExchangeFmu(const shared_ptr<import::FmuResource> &resource,
-                                           const shared_ptr<xml::ModelExchangeModelDescription> &md)
-        : resource_(resource), modelDescription_(md) {}
-
-
-shared_ptr<xml::ModelExchangeModelDescription> ModelExchangeFmu::getModelDescription() const {
-    return modelDescription_;
-}
-
-std::unique_ptr<import::ModelExchangeInstance> ModelExchangeFmu::newInstance(const bool visible, const bool loggingOn) {
-    shared_ptr<ModelExchangeLibrary> lib = nullptr;
-    string modelIdentifier = modelDescription_->modelIdentifier();
-    if (modelDescription_->canBeInstantiatedOnlyOncePerProcess()) {
-        lib = make_shared<ModelExchangeLibrary>(modelIdentifier, resource_);
-    } else {
-        if (lib_ == nullptr) {
-            lib_ = make_shared<ModelExchangeLibrary>(modelIdentifier, resource_);
-        }
-        lib = lib_;
-    }
-    fmi2Component c = lib->instantiate(modelIdentifier, fmi2ModelExchange, guid(),
-                                       resource_->getResourcePath(), visible, loggingOn);
-    return make_unique<ModelExchangeInstance>(c, lib, modelDescription_);
-}
-
-import::ModelExchangeFmu::~ModelExchangeFmu() {
-//#if  FMI4CPP_DEBUG_LOGGING_ENABLED
-//    cout << "~ModelExchangeFmu()" << endl;
-//#endif
-}
 

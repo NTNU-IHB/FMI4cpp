@@ -54,8 +54,8 @@ BOOST_AUTO_TEST_CASE(ControlledTemperature_test1) {
     BOOST_CHECK_EQUAL(true, md->supportsCoSimulation());
     BOOST_CHECK_EQUAL(false, md->supportsModelExchange());
 
-    BOOST_CHECK_EQUAL(120, md->modelVariables().size());
-    BOOST_CHECK_EQUAL(120, md_cs->modelVariables().size());
+    BOOST_CHECK_EQUAL(120, md->modelVariables()->size());
+    BOOST_CHECK_EQUAL(120, md_cs->modelVariables()->size());
 
     const RealVariable& heatCapacity1 = md->getVariableByName("HeatCapacity1.T0").asReal();
     BOOST_CHECK_EQUAL(1, heatCapacity1.valueReference());
@@ -66,7 +66,7 @@ BOOST_AUTO_TEST_CASE(ControlledTemperature_test1) {
     BOOST_CHECK_EQUAL("starting temperature", heatCapacity1.description());
     BOOST_CHECK_EQUAL(false, heatCapacity1.quantity().has_value());
 
-    auto& thermalConductor = md->modelVariables().getByValueReference(12);
+    auto& thermalConductor = md->modelVariables()->getByValueReference(12);
     BOOST_CHECK_EQUAL("TemperatureSource.T", thermalConductor.name());
     BOOST_CHECK(xml::fmi2Variability::tunable == thermalConductor.variability());
     BOOST_CHECK(xml::fmi2Causality::parameter == thermalConductor.causality());
@@ -75,7 +75,7 @@ BOOST_AUTO_TEST_CASE(ControlledTemperature_test1) {
     BOOST_CHECK_EQUAL(10, sourceFiles.size());
     BOOST_CHECK_EQUAL("EulerAngles.c", sourceFiles[0].name);
 
-    std::vector<xml::Unknown> modelStructureOutputs = md->modelStructure().outputs();
+    std::vector<xml::Unknown> modelStructureOutputs = md->modelStructure()->outputs();
     BOOST_CHECK_EQUAL(2, modelStructureOutputs.size());
     BOOST_CHECK_EQUAL(115, modelStructureOutputs[0].index());
     BOOST_CHECK_EQUAL(116, modelStructureOutputs[1].index());
@@ -88,8 +88,8 @@ BOOST_AUTO_TEST_CASE(ControlledTemperature_test1) {
     BOOST_CHECK_EQUAL(false, de->tolerance().has_value());
 
     size_t count = 0;
-    xml::ModelVariables& mv = md->modelVariables();
-    for (const auto &v : mv) {
+    auto mv = md->modelVariables();
+    for (const auto &v : *mv) {
         if (v.causality() == xml::fmi2Causality::output) {
             count++;
         }
@@ -97,7 +97,7 @@ BOOST_AUTO_TEST_CASE(ControlledTemperature_test1) {
     BOOST_CHECK_EQUAL(2, count);
 
     vector<ScalarVariable> outputs = {};
-    md->modelVariables().getByCausality(xml::fmi2Causality::output, outputs);
+    md->modelVariables()->getByCausality(xml::fmi2Causality::output, outputs);
 
     BOOST_CHECK_EQUAL(count, outputs.size());
 

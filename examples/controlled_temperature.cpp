@@ -41,6 +41,12 @@ int main() {
 
     auto fmu = import::Fmu(fmu_path).asCoSimulationFmu();
 
+    for (const auto &v : *fmu->getModelDescription()->modelVariables()) {
+        if (v.causality() == fmi2Causality::output) {
+            cout << v.name() << endl;
+        }
+    }
+
     auto slave = fmu->newInstance();
     slave->init();
 

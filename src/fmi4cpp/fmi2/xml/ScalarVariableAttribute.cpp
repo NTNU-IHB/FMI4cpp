@@ -22,36 +22,27 @@
  * THE SOFTWARE.
  */
 
-#define BOOST_TEST_MODULE FmuExportCrossCompile_Modeldescription_Test
+#include <fmi4cpp/fmi2/xml/ScalarVariableAttribute.hpp>
 
-#include <vector>
-#include <string>
-#include <boost/test/unit_test.hpp>
-#include <fmi4cpp/tools/os_util.hpp>
-#include <fmi4cpp/fmi2/fmi4cpp.hpp>
+using namespace fmi4cpp::fmi2::xml;
 
-using namespace std;
-using namespace fmi4cpp::fmi2;
 
-const string fmu_path = string(getenv("TEST_FMUs"))
-                        + "/FMI_2.0/CoSimulation/" + getOs() +
-                        "/OpenModelica/v1.11.0/FmuExportCrossCompile/FmuExportCrossCompile.fmu";
+IntegerAttribute::IntegerAttribute(const BoundedScalarVariableAttribute<int> &attributes)
+        : BoundedScalarVariableAttribute<int>(attributes) {}
+        
+        
+RealAttribute::RealAttribute(const BoundedScalarVariableAttribute<double> &attributes)
+        : BoundedScalarVariableAttribute<double>(attributes) {}
 
-BOOST_AUTO_TEST_CASE(FmuExportCrossCompile_test1) {
 
-    import::Fmu fmu(fmu_path);
-    auto md = fmu.getModelDescription();
+StringAttribute::StringAttribute(const ScalarVariableAttribute<std::string> &attributes)
+        : ScalarVariableAttribute<std::string>(attributes) {}
 
-    BOOST_CHECK_EQUAL("structured", md->variableNamingConvention().value());
 
-    vector<xml::Unknown> derivatives = md->modelStructure()->derivatives();
-    BOOST_CHECK_EQUAL(2, derivatives.size());
-
-    BOOST_CHECK_EQUAL(3, derivatives[0].index());
-    BOOST_CHECK_EQUAL(4, derivatives[1].index());
-
-    BOOST_CHECK_EQUAL(true, derivatives[0].dependencies().has_value());
-    BOOST_CHECK_EQUAL(2, derivatives[0].dependencies().value()[0]);
-    BOOST_CHECK_EQUAL("dependent", derivatives[0].dependenciesKind().value());
-
-}
+BooleanAttribute::BooleanAttribute(const ScalarVariableAttribute<bool> &attributes)
+        : ScalarVariableAttribute<bool>(attributes) {}
+        
+        
+EnumerationAttribute::EnumerationAttribute(const ScalarVariableAttribute<int> &attributes)
+        : ScalarVariableAttribute<int>(attributes) {}
+        

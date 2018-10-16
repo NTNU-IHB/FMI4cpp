@@ -2,6 +2,8 @@
 SET(SOURCES
 
         fmi4cpp/fmi2/import/Fmu.cpp
+        fmi4cpp/fmi2/import/CoSimulationFmu.cpp
+        fmi4cpp/fmi2/import/ModelExchangeFmu.cpp
         fmi4cpp/fmi2/import/FmiLibrary.cpp
         fmi4cpp/fmi2/import/CoSimulationLibrary.cpp
         fmi4cpp/fmi2/import/ModelExchangeLibrary.cpp
@@ -15,7 +17,7 @@ SET(SOURCES
         fmi4cpp/fmi2/xml/ModelVariables.cpp
         fmi4cpp/fmi2/xml/ScalarVariable.cpp
         fmi4cpp/fmi2/xml/TypedScalarVariable.cpp
-        fmi4cpp/fmi2/xml/ScalarVariableAttributes.cpp
+        fmi4cpp/fmi2/xml/ScalarVariableAttribute.cpp
         fmi4cpp/fmi2/xml/DefaultExperiment.cpp
         fmi4cpp/fmi2/xml/ModelStructure.cpp
 
@@ -31,11 +33,12 @@ add_library(FMI4cpp::${FMI4CPP_LIB} ALIAS fmi4cpp)
 
 target_include_directories(${FMI4CPP_LIB}
     PUBLIC
-        ${Boost_INCLUDE_DIRS}
         $<INSTALL_INTERFACE:include>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>
-    PRIVATE
+    INTERFACE
+        ${Boost_INCLUDE_DIRS}
         ${LIBZIP_INCLUDE_DIRS}
+    PRIVATE
         ${CURRENT_CMAKE_SOURCE_DIR}/../src
 )
 

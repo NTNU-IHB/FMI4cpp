@@ -29,26 +29,6 @@ using namespace fmi4cpp::fmi2::xml;
 using fmi4cpp::fmi2::import::FmuReader;
 using fmi4cpp::fmi2::import::FmuWriter;
 
-IntegerVariable ScalarVariable::asInteger() const {
-    return IntegerVariable(*this, *integer_);
-}
-
-RealVariable ScalarVariable::asReal() const {
-    return RealVariable(*this, *real_);
-}
-
-StringVariable ScalarVariable::asString() const {
-    return StringVariable(*this, *string_);
-}
-
-BooleanVariable ScalarVariable::asBoolean() const {
-    return BooleanVariable(*this, *boolean_);
-}
-
-EnumerationVariable ScalarVariable::asEnumeration() const {
-    return EnumerationVariable(*this, *enumeration_);
-}
-
 IntegerVariable::IntegerVariable(const ScalarVariable &variable, const IntegerAttribute &attribute)
         : BoundedScalarVariable(variable, attribute) {}
 
