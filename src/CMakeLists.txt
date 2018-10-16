@@ -12,7 +12,6 @@ SET(SOURCES
         fmi4cpp/fmi2/import/FmuResource.cpp
 
         fmi4cpp/fmi2/xml/enums.cpp
-        fmi4cpp/fmi2/xml/FmuAttributes.cpp
         fmi4cpp/fmi2/xml/ModelDescription.cpp
         fmi4cpp/fmi2/xml/ModelVariables.cpp
         fmi4cpp/fmi2/xml/ScalarVariable.cpp

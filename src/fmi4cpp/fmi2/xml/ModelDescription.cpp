@@ -151,19 +151,19 @@ CoSimulationModelDescription::CoSimulationModelDescription(const ModelDescriptio
         : SpecificModelDescription(base, attributes) {}
 
 bool CoSimulationModelDescription::canInterpolateInputs() const {
-    return attributes_.canInterpolateInputs();
+    return attributes_.canInterpolateInputs;
 }
 
 bool CoSimulationModelDescription::canRunAsynchronuously() const {
-    return attributes_.canRunAsynchronuously();
+    return attributes_.canRunAsynchronuously;
 }
 
 bool CoSimulationModelDescription::canHandleVariableCommunicationStepSize() const {
-    return attributes_.canHandleVariableCommunicationStepSize();
+    return attributes_.canHandleVariableCommunicationStepSize;
 }
 
 size_t CoSimulationModelDescription::maxOutputDerivativeOrder() const {
-    return attributes_.maxOutputDerivativeOrder();
+    return attributes_.maxOutputDerivativeOrder;
 }
 
 ModelExchangeModelDescription::ModelExchangeModelDescription(const ModelDescriptionBase &base,
@@ -171,5 +171,5 @@ ModelExchangeModelDescription::ModelExchangeModelDescription(const ModelDescript
         : SpecificModelDescription(base, attributes) {}
 
 bool ModelExchangeModelDescription::completedIntegratorStepNotNeeded() const {
-    return attributes_.completedIntegratorStepNotNeeded();
+    return attributes_.completedIntegratorStepNotNeeded;
 }
