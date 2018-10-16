@@ -40,7 +40,7 @@ ModelDescriptionBase::ModelDescriptionBase(const std::string &guid,
                                            const size_t numberOfEventIndicators,
                                            const std::shared_ptr<ModelVariables> &modelVariables,
                                            const std::shared_ptr<ModelStructure> &modelStructure,
-                                           const std::optional<DefaultExperiment> defaultExperiment)
+                                           const std::optional<DefaultExperiment> &defaultExperiment)
         : guid_(guid), fmiVersion_(fmiVersion), modelName_(modelName), description_(description),
         version_(version), author_(author), license_(license), copyright_(copyright), generationTool_(generationTool),
         generationDateAndTime_(generationDateAndTime), variableNamingConvention_(variableNamingConvention),
