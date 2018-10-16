@@ -24,8 +24,7 @@
 
 #include <fmi4cpp/fmi2/import/ModelExchangeInstance.hpp>
 
-using namespace fmi4cpp::fmi2::import;
-using fmi4cpp::fmi2::import::ModelExchangeInstance;
+using namespace fmi4cpp::fmi2;
 
 ModelExchangeInstance::ModelExchangeInstance(const fmi2Component c,
                                              const std::shared_ptr<ModelExchangeLibrary> &library,

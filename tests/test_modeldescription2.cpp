@@ -39,12 +39,12 @@ const string fmu_path = string(getenv("TEST_FMUs"))
 
 BOOST_AUTO_TEST_CASE(FmuExportCrossCompile_test1) {
 
-    import::Fmu fmu(fmu_path);
+    Fmu fmu(fmu_path);
     auto md = fmu.getModelDescription();
 
     BOOST_CHECK_EQUAL("structured", md->variableNamingConvention().value());
 
-    vector<xml::Unknown> derivatives = md->modelStructure()->derivatives();
+    vector<Unknown> derivatives = md->modelStructure()->derivatives();
     BOOST_CHECK_EQUAL(2, derivatives.size());
 
     BOOST_CHECK_EQUAL(3, derivatives[0].index());

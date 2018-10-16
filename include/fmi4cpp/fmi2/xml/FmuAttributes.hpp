@@ -29,7 +29,7 @@
 
 #include "SourceFiles.hpp"
 
-namespace fmi4cpp::fmi2::xml {
+namespace fmi4cpp::fmi2 {
 
     struct FmuAttributes {
 

@@ -34,7 +34,7 @@
 #include "DefaultExperiment.hpp"
 #include "FmuAttributes.hpp"
 
-namespace fmi4cpp::fmi2::xml {
+namespace fmi4cpp::fmi2 {
 
     class ModelDescriptionBase {
 

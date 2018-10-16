@@ -26,7 +26,7 @@
 #include <fmi4cpp/fmi2/xml/enums.hpp>
 #include <fmi4cpp/fmi2/xml/ModelVariables.hpp>
 
-using namespace fmi4cpp::fmi2::xml;
+using namespace fmi4cpp::fmi2;
 
 ModelVariables::ModelVariables() {}
 

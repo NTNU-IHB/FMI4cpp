@@ -30,7 +30,7 @@
 
 #include "../../tools/os_util.hpp"
 
-using namespace fmi4cpp::fmi2::import;
+using namespace fmi4cpp::fmi2;
 
 FmuResource::FmuResource(fs::path &path): path_(path){}
 

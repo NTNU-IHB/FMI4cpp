@@ -25,7 +25,7 @@
 #include "FmiLibraryHelper.hpp"
 #include <fmi4cpp/fmi2/import/CoSimulationLibrary.hpp>
 
-using namespace fmi4cpp::fmi2::import;
+using namespace fmi4cpp::fmi2;
 
 CoSimulationLibrary::CoSimulationLibrary(const std::string &modelIdentifier,
                                          const std::shared_ptr<FmuResource> &resource)

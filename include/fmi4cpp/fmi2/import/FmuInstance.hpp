@@ -30,7 +30,7 @@
 
 #include "FmuVariableAccessor.hpp"
 
-namespace fmi4cpp::fmi2::import {
+namespace fmi4cpp::fmi2 {
     
     template <typename T>
     class FmuInstance: public FmuVariableAccessor {

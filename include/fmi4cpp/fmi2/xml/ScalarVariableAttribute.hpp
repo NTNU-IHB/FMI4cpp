@@ -29,7 +29,7 @@
 #include <ostream>
 #include <optional>
 
-namespace fmi4cpp::fmi2::xml {
+namespace fmi4cpp::fmi2 {
 
     template<typename T>
     struct ScalarVariableAttribute {

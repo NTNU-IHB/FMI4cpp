@@ -39,7 +39,7 @@ const string fmu_path = string(getenv("TEST_FMUs"))
 
 BOOST_AUTO_TEST_CASE(ControlledTemperature_test1) {
 
-    import::Fmu fmu(fmu_path);
+    Fmu fmu(fmu_path);
     auto md = fmu.getModelDescription();
     auto md_cs = md->asCoSimulationModelDescription();
 
@@ -68,14 +68,14 @@ BOOST_AUTO_TEST_CASE(ControlledTemperature_test1) {
 
     auto& thermalConductor = md->modelVariables()->getByValueReference(12);
     BOOST_CHECK_EQUAL("TemperatureSource.T", thermalConductor.name());
-    BOOST_CHECK(xml::fmi2Variability::tunable == thermalConductor.variability());
-    BOOST_CHECK(xml::fmi2Causality::parameter == thermalConductor.causality());
+    BOOST_CHECK(fmi2Variability::tunable == thermalConductor.variability());
+    BOOST_CHECK(fmi2Causality::parameter == thermalConductor.causality());
 
-    xml::SourceFiles sourceFiles = md_cs->sourceFiles();
+    SourceFiles sourceFiles = md_cs->sourceFiles();
     BOOST_CHECK_EQUAL(10, sourceFiles.size());
     BOOST_CHECK_EQUAL("EulerAngles.c", sourceFiles[0].name);
 
-    std::vector<xml::Unknown> modelStructureOutputs = md->modelStructure()->outputs();
+    std::vector<Unknown> modelStructureOutputs = md->modelStructure()->outputs();
     BOOST_CHECK_EQUAL(2, modelStructureOutputs.size());
     BOOST_CHECK_EQUAL(115, modelStructureOutputs[0].index());
     BOOST_CHECK_EQUAL(116, modelStructureOutputs[1].index());
@@ -90,14 +90,14 @@ BOOST_AUTO_TEST_CASE(ControlledTemperature_test1) {
     size_t count = 0;
     auto mv = md->modelVariables();
     for (const auto &v : *mv) {
-        if (v.causality() == xml::fmi2Causality::output) {
+        if (v.causality() == fmi2Causality::output) {
             count++;
         }
     }
     BOOST_CHECK_EQUAL(2, count);
 
     vector<ScalarVariable> outputs = {};
-    md->modelVariables()->getByCausality(xml::fmi2Causality::output, outputs);
+    md->modelVariables()->getByCausality(fmi2Causality::output, outputs);
 
     BOOST_CHECK_EQUAL(count, outputs.size());
 

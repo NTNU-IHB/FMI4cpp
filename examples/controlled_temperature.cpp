@@ -39,7 +39,7 @@ int main() {
                             + "/FMI_2.0/CoSimulation/" + getOs() +
                             "/20sim/4.6.4.8004/ControlledTemperature/ControlledTemperature.fmu";
 
-    auto fmu = import::Fmu(fmu_path).asCoSimulationFmu();
+    auto fmu = Fmu(fmu_path).asCoSimulationFmu();
 
     for (const auto &v : *fmu->getModelDescription()->modelVariables()) {
         if (v.causality() == fmi2Causality::output) {

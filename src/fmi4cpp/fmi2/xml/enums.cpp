@@ -24,11 +24,11 @@
 
 #include <fmi4cpp/fmi2/xml/enums.hpp>
 
-using fmi4cpp::fmi2::xml::fmi2Causality;
-using fmi4cpp::fmi2::xml::fmi2Variability;
-using fmi4cpp::fmi2::xml::fmi2Initial;
+using fmi4cpp::fmi2::fmi2Causality;
+using fmi4cpp::fmi2::fmi2Variability;
+using fmi4cpp::fmi2::fmi2Initial;
 
-fmi2Causality fmi4cpp::fmi2::xml::parseCausality(const std::string &str) {
+fmi2Causality fmi4cpp::fmi2::parseCausality(const std::string &str) {
     if (str == "calculatedParameter") {
         return fmi2Causality::calculatedParameter;
     } else if (str == "parameter") {
@@ -46,7 +46,7 @@ fmi2Causality fmi4cpp::fmi2::xml::parseCausality(const std::string &str) {
     }
 }
 
-fmi2Variability fmi4cpp::fmi2::xml::parseVariability(const std::string &str) {
+fmi2Variability fmi4cpp::fmi2::parseVariability(const std::string &str) {
     if (str == "constant") {
         return fmi2Variability::constant;
     } else if (str == "fixed") {
@@ -62,7 +62,7 @@ fmi2Variability fmi4cpp::fmi2::xml::parseVariability(const std::string &str) {
     }
 }
 
-fmi2Initial fmi4cpp::fmi2::xml::parseInitial(const std::string &str) {
+fmi2Initial fmi4cpp::fmi2::parseInitial(const std::string &str) {
     if (str == "exact") {
         return fmi2Initial::exact;
     } else if (str == "approx") {

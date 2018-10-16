@@ -24,7 +24,7 @@
 
 #include <fmi4cpp/fmi2/xml/ModelDescription.hpp>
 
-using namespace fmi4cpp::fmi2::xml;
+using namespace fmi4cpp::fmi2;
 
 ModelDescriptionBase::ModelDescriptionBase(const std::string &guid,
                                            const std::string &fmiVersion,

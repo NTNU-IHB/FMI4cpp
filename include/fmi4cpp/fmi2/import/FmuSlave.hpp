@@ -28,9 +28,9 @@
 #include "FmuInstance.hpp"
 #include "fmi4cpp/fmi2/xml/ModelDescription.hpp"
 
-namespace fmi4cpp::fmi2::import {
+namespace fmi4cpp::fmi2 {
 
-    class FmuSlave : virtual public FmuInstance<xml::CoSimulationModelDescription> {
+    class FmuSlave : virtual public FmuInstance<CoSimulationModelDescription> {
 
     public:
 

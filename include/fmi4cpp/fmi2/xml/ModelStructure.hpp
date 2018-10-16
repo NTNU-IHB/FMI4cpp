@@ -31,7 +31,7 @@
 
 #include "../fmi2TypesPlatform.h"
 
-namespace fmi4cpp::fmi2::xml {
+namespace fmi4cpp::fmi2 {
 
     class Unknown {
 
