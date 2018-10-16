@@ -26,9 +26,7 @@
 
 #include <fmi4cpp/fmi2/import/ModelExchangeSlave.hpp>
 
-using namespace fmi4cpp::fmi2::import;
-
-using fmi4cpp::fmi2::import::ModelExchangeSlave;
+using namespace fmi4cpp::fmi2;
 
 namespace {
 
@@ -37,12 +35,13 @@ namespace {
         me.copyAttributes(attributes);
         attributes.canHandleVariableCommunicationStepSize = true;
         attributes.maxOutputDerivativeOrder = 0;
+        return std::make_unique<CoSimulationModelDescription>(CoSimulationModelDescription(me, attributes));
     }
 
 }
 
 ModelExchangeSlave::ModelExchangeSlave(
-        std::unique_ptr<import::ModelExchangeInstance> &instance,
+        std::unique_ptr<ModelExchangeInstance> &instance,
         std::unique_ptr<Solver> &solver)
         : instance_(std::move(instance)), solver_(std::move(solver)) {
 
@@ -80,7 +79,7 @@ std::shared_ptr<CoSimulationModelDescription> ModelExchangeSlave::getModelDescri
     return csModelDescription;
 }
 
-bool fmi4cpp::fmi2::import::ModelExchangeSlave::eventIteration() {
+bool fmi4cpp::fmi2::ModelExchangeSlave::eventIteration() {
 
     eventInfo_.newDiscreteStatesNeeded = true;
     eventInfo_.terminateSimulation = false;

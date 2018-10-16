@@ -31,7 +31,7 @@
 #include "FmuSlave.hpp"
 #include "Solver.hpp"
 
-namespace fmi4cpp::fmi2::import {
+namespace fmi4cpp::fmi2 {
 
     class ModelExchangeSlave : public FmuSlave {
 

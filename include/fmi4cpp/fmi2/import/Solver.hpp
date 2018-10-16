@@ -27,10 +27,11 @@
 
 #include <vector>
 
-namespace fmi4cpp::fmi2::import {
+namespace fmi4cpp::fmi2 {
 
     class Solver {
 
+    public:
         virtual double integrate(double t0, std::vector<double> &x0, double t, std::vector<double> &x) = 0;
 
         virtual ~Solver() = default;
