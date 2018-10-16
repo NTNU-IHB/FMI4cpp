@@ -52,7 +52,7 @@ namespace fmi4cpp::fmi2::xml {
                       const bool canNotUseMemoryManagementFunctions, const bool canBeInstantiatedOnlyOncePerProcess,
                       const bool providesDirectionalDerivative, const SourceFiles &sourceFiles);
 
-        SourceFiles sourceFiles() const;
+        const SourceFiles &sourceFiles() const;
         std::string modelIdentifier() const;
 
         bool canGetAndSetFMUstate() const;

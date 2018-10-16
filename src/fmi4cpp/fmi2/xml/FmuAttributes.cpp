@@ -66,7 +66,7 @@ bool FmuAttributes::providesDirectionalDerivative() const {
     return providesDirectionalDerivative_;
 }
 
-SourceFiles FmuAttributes::sourceFiles() const {
+const SourceFiles &FmuAttributes::sourceFiles() const {
     return sourceFiles_;
 }
 
