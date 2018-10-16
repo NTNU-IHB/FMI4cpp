@@ -22,6 +22,8 @@
  * THE SOFTWARE.
  */
 
+#include <stdexcept>
+
 #include <fmi4cpp/fmi2/import/ModelExchangeSlave.hpp>
 
 using namespace fmi4cpp::fmi2::import;
@@ -30,10 +32,11 @@ using fmi4cpp::fmi2::import::ModelExchangeSlave;
 
 namespace {
 
-    std::unique_ptr<CoSimulationModelDescription> csWrapper(const ModelDescriptionBase &base) {
-
-//        CoSimulationAttributes attributes;
-
+    std::unique_ptr<CoSimulationModelDescription> wrap(const ModelExchangeModelDescription &me) {
+        CoSimulationAttributes attributes;
+        me.copyAttributes(attributes);
+        attributes.canHandleVariableCommunicationStepSize = true;
+        attributes.maxOutputDerivativeOrder = 0;
     }
 
 }
@@ -42,6 +45,8 @@ ModelExchangeSlave::ModelExchangeSlave(
         std::unique_ptr<import::ModelExchangeInstance> &instance,
         std::unique_ptr<Solver> &solver)
         : instance_(std::move(instance)), solver_(std::move(solver)) {
+
+    csModelDescription = std::move(wrap(*instance->getModelDescription()));
 
     size_t numberOfContinuousStates = instance->getModelDescription()->numberOfContinuousStates();
     size_t numberOfEventIndicators = instance->getModelDescription()->numberOfEventIndicators();
@@ -59,7 +64,7 @@ fmi2Status ModelExchangeSlave::doStep(const double stepSize) {
 }
 
 fmi2Status ModelExchangeSlave::cancelStep() {
-    return fmi2Error;
+    return fmi2Discard;
 }
 
 fmi2Status ModelExchangeSlave::reset() {
@@ -72,10 +77,36 @@ fmi2Status ModelExchangeSlave::terminate() {
 
 
 std::shared_ptr<CoSimulationModelDescription> ModelExchangeSlave::getModelDescription() const {
-    return std::shared_ptr<CoSimulationModelDescription>();
+    return csModelDescription;
+}
+
+bool fmi4cpp::fmi2::import::ModelExchangeSlave::eventIteration() {
+
+    eventInfo_.newDiscreteStatesNeeded = true;
+    eventInfo_.terminateSimulation = false;
+
+    fmi2Status status;
+    while (eventInfo_.newDiscreteStatesNeeded) {
+         status = instance_->newDiscreteStates(eventInfo_);
+         if (eventInfo_.terminateSimulation) {
+             terminate();
+             return true;
+         }
+    }
+
+    status = instance_->enterContinuousTimeMode();
+
+    return false;
 }
 
 void ModelExchangeSlave::init(double start, double stop) {
+
+    if (!instance_->isInstantiated()) {
+        instance_->init(start, stop);
+        if (eventIteration()) {
+            throw std::runtime_error("EventIteration returned false during initialization!");
+        }
+    }
 
 }
 
