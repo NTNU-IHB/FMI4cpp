@@ -25,8 +25,7 @@
 #include <fmi4cpp/fmi2/xml/ScalarVariable.hpp>
 #include <fmi4cpp/fmi2/xml/TypedScalarVariable.hpp>
 
-using namespace fmi4cpp::fmi2::xml;
-
+using namespace fmi4cpp::fmi2;
 
 std::string ScalarVariableBase::name() const {
     return name_;

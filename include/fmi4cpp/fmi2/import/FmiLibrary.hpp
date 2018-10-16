@@ -52,13 +52,13 @@ typedef void *function_ptr;
 
 #include "FmuResource.hpp"
 
-namespace fmi4cpp::fmi2::import {
+namespace fmi4cpp::fmi2 {
 
     class FmiLibrary {
 
     private:
 
-        std::shared_ptr<import::FmuResource> resource_;
+        std::shared_ptr<FmuResource> resource_;
         
         fmi2GetVersionTYPE *fmi2GetVersion_;
         fmi2GetTypesPlatformTYPE *fmi2GetTypesPlatform_;

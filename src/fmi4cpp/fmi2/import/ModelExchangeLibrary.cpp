@@ -25,7 +25,7 @@
 #include "FmiLibraryHelper.hpp"
 #include <fmi4cpp/fmi2/import/ModelExchangeLibrary.hpp>
 
-using namespace fmi4cpp::fmi2::import;
+using namespace fmi4cpp::fmi2;
 
 ModelExchangeLibrary::ModelExchangeLibrary(const std::string &modelIdentifier,
                                            const std::shared_ptr<FmuResource> &resource)

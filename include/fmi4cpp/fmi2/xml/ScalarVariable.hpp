@@ -31,7 +31,7 @@
 #include "../fmi2Functions.h"
 #include "ScalarVariableAttribute.hpp"
 
-namespace fmi4cpp::fmi2::xml {
+namespace fmi4cpp::fmi2 {
 
     class IntegerVariable;
 

@@ -28,7 +28,7 @@
 #include "ScalarVariable.hpp"
 #include "../import/FmuInstance.hpp"
 
-namespace fmi4cpp::fmi2::xml {
+namespace fmi4cpp::fmi2 {
 
     template<typename T, typename U>
     class TypedScalarVariable {
@@ -80,9 +80,9 @@ namespace fmi4cpp::fmi2::xml {
             return attribute_.declaredType;
         }
 
-        virtual fmi2Status read(const import::FmuReader &reader, T &ref) = 0;
+        virtual fmi2Status read(const FmuReader &reader, T &ref) = 0;
 
-        virtual fmi2Status write(import::FmuWriter &writer, T value) = 0;
+        virtual fmi2Status write(FmuWriter &writer, T value) = 0;
 
     };
 
@@ -112,9 +112,9 @@ namespace fmi4cpp::fmi2::xml {
     public:
         IntegerVariable(const ScalarVariable &variable, const IntegerAttribute &attribute);
 
-        fmi2Status read(const import::FmuReader &reader, int &ref) override;
+        fmi2Status read(const FmuReader &reader, int &ref) override;
 
-        fmi2Status write(import::FmuWriter &writer, int value) override;
+        fmi2Status write(FmuWriter &writer, int value) override;
 
     };
 
@@ -138,9 +138,9 @@ namespace fmi4cpp::fmi2::xml {
 
         std::optional<std::string> displayUnit() const;
 
-        fmi2Status read(const import::FmuReader &reader, double &ref) override;
+        fmi2Status read(const FmuReader &reader, double &ref) override;
 
-        fmi2Status write(import::FmuWriter &writer, double value) override;
+        fmi2Status write(FmuWriter &writer, double value) override;
 
     };
 
@@ -150,9 +150,9 @@ namespace fmi4cpp::fmi2::xml {
     public:
         StringVariable(const ScalarVariable &variable, const StringAttribute &attribute);
 
-        fmi2Status read(const import::FmuReader &reader, std::string &ref) override;
+        fmi2Status read(const FmuReader &reader, std::string &ref) override;
 
-        fmi2Status write(import::FmuWriter &writer, std::string value) override;
+        fmi2Status write(FmuWriter &writer, std::string value) override;
 
     };
 
@@ -161,9 +161,9 @@ namespace fmi4cpp::fmi2::xml {
     public:
         BooleanVariable(const ScalarVariable &variable, const BooleanAttribute &attribute);
 
-        fmi2Status read(const import::FmuReader &reader, bool &ref) override;
+        fmi2Status read(const FmuReader &reader, bool &ref) override;
 
-        fmi2Status write(import::FmuWriter &writer, bool value) override;
+        fmi2Status write(FmuWriter &writer, bool value) override;
 
     };
 
@@ -172,9 +172,9 @@ namespace fmi4cpp::fmi2::xml {
     public:
         EnumerationVariable(const ScalarVariable &variable, const EnumerationAttribute &attribute);
 
-        fmi2Status read(const import::FmuReader &reader, int &ref) override;
+        fmi2Status read(const FmuReader &reader, int &ref) override;
 
-        fmi2Status write(import::FmuWriter &writer, int value) override;
+        fmi2Status write(FmuWriter &writer, int value) override;
 
     };
 

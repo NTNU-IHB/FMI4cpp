@@ -28,13 +28,13 @@
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 
-#include "optional_converter.hpp"
 #include <fmi4cpp/fmi2/xml/ModelDescription.hpp>
 #include <fmi4cpp/fmi2/xml/ScalarVariableAttribute.hpp>
 
+#include "../../tools/optional_converter.hpp"
 
 using boost::property_tree::ptree;
-using namespace fmi4cpp::fmi2::xml;
+using namespace fmi4cpp::fmi2;
 
 namespace {
 
@@ -252,7 +252,7 @@ namespace {
 }
 
 
-namespace fmi4cpp::fmi2::xml {
+namespace fmi4cpp::fmi2 {
 
     std::unique_ptr<ModelDescription> parseModelDescription(const std::string &fileName) {
 

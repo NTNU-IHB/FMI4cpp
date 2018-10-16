@@ -27,9 +27,7 @@
 
 #include "FmiLibrary.hpp"
 
-using fmi4cpp::fmi2::import::FmiLibrary;
-
-namespace fmi4cpp::fmi2::import {
+namespace fmi4cpp::fmi2 {
 
     class CoSimulationLibrary : public FmiLibrary {
 

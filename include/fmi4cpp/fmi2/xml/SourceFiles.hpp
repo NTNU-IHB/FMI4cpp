@@ -28,7 +28,7 @@
 #include <string>
 #include <vector>
 
-namespace fmi4cpp::fmi2::xml {
+namespace fmi4cpp::fmi2 {
 
     struct File {
 

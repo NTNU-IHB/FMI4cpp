@@ -38,10 +38,7 @@ namespace fs = std::experimental::filesystem;
 
 #include "FmiLibraryHelper.hpp"
 
-
-using namespace std;
-using fmi4cpp::fmi2::import::FmiLibrary;
-using fmi4cpp::fmi2::import::FmuResource;
+using namespace fmi4cpp::fmi2;
 
 namespace {
 
@@ -64,14 +61,14 @@ FmiLibrary::FmiLibrary(const std::string &modelIdentifier, const std::shared_ptr
     const auto libName = resource->getAbsoluteLibraryPath(modelIdentifier);
 
 #if FMI4CPP_DEBUG_LOGGING_ENABLED
-    cout << "Loading shared library '" << fs::path(libName).stem() << "'" << endl;
+    std::cout << "Loading shared library '" << fs::path(libName).stem() << "'" <<  std::endl;
 #endif
 
     handle_ = loadLibrary(libName);
 
     if (!handle_) {
-        cerr << getLastError() << endl;
-        throw runtime_error("Unable to load dynamic library '" + libName + "'!");
+        std::cerr << getLastError() <<  std::endl;
+        throw std:: runtime_error("Unable to load dynamic library '" + libName + "'!");
     }
 
     fmi2GetVersion_ = loadFunction<fmi2GetVersionTYPE *>(handle_, "fmi2GetVersion");
@@ -119,19 +116,19 @@ fmi2String FmiLibrary::getTypesPlatform() const {
     return fmi2GetTypesPlatform_();
 }
 
-fmi2Status fmi4cpp::fmi2::import::FmiLibrary::setDebugLogging(const fmi2Component c, const bool loggingOn,
-                                                              const vector<const char *> categories) const {
+fmi2Status fmi4cpp::fmi2::FmiLibrary::setDebugLogging(const fmi2Component c, const bool loggingOn,
+                                                              const std::vector<const char *> categories) const {
     return fmi2SetDebugLogging_(c, loggingOn, categories.size(), categories.data());
 }
 
-fmi2Component FmiLibrary::instantiate(const string instanceName, const fmi2Type type,
-                                      const string guid, const string resourceLocation, const bool visible,
+fmi2Component FmiLibrary::instantiate(const std::string instanceName, const fmi2Type type,
+                                      const std::string guid, const std::string resourceLocation, const bool visible,
                                       const bool loggingOn) {
     fmi2Component c = fmi2Instantiate_(instanceName.c_str(), type, guid.c_str(),
-                                       resourceLocation.c_str(), &callback, visible ? 1 : 0, loggingOn ? 1 : 0);
+                                       resourceLocation.c_str(), &callback, visible, loggingOn);
 
     if (c == nullptr) {
-        throw runtime_error("Unable to instantiate FMU instance!");
+        throw std::runtime_error("Unable to instantiate FMU instance!");
     }
 
     return c;
@@ -141,8 +138,8 @@ fmi2Component FmiLibrary::instantiate(const string instanceName, const fmi2Type 
 fmi2Status FmiLibrary::setupExperiment(const fmi2Component c, const bool toleranceDefined,
                                        const double tolerance, const double startTime, const double stopTime) const {
 
-    fmi2Boolean stopDefined = (stopTime > startTime) ? 1 : 0;
-    return fmi2SetupExperiment_(c, toleranceDefined ? 1 : 0, tolerance, startTime, stopDefined, stopTime);
+    fmi2Boolean stopDefined = (stopTime > startTime);
+    return fmi2SetupExperiment_(c, toleranceDefined, tolerance, startTime, stopDefined, stopTime);
 }
 
 fmi2Status FmiLibrary::enterInitializationMode(const fmi2Component c) const {
@@ -166,7 +163,7 @@ fmi2Status FmiLibrary::readInteger(const fmi2Component c, const fmi2ValueReferen
 }
 
 fmi2Status FmiLibrary::readInteger(const fmi2Component c,
-                                   const vector<fmi2ValueReference> &vr, vector<fmi2Integer> &ref) const {
+                                   const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Integer> &ref) const {
     return fmi2GetInteger_(c, vr.data(), vr.size(), ref.data());
 }
 
@@ -175,7 +172,7 @@ fmi2Status FmiLibrary::readReal(const fmi2Component c, const fmi2ValueReference 
 }
 
 fmi2Status FmiLibrary::readReal(const fmi2Component c,
-                                const vector<fmi2ValueReference> &vr, vector<fmi2Real> &ref) const {
+                                const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Real> &ref) const {
     return fmi2GetReal_(c, vr.data(), vr.size(), ref.data());
 }
 
@@ -184,7 +181,7 @@ fmi2Status FmiLibrary::readString(const fmi2Component c, const fmi2ValueReferenc
 }
 
 fmi2Status FmiLibrary::readString(const fmi2Component c,
-                                  const vector<fmi2ValueReference> &vr, vector<fmi2String> &ref) const {
+                                  const std::vector<fmi2ValueReference> &vr, std::vector<fmi2String> &ref) const {
     return fmi2GetString_(c, vr.data(), vr.size(), ref.data());
 }
 
@@ -193,7 +190,7 @@ fmi2Status FmiLibrary::readBoolean(const fmi2Component c, const fmi2ValueReferen
 }
 
 fmi2Status FmiLibrary::readBoolean(const fmi2Component c,
-                                   const vector<fmi2ValueReference> &vr, vector<fmi2Boolean> &ref) const {
+                                   const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Boolean> &ref) const {
     return fmi2GetBoolean_(c, vr.data(), vr.size(), ref.data());
 }
 
@@ -202,8 +199,8 @@ fmi2Status FmiLibrary::writeInteger(const fmi2Component c, const fmi2ValueRefere
     return fmi2SetInteger_(c, &vr, 1, &value);
 }
 
-fmi2Status FmiLibrary::writeInteger(const fmi2Component c, const vector<fmi2ValueReference> &vr,
-                                    const vector<fmi2Integer> &values) const {
+fmi2Status FmiLibrary::writeInteger(const fmi2Component c, const std::vector<fmi2ValueReference> &vr,
+                                    const std::vector<fmi2Integer> &values) const {
     return fmi2SetInteger_(c, vr.data(), vr.size(), values.data());
 }
 
@@ -211,8 +208,8 @@ fmi2Status FmiLibrary::writeReal(const fmi2Component c, const fmi2ValueReference
     return fmi2SetReal_(c, &vr, 1, &value);
 }
 
-fmi2Status FmiLibrary::writeReal(const fmi2Component c, const vector<fmi2ValueReference> &vr,
-                                 const vector<fmi2Real> &values) const {
+fmi2Status FmiLibrary::writeReal(const fmi2Component c, const std::vector<fmi2ValueReference> &vr,
+                                 const std::vector<fmi2Real> &values) const {
     return fmi2SetReal_(c, vr.data(), vr.size(), values.data());
 }
 
@@ -221,8 +218,8 @@ fmi2Status FmiLibrary::writeString(const fmi2Component c, const fmi2ValueReferen
     return fmi2SetString_(c, &vr, 1, &value);
 }
 
-fmi2Status FmiLibrary::writeString(const fmi2Component c, const vector<fmi2ValueReference> &vr,
-                                   const vector<fmi2String> &values) const {
+fmi2Status FmiLibrary::writeString(const fmi2Component c, const std::vector<fmi2ValueReference> &vr,
+                                   const std::vector<fmi2String> &values) const {
     return fmi2SetString_(c, vr.data(), vr.size(), values.data());
 }
 
@@ -231,8 +228,8 @@ fmi2Status FmiLibrary::writeBoolean(const fmi2Component c, const fmi2ValueRefere
     return fmi2SetBoolean_(c, &vr, 1, &value);
 }
 
-fmi2Status FmiLibrary::writeBoolean(const fmi2Component c, const vector<fmi2ValueReference> &vr,
-                                    const vector<fmi2Boolean> &values) const {
+fmi2Status FmiLibrary::writeBoolean(const fmi2Component c, const std::vector<fmi2ValueReference> &vr,
+                                    const std::vector<fmi2Boolean> &values) const {
     return fmi2SetBoolean_(c, vr.data(), vr.size(), values.data());
 }
 
@@ -248,13 +245,13 @@ fmi2Status FmiLibrary::freeFMUstate(const fmi2Component c, fmi2FMUstate &state) 
     return fmi2FreeFMUstate_(c, &state);
 }
 
-fmi2Status fmi4cpp::fmi2::import::FmiLibrary::getSerializedFMUstateSize(const fmi2Component c, const fmi2FMUstate state,
+fmi2Status fmi4cpp::fmi2::FmiLibrary::getSerializedFMUstateSize(const fmi2Component c, const fmi2FMUstate state,
                                                                         size_t &size) const {
     return fmi2SerializedFMUstateSize_(c, state, &size);
 }
 
 fmi2Status FmiLibrary::serializeFMUstate(const fmi2Component c,
-                                         const fmi2FMUstate &state, vector<fmi2Byte> &serializedState) const {
+                                         const fmi2FMUstate &state, std::vector<fmi2Byte> &serializedState) const {
     size_t size = 0;
     getSerializedFMUstateSize(c, state, size);
     serializedState.reserve(size);
@@ -262,15 +259,15 @@ fmi2Status FmiLibrary::serializeFMUstate(const fmi2Component c,
 }
 
 fmi2Status FmiLibrary::deSerializeFMUstate(const fmi2Component c,
-                                           fmi2FMUstate &state, const vector<fmi2Byte> &serializedState) const {
+                                           fmi2FMUstate &state, const std::vector<fmi2Byte> &serializedState) const {
     return fmi2DeSerializeFMUstate_(c, serializedState.data(), serializedState.size(), &state);
 }
 
 fmi2Status FmiLibrary::getDirectionalDerivative(const fmi2Component c,
-                                                const vector<fmi2ValueReference> &vUnkownRef,
-                                                const vector<fmi2ValueReference> &vKnownRef,
-                                                const vector<fmi2Real> &dvKnownRef,
-                                                vector<fmi2Real> &dvUnknownRef) const {
+                                                const std::vector<fmi2ValueReference> &vUnkownRef,
+                                                const std::vector<fmi2ValueReference> &vKnownRef,
+                                                const std::vector<fmi2Real> &dvKnownRef,
+                                                std::vector<fmi2Real> &dvUnknownRef) const {
     return fmi2GetDirectionalDerivative_(c, vUnkownRef.data(), vUnkownRef.size(),
                                          vKnownRef.data(), vKnownRef.size(), dvKnownRef.data(), dvUnknownRef.data());
 }
@@ -279,7 +276,7 @@ void FmiLibrary::freeInstance(fmi2Component c) {
     fmi2FreeInstance_(c);
 }
 
-string FmiLibrary::getLastError() const {
+std::string FmiLibrary::getLastError() const {
 #ifdef WIN32
     std::ostringstream os;
     os << GetLastError();
@@ -301,7 +298,7 @@ FmiLibrary::~FmiLibrary() {
 
 #if FMI4CPP_DEBUG_LOGGING_ENABLED
         if (!success) {
-            cout << getLastError() << endl;
+            std::cout << getLastError() << std::endl;
         }
 #endif
 

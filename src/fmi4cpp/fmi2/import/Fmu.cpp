@@ -62,7 +62,7 @@ namespace {
 
 }
 
-import::Fmu::Fmu(const string &fmuFile) {
+Fmu::Fmu(const string &fmuFile) {
 
     const string fmuName = fs::path(fmuFile).stem().string();
     fs::path tmpPath(fs::temp_directory_path() /= fs::path("fmi4cpp_" + fmuName + "_" + generate_simple_id()));
@@ -80,29 +80,29 @@ import::Fmu::Fmu(const string &fmuFile) {
     }
 
     resource_ = make_shared<FmuResource>(tmpPath);
-    modelDescription_ = std::move(xml::parseModelDescription(resource_->getModelDescriptionPath()));
+    modelDescription_ = std::move(parseModelDescription(resource_->getModelDescriptionPath()));
 
 }
 
 
-const string import::Fmu::getModelDescriptionXml() const {
+const string Fmu::getModelDescriptionXml() const {
     ifstream stream(resource_->getModelDescriptionPath());
     return string((istreambuf_iterator<char>(stream)), istreambuf_iterator<char>());
 }
 
-shared_ptr<ModelDescription> import::Fmu::getModelDescription() const {
+shared_ptr<ModelDescription> Fmu::getModelDescription() const {
     return modelDescription_;
 }
 
-bool import::Fmu::supportsModelExchange() const {
+bool Fmu::supportsModelExchange() const {
     return modelDescription_->supportsModelExchange();
 }
 
-bool import::Fmu::supportsCoSimulation() const {
+bool Fmu::supportsCoSimulation() const {
     return modelDescription_->supportsCoSimulation();
 }
 
-import::Fmu::~Fmu() {
+Fmu::~Fmu() {
 //#if  FMI4CPP_DEBUG_LOGGING_ENABLED
 //    cout << "~Fmu()" << endl;
 //#endif

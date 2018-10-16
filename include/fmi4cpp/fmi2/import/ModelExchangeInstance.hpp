@@ -31,14 +31,14 @@
 
 #include "../xml/ModelDescription.hpp"
 
-namespace fmi4cpp::fmi2::import {
+namespace fmi4cpp::fmi2 {
 
-class ModelExchangeInstance : public AbstractFmuInstance<ModelExchangeLibrary, xml::ModelExchangeModelDescription> {
+class ModelExchangeInstance : public AbstractFmuInstance<ModelExchangeLibrary, ModelExchangeModelDescription> {
 
     public:
         ModelExchangeInstance(const fmi2Component c,
                               const std::shared_ptr<ModelExchangeLibrary> &library,
-                              const std::shared_ptr<xml::ModelExchangeModelDescription> &modelDescription);
+                              const std::shared_ptr<ModelExchangeModelDescription> &modelDescription);
 
 
         fmi2Status enterEventMode() const;

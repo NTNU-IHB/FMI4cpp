@@ -27,7 +27,7 @@
 
 #include <string>
 
-namespace fmi4cpp::fmi2::xml {
+namespace fmi4cpp::fmi2 {
 
     enum class fmi2Causality {
         parameter,

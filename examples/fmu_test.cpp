@@ -40,7 +40,7 @@ const string fmuPath = string(getenv("TEST_FMUs"))
 
 int main() {
 
-    import::Fmu fmu(fmuPath);
+    Fmu fmu(fmuPath);
     auto cs_fmu = fmu.asCoSimulationFmu();
 
     auto md = cs_fmu->getModelDescription();

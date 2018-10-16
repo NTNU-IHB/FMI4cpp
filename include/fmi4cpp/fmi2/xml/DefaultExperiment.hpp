@@ -27,7 +27,7 @@
 
 #include <optional>
 
-namespace fmi4cpp::fmi2::xml {
+namespace fmi4cpp::fmi2 {
 
     class DefaultExperiment {
 

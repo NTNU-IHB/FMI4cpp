@@ -27,7 +27,7 @@
 
 #include <fmi4cpp/fmi2/xml/FmuAttributes.hpp>
 
-namespace fmi4cpp::fmi2::xml {
+namespace fmi4cpp::fmi2 {
 
     FmuAttributes parseFmuAttributes(const ptree &node) {
 

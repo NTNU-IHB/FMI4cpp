@@ -24,10 +24,7 @@
 
 #include <fmi4cpp/fmi2/xml/TypedScalarVariable.hpp>
 
-using namespace fmi4cpp::fmi2::xml;
-
-using fmi4cpp::fmi2::import::FmuReader;
-using fmi4cpp::fmi2::import::FmuWriter;
+using namespace fmi4cpp::fmi2;
 
 IntegerVariable::IntegerVariable(const ScalarVariable &variable, const IntegerAttribute &attribute)
         : BoundedScalarVariable(variable, attribute) {}

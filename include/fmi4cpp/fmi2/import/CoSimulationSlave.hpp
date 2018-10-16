@@ -32,21 +32,21 @@
 
 #include "../xml/ModelDescription.hpp"
 
-namespace fmi4cpp::fmi2::import {
+namespace fmi4cpp::fmi2 {
 
     class CoSimulationSlave : public FmuSlave,
-                              public AbstractFmuInstance<CoSimulationLibrary, xml::CoSimulationModelDescription> {
+                              public AbstractFmuInstance<CoSimulationLibrary, CoSimulationModelDescription> {
 
     public:
         explicit CoSimulationSlave(fmi2Component c,
                                    const std::shared_ptr<CoSimulationLibrary> &library,
-                                   const std::shared_ptr<xml::CoSimulationModelDescription> &modelDescription);
+                                   const std::shared_ptr<CoSimulationModelDescription> &modelDescription);
 
         fmi2Status doStep(double stepSize) override;
 
         fmi2Status cancelStep() override;
 
-        std::shared_ptr<xml::CoSimulationModelDescription> getModelDescription() const override;
+        std::shared_ptr<CoSimulationModelDescription> getModelDescription() const override;
 
         void init(double start = 0, double stop = 0) final override;
 

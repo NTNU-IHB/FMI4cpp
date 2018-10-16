@@ -29,7 +29,7 @@
 
 namespace fs = std::experimental::filesystem;
 
-namespace fmi4cpp::fmi2::import {
+namespace fmi4cpp::fmi2 {
 
 class FmuResource {
 

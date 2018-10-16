@@ -38,8 +38,6 @@
 #include "../enumsToString.hpp"
 #include "../xml/ModelDescription.hpp"
 
-using fmi4cpp::fmi2::import::FmuInstance;
-
 namespace {
 
     void checkStatus(const fmi2Status status, const std::string &function_name) {
@@ -59,7 +57,7 @@ namespace {
 
 }
 
-namespace fmi4cpp::fmi2::import {
+namespace fmi4cpp::fmi2 {
 
 //    class StartQueue {
 //
@@ -141,7 +139,7 @@ namespace fmi4cpp::fmi2::import {
     class AbstractFmuInstance : public virtual FmuInstance<U> {
 
         static_assert(std::is_base_of<FmiLibrary, T>::value, "T must derive from FmiLibrary");
-        static_assert(std::is_base_of<xml::ModelDescriptionBase, U>::value,
+        static_assert(std::is_base_of<ModelDescriptionBase, U>::value,
                       "U must derive from ModelDescriptionBase");
 
     private:

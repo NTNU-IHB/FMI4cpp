@@ -31,7 +31,7 @@
 
 #include <fmi4cpp/fmi2/xml/ScalarVariable.hpp>
 
-namespace fmi4cpp::fmi2::xml {
+namespace fmi4cpp::fmi2 {
 
     class ModelVariables {
 

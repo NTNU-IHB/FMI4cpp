@@ -24,8 +24,7 @@
 
 #include <fmi4cpp/fmi2/xml/ScalarVariableAttribute.hpp>
 
-using namespace fmi4cpp::fmi2::xml;
-
+using namespace fmi4cpp::fmi2;
 
 IntegerAttribute::IntegerAttribute(const BoundedScalarVariableAttribute<int> &attributes)
         : BoundedScalarVariableAttribute<int>(attributes) {}

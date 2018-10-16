@@ -36,7 +36,7 @@ These can probably also be installed through the native package handler.
 ```cpp
 
 #include <iostream>
-#include <fmi4cpp/fmi4cpp.hpp>
+#include <fmi4cpp/fmi2/fmi4cpp.hpp>
 
 using namespace fmi4cpp::fmi2;
 
@@ -45,7 +45,7 @@ const double stepSize = 1.0/100;
 
 int main() {
 
-    auto fmu = import::Fmu("path/to/fmu.fmu").asCoSimulationFmu();
+    auto fmu = Fmu("path/to/fmu.fmu").asCoSimulationFmu();
     
     auto md = fmu->getModelDescription();
     std::cout << "modelIdentifier=" << md.modelIdentifier() << std::endl;
