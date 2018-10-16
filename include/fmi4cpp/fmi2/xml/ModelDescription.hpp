@@ -73,7 +73,7 @@ namespace fmi4cpp::fmi2::xml {
                              const size_t numberOfEventIndicators,
                              const std::shared_ptr<ModelVariables> &modelVariables,
                              const std::shared_ptr<ModelStructure> &modelStructure,
-                             const std::optional<DefaultExperiment> defaultExperiment);
+                             const std::optional<DefaultExperiment> &defaultExperiment);
 
         std::string guid() const;
 
@@ -180,6 +180,16 @@ namespace fmi4cpp::fmi2::xml {
 
         bool providesDirectionalDerivative() const {
             return attributes_.providesDirectionalDerivative;
+        }
+
+        void copyAttributes(FmuAttributes &attributes) const {
+            attributes.canSerializeFMUstate = canSerializeFMUstate();
+            attributes.canGetAndSetFMUstate = canGetAndSetFMUstate();
+            attributes.modelIdentifier = modelIdentifier();
+            attributes.sourceFiles = sourceFiles();
+            attributes.needsExecutionTool = needsExecutionTool();
+            attributes.canBeInstantiatedOnlyOncePerProcess = canBeInstantiatedOnlyOncePerProcess();
+            attributes.providesDirectionalDerivative = providesDirectionalDerivative();
         }
 
     };
