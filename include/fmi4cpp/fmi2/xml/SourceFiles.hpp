@@ -32,7 +32,7 @@ namespace fmi4cpp::fmi2 {
 
     struct File {
 
-        const std::string name;
+        std::string name;
 
         explicit File(const std::string &name) : name(name) {}
 
