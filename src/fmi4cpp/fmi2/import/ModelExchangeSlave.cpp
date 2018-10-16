@@ -26,10 +26,33 @@
 
 using namespace fmi4cpp::fmi2::import;
 
+using fmi4cpp::fmi2::import::ModelExchangeSlave;
+
+namespace {
+
+    std::unique_ptr<CoSimulationModelDescription> csWrapper(const ModelDescriptionBase &base) {
+
+//        CoSimulationAttributes attributes;
+
+    }
+
+}
+
 ModelExchangeSlave::ModelExchangeSlave(
         std::unique_ptr<import::ModelExchangeInstance> &instance,
         std::unique_ptr<Solver> &solver)
-        : instance_(std::move(instance)), solver_(std::move(solver)) {}
+        : instance_(std::move(instance)), solver_(std::move(solver)) {
+
+    size_t numberOfContinuousStates = instance->getModelDescription()->numberOfContinuousStates();
+    size_t numberOfEventIndicators = instance->getModelDescription()->numberOfEventIndicators();
+
+    x_.reserve(numberOfContinuousStates);
+    dx_.reserve(numberOfContinuousStates);
+
+    z_.reserve(numberOfEventIndicators);
+    pz_.reserve(numberOfEventIndicators);
+
+}
 
 fmi2Status ModelExchangeSlave::doStep(const double stepSize) {
     return fmi2Error;

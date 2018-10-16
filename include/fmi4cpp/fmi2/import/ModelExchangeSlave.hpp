@@ -40,6 +40,13 @@ namespace fmi4cpp::fmi2::import {
         std::unique_ptr<Solver> solver_;
         std::unique_ptr<ModelExchangeInstance> instance_;
 
+        std::vector<fmi2Real > x_;
+        std::vector<fmi2Real > dx_;
+
+        std::vector<fmi2Real > z_;
+        std::vector<fmi2Real > pz_;
+
+        bool eventIteration();
 
     public:
         ModelExchangeSlave(std::unique_ptr<ModelExchangeInstance> &instance_,
