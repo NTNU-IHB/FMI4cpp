@@ -76,7 +76,7 @@ namespace fmi4cpp::fmi2 {
         bool relativeQuantity;
 
         std::optional<double> nominal;
-        std::optional<size_t> derivative;
+        std::optional<unsigned int> derivative;
 
         std::optional<std::string> unit;
         std::optional<std::string> displayUnit;
