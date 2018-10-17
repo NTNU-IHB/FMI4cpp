@@ -42,6 +42,6 @@ BooleanAttribute::BooleanAttribute(const ScalarVariableAttribute<bool> &attribut
         : ScalarVariableAttribute<bool>(attributes) {}
         
         
-EnumerationAttribute::EnumerationAttribute(const ScalarVariableAttribute<int> &attributes)
-        : ScalarVariableAttribute<int>(attributes) {}
+EnumerationAttribute::EnumerationAttribute(const BoundedScalarVariableAttribute<int> &attributes)
+        : BoundedScalarVariableAttribute<int>(attributes) {}
         

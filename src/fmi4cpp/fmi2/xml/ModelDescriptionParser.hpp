@@ -194,11 +194,11 @@ namespace {
     }
 
     StringAttribute parseStringAttribute(const ptree &node) {
-        return StringAttribute(parseBoundedScalarVariableAttributes<std::string>(node));
+        return StringAttribute(parseScalarVariableAttributes<std::string>(node));
     }
 
     BooleanAttribute parseBooleanAttribute(const ptree &node) {
-        return BooleanAttribute(parseBoundedScalarVariableAttributes<bool>(node));
+        return BooleanAttribute(parseScalarVariableAttributes<bool>(node));
     }
 
     EnumerationAttribute parseEnumerationAttribute(const ptree &node) {

@@ -97,9 +97,9 @@ namespace fmi4cpp::fmi2 {
 
     };
 
-    struct EnumerationAttribute : ScalarVariableAttribute<int> {
+    struct EnumerationAttribute : BoundedScalarVariableAttribute<int> {
 
-        EnumerationAttribute(const ScalarVariableAttribute<int> &attributes);
+        EnumerationAttribute(const BoundedScalarVariableAttribute<int> &attributes);
 
     };
 
