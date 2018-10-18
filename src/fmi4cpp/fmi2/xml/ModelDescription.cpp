@@ -107,7 +107,7 @@ const std::shared_ptr<ModelStructure> &ModelDescriptionBase::modelStructure() co
     return modelStructure_;
 }
 
-std::optional<DefaultExperiment> ModelDescriptionBase::defaultExperiment() const {
+const std::optional<DefaultExperiment> ModelDescriptionBase::defaultExperiment() const {
     return defaultExperiment_;
 }
 

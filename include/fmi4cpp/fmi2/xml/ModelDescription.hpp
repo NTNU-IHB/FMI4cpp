@@ -105,7 +105,7 @@ namespace fmi4cpp::fmi2 {
 
         const std::shared_ptr<ModelStructure> &modelStructure() const;
 
-        std::optional<DefaultExperiment> defaultExperiment() const;
+        const std::optional<DefaultExperiment> defaultExperiment() const;
 
         fmi2ValueReference getValueReference(const std::string &name) const;
         
@@ -182,14 +182,8 @@ namespace fmi4cpp::fmi2 {
             return attributes_.providesDirectionalDerivative;
         }
 
-        void copyAttributes(FmuAttributes &attributes) const {
-            attributes.canSerializeFMUstate = canSerializeFMUstate();
-            attributes.canGetAndSetFMUstate = canGetAndSetFMUstate();
-            attributes.modelIdentifier = modelIdentifier();
-            attributes.sourceFiles = sourceFiles();
-            attributes.needsExecutionTool = needsExecutionTool();
-            attributes.canBeInstantiatedOnlyOncePerProcess = canBeInstantiatedOnlyOncePerProcess();
-            attributes.providesDirectionalDerivative = providesDirectionalDerivative();
+        const T &attributes() const {
+            return attributes_;
         }
 
     };
