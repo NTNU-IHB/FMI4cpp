@@ -49,7 +49,7 @@ namespace {
     }
 
     const fmi2CallbackFunctions callback = {
-            logger, calloc, free, NULL, NULL
+            logger, calloc, free, nullptr, nullptr
     };
 
 }
@@ -116,8 +116,8 @@ fmi2String FmiLibrary::getTypesPlatform() const {
     return fmi2GetTypesPlatform_();
 }
 
-fmi2Status fmi4cpp::fmi2::FmiLibrary::setDebugLogging(const fmi2Component c, const bool loggingOn,
-                                                              const std::vector<const char *> categories) const {
+fmi2Status FmiLibrary::setDebugLogging(fmi2Component c, bool loggingOn,
+                                                              const std::vector<char *> categories) const {
     return fmi2SetDebugLogging_(c, loggingOn, categories.size(), categories.data());
 }
 
@@ -128,7 +128,7 @@ fmi2Component FmiLibrary::instantiate(const std::string instanceName, const fmi2
                                        resourceLocation.c_str(), &callback, visible, loggingOn);
 
     if (c == nullptr) {
-        throw std::runtime_error("Unable to instantiate FMU instance!");
+        throw std::runtime_error("Fatal: fmi2Instantiate returned nulltpr, unable to instantiate FMU instance!");
     }
 
     return c;
@@ -291,7 +291,7 @@ FmiLibrary::~FmiLibrary() {
     if (handle_) {
         bool success;
 #ifdef WIN32
-        success = FreeLibrary(handle_);
+        success = static_cast<bool>(FreeLibrary(handle_));
 #else
         success = (dlclose(handle_) == 0);
 #endif

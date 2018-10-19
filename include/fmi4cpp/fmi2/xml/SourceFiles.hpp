@@ -30,15 +30,15 @@
 
 namespace fmi4cpp::fmi2 {
 
-    struct File {
+    struct SourceFile {
 
         std::string name;
 
-        explicit File(const std::string &name) : name(name) {}
+        explicit SourceFile(const std::string &name) : name(name) {}
 
     };
 
-    typedef std::vector<File> SourceFiles;
+    typedef std::vector<SourceFile> SourceFiles;
 
 }
 

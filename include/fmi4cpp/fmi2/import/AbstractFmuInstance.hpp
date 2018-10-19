@@ -154,7 +154,7 @@ namespace fmi4cpp::fmi2 {
 
     public:
 
-        AbstractFmuInstance(const fmi2Component c,
+        AbstractFmuInstance(fmi2Component c,
                             const std::shared_ptr<T> &library,
                             const std::shared_ptr<U> &modelDescription)
                 : c_(c), library_(library), modelDescription_(modelDescription) {}
@@ -216,7 +216,7 @@ namespace fmi4cpp::fmi2 {
             return library_->getFMUstate(c_, state);
         }
 
-        fmi2Status setFMUstate(const fmi2FMUstate state) override {
+        fmi2Status setFMUstate(fmi2FMUstate state) override {
             return library_->setFMUstate(c_, state);
         }
 
@@ -225,7 +225,7 @@ namespace fmi4cpp::fmi2 {
         }
 
 
-        fmi2Status getSerializedFMUstateSize(const fmi2FMUstate state, size_t &size) const {
+        fmi2Status getSerializedFMUstateSize(fmi2FMUstate state, size_t &size) const {
             return library_->getSerializedFMUstateSize(c_, state, size);
         }
 

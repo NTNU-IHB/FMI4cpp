@@ -80,12 +80,12 @@ BOOST_AUTO_TEST_CASE(ControlledTemperature_test1) {
     BOOST_CHECK_EQUAL(115, modelStructureOutputs[0].index());
     BOOST_CHECK_EQUAL(116, modelStructureOutputs[1].index());
 
-    auto de = md->defaultExperiment();
+    std::optional<DefaultExperiment> de = md->defaultExperiment();
     BOOST_CHECK(de.has_value());
-    BOOST_CHECK_EQUAL(0.0, *de->startTime());
-    BOOST_CHECK_EQUAL(20.0, *de->stopTime());
-    BOOST_CHECK_EQUAL(1E-4, *de->stepSize());
-    BOOST_CHECK_EQUAL(false, de->tolerance().has_value());
+    BOOST_CHECK_EQUAL(0.0, *de->startTime);
+    BOOST_CHECK_EQUAL(20.0, *de->stopTime);
+    BOOST_CHECK_EQUAL(1E-4, *de->stepSize);
+    BOOST_CHECK_EQUAL(false, de->tolerance.has_value());
 
     size_t count = 0;
     auto mv = md->modelVariables();

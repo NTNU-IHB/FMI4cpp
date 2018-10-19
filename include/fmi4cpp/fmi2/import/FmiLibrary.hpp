@@ -28,8 +28,8 @@
 #include <string>
 #include <vector>
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 
 #include "../fmi2FunctionTypes.h"
 
@@ -102,84 +102,84 @@ namespace fmi4cpp::fmi2 {
         
     public:
 
-        explicit FmiLibrary(const std::string &modelIdentifier, const std::shared_ptr<FmuResource> &resource);
+        FmiLibrary(const std::string &modelIdentifier, const std::shared_ptr<FmuResource> &resource);
 
         fmi2String getVersion() const;
 
         fmi2String getTypesPlatform() const;
 
-        fmi2Status setDebugLogging(const fmi2Component c, const bool loggingOn, const std::vector<const char*> categories) const;
+        fmi2Status setDebugLogging(fmi2Component c, bool loggingOn, const std::vector<char*> categories) const;
 
-        fmi2Component instantiate(const std::string instanceName, const fmi2Type type,
-                                  const std::string guid, const std::string resourceLocation,
-                                  const bool visible = false, const bool loggingOn = false);
+        fmi2Component instantiate(std::string instanceName, fmi2Type type,
+                                  std::string guid, std::string resourceLocation,
+                                  bool visible = false, bool loggingOn = false);
 
-        fmi2Status setupExperiment(const fmi2Component c, const bool toleranceDefined,
-                                   const double tolerance, const double startTime, const double stopTime) const;
+        fmi2Status setupExperiment(fmi2Component c, bool toleranceDefined,
+                                   double tolerance, double startTime, double stopTime) const;
 
-        fmi2Status enterInitializationMode(const fmi2Component c) const;
+        fmi2Status enterInitializationMode(fmi2Component c) const;
 
-        fmi2Status exitInitializationMode(const fmi2Component c) const;
+        fmi2Status exitInitializationMode(fmi2Component c) const;
 
-        fmi2Status reset(const fmi2Component c) const;
+        fmi2Status reset(fmi2Component c) const;
 
-        fmi2Status terminate(const fmi2Component c);
+        fmi2Status terminate(fmi2Component c);
 
-        fmi2Status readInteger(const fmi2Component c, const fmi2ValueReference vr, fmi2Integer &ref) const;
-
-        fmi2Status
-        readInteger(const fmi2Component c, const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Integer> &ref) const;
-
-        fmi2Status readReal(const fmi2Component c, const fmi2ValueReference vr, fmi2Real &ref) const;
-
-        fmi2Status readReal(const fmi2Component c, const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Real> &ref) const;
-
-        fmi2Status readString(const fmi2Component c, const fmi2ValueReference vr, fmi2String &ref) const;
+        fmi2Status readInteger(fmi2Component c, fmi2ValueReference vr, fmi2Integer &ref) const;
 
         fmi2Status
-        readString(const fmi2Component c, const std::vector<fmi2ValueReference> &vr, std::vector<fmi2String> &ref) const;
+        readInteger(fmi2Component c, const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Integer> &ref) const;
 
-        fmi2Status readBoolean(const fmi2Component c, const fmi2ValueReference vr, fmi2Boolean &ref) const;
+        fmi2Status readReal(fmi2Component c, fmi2ValueReference vr, fmi2Real &ref) const;
+
+        fmi2Status readReal(fmi2Component c, const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Real> &ref) const;
+
+        fmi2Status readString(fmi2Component c, fmi2ValueReference vr, fmi2String &ref) const;
 
         fmi2Status
-        readBoolean(const fmi2Component c, const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Boolean> &ref) const;
+        readString(fmi2Component c, const std::vector<fmi2ValueReference> &vr, std::vector<fmi2String> &ref) const;
 
-        fmi2Status writeInteger(const fmi2Component c, const fmi2ValueReference vr, const fmi2Integer &value) const;
+        fmi2Status readBoolean(fmi2Component c, fmi2ValueReference vr, fmi2Boolean &ref) const;
 
-        fmi2Status writeInteger(const fmi2Component c, const std::vector<fmi2ValueReference> &vr,
+        fmi2Status
+        readBoolean(fmi2Component c, const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Boolean> &ref) const;
+
+        fmi2Status writeInteger(fmi2Component c, fmi2ValueReference vr, const fmi2Integer &value) const;
+
+        fmi2Status writeInteger(fmi2Component c, const std::vector<fmi2ValueReference> &vr,
                                 const std::vector<fmi2Integer> &values) const;
 
-        fmi2Status writeReal(const fmi2Component c, const fmi2ValueReference vr, const fmi2Real &value) const;
+        fmi2Status writeReal(fmi2Component c, fmi2ValueReference vr, const fmi2Real &value) const;
 
         fmi2Status
-        writeReal(const fmi2Component c, const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2Real> &values) const;
+        writeReal(fmi2Component c, const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2Real> &values) const;
 
-        fmi2Status writeString(const fmi2Component c, const fmi2ValueReference vr, fmi2String &value) const;
+        fmi2Status writeString(fmi2Component c, fmi2ValueReference vr, fmi2String &value) const;
 
-        fmi2Status writeString(const fmi2Component c, const std::vector<fmi2ValueReference> &vr,
+        fmi2Status writeString(fmi2Component c, const std::vector<fmi2ValueReference> &vr,
                                const std::vector<fmi2String> &values) const;
 
-        fmi2Status writeBoolean(const fmi2Component c, const fmi2ValueReference vr, const fmi2Boolean &value) const;
+        fmi2Status writeBoolean(fmi2Component c, fmi2ValueReference vr, const fmi2Boolean &value) const;
 
-        fmi2Status writeBoolean(const fmi2Component c, const std::vector<fmi2ValueReference> &vr,
+        fmi2Status writeBoolean(fmi2Component c, const std::vector<fmi2ValueReference> &vr,
                                 const std::vector<fmi2Boolean> &values) const;
 
-        fmi2Status getFMUstate(const fmi2Component c, fmi2FMUstate &state) const;
+        fmi2Status getFMUstate(fmi2Component c, fmi2FMUstate &state) const;
 
-        fmi2Status setFMUstate(const fmi2Component c, const fmi2FMUstate state) const;
+        fmi2Status setFMUstate(fmi2Component c, fmi2FMUstate state) const;
 
-        fmi2Status freeFMUstate(const fmi2Component c, fmi2FMUstate &state) const;
-
-        fmi2Status
-        getSerializedFMUstateSize(const fmi2Component c, const fmi2FMUstate state, size_t &size) const;
+        fmi2Status freeFMUstate(fmi2Component c, fmi2FMUstate &state) const;
 
         fmi2Status
-        serializeFMUstate(const fmi2Component c, const fmi2FMUstate &state, std::vector<fmi2Byte> &serializedState) const;
+        getSerializedFMUstateSize(fmi2Component c, fmi2FMUstate state, size_t &size) const;
 
         fmi2Status
-        deSerializeFMUstate(const fmi2Component c, fmi2FMUstate &state, const std::vector<fmi2Byte> &serializedState) const;
+        serializeFMUstate(fmi2Component c, const fmi2FMUstate &state, std::vector<fmi2Byte> &serializedState) const;
 
-        fmi2Status getDirectionalDerivative(const fmi2Component c,
+        fmi2Status
+        deSerializeFMUstate(fmi2Component c, fmi2FMUstate &state, const std::vector<fmi2Byte> &serializedState) const;
+
+        fmi2Status getDirectionalDerivative(fmi2Component c,
                                             const std::vector<fmi2ValueReference> &vUnkownRef,
                                             const std::vector<fmi2ValueReference> &vKnownRef,
                                             const std::vector<fmi2Real> &dvKnownRef, std::vector<fmi2Real> &dvUnknownRef) const;

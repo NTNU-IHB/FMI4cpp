@@ -80,6 +80,10 @@ namespace fmi4cpp::fmi2 {
             return attribute_.declaredType;
         }
 
+        const U &attribute() const {
+            return attribute_;
+        }
+
         virtual fmi2Status read(const FmuReader &reader, T &ref) = 0;
 
         virtual fmi2Status write(FmuWriter &writer, T value) = 0;

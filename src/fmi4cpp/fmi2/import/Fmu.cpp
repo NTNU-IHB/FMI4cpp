@@ -28,7 +28,7 @@
 
 #endif
 
-#include <random>
+
 #include <experimental/filesystem>
 
 #include <fmi4cpp/fmi2/import/Fmu.hpp>
@@ -39,33 +39,17 @@
 
 #include "../../tools/unzipper.hpp"
 #include "../../tools/os_util.hpp"
+#include "../../tools/simple_id.hpp"
 
 using namespace std;
 using namespace fmi4cpp::fmi2;
 
 namespace fs = std::experimental::filesystem;
 
-namespace {
-
-    std::random_device rd;
-    std::mt19937 mt(rd());
-
-    const std::string generate_simple_id() {
-
-        std::string id;
-        std::uniform_int_distribution<int> dist(0, 9);
-        for (int i = 0; i < 8; i++) {
-            id += std::to_string(dist(mt));
-        }
-        return id;
-    }
-
-}
-
 Fmu::Fmu(const string &fmuFile) {
 
     const string fmuName = fs::path(fmuFile).stem().string();
-    fs::path tmpPath(fs::temp_directory_path() /= fs::path("fmi4cpp_" + fmuName + "_" + generate_simple_id()));
+    fs::path tmpPath(fs::temp_directory_path() /= fs::path("fmi4cpp_" + fmuName + "_" + generate_simple_id(8)));
 
     if (!create_directories(tmpPath)) {
         throw runtime_error("Failed to create temporary directory!");

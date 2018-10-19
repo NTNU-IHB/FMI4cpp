@@ -64,7 +64,7 @@ fmi2Status CoSimulationSlave::getFMUstate(fmi2FMUstate &state) {
     return AbstractFmuInstance::getFMUstate(state);
 }
 
-fmi2Status CoSimulationSlave::setFMUstate(const fmi2FMUstate state) {
+fmi2Status CoSimulationSlave::setFMUstate(fmi2FMUstate state) {
     return AbstractFmuInstance::setFMUstate(state);
 }
 

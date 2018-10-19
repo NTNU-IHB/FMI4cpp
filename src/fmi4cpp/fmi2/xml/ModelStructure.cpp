@@ -27,7 +27,7 @@
 using fmi4cpp::fmi2::Unknown;
 using fmi4cpp::fmi2::ModelStructure;
 
-Unknown::Unknown(const size_t index, const std::optional<std::string> &dependenciesKind,
+Unknown::Unknown(const unsigned int index, const std::optional<std::string> &dependenciesKind,
         const std::optional<std::vector<unsigned int>> &dependencies)
         : index_(index), dependenciesKind_(dependenciesKind), dependencies_(dependencies) {}
 
@@ -42,8 +42,6 @@ const std::optional<std::string> fmi4cpp::fmi2::Unknown::dependenciesKind() {
 const std::optional<std::vector<unsigned int>> &Unknown::dependencies() const {
     return dependencies_;
 }
-
-fmi4cpp::fmi2::ModelStructure::ModelStructure() {}
 
 ModelStructure::ModelStructure(const std::vector<Unknown> &outputs_, const std::vector<Unknown> &derivatives_,
                                const std::vector<Unknown> &initialUnknowns_)
@@ -60,5 +58,3 @@ const std::vector<Unknown> &ModelStructure::derivatives() const {
 const std::vector<Unknown> &ModelStructure::initialUnknowns() const {
     return initialUnknowns_;
 }
-
-

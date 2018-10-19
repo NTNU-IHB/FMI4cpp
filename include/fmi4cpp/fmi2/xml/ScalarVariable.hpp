@@ -124,15 +124,15 @@ namespace fmi4cpp::fmi2 {
 
         bool isEnumeration() const;
 
-        IntegerVariable asInteger() const;
+        const IntegerVariable asInteger() const;
 
-        RealVariable asReal() const;
+        const RealVariable asReal() const;
 
-        StringVariable asString() const;
+        const StringVariable asString() const;
 
-        BooleanVariable asBoolean() const;
+        const BooleanVariable asBoolean() const;
 
-        EnumerationVariable asEnumeration() const;
+        const EnumerationVariable asEnumeration() const;
 
     };
 

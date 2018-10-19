@@ -91,43 +91,6 @@ ScalarVariable::ScalarVariable(const ScalarVariableBase &base,
         : ScalarVariableBase(base), enumeration_(enumeration) {}
 
 
-std::string ScalarVariable::typeName() const {
-    if (integer_) {
-        return INTEGER_TYPE;
-    } else if (real_) {
-        return REAL_TYPE;
-    } else if (string_) {
-        return STRING_TYPE;
-    } else if (boolean_) {
-        return BOOLEAN_TYPE;
-    } else if (enumeration_) {
-        return ENUMERATION_TYPE;
-    } else {
-        return "Unknown";
-    }
-}
-
-
-IntegerVariable ScalarVariable::asInteger() const {
-    return IntegerVariable(*this, *integer_);
-}
-
-RealVariable ScalarVariable::asReal() const {
-    return RealVariable(*this, *real_);
-}
-
-StringVariable ScalarVariable::asString() const {
-    return StringVariable(*this, *string_);
-}
-
-BooleanVariable ScalarVariable::asBoolean() const {
-    return BooleanVariable(*this, *boolean_);
-}
-
-EnumerationVariable ScalarVariable::asEnumeration() const {
-    return EnumerationVariable(*this, *enumeration_);
-}
-
 bool ScalarVariable::isInteger() const {
     return integer_.has_value();
 }
@@ -148,3 +111,38 @@ bool ScalarVariable::isEnumeration() const {
     return enumeration_.has_value();
 }
 
+const IntegerVariable ScalarVariable::asInteger() const {
+    return IntegerVariable(*this, *integer_);
+}
+
+const RealVariable ScalarVariable::asReal() const {
+    return RealVariable(*this, *real_);
+}
+
+const StringVariable ScalarVariable::asString() const {
+    return StringVariable(*this, *string_);
+}
+
+const BooleanVariable ScalarVariable::asBoolean() const {
+    return BooleanVariable(*this, *boolean_);
+}
+
+const EnumerationVariable ScalarVariable::asEnumeration() const {
+    return EnumerationVariable(*this, *enumeration_);
+}
+
+std::string ScalarVariable::typeName() const {
+    if (integer_) {
+        return INTEGER_TYPE;
+    } else if (real_) {
+        return REAL_TYPE;
+    } else if (string_) {
+        return STRING_TYPE;
+    } else if (boolean_) {
+        return BOOLEAN_TYPE;
+    } else if (enumeration_) {
+        return ENUMERATION_TYPE;
+    } else {
+        return "Unknown";
+    }
+}

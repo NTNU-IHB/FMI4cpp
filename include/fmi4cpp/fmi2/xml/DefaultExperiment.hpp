@@ -29,25 +29,17 @@
 
 namespace fmi4cpp::fmi2 {
 
-    class DefaultExperiment {
+    struct DefaultExperiment {
 
-    private:
-        std::optional<double> startTime_;
-        std::optional<double> stopTime_;
-        std::optional<double> stepSize_;
-        std::optional<double> tolerance_;
+        std::optional<double> startTime;
+        std::optional<double> stopTime;
+        std::optional<double> stepSize;
+        std::optional<double> tolerance;
 
-    public:
-
-        DefaultExperiment();
+        DefaultExperiment() = default;
 
         DefaultExperiment(const std::optional<double> &startTime, const std::optional<double> &stopTime,
                           const std::optional<double> &stepSize, const std::optional<double> &tolerance);
-
-        std::optional<double> startTime() const;
-        std::optional<double> stopTime() const;
-        std::optional<double> stepSize() const;
-        std::optional<double> tolerance() const;
 
     };
 

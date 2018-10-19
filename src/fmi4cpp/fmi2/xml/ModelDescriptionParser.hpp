@@ -49,15 +49,15 @@ namespace {
     }
 
 
-    File parseFile(const ptree &node) {
+    SourceFile parseFile(const ptree &node) {
         std::string name = node.get<std::string>("<xmlattr>.name");
-        return File(name);
+        return SourceFile(name);
     }
 
     void parseSourceFiles(const ptree &node, SourceFiles &files) {
         for (const ptree::value_type &v : node) {
             if (v.first == "File") {
-                File file = parseFile(v.second);
+                SourceFile file = parseFile(v.second);
                 files.push_back(file);
             }
         }
@@ -194,11 +194,11 @@ namespace {
     }
 
     StringAttribute parseStringAttribute(const ptree &node) {
-        return StringAttribute(parseBoundedScalarVariableAttributes<std::string>(node));
+        return StringAttribute(parseScalarVariableAttributes<std::string>(node));
     }
 
     BooleanAttribute parseBooleanAttribute(const ptree &node) {
-        return BooleanAttribute(parseBoundedScalarVariableAttributes<bool>(node));
+        return BooleanAttribute(parseScalarVariableAttributes<bool>(node));
     }
 
     EnumerationAttribute parseEnumerationAttribute(const ptree &node) {

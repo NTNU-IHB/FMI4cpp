@@ -58,6 +58,4 @@ FmuResource::~FmuResource() {
     }
 #endif
 
-
-
 }

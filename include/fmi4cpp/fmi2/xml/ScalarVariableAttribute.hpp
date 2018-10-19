@@ -65,7 +65,7 @@ namespace fmi4cpp::fmi2 {
 
     struct IntegerAttribute : BoundedScalarVariableAttribute<int> {
 
-        IntegerAttribute(const BoundedScalarVariableAttribute<int> &attributes);
+        explicit IntegerAttribute(const BoundedScalarVariableAttribute<int> &attributes);
 
     };
 
@@ -76,30 +76,30 @@ namespace fmi4cpp::fmi2 {
         bool relativeQuantity;
 
         std::optional<double> nominal;
-        std::optional<size_t> derivative;
+        std::optional<unsigned int> derivative;
 
         std::optional<std::string> unit;
         std::optional<std::string> displayUnit;
 
-        RealAttribute(const BoundedScalarVariableAttribute<double> &attributes);
+        explicit RealAttribute(const BoundedScalarVariableAttribute<double> &attributes);
 
     };
 
     struct StringAttribute : ScalarVariableAttribute<std::string> {
 
-        StringAttribute(const ScalarVariableAttribute<std::string> &attributes);
+        explicit StringAttribute(const ScalarVariableAttribute<std::string> &attributes);
 
     };
 
     struct BooleanAttribute : ScalarVariableAttribute<bool> {
 
-        BooleanAttribute(const ScalarVariableAttribute<bool> &attributes);
+        explicit BooleanAttribute(const ScalarVariableAttribute<bool> &attributes);
 
     };
 
-    struct EnumerationAttribute : ScalarVariableAttribute<int> {
+    struct EnumerationAttribute : BoundedScalarVariableAttribute<int> {
 
-        EnumerationAttribute(const ScalarVariableAttribute<int> &attributes);
+        explicit EnumerationAttribute(const BoundedScalarVariableAttribute<int> &attributes);
 
     };
 

@@ -22,12 +22,27 @@
  * THE SOFTWARE.
  */
 
-#include <fmi4cpp/fmi2/xml/DefaultExperiment.hpp>
+#ifndef FMI4CPP_SIMPLE_ID_HPP
+#define FMI4CPP_SIMPLE_ID_HPP
 
-using fmi4cpp::fmi2::DefaultExperiment;
+#include <random>
+#include <string>
 
-DefaultExperiment::DefaultExperiment(const std::optional<double> &startTime,
-                                     const std::optional<double> &stopTime,
-                                     const std::optional<double> &stepSize,
-                                     const std::optional<double> &tolerance)
-        : startTime(startTime), stopTime(stopTime), stepSize(stepSize), tolerance(tolerance) {}
+namespace {
+
+    std::random_device rd;
+    std::mt19937 mt(rd());
+    std::uniform_int_distribution<int> dist(0, 9);
+
+    const std::string generate_simple_id(const unsigned int len) {
+
+        std::string id;
+        for (unsigned int i = 0; i < len; i++) {
+            id += std::to_string(dist(mt));
+        }
+        return id;
+    }
+
+}
+
+#endif //FMI4CPP_SIMPLE_ID_HPP
