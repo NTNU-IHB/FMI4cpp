@@ -37,13 +37,13 @@ namespace fmi4cpp::fmi2 {
 
     private:
 
-        size_t index_;
+        unsigned int index_;
         std::optional<std::string> dependenciesKind_;
         std::optional<std::vector<unsigned int >> dependencies_;
 
     public:
 
-        Unknown(const size_t index, const std::optional<std::string> &dependenciesKind,
+        Unknown(unsigned int index, const std::optional<std::string> &dependenciesKind,
                 const std::optional<std::vector<unsigned int>> &dependencies);
 
         const size_t index();
@@ -62,7 +62,7 @@ namespace fmi4cpp::fmi2 {
         
     public:
 
-        ModelStructure();
+        ModelStructure() = default;
 
         ModelStructure(const std::vector<Unknown> &outputs_, const std::vector<Unknown> &derivatives_,
                        const std::vector<Unknown> &initialUnknowns_);

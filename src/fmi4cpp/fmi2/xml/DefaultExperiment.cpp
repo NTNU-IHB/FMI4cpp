@@ -24,10 +24,10 @@
 
 #include <fmi4cpp/fmi2/xml/DefaultExperiment.hpp>
 
-fmi4cpp::fmi2::DefaultExperiment::DefaultExperiment() {}
+using fmi4cpp::fmi2::DefaultExperiment;
 
-fmi4cpp::fmi2::DefaultExperiment::DefaultExperiment(const std::optional<double> &startTime,
-                                                    const std::optional<double> &stopTime,
-                                                    const std::optional<double> &stepSize,
-                                                    const std::optional<double> &tolerance)
+DefaultExperiment::DefaultExperiment(const std::optional<double> &startTime,
+                                     const std::optional<double> &stopTime,
+                                     const std::optional<double> &stepSize,
+                                     const std::optional<double> &tolerance)
         : startTime(startTime), stopTime(stopTime), stepSize(stepSize), tolerance(tolerance) {}

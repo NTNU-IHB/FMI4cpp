@@ -29,7 +29,7 @@
 
 namespace {
 
-    DLL_HANDLE loadLibrary(const std::string libName) {
+    DLL_HANDLE loadLibrary(const std::string &libName) {
 #ifdef WIN32
         return LoadLibrary(libName.c_str());
 #else

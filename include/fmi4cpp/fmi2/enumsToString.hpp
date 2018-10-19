@@ -53,8 +53,6 @@ namespace {
     }
 
 
-
-
     const std::string to_string(fmi4cpp::fmi2::fmi2Causality causality) {
 
         switch (causality) {

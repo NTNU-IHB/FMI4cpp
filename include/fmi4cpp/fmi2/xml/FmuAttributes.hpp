@@ -43,7 +43,7 @@ namespace fmi4cpp::fmi2 {
         SourceFiles sourceFiles;
         std::string modelIdentifier;
 
-        FmuAttributes() {}
+        FmuAttributes() = default;
 
         FmuAttributes(const std::string &modelIdentifier, bool canGetAndSetFMUstate,
                       bool canSerializeFMUstate, bool needsExecutionTool,
