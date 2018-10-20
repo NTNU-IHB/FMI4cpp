@@ -114,8 +114,7 @@ namespace fmi4cpp::fmi2 {
                                   std::string guid, std::string resourceLocation,
                                   bool visible = false, bool loggingOn = false);
 
-        fmi2Status setupExperiment(fmi2Component c, bool toleranceDefined,
-                                   double tolerance, double startTime, double stopTime) const;
+        fmi2Status setupExperiment(fmi2Component c, double tolerance, double startTime, double stopTime) const;
 
         fmi2Status enterInitializationMode(fmi2Component c) const;
 

@@ -48,7 +48,9 @@ int main() {
     }
 
     auto slave = fmu->newInstance();
-    slave->init();
+    slave->setupExperiment();
+    slave->enterInitializationMode();
+    slave->exitInitializationMode();
 
     clock_t begin = clock();
     

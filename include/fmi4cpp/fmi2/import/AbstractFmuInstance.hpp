@@ -38,15 +38,6 @@
 #include "../enumsToString.hpp"
 #include "../xml/ModelDescription.hpp"
 
-namespace {
-
-    void checkStatus(const fmi2Status status, const std::string &function_name) {
-        if (status != fmi2OK) {
-            throw std::runtime_error(function_name + " failed with status: " + to_string(status));
-        }
-    }
-
-}
 
 namespace fmi4cpp::fmi2 {
 
@@ -59,6 +50,7 @@ namespace fmi4cpp::fmi2 {
 
     private:
 
+        bool terminated_ = false;
         bool instanceFreed_ = false;
 
     protected:
@@ -83,20 +75,17 @@ namespace fmi4cpp::fmi2 {
             return library_->setDebugLogging(c_, loggingOn, categories);
         }
 
-        void init(const double start, const double stop) override {
+        fmi2Status setupExperiment(double start, double stop, double tolerance) override {
+            this->simulationTime_ = start;
+            return library_->setupExperiment(c_, 0, start, stop);
+        }
 
-            if (!this->instantiated_) {
+        fmi2Status enterInitializationMode() override {
+            return library_->enterInitializationMode(c_);
+        }
 
-                checkStatus(library_->setupExperiment(c_, false, 1E-4, start, stop), "setupExperiment");
-
-                checkStatus(library_->enterInitializationMode(c_), "enterInitializationMode");
-                checkStatus(library_->exitInitializationMode(c_), "exitInitializationMode");
-
-                this->instantiated_ = true;
-                this->simulationTime_ = start;
-
-            }
-
+        fmi2Status exitInitializationMode() override {
+            return library_->exitInitializationMode(c_);
         }
 
         fmi2Status reset() override {

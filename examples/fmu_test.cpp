@@ -42,7 +42,6 @@ int main() {
 
     Fmu fmu(fmuPath);
     auto cs_fmu = fmu.asCoSimulationFmu();
-
     auto md = cs_fmu->getModelDescription();
 
     auto var = md->modelVariables()->getByValueReference(47).asReal();
@@ -53,8 +52,13 @@ int main() {
 
     cout << "modelIdentifier= " << slave1->getModelDescription()->modelIdentifier() << endl;
 
-    slave1->init();
-    slave2->init();
+    slave1->setupExperiment();
+    slave1->enterInitializationMode();
+    slave1->exitInitializationMode();
+
+    slave2->setupExperiment();
+    slave2->enterInitializationMode();
+    slave2->exitInitializationMode();
 
     vector<fmi2Real> ref(2);
     vector<fmi2ValueReference> vr = {md->getVariableByName("Temperature_Reference").valueReference(),
