@@ -46,94 +46,9 @@ namespace {
         }
     }
 
-//    bool canApplyStart1(const ScalarVariable &v) {
-//        return v.getVariability() != fmi2Variability::constant && v.getInitial() == fmi2Initial::exact ||
-//                    v.getCausality() == fmi2Causality::input;
-//    }
-//    bool canApplyStart2(const ScalarVariable &v) {
-//        return v.getVariability() != fmi2Variability::constant && v.getInitial() == fmi2Initial::exact ||
-//                    v.getInitial() == fmi2Initial::approx;
-//    }
-
 }
 
 namespace fmi4cpp::fmi2 {
-
-//    class StartQueue {
-//
-//    private:
-//
-//        std::queue<std::pair<fmi2ValueReference, fmi2Integer > > integerQueue_;
-//        std::queue<std::pair<fmi2ValueReference, fmi2Real > > realQueue_;
-//        std::queue<std::pair<fmi2ValueReference, fmi2String > > stringQueue_;
-//        std::queue<std::pair<fmi2ValueReference, fmi2Boolean > > booleanQueue_;
-//
-//    public:
-//
-//        fmi2Status putInteger(const fmi2ValueReference vr, const fmi2Integer value) {
-//            integerQueue_.push(std::make_pair(vr, value));
-//            return fmi2OK;
-//        }
-//
-//        fmi2Status putReal(const fmi2ValueReference vr, const fmi2Real value) {
-//            realQueue_.push(std::make_pair(vr, value));
-//            return fmi2OK;
-//        }
-//
-//        fmi2Status putString(const fmi2ValueReference vr, fmi2String value) {
-//            stringQueue_.push(std::make_pair(vr, value));
-//            return fmi2OK;
-//        }
-//
-//        fmi2Status putBoolean(const fmi2ValueReference vr, const fmi2Boolean value) {
-//            booleanQueue_.push(std::make_pair(vr, value));
-//            return fmi2OK;
-//        }
-//
-//        template <class T>
-//        bool assignStartValues(fmi4cpp::fmi2::import::FmuInstance<T> &instance) {
-//
-//            while (!integerQueue_.empty()) {
-//                const auto &pair = integerQueue_.front();
-//                fmi2Status status = instance.writeInteger(pair.first, pair.second);
-//                if (status != fmi2OK) {
-//                    return false;
-//                }
-//                integerQueue_.pop();
-//            }
-//
-//            while (!realQueue_.empty()) {
-//                const auto &pair = realQueue_.front();
-//                fmi2Status status = instance.writeReal(pair.first, pair.second);
-//                if (status != fmi2OK) {
-//                    return false;
-//                }
-//                realQueue_.pop();
-//            }
-//
-//            while (!stringQueue_.empty()) {
-//                const auto &pair = stringQueue_.front();
-//                fmi2Status status = instance.writeString(pair.first, pair.second);
-//                if (status != fmi2OK) {
-//                    return false;
-//                }
-//                stringQueue_.pop();
-//            }
-//
-//            while (!booleanQueue_.empty()) {
-//                const auto &pair = booleanQueue_.front();
-//                fmi2Status status = instance.writeBoolean(pair.first, pair.second);
-//                if (!status == fmi2OK) {
-//                    return false;
-//                }
-//                booleanQueue_.pop();
-//            }
-//
-//            return true;
-//
-//        }
-//
-//    };
 
     template<typename T, typename U>
     class AbstractFmuInstance : public virtual FmuInstance<U> {
