@@ -41,7 +41,9 @@ int main() {
 
     Fmu fmu(fmu_path);
     const auto slave = fmu.asCoSimulationFmu()->newInstance();
-    slave->init();
+    slave->setupExperiment();
+    slave->enterInitializationMode();
+    slave->exitInitializationMode();
 
     clock_t begin = clock();
 

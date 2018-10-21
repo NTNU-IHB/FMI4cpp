@@ -45,11 +45,15 @@ int main() {
     
     const auto slave1 = fmu1.asCoSimulationFmu()->newInstance();
     const auto md1 = slave1->getModelDescription();
-    slave1->init();
+    slave1->setupExperiment();
+    slave1->enterInitializationMode();
+    slave1->exitInitializationMode();
 
     const auto slave2 = fmu2.asCoSimulationFmu()->newInstance();
     const auto md2 = slave2->getModelDescription();
-    slave2->init();
+    slave2->setupExperiment();
+    slave2->enterInitializationMode();
+    slave2->exitInitializationMode();
 
     slave1->doStep(1E-5);
     slave2->doStep(1E-4);

@@ -39,26 +39,19 @@ namespace fmi4cpp::fmi2 {
 
         double simulationTime_ = 0.0;
 
-        bool instantiated_ = false;
-        bool terminated_ = false;
-
     public:
 
         const double getSimulationTime() const {
             return simulationTime_;
         }
 
-        const bool isInstantiated() const {
-            return instantiated_;
-        }
-
-        const bool isTerminated() const {
-            return terminated_;
-        }
-
         virtual std::shared_ptr<T> getModelDescription() const = 0;
 
-        virtual void init(double start = 0, double stop = 0) = 0;
+        virtual fmi2Status setupExperiment(double startTime = 0.0, double stopTime = 0.0, double tolerance = 0.0) = 0;
+
+        virtual fmi2Status enterInitializationMode() = 0;
+
+        virtual fmi2Status exitInitializationMode() = 0;
 
         virtual fmi2Status reset() = 0;
 

@@ -54,7 +54,9 @@ int main() {
     cout << "Name=" << var.name() << ", start=" var.start().value_or(0) << endl;
     
     auto slave = fmu->newInstance();
-    slave->init();
+    slave->setupExperiment();
+    slave->enterInitializationMode();
+    slave->exitInitializationMode();
    
     double t;
     fmi2Real value;

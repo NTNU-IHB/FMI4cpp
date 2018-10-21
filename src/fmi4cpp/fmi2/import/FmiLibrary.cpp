@@ -61,14 +61,14 @@ FmiLibrary::FmiLibrary(const std::string &modelIdentifier, const std::shared_ptr
     const auto libName = resource->getAbsoluteLibraryPath(modelIdentifier);
 
 #if FMI4CPP_DEBUG_LOGGING_ENABLED
-    std::cout << "Loading shared library '" << fs::path(libName).stem() << "'" <<  std::endl;
+    std::cout << "Loading shared library '" << fs::path(libName).stem() << "'" << std::endl;
 #endif
 
     handle_ = loadLibrary(libName);
 
     if (!handle_) {
-        std::cerr << getLastError() <<  std::endl;
-        throw std:: runtime_error("Unable to load dynamic library '" + libName + "'!");
+        std::cerr << getLastError() << std::endl;
+        throw std::runtime_error("Unable to load dynamic library '" + libName + "'!");
     }
 
     fmi2GetVersion_ = loadFunction<fmi2GetVersionTYPE *>(handle_, "fmi2GetVersion");
@@ -117,13 +117,13 @@ fmi2String FmiLibrary::getTypesPlatform() const {
 }
 
 fmi2Status FmiLibrary::setDebugLogging(fmi2Component c, bool loggingOn,
-                                                              const std::vector<char *> categories) const {
+                                       const std::vector<char *> categories) const {
     return fmi2SetDebugLogging_(c, loggingOn, categories.size(), categories.data());
 }
 
 fmi2Component FmiLibrary::instantiate(const std::string instanceName, const fmi2Type type,
-                                      const std::string guid, const std::string resourceLocation, const bool visible,
-                                      const bool loggingOn) {
+                                      const std::string guid, const std::string resourceLocation, bool visible,
+                                      bool loggingOn) {
     fmi2Component c = fmi2Instantiate_(instanceName.c_str(), type, guid.c_str(),
                                        resourceLocation.c_str(), &callback, visible, loggingOn);
 
@@ -135,10 +135,11 @@ fmi2Component FmiLibrary::instantiate(const std::string instanceName, const fmi2
 
 }
 
-fmi2Status FmiLibrary::setupExperiment(const fmi2Component c, const bool toleranceDefined,
-                                       const double tolerance, const double startTime, const double stopTime) const {
+fmi2Status
+FmiLibrary::setupExperiment(const fmi2Component c, double tolerance, double startTime, double stopTime) const {
 
     fmi2Boolean stopDefined = (stopTime > startTime);
+    fmi2Boolean toleranceDefined = (tolerance > 0);
     return fmi2SetupExperiment_(c, toleranceDefined, tolerance, startTime, stopDefined, stopTime);
 }
 
@@ -246,7 +247,7 @@ fmi2Status FmiLibrary::freeFMUstate(const fmi2Component c, fmi2FMUstate &state) 
 }
 
 fmi2Status fmi4cpp::fmi2::FmiLibrary::getSerializedFMUstateSize(const fmi2Component c, const fmi2FMUstate state,
-                                                                        size_t &size) const {
+                                                                size_t &size) const {
     return fmi2SerializedFMUstateSize_(c, state, &size);
 }
 

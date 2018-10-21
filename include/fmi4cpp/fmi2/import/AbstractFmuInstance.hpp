@@ -38,102 +38,8 @@
 #include "../enumsToString.hpp"
 #include "../xml/ModelDescription.hpp"
 
-namespace {
-
-    void checkStatus(const fmi2Status status, const std::string &function_name) {
-        if (status != fmi2OK) {
-            throw std::runtime_error(function_name + " failed with status: " + to_string(status));
-        }
-    }
-
-//    bool canApplyStart1(const ScalarVariable &v) {
-//        return v.getVariability() != fmi2Variability::constant && v.getInitial() == fmi2Initial::exact ||
-//                    v.getCausality() == fmi2Causality::input;
-//    }
-//    bool canApplyStart2(const ScalarVariable &v) {
-//        return v.getVariability() != fmi2Variability::constant && v.getInitial() == fmi2Initial::exact ||
-//                    v.getInitial() == fmi2Initial::approx;
-//    }
-
-}
 
 namespace fmi4cpp::fmi2 {
-
-//    class StartQueue {
-//
-//    private:
-//
-//        std::queue<std::pair<fmi2ValueReference, fmi2Integer > > integerQueue_;
-//        std::queue<std::pair<fmi2ValueReference, fmi2Real > > realQueue_;
-//        std::queue<std::pair<fmi2ValueReference, fmi2String > > stringQueue_;
-//        std::queue<std::pair<fmi2ValueReference, fmi2Boolean > > booleanQueue_;
-//
-//    public:
-//
-//        fmi2Status putInteger(const fmi2ValueReference vr, const fmi2Integer value) {
-//            integerQueue_.push(std::make_pair(vr, value));
-//            return fmi2OK;
-//        }
-//
-//        fmi2Status putReal(const fmi2ValueReference vr, const fmi2Real value) {
-//            realQueue_.push(std::make_pair(vr, value));
-//            return fmi2OK;
-//        }
-//
-//        fmi2Status putString(const fmi2ValueReference vr, fmi2String value) {
-//            stringQueue_.push(std::make_pair(vr, value));
-//            return fmi2OK;
-//        }
-//
-//        fmi2Status putBoolean(const fmi2ValueReference vr, const fmi2Boolean value) {
-//            booleanQueue_.push(std::make_pair(vr, value));
-//            return fmi2OK;
-//        }
-//
-//        template <class T>
-//        bool assignStartValues(fmi4cpp::fmi2::import::FmuInstance<T> &instance) {
-//
-//            while (!integerQueue_.empty()) {
-//                const auto &pair = integerQueue_.front();
-//                fmi2Status status = instance.writeInteger(pair.first, pair.second);
-//                if (status != fmi2OK) {
-//                    return false;
-//                }
-//                integerQueue_.pop();
-//            }
-//
-//            while (!realQueue_.empty()) {
-//                const auto &pair = realQueue_.front();
-//                fmi2Status status = instance.writeReal(pair.first, pair.second);
-//                if (status != fmi2OK) {
-//                    return false;
-//                }
-//                realQueue_.pop();
-//            }
-//
-//            while (!stringQueue_.empty()) {
-//                const auto &pair = stringQueue_.front();
-//                fmi2Status status = instance.writeString(pair.first, pair.second);
-//                if (status != fmi2OK) {
-//                    return false;
-//                }
-//                stringQueue_.pop();
-//            }
-//
-//            while (!booleanQueue_.empty()) {
-//                const auto &pair = booleanQueue_.front();
-//                fmi2Status status = instance.writeBoolean(pair.first, pair.second);
-//                if (!status == fmi2OK) {
-//                    return false;
-//                }
-//                booleanQueue_.pop();
-//            }
-//
-//            return true;
-//
-//        }
-//
-//    };
 
     template<typename T, typename U>
     class AbstractFmuInstance : public virtual FmuInstance<U> {
@@ -144,6 +50,7 @@ namespace fmi4cpp::fmi2 {
 
     private:
 
+        bool terminated_ = false;
         bool instanceFreed_ = false;
 
     protected:
@@ -168,20 +75,17 @@ namespace fmi4cpp::fmi2 {
             return library_->setDebugLogging(c_, loggingOn, categories);
         }
 
-        void init(const double start, const double stop) override {
+        fmi2Status setupExperiment(double start, double stop, double tolerance) override {
+            this->simulationTime_ = start;
+            return library_->setupExperiment(c_, 0, start, stop);
+        }
 
-            if (!this->instantiated_) {
+        fmi2Status enterInitializationMode() override {
+            return library_->enterInitializationMode(c_);
+        }
 
-                checkStatus(library_->setupExperiment(c_, false, 1E-4, start, stop), "setupExperiment");
-
-                checkStatus(library_->enterInitializationMode(c_), "enterInitializationMode");
-                checkStatus(library_->exitInitializationMode(c_), "exitInitializationMode");
-
-                this->instantiated_ = true;
-                this->simulationTime_ = start;
-
-            }
-
+        fmi2Status exitInitializationMode() override {
+            return library_->exitInitializationMode(c_);
         }
 
         fmi2Status reset() override {
