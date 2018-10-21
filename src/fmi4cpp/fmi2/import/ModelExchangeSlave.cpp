@@ -31,8 +31,7 @@ using namespace fmi4cpp::fmi2;
 namespace {
 
     std::unique_ptr<CoSimulationModelDescription> wrap(const ModelExchangeModelDescription &me) {
-        CoSimulationAttributes attributes;
-        me.copyAttributes(attributes);
+        CoSimulationAttributes attributes(me.attributes());
         attributes.canHandleVariableCommunicationStepSize = true;
         attributes.maxOutputDerivativeOrder = 0;
         return std::make_unique<CoSimulationModelDescription>(CoSimulationModelDescription(me, attributes));
@@ -98,15 +97,21 @@ bool fmi4cpp::fmi2::ModelExchangeSlave::eventIteration() {
     return false;
 }
 
-void ModelExchangeSlave::init(double start, double stop) {
+fmi2Status ModelExchangeSlave::setupExperiment(double startTime, double stopTime, double tolerance) {
+    return instance_->setupExperiment(startTime, stopTime, tolerance);
+}
 
-    if (!instance_->isInstantiated()) {
-        instance_->init(start, stop);
-        if (eventIteration()) {
-            throw std::runtime_error("EventIteration returned false during initialization!");
-        }
+fmi2Status ModelExchangeSlave::enterInitializationMode() {
+    return instance_->enterInitializationMode();
+}
+
+fmi2Status ModelExchangeSlave::exitInitializationMode() {
+    auto status = instance_->enterInitializationMode();
+    if (eventIteration()) {
+        throw std::runtime_error("EventIteration failed during initialization!");
     }
 
+    return status;
 }
 
 

@@ -61,7 +61,11 @@ namespace fmi4cpp::fmi2 {
 
         fmi2Status cancelStep() override;
 
-        void init(double start, double stop) override;
+        fmi2Status setupExperiment(double startTime, double stopTime, double tolerance) override;
+
+        fmi2Status enterInitializationMode() override;
+
+        fmi2Status exitInitializationMode() override;
 
         fmi2Status reset() override;
 
