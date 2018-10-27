@@ -143,9 +143,9 @@ namespace fmi4cpp::fmi2 {
         }
 
         fmi2Status getDirectionalDerivative(
-                const std::vector<fmi2ValueReference> &vUnkownRef, const std::vector<fmi2ValueReference> &vKnownRef,
+                const std::vector<fmi2ValueReference> &vUnknownRef, const std::vector<fmi2ValueReference> &vKnownRef,
                 const std::vector<fmi2Real> &dvKnownRef, std::vector<fmi2Real> &dvUnknownRef) const override {
-            return library_->getDirectionalDerivative(c_, vUnkownRef, vKnownRef, dvKnownRef, dvUnknownRef);
+            return library_->getDirectionalDerivative(c_, vUnknownRef, vKnownRef, dvKnownRef, dvUnknownRef);
         }
 
         fmi2Status readInteger(const fmi2ValueReference vr, fmi2Integer &ref) const override {

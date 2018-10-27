@@ -265,11 +265,11 @@ fmi2Status FmiLibrary::deSerializeFMUstate(const fmi2Component c,
 }
 
 fmi2Status FmiLibrary::getDirectionalDerivative(const fmi2Component c,
-                                                const std::vector<fmi2ValueReference> &vUnkownRef,
+                                                const std::vector<fmi2ValueReference> &vUnknownRef,
                                                 const std::vector<fmi2ValueReference> &vKnownRef,
                                                 const std::vector<fmi2Real> &dvKnownRef,
                                                 std::vector<fmi2Real> &dvUnknownRef) const {
-    return fmi2GetDirectionalDerivative_(c, vUnkownRef.data(), vUnkownRef.size(),
+    return fmi2GetDirectionalDerivative_(c, vUnknownRef.data(), vUnknownRef.size(),
                                          vKnownRef.data(), vKnownRef.size(), dvKnownRef.data(), dvUnknownRef.data());
 }
 
