@@ -24,6 +24,7 @@
 
 #include <stdexcept>
 
+#include <cvode/cvode.h>
 #include <fmi4cpp/fmi2/import/ModelExchangeSlave.hpp>
 
 using namespace fmi4cpp::fmi2;
@@ -58,6 +59,18 @@ ModelExchangeSlave::ModelExchangeSlave(
 }
 
 fmi2Status ModelExchangeSlave::doStep(const double stepSize) {
+
+    if (stepSize <= 0) {
+        return fmi2Status::fmi2Error;
+    }
+
+    double time = simulationTime_;
+    double stopTime = time + stepSize;
+
+    while (time < stopTime) {
+
+    }
+
     return fmi2Error;
 }
 
