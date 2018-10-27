@@ -52,7 +52,7 @@ namespace fmi4cpp::fmi2 {
         bool eventIteration();
 
     public:
-        ModelExchangeSlave(std::unique_ptr<ModelExchangeInstance> &instance_,
+        ModelExchangeSlave(std::unique_ptr<ModelExchangeInstance> &instance,
                            std::unique_ptr<Solver> &solver);
 
         std::shared_ptr<CoSimulationModelDescription> getModelDescription() const override;
@@ -81,7 +81,7 @@ namespace fmi4cpp::fmi2 {
 
         fmi2Status deSerializeFMUstate(fmi2FMUstate &state, const std::vector<fmi2Byte> &serializedState) override;
 
-        fmi2Status getDirectionalDerivative(const std::vector<fmi2ValueReference> &vUnkownRef,
+        fmi2Status getDirectionalDerivative(const std::vector<fmi2ValueReference> &vUnknownRef,
                                             const std::vector<fmi2ValueReference> &vKnownRef,
                                             const std::vector<fmi2Real> &dvKnownRef,
                                             std::vector<fmi2Real> &dvUnknownRef) const override;
