@@ -27,6 +27,7 @@
 #include <string>
 #include <iostream>
 #include <boost/test/unit_test.hpp>
+
 #include <fmi4cpp/tools/os_util.hpp>
 #include <fmi4cpp/fmi2/fmi4cpp.hpp>
 
@@ -68,8 +69,8 @@ BOOST_AUTO_TEST_CASE(ControlledTemperature_test1) {
 
     auto& thermalConductor = md->modelVariables()->getByValueReference(12);
     BOOST_CHECK_EQUAL("TemperatureSource.T", thermalConductor.name());
-    BOOST_CHECK(fmi2Variability::tunable == thermalConductor.variability());
-    BOOST_CHECK(fmi2Causality::parameter == thermalConductor.causality());
+    BOOST_CHECK(Variability::tunable == thermalConductor.variability());
+    BOOST_CHECK(Causality::parameter == thermalConductor.causality());
 
     SourceFiles sourceFiles = md_cs->sourceFiles();
     BOOST_CHECK_EQUAL(10, sourceFiles.size());
@@ -90,14 +91,14 @@ BOOST_AUTO_TEST_CASE(ControlledTemperature_test1) {
     size_t count = 0;
     auto mv = md->modelVariables();
     for (const auto &v : *mv) {
-        if (v.causality() == fmi2Causality::output) {
+        if (v.causality() == Causality::output) {
             count++;
         }
     }
     BOOST_CHECK_EQUAL(2, count);
 
     vector<ScalarVariable> outputs = {};
-    md->modelVariables()->getByCausality(fmi2Causality::output, outputs);
+    md->modelVariables()->getByCausality(Causality::output, outputs);
 
     BOOST_CHECK_EQUAL(count, outputs.size());
 

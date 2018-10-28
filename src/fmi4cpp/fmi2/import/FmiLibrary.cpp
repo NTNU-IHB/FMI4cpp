@@ -41,6 +41,13 @@ namespace fs = std::experimental::filesystem;
 using namespace fmi4cpp::fmi2;
 
 namespace {
+    
+    template <typename T>
+    inline void resizeIfNecesssary(const size_t size, std::vector<T> &v) {
+        if (v.size() != size) {
+            v.resize(size);
+        }
+    }
 
     void logger(void *fmi2ComponentEnvironment,
                 fmi2String instance_name, fmi2Status status, fmi2String category, fmi2String message, ...) {
@@ -122,8 +129,8 @@ fmi2Status FmiLibrary::setDebugLogging(fmi2Component c, bool loggingOn,
 }
 
 fmi2Component FmiLibrary::instantiate(const std::string instanceName, const fmi2Type type,
-                                      const std::string guid, const std::string resourceLocation, bool visible,
-                                      bool loggingOn) {
+                                      const std::string guid, const std::string resourceLocation, 
+                                      bool visible, bool loggingOn) {
     fmi2Component c = fmi2Instantiate_(instanceName.c_str(), type, guid.c_str(),
                                        resourceLocation.c_str(), &callback, visible, loggingOn);
 
@@ -165,6 +172,7 @@ fmi2Status FmiLibrary::readInteger(const fmi2Component c, const fmi2ValueReferen
 
 fmi2Status FmiLibrary::readInteger(const fmi2Component c,
                                    const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Integer> &ref) const {
+    resizeIfNecesssary(vr.size(), ref);
     return fmi2GetInteger_(c, vr.data(), vr.size(), ref.data());
 }
 
@@ -174,6 +182,7 @@ fmi2Status FmiLibrary::readReal(const fmi2Component c, const fmi2ValueReference 
 
 fmi2Status FmiLibrary::readReal(const fmi2Component c,
                                 const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Real> &ref) const {
+    resizeIfNecesssary(vr.size(), ref);
     return fmi2GetReal_(c, vr.data(), vr.size(), ref.data());
 }
 
@@ -183,6 +192,7 @@ fmi2Status FmiLibrary::readString(const fmi2Component c, const fmi2ValueReferenc
 
 fmi2Status FmiLibrary::readString(const fmi2Component c,
                                   const std::vector<fmi2ValueReference> &vr, std::vector<fmi2String> &ref) const {
+    resizeIfNecesssary(vr.size(), ref);
     return fmi2GetString_(c, vr.data(), vr.size(), ref.data());
 }
 
@@ -192,6 +202,7 @@ fmi2Status FmiLibrary::readBoolean(const fmi2Component c, const fmi2ValueReferen
 
 fmi2Status FmiLibrary::readBoolean(const fmi2Component c,
                                    const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Boolean> &ref) const {
+    resizeIfNecesssary(vr.size(), ref);
     return fmi2GetBoolean_(c, vr.data(), vr.size(), ref.data());
 }
 
@@ -265,11 +276,11 @@ fmi2Status FmiLibrary::deSerializeFMUstate(const fmi2Component c,
 }
 
 fmi2Status FmiLibrary::getDirectionalDerivative(const fmi2Component c,
-                                                const std::vector<fmi2ValueReference> &vUnkownRef,
+                                                const std::vector<fmi2ValueReference> &vUnknownRef,
                                                 const std::vector<fmi2ValueReference> &vKnownRef,
                                                 const std::vector<fmi2Real> &dvKnownRef,
                                                 std::vector<fmi2Real> &dvUnknownRef) const {
-    return fmi2GetDirectionalDerivative_(c, vUnkownRef.data(), vUnkownRef.size(),
+    return fmi2GetDirectionalDerivative_(c, vUnknownRef.data(), vUnknownRef.size(),
                                          vKnownRef.data(), vKnownRef.size(), dvKnownRef.data(), dvUnknownRef.data());
 }
 

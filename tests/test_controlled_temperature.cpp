@@ -22,18 +22,25 @@
  * THE SOFTWARE.
  */
 
+#define BOOST_TEST_MODULE ControlledTemperature_Test
+
+
+#include <string>
 #include <iostream>
-#include <fmi4cpp/fmi2/fmi4cpp.hpp>
+#include <boost/test/unit_test.hpp>
+
 #include <fmi4cpp/tools/os_util.hpp>
+#include <fmi4cpp/fmi2/fmi4cpp.hpp>
 
 using namespace std;
 using namespace fmi4cpp::fmi2;
+
 
 const double stop = 10.0;
 const double step_size = 1E-4;
 const fmi2ValueReference vr = 46;
 
-int main() {
+BOOST_AUTO_TEST_CASE(ControlledTemperature_test1) {
 
     const string fmu_path = string(getenv("TEST_FMUs"))
                             + "/FMI_2.0/CoSimulation/" + getOs() +
@@ -41,35 +48,26 @@ int main() {
 
     auto fmu = Fmu(fmu_path).asCoSimulationFmu();
 
+    size_t numOutputs = 0;
     for (const auto &v : *fmu->getModelDescription()->modelVariables()) {
         if (v.causality() == Causality::output) {
-            cout << v.name() << endl;
+            numOutputs++;
         }
     }
+    BOOST_CHECK_EQUAL(2, numOutputs);
 
     auto slave = fmu->newInstance();
-    slave->setupExperiment();
-    slave->enterInitializationMode();
-    slave->exitInitializationMode();
-
-    clock_t begin = clock();
     
-    double t;
+    BOOST_CHECK_EQUAL(fmi2OK, slave->setupExperiment());
+    BOOST_CHECK_EQUAL(fmi2OK, slave->enterInitializationMode());
+    BOOST_CHECK_EQUAL(fmi2OK, slave->exitInitializationMode());
+    
     double ref;
-    while ((t = slave->getSimulationTime()) <= (stop - step_size)) {
-        fmi2Status status = slave->doStep(step_size);
-        if (status != fmi2OK) {
-            cout << "Error! doStep returned with status: " << to_string(status) << endl;
-            break;
-        }
-        slave->readReal(vr, ref);
+    while ((slave->getSimulationTime()) <= (stop - step_size)) {
+        BOOST_CHECK_EQUAL(fmi2OK, slave->doStep(step_size));
+        BOOST_CHECK_EQUAL(fmi2OK, slave->readReal(vr, ref));
     }
 
-    clock_t end = clock();
-
-    long elapsed_ms =  (long) ((double(end-begin) / CLOCKS_PER_SEC) * 1000.0);
-    cout << "elapsed=" << elapsed_ms << "ms" << endl;
-
-    slave->terminate();
-
+    BOOST_CHECK_EQUAL(fmi2OK, slave->terminate());
+    
 }

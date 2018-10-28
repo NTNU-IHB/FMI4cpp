@@ -24,41 +24,41 @@
 
 #include <fmi4cpp/fmi2/xml/enums.hpp>
 
-using fmi4cpp::fmi2::fmi2Causality;
-using fmi4cpp::fmi2::fmi2Variability;
+using fmi4cpp::fmi2::Causality;
+using fmi4cpp::fmi2::Variability;
 using fmi4cpp::fmi2::fmi2Initial;
 
-fmi2Causality fmi4cpp::fmi2::parseCausality(const std::string &str) {
+Causality fmi4cpp::fmi2::parseCausality(const std::string &str) {
     if (str == "calculatedParameter") {
-        return fmi2Causality::calculatedParameter;
+        return Causality::calculatedParameter;
     } else if (str == "parameter") {
-        return fmi2Causality::parameter;
+        return Causality::parameter;
     } else if (str == "input") {
-        return fmi2Causality::input;
+        return Causality::input;
     } else if (str == "output") {
-        return fmi2Causality::output;
+        return Causality::output;
     } else if (str == "local") {
-        return fmi2Causality::local;
+        return Causality::local;
     } else if (str == "independent") {
-        return fmi2Causality::independent;
+        return Causality::independent;
     } else {
-        return fmi2Causality::local;
+        return Causality::local;
     }
 }
 
-fmi2Variability fmi4cpp::fmi2::parseVariability(const std::string &str) {
+Variability fmi4cpp::fmi2::parseVariability(const std::string &str) {
     if (str == "constant") {
-        return fmi2Variability::constant;
+        return Variability::constant;
     } else if (str == "fixed") {
-        return fmi2Variability::fixed;
+        return Variability::fixed;
     } else if (str == "tunable") {
-        return fmi2Variability::tunable;
+        return Variability::tunable;
     } else if (str == "discrete") {
-        return fmi2Variability::discrete;
+        return Variability::discrete;
     } else if (str == "continuous") {
-        return fmi2Variability::continuous;
+        return Variability::continuous;
     } else {
-        return fmi2Variability::continuous;
+        return Variability::continuous;
     }
 }
 

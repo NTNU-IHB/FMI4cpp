@@ -179,7 +179,7 @@ namespace fmi4cpp::fmi2 {
         deSerializeFMUstate(fmi2Component c, fmi2FMUstate &state, const std::vector<fmi2Byte> &serializedState) const;
 
         fmi2Status getDirectionalDerivative(fmi2Component c,
-                                            const std::vector<fmi2ValueReference> &vUnkownRef,
+                                            const std::vector<fmi2ValueReference> &vUnknownRef,
                                             const std::vector<fmi2ValueReference> &vKnownRef,
                                             const std::vector<fmi2Real> &dvKnownRef, std::vector<fmi2Real> &dvUnknownRef) const;
 

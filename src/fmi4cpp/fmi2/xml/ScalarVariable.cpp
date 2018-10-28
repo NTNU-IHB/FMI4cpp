@@ -39,11 +39,11 @@ fmi2ValueReference ScalarVariableBase::valueReference() const {
     return valueReference_;
 }
 
-fmi2Causality ScalarVariableBase::causality() const {
+Causality ScalarVariableBase::causality() const {
     return causality_;
 }
 
-fmi2Variability ScalarVariableBase::variability() const {
+Variability ScalarVariableBase::variability() const {
     return variability_;
 }
 
@@ -59,8 +59,8 @@ ScalarVariableBase::ScalarVariableBase(const std::string &name,
                                        const std::string &description,
                                        fmi2ValueReference valueReference,
                                        bool canHandleMultipleSetPerTimelnstant,
-                                       fmi2Causality causality,
-                                       fmi2Variability variability,
+                                       Causality causality,
+                                       Variability variability,
                                        fmi2Initial initial)
         : name_(name),
           description_(description),

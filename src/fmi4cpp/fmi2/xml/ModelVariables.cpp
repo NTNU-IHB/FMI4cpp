@@ -58,7 +58,7 @@ void ModelVariables::getByValueReference(const fmi2ValueReference vr, std::vecto
     }
 }
 
-void ModelVariables::getByCausality(const fmi2Causality causality, std::vector<ScalarVariable> &store) const {
+void ModelVariables::getByCausality(const Causality causality, std::vector<ScalarVariable> &store) const {
     for (const auto &var : variables_) {
         if (var.causality() == causality) {
             store.push_back(var);

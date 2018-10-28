@@ -29,7 +29,7 @@
 
 namespace fmi4cpp::fmi2 {
 
-    enum class fmi2Causality {
+    enum class Causality {
         parameter,
         calculatedParameter,
         input,
@@ -39,7 +39,7 @@ namespace fmi4cpp::fmi2 {
         unknown
     };
 
-    enum class fmi2Variability {
+    enum class Variability {
         constant,
         fixed,
         tunable,
@@ -55,9 +55,9 @@ namespace fmi4cpp::fmi2 {
         unknown
     };
 
-    fmi2Causality parseCausality(const std::string &str);
+    Causality parseCausality(const std::string &str);
 
-    fmi2Variability parseVariability(const std::string &str);
+    Variability parseVariability(const std::string &str);
 
     fmi2Initial parseInitial(const std::string &str);
 

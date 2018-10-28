@@ -54,7 +54,7 @@ namespace fmi4cpp::fmi2 {
         const ScalarVariable &getByValueReference(fmi2ValueReference vr) const;
 
         void getByValueReference(fmi2ValueReference vr, std::vector<ScalarVariable> &store) const;
-        void getByCausality(fmi2Causality causality, std::vector<ScalarVariable> &store) const;
+        void getByCausality(Causality causality, std::vector<ScalarVariable> &store) const;
 
         std::vector<ScalarVariable>::iterator begin();
         std::vector<ScalarVariable>::iterator end();

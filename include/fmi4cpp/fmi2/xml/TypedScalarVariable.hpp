@@ -56,11 +56,11 @@ namespace fmi4cpp::fmi2 {
             return variable_.valueReference();
         }
 
-        fmi2Causality causality() const {
+        Causality causality() const {
             return variable_.causality();
         }
 
-        fmi2Variability variability() const {
+        Variability variability() const {
             return variable_.variability();
         }
 
