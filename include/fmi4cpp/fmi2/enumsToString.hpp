@@ -53,20 +53,20 @@ namespace {
     }
 
 
-    const std::string to_string(fmi4cpp::fmi2::fmi2Causality causality) {
+    const std::string to_string(fmi4cpp::fmi2::Causality causality) {
 
         switch (causality) {
-            case fmi4cpp::fmi2::fmi2Causality::calculatedParameter:
+            case fmi4cpp::fmi2::Causality::calculatedParameter:
                 return "calculatedParameter";
-            case fmi4cpp::fmi2::fmi2Causality::parameter:
+            case fmi4cpp::fmi2::Causality::parameter:
                 return "parameter";
-            case fmi4cpp::fmi2::fmi2Causality::input:
+            case fmi4cpp::fmi2::Causality::input:
                 return "input";
-            case fmi4cpp::fmi2::fmi2Causality::output:
+            case fmi4cpp::fmi2::Causality::output:
                 return "output";
-            case fmi4cpp::fmi2::fmi2Causality::local:
+            case fmi4cpp::fmi2::Causality::local:
                 return "local";
-            case fmi4cpp::fmi2::fmi2Causality::independent:
+            case fmi4cpp::fmi2::Causality::independent:
                 return "independent";
             default:
                 return "unknown";
@@ -74,18 +74,18 @@ namespace {
 
     }
 
-    const std::string to_string(fmi4cpp::fmi2::fmi2Variability variability) {
+    const std::string to_string(fmi4cpp::fmi2::Variability variability) {
 
         switch (variability) {
-            case fmi4cpp::fmi2::fmi2Variability::constant:
+            case fmi4cpp::fmi2::Variability::constant:
                 return "constant";
-            case fmi4cpp::fmi2::fmi2Variability::fixed:
+            case fmi4cpp::fmi2::Variability::fixed:
                 return "fixed";
-            case fmi4cpp::fmi2::fmi2Variability::tunable:
+            case fmi4cpp::fmi2::Variability::tunable:
                 return "tunable";
-            case fmi4cpp::fmi2::fmi2Variability::discrete:
+            case fmi4cpp::fmi2::Variability::discrete:
                 return "discrete";
-            case fmi4cpp::fmi2::fmi2Variability::continuous:
+            case fmi4cpp::fmi2::Variability::continuous:
                 return "continuous";
             default:
                 return "unknown";

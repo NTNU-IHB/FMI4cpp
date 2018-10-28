@@ -42,7 +42,7 @@ int main() {
     auto fmu = Fmu(fmu_path).asCoSimulationFmu();
 
     for (const auto &v : *fmu->getModelDescription()->modelVariables()) {
-        if (v.causality() == fmi2Causality::output) {
+        if (v.causality() == Causality::output) {
             cout << v.name() << endl;
         }
     }
