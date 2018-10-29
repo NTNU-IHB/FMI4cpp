@@ -24,7 +24,7 @@
 
 #include <utility>
 
-#include "ModelExchangeSlave.cpp"
+#include <fmi4cpp/fmi2/import/ModelExchangeSlave.hpp>
 #include <fmi4cpp/fmi2/import/Solver.hpp>
 
 using namespace fmi4cpp::fmi2;
