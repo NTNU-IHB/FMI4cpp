@@ -87,12 +87,10 @@ fmi2Status ModelExchangeSlave::doStep(const double stepSize) {
         bool stateEvent = false;
         if ((tNext - time) > EPS) {
             stateEvent = solve(time, tNext);
-        } else {
-            time = tNext;
         }
+        time = tNext;
 
         instance_->setTime(time);
-        simulationTime_ = time;
 
         bool enterEventMode = false;
         if (!instance_->getModelDescription()->completedIntegratorStepNotNeeded()) {
@@ -114,6 +112,8 @@ fmi2Status ModelExchangeSlave::doStep(const double stepSize) {
         }
 
     }
+
+    simulationTime_ = time;
 
     return fmi2OK;
 }
