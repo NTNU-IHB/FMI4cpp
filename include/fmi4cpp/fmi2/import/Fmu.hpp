@@ -35,6 +35,7 @@
 #include "CoSimulationLibrary.hpp"
 #include "ModelExchangeLibrary.hpp"
 #include "ModelExchangeInstance.hpp"
+#include "ModelExchangeSlave.hpp"
 
 #include "../xml/ModelDescription.hpp"
 
@@ -143,6 +144,8 @@ namespace fmi4cpp::fmi2 {
         std::shared_ptr<ModelExchangeModelDescription> getModelDescription() const override;
 
         std::unique_ptr<ModelExchangeInstance> newInstance(bool visible = false, bool loggingOn = false);
+
+        std::unique_ptr<ModelExchangeSlave> newInstance(std::unique_ptr<Solver> &solver, bool visible = false, bool loggingOn = false);
 
         virtual ~ModelExchangeFmu();
 

@@ -9,7 +9,9 @@ SET(SOURCES
         fmi4cpp/fmi2/import/ModelExchangeLibrary.cpp
         fmi4cpp/fmi2/import/CoSimulationSlave.cpp
         fmi4cpp/fmi2/import/ModelExchangeInstance.cpp
+        fmi4cpp/fmi2/import/ModelExchangeSlave.cpp
         fmi4cpp/fmi2/import/FmuResource.cpp
+        fmi4cpp/fmi2/import/Solver.cpp
 
         fmi4cpp/fmi2/xml/enums.cpp
         fmi4cpp/fmi2/xml/ModelDescription.cpp
@@ -22,9 +24,9 @@ SET(SOURCES
 
 )
 
-if (FMI4CPP_WITH_SUNDIALS)
-    SET(SOURCES ${SOURCES} fmi4cpp/fmi2/import/ModelExchangeSlave.cpp)
-endif ()
+#if (FMI4CPP_WITH_SUNDIALS)
+#    SET(SOURCES ${SOURCES} )
+#endif ()
 
 set(FMI4CPP_LIB fmi4cpp)
 add_library(${FMI4CPP_LIB} ${SOURCES})

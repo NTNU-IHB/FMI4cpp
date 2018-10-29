@@ -27,16 +27,43 @@
 
 #include <vector>
 
+#include <functional>
+#include <boost/numeric/odeint.hpp>
+
+using namespace boost::numeric::odeint;
+
+typedef std::function<void(std::vector<double>, std::vector<double>, double)> rhs;
+
 namespace fmi4cpp::fmi2 {
+
+    class ModelExchangeSlave;
 
     class Solver {
 
     public:
-        virtual double integrate(double t0, std::vector<double> &x0, double t, std::vector<double> &x) = 0;
+
+        virtual void integrate(ModelExchangeSlave &slave, double t0, std::vector<double> &x0, double t) = 0;
 
         virtual ~Solver() = default;
 
     };
+
+
+    class OdeintRK4: public Solver {
+
+    private:
+        double stepSize;
+        runge_kutta4_classic<std::vector<double>> rk4;
+
+    public:
+
+        explicit OdeintRK4(double stepSize);
+
+        void integrate(ModelExchangeSlave &slave, double t0, std::vector<double> &x0, double t) override;
+
+    };
+
+
 
 }
 

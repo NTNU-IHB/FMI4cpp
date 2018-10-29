@@ -26,6 +26,7 @@
 #define FMI4CPP_MODELEXCHANGESLAVE_HPP
 
 #include <memory>
+#include <utility>
 
 #include "ModelExchangeInstance.hpp"
 #include "FmuSlave.hpp"
@@ -39,7 +40,7 @@ namespace fmi4cpp::fmi2 {
 
         std::unique_ptr<Solver> solver_;
         std::unique_ptr<ModelExchangeInstance> instance_;
-        std::shared_ptr<CoSimulationModelDescription> csModelDescription;
+        std::shared_ptr<CoSimulationModelDescription> csModelDescription_;
 
         std::vector<fmi2Real > x_;
         std::vector<fmi2Real > dx_;
@@ -51,6 +52,8 @@ namespace fmi4cpp::fmi2 {
 
         bool eventIteration();
 
+        bool solve(double t0, double tNext);
+
     public:
         ModelExchangeSlave(std::unique_ptr<ModelExchangeInstance> &instance,
                            std::unique_ptr<Solver> &solver);
@@ -61,7 +64,7 @@ namespace fmi4cpp::fmi2 {
 
         fmi2Status cancelStep() override;
 
-        fmi2Status setupExperiment(double startTime, double stopTime, double tolerance) override;
+        fmi2Status setupExperiment(double startTime = 0, double stopTime = 0, double tolerance = 0) override;
 
         fmi2Status enterInitializationMode() override;
 
@@ -120,6 +123,8 @@ namespace fmi4cpp::fmi2 {
 
         fmi2Status
         writeBoolean(const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2Boolean> &values) override;
+
+        void operator() (const std::vector<double> &x, std::vector<double> &dxdt, double t);
 
     };
 

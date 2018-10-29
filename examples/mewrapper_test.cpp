@@ -22,20 +22,42 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMI4CPP_FMI4CPP_HPP
-#define FMI4CPP_FMI4CPP_HPP
+#include <string>
+#include <memory>
+#include <iostream>
 
-#include "fmi2Functions.h"
-#include "enumsToString.hpp"
+#include <fmi4cpp/fmi2/fmi4cpp.hpp>
+#include <fmi4cpp/tools/os_util.hpp>
 
-#include "xml/enums.hpp"
-#include "xml/ModelDescription.hpp"
-#include "xml/TypedScalarVariable.hpp"
+using namespace std;
+using namespace fmi4cpp::fmi2;
 
-#include "import/Fmu.hpp"
-#include "import/FmuInstance.hpp"
-#include "import/FmuSlave.hpp"
-#include "import/ModelExchangeInstance.hpp"
-#include "import/ModelExchangeSlave.hpp"
+int main() {
 
-#endif //FMI4CPP_FMI4CPP_HPP
+const string fmuPath = string(getenv("TEST_FMUs"))
+                       + "/FMI_2.0/ModelExchange/" + getOs() +
+                       "/FMUSDK/2.0.4/bouncingBall/bouncingBall.fmu";
+
+    auto fmu = Fmu(fmuPath).asModelExchangeFmu();
+
+    cout << "per" << endl;
+
+    unique_ptr<Solver> solver = make_unique<OdeintRK4>(1E-2);
+    auto slave = fmu->newInstance(solver);
+
+    cout << "lol" << endl;
+
+    double stop = 1.0;
+
+    auto h = slave->getModelDescription()->getVariableByName("h").asReal();
+
+    slave->setupExperiment();
+    slave->enterInitializationMode();
+    slave->exitInitializationMode();
+
+    cout << "Description=" << h.description() << endl;
+
+    slave->terminate();
+
+
+}

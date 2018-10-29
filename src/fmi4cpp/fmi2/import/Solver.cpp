@@ -22,20 +22,19 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMI4CPP_FMI4CPP_HPP
-#define FMI4CPP_FMI4CPP_HPP
+#include <utility>
 
-#include "fmi2Functions.h"
-#include "enumsToString.hpp"
+#include "ModelExchangeSlave.cpp"
+#include <fmi4cpp/fmi2/import/Solver.hpp>
 
-#include "xml/enums.hpp"
-#include "xml/ModelDescription.hpp"
-#include "xml/TypedScalarVariable.hpp"
+using namespace fmi4cpp::fmi2;
 
-#include "import/Fmu.hpp"
-#include "import/FmuInstance.hpp"
-#include "import/FmuSlave.hpp"
-#include "import/ModelExchangeInstance.hpp"
-#include "import/ModelExchangeSlave.hpp"
+OdeintRK4::OdeintRK4(double stepSize) : stepSize(stepSize) {
+    rk4 = runge_kutta4_classic<std::vector<double>>();
+}
 
-#endif //FMI4CPP_FMI4CPP_HPP
+void OdeintRK4::integrate(ModelExchangeSlave &slave, double t0, std::vector<double> &x0, double t) {
+    integrate_const(rk4, std::ref(slave), x0, t0, t, (t-t0));
+}
+
+
