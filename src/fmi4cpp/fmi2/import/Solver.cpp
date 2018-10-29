@@ -23,18 +23,17 @@
  */
 
 #include <utility>
+#include <iostream>
 
 #include <fmi4cpp/fmi2/import/ModelExchangeSlave.hpp>
 #include <fmi4cpp/fmi2/import/Solver.hpp>
 
 using namespace fmi4cpp::fmi2;
 
-OdeintRK4::OdeintRK4(double stepSize) : stepSize(stepSize) {
-    rk4 = runge_kutta4_classic<std::vector<double>>();
-}
+RK4Solver::RK4Solver(double stepSize): stepSize_(stepSize) {}
 
-void OdeintRK4::integrate(ModelExchangeSlave &slave, double t0, std::vector<double> &x0, double t) {
-    integrate_const(rk4, std::ref(slave), x0, t0, t, (t-t0));
+void RK4Solver::integrate(ModelExchangeSlave &slave, double t0, std::vector<double> &x0, double t) {
+    integrate_const(stepper_, std::ref(slave), x0, t0, t, stepSize_);
 }
 
 

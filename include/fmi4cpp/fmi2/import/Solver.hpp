@@ -32,7 +32,9 @@
 
 using namespace boost::numeric::odeint;
 
-typedef std::function<void(std::vector<double>, std::vector<double>, double)> rhs;
+typedef std::vector<double> state_type;
+
+typedef euler<state_type> euler_stepper;
 
 namespace fmi4cpp::fmi2 {
 
@@ -49,15 +51,15 @@ namespace fmi4cpp::fmi2 {
     };
 
 
-    class OdeintRK4: public Solver {
+    class RK4Solver: public Solver {
 
     private:
-        double stepSize;
-        runge_kutta4_classic<std::vector<double>> rk4;
+        double stepSize_;
+        runge_kutta4_classic<state_type> stepper_;
 
     public:
 
-        explicit OdeintRK4(double stepSize);
+        explicit RK4Solver(double stepSize);
 
         void integrate(ModelExchangeSlave &slave, double t0, std::vector<double> &x0, double t) override;
 

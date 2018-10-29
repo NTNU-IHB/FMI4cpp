@@ -23,8 +23,8 @@
  */
 
 #include <stdexcept>
+#include <iostream>
 
-#include <cvode/cvode.h>
 #include <fmi4cpp/fmi2/import/ModelExchangeSlave.hpp>
 
 using namespace fmi4cpp::fmi2;
@@ -53,17 +53,16 @@ ModelExchangeSlave::ModelExchangeSlave(
     size_t numberOfEventIndicators = instance_->getModelDescription()->numberOfEventIndicators();
 
     x_.reserve(numberOfContinuousStates);
-    dx_.reserve(numberOfContinuousStates);
 
     z_.reserve(numberOfEventIndicators);
     pz_.reserve(numberOfEventIndicators);
 
 }
 
-void ModelExchangeSlave::operator()(const std::vector<double> &x, std::vector<double> &dxdt, const double t) {
+void ModelExchangeSlave::operator()(const std::vector<double> &x, std::vector<double> &dx, const double t) {
     instance_->setTime(t);
     instance_->setContinuousStates(x);
-    instance_->getDerivatives(dxdt);
+    instance_->getDerivatives(dx);
 }
 
 fmi2Status ModelExchangeSlave::doStep(const double stepSize) {
@@ -75,7 +74,7 @@ fmi2Status ModelExchangeSlave::doStep(const double stepSize) {
     double time = simulationTime_;
     double stopTime = (time + stepSize);
 
-    while (time <= stopTime) {
+    while (time < stopTime) {
 
         double tNext = std::min((time + stepSize), stopTime);
 
@@ -105,10 +104,10 @@ fmi2Status ModelExchangeSlave::doStep(const double stepSize) {
 
         if (timeEvent || stateEvent || enterEventMode) {
             instance_->enterEventMode();
-        }
 
-        if (eventIteration()) {
-            return fmi2Discard;
+            if (eventIteration()) {
+                return fmi2Discard;
+            }
         }
 
     }
@@ -128,7 +127,7 @@ bool ModelExchangeSlave::solve(double t, double tNext) {
     pz_ = z_;
     instance_->getEventIndicators(z_);
     for (unsigned int i = 0; i < pz_.size(); i++) {
-        if (pz_[i] * z_[i] < 0) {
+        if ((pz_[i] * z_[i]) < 0) {
             return true;
         }
     }
@@ -154,24 +153,6 @@ std::shared_ptr<CoSimulationModelDescription> ModelExchangeSlave::getModelDescri
     return csModelDescription_;
 }
 
-bool ModelExchangeSlave::eventIteration() {
-
-    eventInfo_.newDiscreteStatesNeeded = true;
-    eventInfo_.terminateSimulation = false;
-
-    while (eventInfo_.newDiscreteStatesNeeded) {
-         instance_->newDiscreteStates(eventInfo_);
-         if (eventInfo_.terminateSimulation) {
-             terminate();
-             return true;
-         }
-    }
-
-    instance_->enterContinuousTimeMode();
-
-    return false;
-}
-
 fmi2Status ModelExchangeSlave::setupExperiment(double startTime, double stopTime, double tolerance) {
     return instance_->setupExperiment(startTime, stopTime, tolerance);
 }
@@ -185,8 +166,26 @@ fmi2Status ModelExchangeSlave::exitInitializationMode() {
     if (eventIteration()) {
         throw std::runtime_error("EventIteration failed during initialization!");
     }
-
     return status;
+}
+
+
+bool ModelExchangeSlave::eventIteration() {
+
+    eventInfo_.newDiscreteStatesNeeded = true;
+    eventInfo_.terminateSimulation = false;
+
+    while (eventInfo_.newDiscreteStatesNeeded) {
+        instance_->newDiscreteStates(eventInfo_);
+        if (eventInfo_.terminateSimulation) {
+            terminate();
+            return true;
+        }
+    }
+
+    instance_->enterContinuousTimeMode();
+
+    return false;
 }
 
 

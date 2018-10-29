@@ -43,7 +43,6 @@ namespace fmi4cpp::fmi2 {
         std::shared_ptr<CoSimulationModelDescription> csModelDescription_;
 
         std::vector<fmi2Real > x_;
-        std::vector<fmi2Real > dx_;
 
         std::vector<fmi2Real > z_;
         std::vector<fmi2Real > pz_;

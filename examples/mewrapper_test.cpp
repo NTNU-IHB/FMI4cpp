@@ -25,6 +25,7 @@
 #include <string>
 #include <memory>
 #include <iostream>
+#include <vector>
 
 #include <fmi4cpp/fmi2/fmi4cpp.hpp>
 #include <fmi4cpp/tools/os_util.hpp>
@@ -33,8 +34,8 @@ using namespace std;
 using namespace fmi4cpp::fmi2;
 
 double stop = 1.0;
-double microStep = 1E-3;
-double macroStep = 1E-2;
+double microStep = 1E-4;
+double macroStep = 1.0/10;
 
 int main() {
 
@@ -43,7 +44,7 @@ int main() {
                            "/OpenModelica/v1.11.0/FmuExportCrossCompile/FmuExportCrossCompile.fmu";
 
     auto fmu = Fmu(fmuPath).asModelExchangeFmu();
-    unique_ptr<Solver> solver = make_unique<OdeintRK4>(microStep);
+    unique_ptr<Solver> solver = make_unique<RK4Solver>(microStep);
     auto slave = fmu->newInstance(solver);
 
     auto hVar = slave->getModelDescription()->getVariableByName("h").asReal();
@@ -54,19 +55,19 @@ int main() {
 
     double t = 0;
     double h = 0;
-//    while ( ( t = slave->getSimulationTime()) <= stop) {
+    while ( ( t = slave->getSimulationTime()) <= stop) {
 
         if (!slave->doStep(macroStep) == fmi2OK) {
-//            break;
+            break;
         }
 
         if (!hVar.read(*slave, h) == fmi2OK) {
-//            break;
+            break;
         }
 
         cout << "t=" << t << ", h=" << h << endl;
 
-//    }
+    }
 
     slave->terminate();
 
