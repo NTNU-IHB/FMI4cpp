@@ -26,8 +26,8 @@
 #define FMI4CPP_SOLVER_HPP
 
 #include <vector>
-
 #include <functional>
+
 #include <boost/numeric/odeint.hpp>
 
 using namespace boost::numeric::odeint;

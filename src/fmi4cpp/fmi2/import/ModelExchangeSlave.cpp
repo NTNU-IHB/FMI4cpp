@@ -47,10 +47,10 @@ ModelExchangeSlave::ModelExchangeSlave(
         std::unique_ptr<Solver> &solver)
         : instance_(std::move(instance)), solver_(std::move(solver)) {
 
-    csModelDescription_ = std::move(wrap(*instance->getModelDescription()));
+    csModelDescription_ = std::move(wrap(*instance_->getModelDescription()));
 
-    size_t numberOfContinuousStates = instance->getModelDescription()->numberOfContinuousStates();
-    size_t numberOfEventIndicators = instance->getModelDescription()->numberOfEventIndicators();
+    size_t numberOfContinuousStates = instance_->getModelDescription()->numberOfContinuousStates();
+    size_t numberOfEventIndicators = instance_->getModelDescription()->numberOfEventIndicators();
 
     x_.reserve(numberOfContinuousStates);
     dx_.reserve(numberOfContinuousStates);
@@ -69,15 +69,15 @@ void ModelExchangeSlave::operator()(const std::vector<double> &x, std::vector<do
 fmi2Status ModelExchangeSlave::doStep(const double stepSize) {
 
     if (stepSize <= 0) {
-        return fmi2Status::fmi2Error;
+        return fmi2Error;
     }
 
     double time = simulationTime_;
-    double stopTime = time + stepSize;
+    double stopTime = (time + stepSize);
 
-    while (time < stopTime) {
+    while (time <= stopTime) {
 
-        double tNext = std::min(time + stepSize, stopTime);
+        double tNext = std::min((time + stepSize), stopTime);
 
         bool timeEvent = eventInfo_.nextEventTimeDefined && eventInfo_.nextEventTime <= time;
         if (timeEvent) {
@@ -92,6 +92,7 @@ fmi2Status ModelExchangeSlave::doStep(const double stepSize) {
         }
 
         instance_->setTime(time);
+        simulationTime_ = time;
 
         bool enterEventMode = false;
         if (!instance_->getModelDescription()->completedIntegratorStepNotNeeded()) {
@@ -180,7 +181,7 @@ fmi2Status ModelExchangeSlave::enterInitializationMode() {
 }
 
 fmi2Status ModelExchangeSlave::exitInitializationMode() {
-    auto status = instance_->enterInitializationMode();
+    auto status = instance_->exitInitializationMode();
     if (eventIteration()) {
         throw std::runtime_error("EventIteration failed during initialization!");
     }

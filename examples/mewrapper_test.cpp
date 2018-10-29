@@ -32,30 +32,41 @@
 using namespace std;
 using namespace fmi4cpp::fmi2;
 
+double stop = 1.0;
+double microStep = 1E-3;
+double macroStep = 1E-2;
+
 int main() {
 
-const string fmuPath = string(getenv("TEST_FMUs"))
-                       + "/FMI_2.0/ModelExchange/" + getOs() +
-                       "/FMUSDK/2.0.4/bouncingBall/bouncingBall.fmu";
+    const string fmuPath = string(getenv("TEST_FMUs"))
+                           + "/FMI_2.0/ModelExchange/" + getOs() +
+                           "/OpenModelica/v1.11.0/FmuExportCrossCompile/FmuExportCrossCompile.fmu";
 
     auto fmu = Fmu(fmuPath).asModelExchangeFmu();
-
-    cout << "per" << endl;
-
-    unique_ptr<Solver> solver = make_unique<OdeintRK4>(1E-2);
+    unique_ptr<Solver> solver = make_unique<OdeintRK4>(microStep);
     auto slave = fmu->newInstance(solver);
 
-    cout << "lol" << endl;
-
-    double stop = 1.0;
-
-    auto h = slave->getModelDescription()->getVariableByName("h").asReal();
+    auto hVar = slave->getModelDescription()->getVariableByName("h").asReal();
 
     slave->setupExperiment();
     slave->enterInitializationMode();
     slave->exitInitializationMode();
 
-    cout << "Description=" << h.description() << endl;
+    double t = 0;
+    double h = 0;
+//    while ( ( t = slave->getSimulationTime()) <= stop) {
+
+        if (!slave->doStep(macroStep) == fmi2OK) {
+//            break;
+        }
+
+        if (!hVar.read(*slave, h) == fmi2OK) {
+//            break;
+        }
+
+        cout << "t=" << t << ", h=" << h << endl;
+
+//    }
 
     slave->terminate();
 

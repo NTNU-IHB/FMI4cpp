@@ -36,7 +36,7 @@ namespace fmi4cpp::fmi2 {
 class ModelExchangeInstance : public AbstractFmuInstance<ModelExchangeLibrary, ModelExchangeModelDescription> {
 
     public:
-        ModelExchangeInstance(const fmi2Component c,
+        ModelExchangeInstance(fmi2Component c,
                               const std::shared_ptr<ModelExchangeLibrary> &library,
                               const std::shared_ptr<ModelExchangeModelDescription> &modelDescription);
 
@@ -45,7 +45,7 @@ class ModelExchangeInstance : public AbstractFmuInstance<ModelExchangeLibrary, M
 
         fmi2Status enterContinuousTimeMode() const;
 
-        fmi2Status setTime(double time) const;
+        fmi2Status setTime(double time);
 
         fmi2Status setContinuousStates(const std::vector<fmi2Real> &x) const;
 

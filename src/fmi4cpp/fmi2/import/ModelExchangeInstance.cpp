@@ -39,7 +39,8 @@ fmi2Status ModelExchangeInstance::enterContinuousTimeMode() const {
     return library_->enterContinuousTimeMode(c_);
 }
 
-fmi2Status ModelExchangeInstance::setTime(const double time) const {
+fmi2Status ModelExchangeInstance::setTime(const double time) {
+    this->simulationTime_ = time;
     return library_->setTime(c_, time);
 }
 
