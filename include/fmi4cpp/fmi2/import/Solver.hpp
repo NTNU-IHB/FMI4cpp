@@ -32,19 +32,16 @@
 
 using namespace boost::numeric::odeint;
 
-typedef std::vector<double> state_type;
-
-typedef euler<state_type> euler_stepper;
-
 namespace fmi4cpp::fmi2 {
 
     class ModelExchangeSlave;
+    class sys_wrapper;
 
     class Solver {
 
     public:
 
-        virtual void integrate(ModelExchangeSlave &slave, double t0, std::vector<double> &x0, double t) = 0;
+        virtual void integrate(sys_wrapper sys, std::vector<double> &x, double tStart, double tStop) = 0;
 
         virtual ~Solver() = default;
 
@@ -55,13 +52,13 @@ namespace fmi4cpp::fmi2 {
 
     private:
         double stepSize_;
-        runge_kutta4_classic<state_type> stepper_;
+        runge_kutta4<std::vector<double>> stepper_;
 
     public:
 
         explicit RK4Solver(double stepSize);
 
-        void integrate(ModelExchangeSlave &slave, double t0, std::vector<double> &x0, double t) override;
+        void integrate(sys_wrapper sys, std::vector<double> &x, double tStart, double tStop) override;
 
     };
 

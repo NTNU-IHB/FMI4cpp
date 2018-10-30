@@ -59,11 +59,11 @@ ModelExchangeSlave::ModelExchangeSlave(
 
 }
 
-void ModelExchangeSlave::operator()(const std::vector<double> &x, std::vector<double> &dx, const double t) {
-    instance_->setTime(t);
-    instance_->setContinuousStates(x);
-    instance_->getDerivatives(dx);
-}
+//void ModelExchangeSlave::operator() (const std::vector<double> &x, std::vector<double> &dxdt, const double t) {
+//    instance_->setTime(t);
+//    instance_->setContinuousStates(x);
+//    instance_->getDerivatives(dxdt);
+//}
 
 fmi2Status ModelExchangeSlave::doStep(const double stepSize) {
 
@@ -96,7 +96,7 @@ fmi2Status ModelExchangeSlave::doStep(const double stepSize) {
             int enterEventMode_ = 0;
             int terminateSimulation_ = 0;
             instance_->completedIntegratorStep(false, enterEventMode_, terminateSimulation_);
-            if (terminateSimulation_ == 1) {
+            if (terminateSimulation_) {
                 terminate();
             }
             enterEventMode = (enterEventMode_ == 1);
@@ -119,10 +119,13 @@ fmi2Status ModelExchangeSlave::doStep(const double stepSize) {
 
 bool ModelExchangeSlave::solve(double t, double tNext) {
 
+
+    std::cout << "ladl" << std::endl;
+
     instance_->getContinuousStates(x_);
 
     double stepSize = (tNext - t);
-    solver_->integrate(*this, t, x_, (simulationTime_ + stepSize));
+    solver_->integrate(sys_wrapper(instance_.get()), x_, t, (simulationTime_ + stepSize));
 
     pz_ = z_;
     instance_->getEventIndicators(z_);

@@ -34,7 +34,7 @@ using namespace std;
 using namespace fmi4cpp::fmi2;
 
 double stop = 1.0;
-double microStep = 1E-4;
+double microStep = 1E-3;
 double macroStep = 1.0/10;
 
 int main() {

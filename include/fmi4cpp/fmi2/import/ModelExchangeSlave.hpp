@@ -34,12 +34,28 @@
 
 namespace fmi4cpp::fmi2 {
 
+    class sys_wrapper {
+
+    private:
+        ModelExchangeInstance *instance_;
+
+    public:
+        sys_wrapper(ModelExchangeInstance *instance) : instance_(instance) {}
+
+        void operator() (const std::vector<double> &x, std::vector<double> &dxdt, const double t) {
+            instance_->setTime(t);
+            instance_->setContinuousStates(x);
+            instance_->getDerivatives(dxdt);
+        }
+
+    };
+
     class ModelExchangeSlave : public FmuSlave {
 
     private:
 
         std::unique_ptr<Solver> solver_;
-        std::unique_ptr<ModelExchangeInstance> instance_;
+        std::shared_ptr<ModelExchangeInstance> instance_;
         std::shared_ptr<CoSimulationModelDescription> csModelDescription_;
 
         std::vector<fmi2Real > x_;
@@ -123,7 +139,7 @@ namespace fmi4cpp::fmi2 {
         fmi2Status
         writeBoolean(const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2Boolean> &values) override;
 
-        void operator() (const std::vector<double> &x, std::vector<double> &dxdt, double t);
+//        void operator() (const std::vector<double> &x, std::vector<double> &dxdt, const double t);
 
     };
 
