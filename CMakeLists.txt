@@ -15,7 +15,6 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 option(FMI4CPP_BUILD_TESTS "Build tests" OFF)
 option(FMI4CPP_BUILD_EXAMPLES "Build examples" ON)
-option(FMI4CPP_WITH_SUNDIALS "Enable wrapping of ME models as CS ones using Sundials solvers")
 
 if (MSVC)
     set(CMAKE_DEBUG_POSTFIX "d")
@@ -32,10 +31,6 @@ if (UNIX)
     find_package(ZLIB REQUIRED)
     find_package(BZip2 REQUIRED)
     find_package(OpenSSL COMPONENTS Crypto REQUIRED)
-endif ()
-
-if (FMI4CPP_WITH_SUNDIALS)
-    find_package(SUNDIALS REQUIRED)
 endif ()
 
 find_package(LIBZIP REQUIRED)
