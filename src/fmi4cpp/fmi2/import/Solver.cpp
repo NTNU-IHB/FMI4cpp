@@ -30,9 +30,21 @@
 
 using namespace fmi4cpp::fmi2;
 
+EulerSolver::EulerSolver(double stepSize): stepSize_(stepSize) {}
+
+void EulerSolver::integrate(sys_wrapper &sys, std::vector<double> &x, double tStart, double tStop) {
+    ::integrate(sys, x, tStart, tStop, stepSize_);
+}
+
 RK4Solver::RK4Solver(double stepSize): stepSize_(stepSize) {}
 
 void RK4Solver::integrate(sys_wrapper &sys, std::vector<double> &x, double tStart, double tStop) {
+    ::integrate(sys, x, tStart, tStop, stepSize_);
+}
+
+RK4ClassicSolver::RK4ClassicSolver(double stepSize): stepSize_(stepSize) {}
+
+void RK4ClassicSolver::integrate(sys_wrapper &sys, std::vector<double> &x, double tStart, double tStop) {
     ::integrate(sys, x, tStart, tStop, stepSize_);
 }
 

@@ -34,7 +34,6 @@ using namespace boost::numeric::odeint;
 
 namespace fmi4cpp::fmi2 {
 
-    class ModelExchangeSlave;
     class sys_wrapper;
 
     class Solver {
@@ -47,6 +46,20 @@ namespace fmi4cpp::fmi2 {
 
     };
 
+
+    class EulerSolver: public Solver {
+
+    private:
+        double stepSize_;
+        euler<std::vector<double>> stepper_;
+
+    public:
+
+        explicit EulerSolver(double stepSize);
+
+        void integrate(sys_wrapper &sys, std::vector<double> &x, double tStart, double tStop) override;
+
+    };
 
     class RK4Solver: public Solver {
 
@@ -62,6 +75,19 @@ namespace fmi4cpp::fmi2 {
 
     };
 
+    class RK4ClassicSolver: public Solver {
+
+    private:
+        double stepSize_;
+        runge_kutta4_classic<std::vector<double>> stepper_;
+
+    public:
+
+        explicit RK4ClassicSolver(double stepSize);
+
+        void integrate(sys_wrapper &sys, std::vector<double> &x, double tStart, double tStop) override;
+
+    };
 
 
 }
