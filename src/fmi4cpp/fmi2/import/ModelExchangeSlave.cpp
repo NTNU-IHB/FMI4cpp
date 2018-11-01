@@ -151,8 +151,7 @@ bool ModelExchangeSlave::solve(double t, double tNext) {
 
     instance_->getContinuousStates(x_);
 
-    double stepSize = (tNext - t);
-    solver_->integrate(sys_, x_, t, (simulationTime_ + stepSize));
+    solver_->integrate(sys_, x_, t, tNext);
 
     pz_ = z_;
     instance_->getEventIndicators(z_);
