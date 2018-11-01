@@ -41,7 +41,7 @@ namespace fmi4cpp::fmi2 {
 
     public:
 
-        virtual void integrate(sys_wrapper sys, std::vector<double> &x, double tStart, double tStop) = 0;
+        virtual void integrate(sys_wrapper &sys, std::vector<double> &x, double tStart, double tStop) = 0;
 
         virtual ~Solver() = default;
 
@@ -58,7 +58,7 @@ namespace fmi4cpp::fmi2 {
 
         explicit RK4Solver(double stepSize);
 
-        void integrate(sys_wrapper sys, std::vector<double> &x, double tStart, double tStop) override;
+        void integrate(sys_wrapper &sys, std::vector<double> &x, double tStart, double tStop) override;
 
     };
 

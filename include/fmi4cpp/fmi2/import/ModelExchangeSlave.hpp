@@ -36,16 +36,13 @@ namespace fmi4cpp::fmi2 {
 
     class sys_wrapper {
 
-    private:
-        ModelExchangeInstance *instance_;
-
     public:
-        sys_wrapper(ModelExchangeInstance *instance) : instance_(instance) {}
+        std::shared_ptr<ModelExchangeInstance> instance_;
 
-        void operator() (const std::vector<double> &x, std::vector<double> &dxdt, const double t) {
+        void operator() (const std::vector<double> &x, std::vector<double> &dx, const double t) {
             instance_->setTime(t);
             instance_->setContinuousStates(x);
-            instance_->getDerivatives(dxdt);
+            instance_->getDerivatives(dx);
         }
 
     };
@@ -63,9 +60,7 @@ namespace fmi4cpp::fmi2 {
         std::vector<fmi2Real > z_;
         std::vector<fmi2Real > pz_;
 
-        fmi2EventInfo eventInfo_;
-
-        bool eventIteration();
+        sys_wrapper sys_;
 
         bool solve(double t0, double tNext);
 
@@ -138,6 +133,8 @@ namespace fmi4cpp::fmi2 {
 
         fmi2Status
         writeBoolean(const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2Boolean> &values) override;
+
+        const double getSimulationTime() const override;
 
 //        void operator() (const std::vector<double> &x, std::vector<double> &dxdt, const double t);
 

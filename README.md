@@ -20,7 +20,7 @@ When the library is stable it will be added to the vcpkg package manager.
 Install [vcpkg](https://github.com/Microsoft/vcpkg) and run:
 
 ```
-./vcpkg install boost-property-tree boost-odeint libzip
+./vcpkg install boost-property-tree boost-ublas boost-odeint libzip
 ``` 
 
 On linux you _might_ need to install some additional libraries:

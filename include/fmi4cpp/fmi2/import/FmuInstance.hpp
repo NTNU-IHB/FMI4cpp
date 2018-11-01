@@ -41,7 +41,7 @@ namespace fmi4cpp::fmi2 {
 
     public:
 
-        const double getSimulationTime() const {
+        virtual const double getSimulationTime() const {
             return simulationTime_;
         }
 

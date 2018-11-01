@@ -24,10 +24,6 @@ SET(SOURCES
 
 )
 
-#if (FMI4CPP_WITH_SUNDIALS)
-#    SET(SOURCES ${SOURCES} )
-#endif ()
-
 set(FMI4CPP_LIB fmi4cpp)
 add_library(${FMI4CPP_LIB} ${SOURCES})
 add_library(FMI4cpp::${FMI4CPP_LIB} ALIAS fmi4cpp)

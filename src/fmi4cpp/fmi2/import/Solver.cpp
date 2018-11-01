@@ -32,8 +32,7 @@ using namespace fmi4cpp::fmi2;
 
 RK4Solver::RK4Solver(double stepSize): stepSize_(stepSize) {}
 
-void RK4Solver::integrate(sys_wrapper sys, std::vector<double> &x, double tStart, double tStop) {
-    std::cout << "per: " << tStop << std::endl;
+void RK4Solver::integrate(sys_wrapper &sys, std::vector<double> &x, double tStart, double tStop) {
     ::integrate(sys, x, tStart, tStop, stepSize_);
 }
 

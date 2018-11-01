@@ -49,24 +49,24 @@ int main() {
 
     auto hVar = slave->getModelDescription()->getVariableByName("h").asReal();
 
-    slave->setupExperiment();
-    slave->enterInitializationMode();
-    slave->exitInitializationMode();
+    fmi2Status status;
+    status = slave->setupExperiment();
+    status = slave->enterInitializationMode();
+    status = slave->exitInitializationMode();
 
     double t = 0;
-    double h = 0;
+    double ref = 0;
     while ( ( t = slave->getSimulationTime()) <= stop) {
 
         if (!slave->doStep(macroStep) == fmi2OK) {
             break;
         }
 
-        if (!hVar.read(*slave, h) == fmi2OK) {
+        if (!hVar.read(*slave, ref) == fmi2OK) {
             break;
         }
 
-        cout << "t=" << t << ", h=" << h << endl;
-
+        cout << "t=" << t << ", h=" << ref << endl;
     }
 
     slave->terminate();

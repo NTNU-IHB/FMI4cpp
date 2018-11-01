@@ -31,11 +31,11 @@ ModelExchangeInstance::ModelExchangeInstance(const fmi2Component c,
                                              const std::shared_ptr<ModelExchangeModelDescription> &modelDescription)
         : AbstractFmuInstance<ModelExchangeLibrary, ModelExchangeModelDescription>(c, library, modelDescription) {}
 
-fmi2Status ModelExchangeInstance::enterEventMode() const {
+fmi2Status ModelExchangeInstance::enterEventMode() {
     return library_->enterEventMode(c_);
 }
 
-fmi2Status ModelExchangeInstance::enterContinuousTimeMode() const {
+fmi2Status ModelExchangeInstance::enterContinuousTimeMode() {
     return library_->enterContinuousTimeMode(c_);
 }
 
@@ -44,33 +44,33 @@ fmi2Status ModelExchangeInstance::setTime(const double time) {
     return library_->setTime(c_, time);
 }
 
-fmi2Status ModelExchangeInstance::setContinuousStates(const std::vector<fmi2Real> &x) const {
+fmi2Status ModelExchangeInstance::setContinuousStates(const std::vector<fmi2Real> &x) {
     return library_->setContinuousStates(c_, x);
 }
 
-fmi2Status ModelExchangeInstance::getDerivatives(std::vector<fmi2Real> &derivatives) const {
+fmi2Status ModelExchangeInstance::getDerivatives(std::vector<fmi2Real> &derivatives) {
     return library_->getDerivatives(c_, derivatives);
 }
 
-fmi2Status ModelExchangeInstance::getEventIndicators(std::vector<fmi2Real> &eventIndicators) const {
+fmi2Status ModelExchangeInstance::getEventIndicators(std::vector<fmi2Real> &eventIndicators) {
     return library_->getEventIndicators(c_, eventIndicators);
 }
 
-fmi2Status ModelExchangeInstance::getContinuousStates(std::vector<fmi2Real> &x) const {
+fmi2Status ModelExchangeInstance::getContinuousStates(std::vector<fmi2Real> &x) {
     return library_->getContinuousStates(c_, x);
 }
 
-fmi2Status ModelExchangeInstance::getNominalsOfContinuousStates(std::vector<fmi2Real> &x_nominal) const {
+fmi2Status ModelExchangeInstance::getNominalsOfContinuousStates(std::vector<fmi2Real> &x_nominal) {
     return library_->getNominalsOfContinuousStates(c_, x_nominal);
 }
 
 fmi2Status ModelExchangeInstance::completedIntegratorStep(
         fmi2Boolean noSetFMUStatePriorToCurrentPoint,
         fmi2Boolean &enterEventMode,
-        fmi2Boolean &terminateSimulation) const {
+        fmi2Boolean &terminateSimulation) {
     return library_->completedIntegratorStep(c_, noSetFMUStatePriorToCurrentPoint, enterEventMode, terminateSimulation);
 }
 
-fmi2Status ModelExchangeInstance::newDiscreteStates(fmi2EventInfo &eventInfo) const {
-    return library_->newDiscreteStates(c_, eventInfo);
+fmi2Status ModelExchangeInstance::newDiscreteStates() {
+    return library_->newDiscreteStates(c_, eventInfo_);
 }
