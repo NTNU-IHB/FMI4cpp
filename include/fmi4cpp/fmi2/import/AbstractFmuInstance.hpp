@@ -75,9 +75,9 @@ namespace fmi4cpp::fmi2 {
             return library_->setDebugLogging(c_, loggingOn, categories);
         }
 
-        fmi2Status setupExperiment(double start, double stop, double tolerance) override {
+        fmi2Status setupExperiment(double start = 0, double stop = 0, double tolerance = 0) override {
             this->simulationTime_ = start;
-            return library_->setupExperiment(c_, 0, start, stop);
+            return library_->setupExperiment(c_, tolerance, start, stop);
         }
 
         fmi2Status enterInitializationMode() override {

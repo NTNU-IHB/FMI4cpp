@@ -37,7 +37,7 @@ shared_ptr<ModelExchangeModelDescription> ModelExchangeFmu::getModelDescription(
     return modelDescription_;
 }
 
-std::unique_ptr<ModelExchangeInstance> ModelExchangeFmu::newInstance(const bool visible, const bool loggingOn) {
+std::unique_ptr<ModelExchangeInstance> ModelExchangeFmu::newInstance(bool visible, bool loggingOn) {
     shared_ptr<ModelExchangeLibrary> lib = nullptr;
     string modelIdentifier = modelDescription_->modelIdentifier();
     if (modelDescription_->canBeInstantiatedOnlyOncePerProcess()) {
@@ -51,6 +51,12 @@ std::unique_ptr<ModelExchangeInstance> ModelExchangeFmu::newInstance(const bool 
     fmi2Component c = lib->instantiate(modelIdentifier, fmi2ModelExchange, guid(),
                                        resource_->getResourcePath(), visible, loggingOn);
     return make_unique<ModelExchangeInstance>(c, lib, modelDescription_);
+}
+
+std::unique_ptr<ModelExchangeSlave>
+ModelExchangeFmu::newInstance(std::unique_ptr<Solver> &solver, bool visible, bool loggingOn) {
+    unique_ptr<ModelExchangeInstance> instance = newInstance(visible, loggingOn);
+    return make_unique<ModelExchangeSlave>(instance, solver);
 }
 
 ModelExchangeFmu::~ModelExchangeFmu() {

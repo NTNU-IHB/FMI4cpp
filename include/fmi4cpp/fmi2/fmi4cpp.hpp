@@ -36,5 +36,6 @@
 #include "import/FmuInstance.hpp"
 #include "import/FmuSlave.hpp"
 #include "import/ModelExchangeInstance.hpp"
+#include "import/ModelExchangeSlave.hpp"
 
 #endif //FMI4CPP_FMI4CPP_HPP

@@ -47,24 +47,24 @@ namespace fmi4cpp::fmi2 {
     public:
         explicit ModelExchangeLibrary(const std::string &modelIdentifier, const std::shared_ptr<FmuResource> &resource);
 
-        fmi2Status enterEventMode(fmi2Component c) const;
+        fmi2Status enterEventMode(fmi2Component c);
 
-        fmi2Status enterContinuousTimeMode(fmi2Component c) const;
+        fmi2Status enterContinuousTimeMode(fmi2Component c);
 
-        fmi2Status setTime(fmi2Component c, double time) const;
+        fmi2Status setTime(fmi2Component c, double time);
 
-        fmi2Status setContinuousStates(fmi2Component c, const std::vector<fmi2Real> &x) const;
+        fmi2Status setContinuousStates(fmi2Component c, const std::vector<fmi2Real> &x);
 
-        fmi2Status getDerivatives(fmi2Component c, std::vector<fmi2Real> &derivatives) const;
+        fmi2Status getDerivatives(fmi2Component c, std::vector<fmi2Real> &derivatives);
 
-        fmi2Status getEventIndicators(fmi2Component c, std::vector<fmi2Real> &eventIndicators) const;
+        fmi2Status getEventIndicators(fmi2Component c, std::vector<fmi2Real> &eventIndicators);
 
-        fmi2Status getContinuousStates(fmi2Component c, std::vector<fmi2Real> &x) const;
+        fmi2Status getContinuousStates(fmi2Component c, std::vector<fmi2Real> &x);
 
-        fmi2Status getNominalsOfContinuousStates(fmi2Component c, std::vector<fmi2Real> &x_nominal) const;
+        fmi2Status getNominalsOfContinuousStates(fmi2Component c, std::vector<fmi2Real> &x_nominal);
 
         fmi2Status completedIntegratorStep(fmi2Component c, fmi2Boolean noSetFMUStatePriorToCurrentPoint,
-                                           fmi2Boolean &enterEventMode, fmi2Boolean &terminateSimulation) const;
+                                           fmi2Boolean &enterEventMode, fmi2Boolean &terminateSimulation);
 
         fmi2Status newDiscreteStates(fmi2Component c, fmi2EventInfo &eventInfo);
 

@@ -48,11 +48,19 @@ namespace fs = std::experimental::filesystem;
 
 Fmu::Fmu(const string &fmuFile) {
 
+#if FMI4CPP_DEBUG_LOGGING_ENABLED
+    cout << "Loading FMU '" << fmuFile << "'" << endl;
+#endif
+
     const string fmuName = fs::path(fmuFile).stem().string();
     fs::path tmpPath(fs::temp_directory_path() /= fs::path("fmi4cpp_" + fmuName + "_" + generate_simple_id(8)));
 
     if (!create_directories(tmpPath)) {
-        throw runtime_error("Failed to create temporary directory!");
+        string err = "Failed to create temporary directory!";
+#if FMI4CPP_DEBUG_LOGGING_ENABLED
+        cerr << err << endl;
+#endif
+        throw runtime_error(err);
     }
 
 #if FMI4CPP_DEBUG_LOGGING_ENABLED
@@ -60,7 +68,11 @@ Fmu::Fmu(const string &fmuFile) {
 #endif
 
     if (!extractContents(fmuFile, tmpPath.string())) {
-        throw runtime_error("Failed to extract FMU!");
+        const string err = "Failed to extract FMU!";
+#if FMI4CPP_DEBUG_LOGGING_ENABLED
+        cout << err << endl;
+#endif
+        throw runtime_error(err);
     }
 
     resource_ = make_shared<FmuResource>(tmpPath);

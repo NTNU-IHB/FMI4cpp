@@ -9,6 +9,7 @@ SET(SOURCES
         fmi4cpp/fmi2/import/ModelExchangeLibrary.cpp
         fmi4cpp/fmi2/import/CoSimulationSlave.cpp
         fmi4cpp/fmi2/import/ModelExchangeInstance.cpp
+        fmi4cpp/fmi2/import/ModelExchangeSlave.cpp
         fmi4cpp/fmi2/import/FmuResource.cpp
 
         fmi4cpp/fmi2/xml/enums.cpp
