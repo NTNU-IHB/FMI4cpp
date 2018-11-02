@@ -25,14 +25,17 @@
 #ifndef FMI4CPP_SOLVER_HPP
 #define FMI4CPP_SOLVER_HPP
 
+#include <memory>
 #include <vector>
-#include <functional>
-
 #include <boost/numeric/odeint.hpp>
 
 using namespace boost::numeric::odeint;
 
 namespace fmi4cpp::fmi2 {
+
+    typedef std::vector<double> state_type;
+
+
 
     class sys_wrapper;
 
@@ -46,49 +49,39 @@ namespace fmi4cpp::fmi2 {
 
     };
 
+    template <class T>
+    class OdeintSolver: public Solver {
 
-    class EulerSolver: public Solver {
-
-    private:
-        double stepSize_;
-        euler<std::vector<double>> stepper_;
-
-    public:
-
-        explicit EulerSolver(double stepSize);
-
-        void integrate(sys_wrapper &sys, std::vector<double> &x, double tStart, double tStop) override;
+    protected:
+        T solver_;
 
     };
 
-    class RK4Solver: public Solver {
+    template <class T>
+    class ConstantStepSizeOdeintSolver: public OdeintSolver<T> {
 
-    private:
+    protected:
         double stepSize_;
-        runge_kutta4<std::vector<double>> stepper_;
 
     public:
+        explicit ConstantStepSizeOdeintSolver(double stepSize_): stepSize_(stepSize_) {}
 
-        explicit RK4Solver(double stepSize);
-
-        void integrate(sys_wrapper &sys, std::vector<double> &x, double tStart, double tStop) override;
+        void integrate(sys_wrapper &sys, std::vector<double> &x, double tStart, double tStop) override {
+            integrate_const(this->solver_, sys, x, tStart, tStop, stepSize_);
+        }
 
     };
 
-    class RK4ClassicSolver: public Solver {
 
-    private:
-        double stepSize_;
-        runge_kutta4_classic<std::vector<double>> stepper_;
+    typedef ConstantStepSizeOdeintSolver<euler<state_type>> EulerSolver;
+    typedef ConstantStepSizeOdeintSolver<runge_kutta4<state_type>> RK4Solver;
+    typedef ConstantStepSizeOdeintSolver<runge_kutta4_classic<state_type>> RK4ClassicSolver;
 
-    public:
 
-        explicit RK4ClassicSolver(double stepSize);
-
-        void integrate(sys_wrapper &sys, std::vector<double> &x, double tStart, double tStop) override;
-
-    };
-
+    template <typename T, typename ... Args>
+    std::unique_ptr<Solver> make_solver(Args ... args) {
+        return std::make_unique<T>(args ...);
+    }
 
 }
 

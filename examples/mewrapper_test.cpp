@@ -44,18 +44,18 @@ int main() {
                            "/OpenModelica/v1.11.0/FmuExportCrossCompile/FmuExportCrossCompile.fmu";
 
     auto fmu = Fmu(fmuPath).asModelExchangeFmu();
-    unique_ptr<Solver> solver = make_unique<RK4Solver>(microStep);
+
+    unique_ptr<Solver> solver = make_solver<RK4ClassicSolver>(microStep);
     auto slave = fmu->newInstance(solver);
 
-    auto hVar = slave->getModelDescription()->getVariableByName("h").asReal();
-
-    fmi2Status status;
-    status = slave->setupExperiment();
-    status = slave->enterInitializationMode();
-    status = slave->exitInitializationMode();
+    slave->setupExperiment();
+    slave->enterInitializationMode();
+    slave->exitInitializationMode();
 
     double t = 0;
     double ref = 0;
+    auto hVar = slave->getModelDescription()->getVariableByName("h").asReal();
+
     while ( ( t = slave->getSimulationTime()) <= stop) {
 
         if (!slave->doStep(macroStep) == fmi2OK) {
