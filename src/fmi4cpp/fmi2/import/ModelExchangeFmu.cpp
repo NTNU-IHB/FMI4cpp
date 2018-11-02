@@ -58,9 +58,3 @@ ModelExchangeFmu::newInstance(std::unique_ptr<Solver> &solver, bool visible, boo
     unique_ptr<ModelExchangeInstance> instance = newInstance(visible, loggingOn);
     return make_unique<ModelExchangeSlave>(instance, solver);
 }
-
-ModelExchangeFmu::~ModelExchangeFmu() {
-//#if  FMI4CPP_DEBUG_LOGGING_ENABLED
-//    cout << "~ModelExchangeFmu()" << endl;
-//#endif
-}

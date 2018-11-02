@@ -62,8 +62,3 @@ unique_ptr<FmuSlave> CoSimulationFmu::newInstance(const bool visible, const bool
     return make_unique<CoSimulationSlave>(c, lib, modelDescription_);
 }
 
-CoSimulationFmu::~CoSimulationFmu() {
-//#if FMI4CPP_DEBUG_LOGGING_ENABLED
-//    cout << "~CoSimulationFmu()" << endl;
-//#endif
-}
