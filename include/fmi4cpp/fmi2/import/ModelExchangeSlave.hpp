@@ -68,6 +68,8 @@ namespace fmi4cpp::fmi2 {
         ModelExchangeSlave(std::unique_ptr<ModelExchangeInstance> &instance,
                            std::unique_ptr<Solver> &solver);
 
+        const double getSimulationTime() const override;
+
         std::shared_ptr<CoSimulationModelDescription> getModelDescription() const override;
 
         fmi2Status doStep(double stepSize) override;
@@ -133,8 +135,6 @@ namespace fmi4cpp::fmi2 {
 
         fmi2Status
         writeBoolean(const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2Boolean> &values) override;
-
-        const double getSimulationTime() const override;
 
     };
 
