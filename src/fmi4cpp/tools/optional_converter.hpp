@@ -29,7 +29,7 @@
 #include <boost/optional/optional.hpp>
 
 template<class T>
-std::optional<T> convert(boost::optional<T> opt) {
+inline std::optional<T> convert(boost::optional<T> opt) {
     if (!opt) {
         return {};
     } else {
