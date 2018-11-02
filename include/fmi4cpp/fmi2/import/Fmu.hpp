@@ -104,7 +104,7 @@ namespace fmi4cpp::fmi2 {
         std::unique_ptr<ModelExchangeFmu> asModelExchangeFmu() const override;
 
         ~Fmu();
-        
+
     };
 
     class CoSimulationFmu : public IFmu<CoSimulationModelDescription> {
@@ -145,7 +145,8 @@ namespace fmi4cpp::fmi2 {
 
         std::unique_ptr<ModelExchangeInstance> newInstance(bool visible = false, bool loggingOn = false);
 
-        std::unique_ptr<ModelExchangeSlave> newInstance(std::unique_ptr<Solver> &solver, bool visible = false, bool loggingOn = false);
+        std::unique_ptr<ModelExchangeSlave>
+        newInstance(std::unique_ptr<Solver> &solver, bool visible = false, bool loggingOn = false);
 
         virtual ~ModelExchangeFmu();
 
