@@ -136,8 +136,6 @@ namespace fmi4cpp::fmi2 {
 
         const double getSimulationTime() const override;
 
-//        void operator() (const std::vector<double> &x, std::vector<double> &dxdt, const double t);
-
     };
 
 }
