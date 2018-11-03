@@ -30,14 +30,13 @@
 #endif
 
 #include <utility>
-#include <queue>
 #include <string>
 #include <type_traits>
-#include "FmuInstance.hpp"
+
 #include "FmiLibrary.hpp"
+#include "FmuInstance.hpp"
 #include "../enumsToString.hpp"
 #include "../xml/ModelDescription.hpp"
-
 
 namespace fmi4cpp::fmi2 {
 
