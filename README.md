@@ -5,6 +5,9 @@ FMI4cpp is a cross-platform FMI 2.0 implementation written in modern C++.
 Influenced by it's spiritual brother [FMI4j](https://github.com/SFI-Mechatronics/FMI4j), it aims to be
 an easy to install, easy to use, object oriented and fast FMI implementation for C++.    
 
+FMI4cpp supports both CoSimulation and Model Exchange. <br/>
+For Model Exchange, solvers from [odeint](http://headmyshoulder.github.io/odeint-v2/doc/boost_numeric_odeint/getting_started/overview.html) can be used. 
+
 ### Why should I use this over other C/C++ FMI Libraries
 
 Because this library provides a clean API, is easy to install (through vcpkg) and is easy to use.
@@ -59,15 +62,15 @@ int main() {
     slave->exitInitializationMode();
    
     double t;
-    fmi2Real value;
+    double value;
     while ( (t = slave->getSimulationTime()) <= stop) {
 
-        if (slave->doStep(stepSize) != fmi2OK) {
+        if (!slave->doStep(stepSize)) {
             //error handling
             break;
         }
         
-        if (var.read(*slave, value) != fmi2OK) {
+        if (!var.read(*slave, value)) {
             //error handling
             break;
         }
