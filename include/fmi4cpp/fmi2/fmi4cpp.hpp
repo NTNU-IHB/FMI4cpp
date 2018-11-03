@@ -26,7 +26,6 @@
 #define FMI4CPP_FMI4CPP_HPP
 
 #include "fmi2Functions.h"
-#include "enumsToString.hpp"
 
 #include "xml/enums.hpp"
 #include "xml/ModelDescription.hpp"
@@ -37,5 +36,6 @@
 #include "import/FmuSlave.hpp"
 #include "import/ModelExchangeInstance.hpp"
 #include "import/ModelExchangeSlave.hpp"
+#include "import/statusToString.hpp"
 
 #endif //FMI4CPP_FMI4CPP_HPP

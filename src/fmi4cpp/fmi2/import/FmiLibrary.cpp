@@ -33,8 +33,8 @@ namespace fs = std::experimental::filesystem;
 #include <sstream>
 #include <iostream>
 
-#include <fmi4cpp/fmi2/enumsToString.hpp>
 #include <fmi4cpp/fmi2/import/FmiLibrary.hpp>
+#include <fmi4cpp/fmi2/import/statusToString.hpp>
 
 #include "FmiLibraryHelper.hpp"
 

@@ -22,51 +22,36 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMI4CPP_ENUMS_HPP
-#define FMI4CPP_ENUMS_HPP
+#ifndef FMI4CPP_STATUSTOSTRING_HPP
+#define FMI4CPP_STATUSTOSTRING_HPP
 
 #include <string>
 
-namespace fmi4cpp::fmi2 {
+#include "../fmi2Functions.h"
 
-    enum class Causality {
-        parameter,
-        calculatedParameter,
-        input,
-        output,
-        local,
-        independent,
-        unknown
-    };
+namespace {
 
-    enum class Variability {
-        constant,
-        fixed,
-        tunable,
-        discrete,
-        continuous,
-        unknown
-    };
+    const std::string to_string(fmi2Status status) {
 
-    enum class Initial {
-        exact,
-        approx,
-        calculated,
-        unknown
-    };
+        switch (status) {
+            case fmi2OK:
+                return "OK";
+            case fmi2Warning:
+                return "Warning";
+            case fmi2Discard:
+                return "Discard";
+            case fmi2Error:
+                return "Error";
+            case fmi2Fatal:
+                return "Fatal";
+            case fmi2Pending:
+                return "Pending";
+            default:
+                return "Unknown";
+        }
 
-    Causality parseCausality(const std::string &str);
-
-    Variability parseVariability(const std::string &str);
-
-    Initial parseInitial(const std::string &str);
-
-    const std::string to_string(Causality causality);
-
-    const std::string to_string(Variability variability);
-
-    const std::string to_string(Initial initial);
+    }
 
 }
 
-#endif //FMI4CPP_ENUMS_HPP
+#endif //FMI4CPP_STATUSTOSTRING_HPP

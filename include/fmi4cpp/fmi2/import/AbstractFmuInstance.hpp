@@ -35,7 +35,7 @@
 
 #include "FmiLibrary.hpp"
 #include "FmuInstance.hpp"
-#include "../enumsToString.hpp"
+#include "statusToString.hpp"
 #include "../xml/ModelDescription.hpp"
 
 namespace fmi4cpp::fmi2 {

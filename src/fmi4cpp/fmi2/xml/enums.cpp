@@ -74,3 +74,57 @@ Initial fmi4cpp::fmi2::parseInitial(const std::string &str) {
     }
 
 }
+
+const std::string fmi4cpp::fmi2::to_string(Causality causality) {
+
+    switch (causality) {
+        case Causality::calculatedParameter:
+            return "calculatedParameter";
+        case Causality::parameter:
+            return "parameter";
+        case Causality::input:
+            return "input";
+        case Causality::output:
+            return "output";
+        case Causality::local:
+            return "local";
+        case Causality::independent:
+            return "independent";
+        default:
+            return "unknown";
+    }
+
+}
+
+const std::string fmi4cpp::fmi2::to_string(Variability variability) {
+
+    switch (variability) {
+        case Variability::constant:
+            return "constant";
+        case Variability::fixed:
+            return "fixed";
+        case Variability::tunable:
+            return "tunable";
+        case Variability::discrete:
+            return "discrete";
+        case Variability::continuous:
+            return "continuous";
+        default:
+            return "unknown";
+    }
+
+}
+
+const std::string fmi4cpp::fmi2::to_string(Initial initial) {
+    switch (initial) {
+        case Initial::exact:
+            return "exact";
+        case Initial::approx:
+            return "approx";
+        case Initial::calculated:
+            return "calculated";
+        case Initial::unknown:
+        default:
+            return "unknown";
+    }
+}
