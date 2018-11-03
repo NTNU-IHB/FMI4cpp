@@ -74,6 +74,8 @@ namespace fmi4cpp::fmi2 {
 
 
     typedef ConstantStepSizeOdeintSolver<euler<state_type>> EulerSolver;
+    typedef ConstantStepSizeOdeintSolver<implicit_euler<state_type>> ImplicitEulerSolver;
+
     typedef ConstantStepSizeOdeintSolver<runge_kutta4<state_type>> RK4Solver;
     typedef ConstantStepSizeOdeintSolver<runge_kutta4_classic<state_type>> RK4ClassicSolver;
 
