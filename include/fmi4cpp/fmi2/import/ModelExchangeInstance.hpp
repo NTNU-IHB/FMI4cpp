@@ -26,6 +26,7 @@
 #define FMI4CPP_MODELEXCHANGEINSTANCE_HPP
 
 #include <vector>
+
 #include "ModelExchangeLibrary.hpp"
 #include "AbstractFmuInstance.hpp"
 
@@ -35,38 +36,35 @@ namespace fmi4cpp::fmi2 {
 
     class ModelExchangeInstance : public AbstractFmuInstance<ModelExchangeLibrary, ModelExchangeModelDescription> {
 
-
     public:
 
         fmi2EventInfo eventInfo_;
-
 
         ModelExchangeInstance(fmi2Component c,
                               const std::shared_ptr<ModelExchangeLibrary> &library,
                               const std::shared_ptr<ModelExchangeModelDescription> &modelDescription);
 
 
-        fmi2Status enterEventMode();
+        bool enterEventMode();
 
-        fmi2Status enterContinuousTimeMode();
+        bool enterContinuousTimeMode();
 
-        fmi2Status setTime(double time);
+        bool setTime(double time);
 
-        fmi2Status setContinuousStates(const std::vector<fmi2Real> &x);
+        bool setContinuousStates(const std::vector<fmi2Real> &x);
 
-        fmi2Status getDerivatives(std::vector<fmi2Real> &derivatives);
+        bool getDerivatives(std::vector<fmi2Real> &derivatives);
 
-        fmi2Status getEventIndicators(std::vector<fmi2Real> &eventIndicators);
+        bool getEventIndicators(std::vector<fmi2Real> &eventIndicators);
 
-        fmi2Status getContinuousStates(std::vector<fmi2Real> &x);
+        bool getContinuousStates(std::vector<fmi2Real> &x);
 
-        fmi2Status getNominalsOfContinuousStates(std::vector<fmi2Real> &x_nominal);
+        bool getNominalsOfContinuousStates(std::vector<fmi2Real> &x_nominal);
 
-        fmi2Status completedIntegratorStep(
-                fmi2Boolean noSetFMUStatePriorToCurrentPoint,
-                fmi2Boolean &enterEventMode, fmi2Boolean &terminateSimulation);
+        bool completedIntegratorStep(fmi2Boolean noSetFMUStatePriorToCurrentPoint,
+                                     fmi2Boolean &enterEventMode, fmi2Boolean &terminateSimulation);
 
-        fmi2Status newDiscreteStates();
+        bool newDiscreteStates();
 
     };
 

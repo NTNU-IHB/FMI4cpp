@@ -47,46 +47,46 @@ ModelExchangeLibrary::ModelExchangeLibrary(const std::string &modelIdentifier,
 
 }
 
-fmi2Status ModelExchangeLibrary::enterEventMode(const fmi2Component c) {
-    return fmi2EnterEventMode_(c);
+bool ModelExchangeLibrary::enterEventMode(const fmi2Component c) {
+    return updateStatusAndReturnTrueIfOK(fmi2EnterEventMode_(c));
 }
 
-fmi2Status ModelExchangeLibrary::enterContinuousTimeMode(const fmi2Component c) {
-    return fmi2EnterContinuousTimeMode_(c);
+bool ModelExchangeLibrary::enterContinuousTimeMode(const fmi2Component c) {
+    return updateStatusAndReturnTrueIfOK(fmi2EnterContinuousTimeMode_(c));
 }
 
-fmi2Status ModelExchangeLibrary::setTime(const fmi2Component c, const double time) {
-    return fmi2SetTime_(c, time);
+bool ModelExchangeLibrary::setTime(const fmi2Component c, const double time) {
+    return updateStatusAndReturnTrueIfOK(fmi2SetTime_(c, time));
 }
 
-fmi2Status ModelExchangeLibrary::setContinuousStates(const fmi2Component c, const std::vector <fmi2Real> &x) {
-    return fmi2SetContinuousStates_(c, x.data(), x.size());
+bool ModelExchangeLibrary::setContinuousStates(const fmi2Component c, const std::vector<fmi2Real> &x) {
+    return updateStatusAndReturnTrueIfOK(fmi2SetContinuousStates_(c, x.data(), x.size()));
 }
 
-fmi2Status ModelExchangeLibrary::getDerivatives(const fmi2Component c, std::vector <fmi2Real> &derivatives) {
-    return fmi2GetDerivatives_(c, derivatives.data(), derivatives.size());
+bool ModelExchangeLibrary::getDerivatives(const fmi2Component c, std::vector<fmi2Real> &derivatives) {
+    return updateStatusAndReturnTrueIfOK(fmi2GetDerivatives_(c, derivatives.data(), derivatives.size()));
 }
 
-fmi2Status ModelExchangeLibrary::getEventIndicators(const fmi2Component c, std::vector <fmi2Real> &eventIndicators) {
-    return fmi2GetEventIndicators_(c, eventIndicators.data(), eventIndicators.size());
+bool ModelExchangeLibrary::getEventIndicators(const fmi2Component c, std::vector<fmi2Real> &eventIndicators) {
+    return updateStatusAndReturnTrueIfOK(fmi2GetEventIndicators_(c, eventIndicators.data(), eventIndicators.size()));
 }
 
-fmi2Status ModelExchangeLibrary::getContinuousStates(const fmi2Component c, std::vector <fmi2Real> &x) {
-    return fmi2GetContinuousStates_(c, x.data(), x.size());
+bool ModelExchangeLibrary::getContinuousStates(const fmi2Component c, std::vector<fmi2Real> &x) {
+    return updateStatusAndReturnTrueIfOK(fmi2GetContinuousStates_(c, x.data(), x.size()));
 }
 
-fmi2Status
-ModelExchangeLibrary::getNominalsOfContinuousStates(const fmi2Component c, std::vector <fmi2Real> &x_nominal) {
-    return fmi2GetNominalsOfContinuousStates_(c, x_nominal.data(), x_nominal.size());
+bool ModelExchangeLibrary::getNominalsOfContinuousStates(const fmi2Component c, std::vector<fmi2Real> &x_nominal) {
+    return updateStatusAndReturnTrueIfOK(fmi2GetNominalsOfContinuousStates_(c, x_nominal.data(), x_nominal.size()));
 }
 
-fmi2Status ModelExchangeLibrary::completedIntegratorStep(const fmi2Component c,
-                                                         const fmi2Boolean noSetFMUStatePriorToCurrentPoint,
-                                                         fmi2Boolean &enterEventMode,
-                                                         fmi2Boolean &terminateSimulation) {
-    return fmi2CompletedIntegratorStep_(c, noSetFMUStatePriorToCurrentPoint, &enterEventMode, &terminateSimulation);
+bool ModelExchangeLibrary::completedIntegratorStep(const fmi2Component c,
+                                                   const fmi2Boolean noSetFMUStatePriorToCurrentPoint,
+                                                   fmi2Boolean &enterEventMode,
+                                                   fmi2Boolean &terminateSimulation) {
+    return updateStatusAndReturnTrueIfOK(
+            fmi2CompletedIntegratorStep_(c, noSetFMUStatePriorToCurrentPoint, &enterEventMode, &terminateSimulation));
 }
 
-fmi2Status ModelExchangeLibrary::newDiscreteStates(const fmi2Component c, fmi2EventInfo &eventInfo) {
-    return fmi2NewDiscreteStates_(c, &eventInfo);
+bool ModelExchangeLibrary::newDiscreteStates(const fmi2Component c, fmi2EventInfo &eventInfo) {
+    return updateStatusAndReturnTrueIfOK(fmi2NewDiscreteStates_(c, &eventInfo));
 }

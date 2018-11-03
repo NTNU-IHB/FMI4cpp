@@ -26,10 +26,11 @@
 #define FMI4CPP_COSIMULATIONSLAVE_HPP
 
 #include <memory>
-#include "FmuSlave.hpp"
+
 #include "AbstractFmuInstance.hpp"
 #include "CoSimulationLibrary.hpp"
 
+#include "FmuSlave.hpp"
 #include "../xml/ModelDescription.hpp"
 
 namespace fmi4cpp::fmi2 {
@@ -42,9 +43,9 @@ namespace fmi4cpp::fmi2 {
                           const std::shared_ptr<CoSimulationLibrary> &library,
                           const std::shared_ptr<CoSimulationModelDescription> &modelDescription);
 
-        fmi2Status doStep(double stepSize) override;
+        bool doStep(double stepSize) override;
 
-        fmi2Status cancelStep() override;
+        bool cancelStep() override;
 
     };
 

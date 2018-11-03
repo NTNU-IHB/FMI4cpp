@@ -58,11 +58,11 @@ int main() {
 
     while ( ( t = slave->getSimulationTime()) <= stop) {
 
-        if (!slave->doStep(macroStep) == fmi2OK) {
+        if (!slave->doStep(macroStep)) {
             break;
         }
 
-        if (!hVar.read(*slave, ref) == fmi2OK) {
+        if (!hVar.read(*slave, ref)) {
             break;
         }
 

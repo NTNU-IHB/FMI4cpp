@@ -57,17 +57,16 @@ BOOST_AUTO_TEST_CASE(ControlledTemperature_test1) {
     BOOST_CHECK_EQUAL(2, numOutputs);
 
     auto slave = fmu->newInstance();
-    
-    BOOST_CHECK_EQUAL(fmi2OK, slave->setupExperiment());
-    BOOST_CHECK_EQUAL(fmi2OK, slave->enterInitializationMode());
-    BOOST_CHECK_EQUAL(fmi2OK, slave->exitInitializationMode());
+    BOOST_CHECK(slave->setupExperiment());
+    BOOST_CHECK(slave->enterInitializationMode());
+    BOOST_CHECK(slave->exitInitializationMode());
     
     double ref;
     while ((slave->getSimulationTime()) <= (stop - step_size)) {
-        BOOST_CHECK_EQUAL(fmi2OK, slave->doStep(step_size));
-        BOOST_CHECK_EQUAL(fmi2OK, slave->readReal(vr, ref));
+        BOOST_CHECK(slave->doStep(step_size));
+        BOOST_CHECK(slave->readReal(vr, ref));
     }
 
-    BOOST_CHECK_EQUAL(fmi2OK, slave->terminate());
+    BOOST_CHECK(slave->terminate());
     
 }

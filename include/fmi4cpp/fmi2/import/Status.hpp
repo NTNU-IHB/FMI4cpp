@@ -35,23 +35,26 @@ namespace fmi4cpp {
         Discard,
         Error,
         Fatal,
-        Pending
+        Pending,
+        Unknown
     };
 
-    std::string to_string(Status status) {
+    const inline std::string to_string(fmi4cpp::Status status) {
         switch (status) {
-            case Status::OK:
+            case fmi4cpp::Status::OK:
                 return "OK";
-            case Status::Warning:
+            case fmi4cpp::Status::Warning:
                 return "Warning";
-            case Status::Discard:
+            case fmi4cpp::Status::Discard:
                 return "Discard";
-            case Status::Error:
+            case fmi4cpp::Status::Error:
                 return "Error";
-            case Status::Fatal:
+            case fmi4cpp::Status::Fatal:
                 return "Fatal";
-            case Status::Pending:
+            case fmi4cpp::Status::Pending:
                 return "Pending";
+            default:
+                return "Unknown";
         }
     }
 

@@ -23,11 +23,8 @@
  */
 
 #if FMI4CPP_DEBUG_LOGGING_ENABLED
-
 #include <iostream>
-
 #endif
-
 
 #include <experimental/filesystem>
 

@@ -50,12 +50,14 @@ int main() {
     double t;
     double ref;
     while ((t = slave->getSimulationTime()) <= (stop - step_size)) {
-        fmi2Status status = slave->doStep(step_size);
-        if (status != fmi2OK) {
-            cout << "Error! step returned with status: " << to_string(status) << endl;
+        if (!slave->doStep(step_size)) {
+            cout << "Error! doStep returned with status: " << to_string(slave->getLastStatus()) << endl;
             break;
         }
-        slave->readReal(vr, ref);
+        if (!slave->readReal(vr, ref)) {
+            cout << "Error! readReal returned with status: " << to_string(slave->getLastStatus()) << endl;
+            break;
+        }
     }
 
     clock_t end = clock();

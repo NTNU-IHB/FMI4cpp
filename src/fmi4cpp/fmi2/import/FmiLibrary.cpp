@@ -34,19 +34,32 @@ namespace fs = std::experimental::filesystem;
 #include <iostream>
 
 #include <fmi4cpp/fmi2/import/FmiLibrary.hpp>
-#include <fmi4cpp/fmi2/import/statusToString.hpp>
 
 #include "FmiLibraryHelper.hpp"
 
 using namespace fmi4cpp::fmi2;
 
 namespace {
-    
-    template <typename T>
-    inline void resizeIfNecesssary(const size_t size, std::vector<T> &v) {
-        if (v.size() != size) {
-            v.resize(size);
+
+    const std::string to_string(fmi2Status status) {
+
+        switch (status) {
+            case fmi2OK:
+                return "OK";
+            case fmi2Warning:
+                return "Warning";
+            case fmi2Discard:
+                return "Discard";
+            case fmi2Error:
+                return "Error";
+            case fmi2Fatal:
+                return "Fatal";
+            case fmi2Pending:
+                return "Pending";
+            default:
+                return "Unknown";
         }
+
     }
 
     void logger(void *fmi2ComponentEnvironment,
@@ -115,17 +128,21 @@ FmiLibrary::FmiLibrary(const std::string &modelIdentifier, const std::shared_ptr
 
 }
 
+inline bool FmiLibrary::updateStatusAndReturnTrueIfOK(fmi2Status status) {
+    lastStatus_ = status;
+    return status == fmi2OK;
+}
+
+fmi2Status FmiLibrary::getLastStatus() const {
+    return lastStatus_;
+}
+
 fmi2String FmiLibrary::getVersion() const {
     return fmi2GetVersion_();
 }
 
 fmi2String FmiLibrary::getTypesPlatform() const {
     return fmi2GetTypesPlatform_();
-}
-
-fmi2Status FmiLibrary::setDebugLogging(fmi2Component c, bool loggingOn,
-                                       const std::vector<char *> categories) const {
-    return fmi2SetDebugLogging_(c, loggingOn, categories.size(), categories.data());
 }
 
 fmi2Component FmiLibrary::instantiate(const std::string instanceName, const fmi2Type type,
@@ -142,146 +159,146 @@ fmi2Component FmiLibrary::instantiate(const std::string instanceName, const fmi2
 
 }
 
-fmi2Status
-FmiLibrary::setupExperiment(const fmi2Component c, double tolerance, double startTime, double stopTime) const {
-
-    fmi2Boolean stopDefined = (stopTime > startTime);
-    fmi2Boolean toleranceDefined = (tolerance > 0);
-    return fmi2SetupExperiment_(c, toleranceDefined, tolerance, startTime, stopDefined, stopTime);
+bool FmiLibrary::setDebugLogging(fmi2Component c, bool loggingOn,
+                                 const std::vector<char *> categories) {
+    return updateStatusAndReturnTrueIfOK(fmi2SetDebugLogging_(c, loggingOn, categories.size(), categories.data()));
 }
 
-fmi2Status FmiLibrary::enterInitializationMode(const fmi2Component c) const {
-    return fmi2EnterInitializationMode_(c);
+bool FmiLibrary::setupExperiment(const fmi2Component c, double tolerance, double startTime, double stopTime) {
+
+    bool stopDefined = (stopTime > startTime);
+    bool toleranceDefined = (tolerance > 0);
+    return updateStatusAndReturnTrueIfOK(fmi2SetupExperiment_(c, toleranceDefined, tolerance, startTime, stopDefined, stopTime));
 }
 
-fmi2Status FmiLibrary::exitInitializationMode(const fmi2Component c) const {
-    return fmi2ExitInitializationMode_(c);
+bool FmiLibrary::enterInitializationMode(const fmi2Component c) {
+    return updateStatusAndReturnTrueIfOK(fmi2EnterInitializationMode_(c));
 }
 
-fmi2Status FmiLibrary::reset(const fmi2Component c) const {
-    return fmi2Reset_(c);
+bool FmiLibrary::exitInitializationMode(const fmi2Component c) {
+    return updateStatusAndReturnTrueIfOK(fmi2ExitInitializationMode_(c));
 }
 
-fmi2Status FmiLibrary::terminate(const fmi2Component c) {
-    return fmi2Terminate_(c);
+bool FmiLibrary::reset(const fmi2Component c) {
+    return updateStatusAndReturnTrueIfOK(fmi2Reset_(c));
 }
 
-fmi2Status FmiLibrary::readInteger(const fmi2Component c, const fmi2ValueReference vr, fmi2Integer &ref) const {
-    return fmi2GetInteger_(c, &vr, 1, &ref);
+bool FmiLibrary::terminate(const fmi2Component c) {
+    return updateStatusAndReturnTrueIfOK(fmi2Terminate_(c));
 }
 
-fmi2Status FmiLibrary::readInteger(const fmi2Component c,
-                                   const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Integer> &ref) const {
-    resizeIfNecesssary(vr.size(), ref);
-    return fmi2GetInteger_(c, vr.data(), vr.size(), ref.data());
+bool FmiLibrary::readInteger(const fmi2Component c, const fmi2ValueReference vr, fmi2Integer &ref) {
+    return updateStatusAndReturnTrueIfOK(fmi2GetInteger_(c, &vr, 1, &ref));
 }
 
-fmi2Status FmiLibrary::readReal(const fmi2Component c, const fmi2ValueReference vr, fmi2Real &ref) const {
-    return fmi2GetReal_(c, &vr, 1, &ref);
+bool FmiLibrary::readInteger(const fmi2Component c,
+                                   const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Integer> &ref) {
+    return updateStatusAndReturnTrueIfOK(fmi2GetInteger_(c, vr.data(), vr.size(), ref.data()));
 }
 
-fmi2Status FmiLibrary::readReal(const fmi2Component c,
-                                const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Real> &ref) const {
-    resizeIfNecesssary(vr.size(), ref);
-    return fmi2GetReal_(c, vr.data(), vr.size(), ref.data());
+bool FmiLibrary::readReal(const fmi2Component c, const fmi2ValueReference vr, fmi2Real &ref) {
+    return updateStatusAndReturnTrueIfOK(fmi2GetReal_(c, &vr, 1, &ref));
 }
 
-fmi2Status FmiLibrary::readString(const fmi2Component c, const fmi2ValueReference vr, fmi2String &ref) const {
-    return fmi2GetString_(c, &vr, 1, &ref);
+bool FmiLibrary::readReal(const fmi2Component c,
+                                const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Real> &ref) {
+    return updateStatusAndReturnTrueIfOK(fmi2GetReal_(c, vr.data(), vr.size(), ref.data()));
 }
 
-fmi2Status FmiLibrary::readString(const fmi2Component c,
-                                  const std::vector<fmi2ValueReference> &vr, std::vector<fmi2String> &ref) const {
-    resizeIfNecesssary(vr.size(), ref);
-    return fmi2GetString_(c, vr.data(), vr.size(), ref.data());
+bool FmiLibrary::readString(const fmi2Component c, const fmi2ValueReference vr, fmi2String &ref) {
+    return updateStatusAndReturnTrueIfOK(fmi2GetString_(c, &vr, 1, &ref));
 }
 
-fmi2Status FmiLibrary::readBoolean(const fmi2Component c, const fmi2ValueReference vr, fmi2Boolean &ref) const {
-    return fmi2GetBoolean_(c, &vr, 1, &ref);
+bool FmiLibrary::readString(const fmi2Component c,
+                                  const std::vector<fmi2ValueReference> &vr, std::vector<fmi2String> &ref) {
+    return updateStatusAndReturnTrueIfOK(fmi2GetString_(c, vr.data(), vr.size(), ref.data()));
 }
 
-fmi2Status FmiLibrary::readBoolean(const fmi2Component c,
-                                   const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Boolean> &ref) const {
-    resizeIfNecesssary(vr.size(), ref);
-    return fmi2GetBoolean_(c, vr.data(), vr.size(), ref.data());
+bool FmiLibrary::readBoolean(const fmi2Component c, const fmi2ValueReference vr, fmi2Boolean &ref) {
+    return updateStatusAndReturnTrueIfOK(fmi2GetBoolean_(c, &vr, 1, &ref));
 }
 
-fmi2Status FmiLibrary::writeInteger(const fmi2Component c, const fmi2ValueReference vr,
-                                    const fmi2Integer &value) const {
-    return fmi2SetInteger_(c, &vr, 1, &value);
+bool FmiLibrary::readBoolean(const fmi2Component c,
+                                   const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Boolean> &ref) {
+    return updateStatusAndReturnTrueIfOK(fmi2GetBoolean_(c, vr.data(), vr.size(), ref.data()));
 }
 
-fmi2Status FmiLibrary::writeInteger(const fmi2Component c, const std::vector<fmi2ValueReference> &vr,
-                                    const std::vector<fmi2Integer> &values) const {
-    return fmi2SetInteger_(c, vr.data(), vr.size(), values.data());
+bool FmiLibrary::writeInteger(const fmi2Component c, const fmi2ValueReference vr,
+                                    const fmi2Integer &value) {
+    return updateStatusAndReturnTrueIfOK(fmi2SetInteger_(c, &vr, 1, &value));
 }
 
-fmi2Status FmiLibrary::writeReal(const fmi2Component c, const fmi2ValueReference vr, const fmi2Real &value) const {
-    return fmi2SetReal_(c, &vr, 1, &value);
+bool FmiLibrary::writeInteger(const fmi2Component c, const std::vector<fmi2ValueReference> &vr,
+                                    const std::vector<fmi2Integer> &values) {
+    return updateStatusAndReturnTrueIfOK(fmi2SetInteger_(c, vr.data(), vr.size(), values.data()));
 }
 
-fmi2Status FmiLibrary::writeReal(const fmi2Component c, const std::vector<fmi2ValueReference> &vr,
-                                 const std::vector<fmi2Real> &values) const {
-    return fmi2SetReal_(c, vr.data(), vr.size(), values.data());
+bool FmiLibrary::writeReal(const fmi2Component c, const fmi2ValueReference vr, const fmi2Real &value) {
+    return updateStatusAndReturnTrueIfOK(fmi2SetReal_(c, &vr, 1, &value));
 }
 
-fmi2Status FmiLibrary::writeString(const fmi2Component c, const fmi2ValueReference vr,
-                                   fmi2String &value) const {
-    return fmi2SetString_(c, &vr, 1, &value);
+bool FmiLibrary::writeReal(const fmi2Component c, const std::vector<fmi2ValueReference> &vr,
+                                 const std::vector<fmi2Real> &values) {
+    return updateStatusAndReturnTrueIfOK(fmi2SetReal_(c, vr.data(), vr.size(), values.data()));
 }
 
-fmi2Status FmiLibrary::writeString(const fmi2Component c, const std::vector<fmi2ValueReference> &vr,
-                                   const std::vector<fmi2String> &values) const {
-    return fmi2SetString_(c, vr.data(), vr.size(), values.data());
+bool FmiLibrary::writeString(const fmi2Component c, const fmi2ValueReference vr,
+                                   fmi2String &value) {
+    return updateStatusAndReturnTrueIfOK(fmi2SetString_(c, &vr, 1, &value));
 }
 
-fmi2Status FmiLibrary::writeBoolean(const fmi2Component c, const fmi2ValueReference vr,
-                                    const fmi2Boolean &value) const {
-    return fmi2SetBoolean_(c, &vr, 1, &value);
+bool FmiLibrary::writeString(const fmi2Component c, const std::vector<fmi2ValueReference> &vr,
+                                   const std::vector<fmi2String> &values) {
+    return updateStatusAndReturnTrueIfOK(fmi2SetString_(c, vr.data(), vr.size(), values.data()));
 }
 
-fmi2Status FmiLibrary::writeBoolean(const fmi2Component c, const std::vector<fmi2ValueReference> &vr,
-                                    const std::vector<fmi2Boolean> &values) const {
-    return fmi2SetBoolean_(c, vr.data(), vr.size(), values.data());
+bool FmiLibrary::writeBoolean(const fmi2Component c, const fmi2ValueReference vr,
+                                    const fmi2Boolean &value) {
+    return updateStatusAndReturnTrueIfOK(fmi2SetBoolean_(c, &vr, 1, &value));
 }
 
-fmi2Status FmiLibrary::getFMUstate(const fmi2Component c, fmi2FMUstate &state) const {
-    return fmi2GetFMUstate_(c, &state);
+bool FmiLibrary::writeBoolean(const fmi2Component c, const std::vector<fmi2ValueReference> &vr,
+                                    const std::vector<fmi2Boolean> &values) {
+    return updateStatusAndReturnTrueIfOK(fmi2SetBoolean_(c, vr.data(), vr.size(), values.data()));
 }
 
-fmi2Status FmiLibrary::setFMUstate(const fmi2Component c, const fmi2FMUstate state) const {
-    return fmi2SetFMUstate_(c, state);
+bool FmiLibrary::getFMUstate(const fmi2Component c, fmi2FMUstate &state) {
+    return updateStatusAndReturnTrueIfOK(fmi2GetFMUstate_(c, &state)) ;
 }
 
-fmi2Status FmiLibrary::freeFMUstate(const fmi2Component c, fmi2FMUstate &state) const {
-    return fmi2FreeFMUstate_(c, &state);
+bool FmiLibrary::setFMUstate(const fmi2Component c, const fmi2FMUstate state) {
+    return updateStatusAndReturnTrueIfOK(fmi2SetFMUstate_(c, state));
 }
 
-fmi2Status fmi4cpp::fmi2::FmiLibrary::getSerializedFMUstateSize(const fmi2Component c, const fmi2FMUstate state,
-                                                                size_t &size) const {
-    return fmi2SerializedFMUstateSize_(c, state, &size);
+bool FmiLibrary::freeFMUstate(const fmi2Component c, fmi2FMUstate &state) {
+    return updateStatusAndReturnTrueIfOK(fmi2FreeFMUstate_(c, &state));
 }
 
-fmi2Status FmiLibrary::serializeFMUstate(const fmi2Component c,
-                                         const fmi2FMUstate &state, std::vector<fmi2Byte> &serializedState) const {
+bool fmi4cpp::fmi2::FmiLibrary::getSerializedFMUstateSize(const fmi2Component c, const fmi2FMUstate state,
+                                                                size_t &size) {
+    return updateStatusAndReturnTrueIfOK(fmi2SerializedFMUstateSize_(c, state, &size));
+}
+
+bool FmiLibrary::serializeFMUstate(const fmi2Component c,
+                                         const fmi2FMUstate &state, std::vector<fmi2Byte> &serializedState) {
     size_t size = 0;
     getSerializedFMUstateSize(c, state, size);
     serializedState.reserve(size);
-    return fmi2SerializeFMUstate_(c, state, serializedState.data(), size);
+    return updateStatusAndReturnTrueIfOK(fmi2SerializeFMUstate_(c, state, serializedState.data(), size));
 }
 
-fmi2Status FmiLibrary::deSerializeFMUstate(const fmi2Component c,
-                                           fmi2FMUstate &state, const std::vector<fmi2Byte> &serializedState) const {
-    return fmi2DeSerializeFMUstate_(c, serializedState.data(), serializedState.size(), &state);
+bool FmiLibrary::deSerializeFMUstate(const fmi2Component c,
+                                           fmi2FMUstate &state, const std::vector<fmi2Byte> &serializedState) {
+    return updateStatusAndReturnTrueIfOK(fmi2DeSerializeFMUstate_(c, serializedState.data(), serializedState.size(), &state));
 }
 
-fmi2Status FmiLibrary::getDirectionalDerivative(const fmi2Component c,
+bool FmiLibrary::getDirectionalDerivative(const fmi2Component c,
                                                 const std::vector<fmi2ValueReference> &vUnknownRef,
                                                 const std::vector<fmi2ValueReference> &vKnownRef,
                                                 const std::vector<fmi2Real> &dvKnownRef,
-                                                std::vector<fmi2Real> &dvUnknownRef) const {
-    return fmi2GetDirectionalDerivative_(c, vUnknownRef.data(), vUnknownRef.size(),
-                                         vKnownRef.data(), vKnownRef.size(), dvKnownRef.data(), dvUnknownRef.data());
+                                                std::vector<fmi2Real> &dvUnknownRef) {
+    return updateStatusAndReturnTrueIfOK(fmi2GetDirectionalDerivative_(c, vUnknownRef.data(), vUnknownRef.size(),
+                                         vKnownRef.data(), vKnownRef.size(), dvKnownRef.data(), dvUnknownRef.data()));
 }
 
 void FmiLibrary::freeInstance(fmi2Component c) {

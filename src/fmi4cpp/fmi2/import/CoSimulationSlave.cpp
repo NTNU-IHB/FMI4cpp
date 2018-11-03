@@ -24,22 +24,21 @@
 
 #include <fmi4cpp/fmi2/import/CoSimulationSlave.hpp>
 
-using namespace std;
 using namespace fmi4cpp::fmi2;
 
 CoSimulationSlave::CoSimulationSlave(const fmi2Component c,
-                                     const shared_ptr<CoSimulationLibrary> &library,
-                                     const shared_ptr<CoSimulationModelDescription> &modelDescription)
+                                     const std::shared_ptr<CoSimulationLibrary> &library,
+                                     const std::shared_ptr<CoSimulationModelDescription> &modelDescription)
         : AbstractFmuInstance<CoSimulationLibrary, CoSimulationModelDescription>(c, library, modelDescription) {}
 
-fmi2Status CoSimulationSlave::doStep(const double stepSize) {
-    fmi2Status status = library_->doStep(c_, simulationTime_, stepSize, false);
-    if (status == fmi2OK) {
+bool CoSimulationSlave::doStep(const double stepSize) {
+    if (library_->doStep(c_, simulationTime_, stepSize, false)) {
         simulationTime_ += stepSize;
+        return true;
     }
-    return status;
+    return false;
 }
 
-fmi2Status CoSimulationSlave::cancelStep() {
+bool CoSimulationSlave::cancelStep() {
     return library_->cancelStep(c_);
 }

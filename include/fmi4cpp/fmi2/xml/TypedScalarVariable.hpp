@@ -84,9 +84,9 @@ namespace fmi4cpp::fmi2 {
             return attribute_;
         }
 
-        virtual fmi2Status read(const FmuReader &reader, T &ref) = 0;
+        virtual bool read(FmuReader &reader, T &ref) = 0;
 
-        virtual fmi2Status write(FmuWriter &writer, T value) = 0;
+        virtual bool write(FmuWriter &writer, T value) = 0;
 
     };
 
@@ -116,9 +116,9 @@ namespace fmi4cpp::fmi2 {
     public:
         IntegerVariable(const ScalarVariable &variable, const IntegerAttribute &attribute);
 
-        fmi2Status read(const FmuReader &reader, int &ref) override;
+        bool read(FmuReader &reader, int &ref) override;
 
-        fmi2Status write(FmuWriter &writer, int value) override;
+        bool write(FmuWriter &writer, int value) override;
 
     };
 
@@ -142,9 +142,9 @@ namespace fmi4cpp::fmi2 {
 
         std::optional<std::string> displayUnit() const;
 
-        fmi2Status read(const FmuReader &reader, double &ref) override;
+        bool read(FmuReader &reader, double &ref) override;
 
-        fmi2Status write(FmuWriter &writer, double value) override;
+        bool write(FmuWriter &writer, double value) override;
 
     };
 
@@ -154,9 +154,9 @@ namespace fmi4cpp::fmi2 {
     public:
         StringVariable(const ScalarVariable &variable, const StringAttribute &attribute);
 
-        fmi2Status read(const FmuReader &reader, std::string &ref) override;
+        bool read(FmuReader &reader, std::string &ref) override;
 
-        fmi2Status write(FmuWriter &writer, std::string value) override;
+        bool write(FmuWriter &writer, std::string value) override;
 
     };
 
@@ -165,9 +165,9 @@ namespace fmi4cpp::fmi2 {
     public:
         BooleanVariable(const ScalarVariable &variable, const BooleanAttribute &attribute);
 
-        fmi2Status read(const FmuReader &reader, bool &ref) override;
+        bool read(FmuReader &reader, bool &ref) override;
 
-        fmi2Status write(FmuWriter &writer, bool value) override;
+        bool write(FmuWriter &writer, bool value) override;
 
     };
 
@@ -176,9 +176,9 @@ namespace fmi4cpp::fmi2 {
     public:
         EnumerationVariable(const ScalarVariable &variable, const EnumerationAttribute &attribute);
 
-        fmi2Status read(const FmuReader &reader, int &ref) override;
+        bool read(FmuReader &reader, int &ref) override;
 
-        fmi2Status write(FmuWriter &writer, int value) override;
+        bool write(FmuWriter &writer, int value) override;
 
     };
 

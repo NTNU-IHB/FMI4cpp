@@ -67,8 +67,8 @@ int main() {
     double t = 0;
     while ((t = slave1->getSimulationTime()) <= stop) {
 
-        if (slave1->doStep(stepSize) != fmi2OK) { break; }
-        if (slave1->readReal(vr, ref) != fmi2OK) { break; }
+        if (!slave1->doStep(stepSize)) { break; }
+        if (!slave1->readReal(vr, ref)) { break; }
         cout << "t=" << t << ", Temperature_Reference=" << ref[0] << ", Temperature_Room=" << ref[1] << endl;
 
     }

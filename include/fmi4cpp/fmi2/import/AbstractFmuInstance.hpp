@@ -26,7 +26,9 @@
 #define FMI4CPP_ABSTRACTFMUINSTANCE_HPP
 
 #if FMI4CPP_DEBUG_LOGGING_ENABLED
+
 #include <iostream>
+
 #endif
 
 #include <utility>
@@ -35,8 +37,9 @@
 
 #include "FmiLibrary.hpp"
 #include "FmuInstance.hpp"
-#include "statusToString.hpp"
+#include "status_converter.hpp"
 #include "../xml/ModelDescription.hpp"
+
 
 namespace fmi4cpp::fmi2 {
 
@@ -65,46 +68,48 @@ namespace fmi4cpp::fmi2 {
                             const std::shared_ptr<U> &modelDescription)
                 : c_(c), library_(library), modelDescription_(modelDescription) {}
 
+        fmi4cpp::Status getLastStatus() const override {
+            return convert(library_->getLastStatus());
+        }
 
         std::shared_ptr<U> getModelDescription() const override {
             return modelDescription_;
         }
 
-        fmi2Status setDebugLogging(const bool loggingOn, const std::vector<const char *> categories) const {
+        bool setDebugLogging(const bool loggingOn, const std::vector<const char *> categories) const {
             return library_->setDebugLogging(c_, loggingOn, categories);
         }
 
-        fmi2Status setupExperiment(double start = 0, double stop = 0, double tolerance = 0) override {
+        bool setupExperiment(double start = 0, double stop = 0, double tolerance = 0) override {
             this->simulationTime_ = start;
             return library_->setupExperiment(c_, tolerance, start, stop);
         }
 
-        fmi2Status enterInitializationMode() override {
+        bool enterInitializationMode() override {
             return library_->enterInitializationMode(c_);
         }
 
-        fmi2Status exitInitializationMode() override {
+        bool exitInitializationMode() override {
             return library_->exitInitializationMode(c_);
         }
 
-        fmi2Status reset() override {
+        bool reset() override {
             return library_->reset(c_);
         }
 
-        fmi2Status terminate() override {
+        bool terminate() override {
             return terminate(true);
         }
 
-        fmi2Status terminate(bool freeInstance) {
+        bool terminate(bool freeInstance) {
             if (!this->terminated_) {
                 this->terminated_ = true;
-                fmi2Status status = library_->terminate(c_);
-                if (freeInstance) {
-                    this->freeInstance();
+                if (!library_->terminate(c_)) {
+                    return false;
                 }
-                return status;
+                this->freeInstance();
             }
-            return fmi2OK;
+            return true;
         }
 
         void freeInstance() {
@@ -115,104 +120,98 @@ namespace fmi4cpp::fmi2 {
             }
         }
 
-        fmi2Status getFMUstate(fmi2FMUstate &state) override {
+        bool getFMUstate(fmi2FMUstate &state) override {
             return library_->getFMUstate(c_, state);
         }
 
-        fmi2Status setFMUstate(fmi2FMUstate state) override {
+        bool setFMUstate(fmi2FMUstate state) override {
             return library_->setFMUstate(c_, state);
         }
 
-        fmi2Status freeFMUstate(fmi2FMUstate &state) override {
+        bool freeFMUstate(fmi2FMUstate &state) override {
             return library_->freeFMUstate(c_, state);
         }
 
 
-        fmi2Status getSerializedFMUstateSize(fmi2FMUstate state, size_t &size) const {
+        bool getSerializedFMUstateSize(fmi2FMUstate state, size_t &size) const {
             return library_->getSerializedFMUstateSize(c_, state, size);
         }
 
-        fmi2Status serializeFMUstate(const fmi2FMUstate &state, std::vector<fmi2Byte> &serializedState) override {
+        bool serializeFMUstate(const fmi2FMUstate &state, std::vector<fmi2Byte> &serializedState) override {
             return library_->serializeFMUstate(c_, state, serializedState);
         }
 
-        fmi2Status
-        deSerializeFMUstate(fmi2FMUstate &state, const std::vector<fmi2Byte> &serializedState) override {
+        bool deSerializeFMUstate(fmi2FMUstate &state, const std::vector<fmi2Byte> &serializedState) override {
             return library_->deSerializeFMUstate(c_, state, serializedState);
         }
 
-        fmi2Status getDirectionalDerivative(
+        bool getDirectionalDerivative(
                 const std::vector<fmi2ValueReference> &vUnknownRef, const std::vector<fmi2ValueReference> &vKnownRef,
-                const std::vector<fmi2Real> &dvKnownRef, std::vector<fmi2Real> &dvUnknownRef) const override {
+                const std::vector<fmi2Real> &dvKnownRef, std::vector<fmi2Real> &dvUnknownRef) override {
             return library_->getDirectionalDerivative(c_, vUnknownRef, vKnownRef, dvKnownRef, dvUnknownRef);
         }
 
-        fmi2Status readInteger(const fmi2ValueReference vr, fmi2Integer &ref) const override {
+        bool readInteger(const fmi2ValueReference vr, fmi2Integer &ref) override {
             return library_->readInteger(c_, vr, ref);
         }
 
-        fmi2Status
-        readInteger(const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Integer> &ref) const override {
+        bool readInteger(const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Integer> &ref) override {
             return library_->readInteger(c_, vr, ref);
         }
 
-        fmi2Status readReal(const fmi2ValueReference vr, fmi2Real &ref) const override {
+        bool readReal(const fmi2ValueReference vr, fmi2Real &ref) override {
             return library_->readReal(c_, vr, ref);
         }
 
-        fmi2Status readReal(const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Real> &ref) const override {
+        bool readReal(const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Real> &ref) override {
             return library_->readReal(c_, vr, ref);
         }
 
-        fmi2Status readString(const fmi2ValueReference vr, fmi2String &ref) const override {
+        bool readString(const fmi2ValueReference vr, fmi2String &ref) override {
             return library_->readString(c_, vr, ref);
         }
 
-        fmi2Status readString(const std::vector<fmi2ValueReference> &vr, std::vector<fmi2String> &ref) const override {
+        bool readString(const std::vector<fmi2ValueReference> &vr, std::vector<fmi2String> &ref) override {
             return library_->readString(c_, vr, ref);
         }
 
-        fmi2Status readBoolean(const fmi2ValueReference vr, fmi2Boolean &ref) const override {
+        bool readBoolean(const fmi2ValueReference vr, fmi2Boolean &ref) override {
             return library_->readBoolean(c_, vr, ref);
         }
 
-        fmi2Status
-        readBoolean(const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Boolean> &ref) const override {
+        bool readBoolean(const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Boolean> &ref) override {
             return library_->readBoolean(c_, vr, ref);
         }
 
-        fmi2Status writeInteger(const fmi2ValueReference vr, const fmi2Integer value) override {
+        bool writeInteger(const fmi2ValueReference vr, const fmi2Integer value) override {
             return library_->writeInteger(c_, vr, value);
         }
 
-        fmi2Status
-        writeInteger(const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2Integer> &values) override {
+        bool writeInteger(const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2Integer> &values) override {
             return library_->writeInteger(c_, vr, values);
         }
 
-        fmi2Status writeReal(const fmi2ValueReference vr, const fmi2Real value) override {
+        bool writeReal(const fmi2ValueReference vr, const fmi2Real value) override {
             return library_->writeReal(c_, vr, value);
         }
 
-        fmi2Status writeReal(const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2Real> &values) override {
+        bool writeReal(const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2Real> &values) override {
             return library_->writeReal(c_, vr, values);
         }
 
-        fmi2Status writeString(const fmi2ValueReference vr, fmi2String value) override {
+        bool writeString(const fmi2ValueReference vr, fmi2String value) override {
             return library_->writeString(c_, vr, value);
         }
 
-        fmi2Status
-        writeString(const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2String> &values) override {
+        bool writeString(const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2String> &values) override {
             return library_->writeString(c_, vr, values);
         }
 
-        fmi2Status writeBoolean(const fmi2ValueReference vr, const fmi2Boolean value) override {
+        bool writeBoolean(const fmi2ValueReference vr, const fmi2Boolean value) override {
             return library_->writeBoolean(c_, vr, value);
         }
 
-        fmi2Status
-        writeBoolean(const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2Boolean> &values) override {
+        bool writeBoolean(const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2Boolean> &values) override {
             return library_->writeBoolean(c_, vr, values);
         }
 

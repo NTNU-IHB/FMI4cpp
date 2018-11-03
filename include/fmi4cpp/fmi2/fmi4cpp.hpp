@@ -25,17 +25,13 @@
 #ifndef FMI4CPP_FMI4CPP_HPP
 #define FMI4CPP_FMI4CPP_HPP
 
-#include "fmi2Functions.h"
-
 #include "xml/enums.hpp"
 #include "xml/ModelDescription.hpp"
 #include "xml/TypedScalarVariable.hpp"
 
 #include "import/Fmu.hpp"
-#include "import/FmuInstance.hpp"
 #include "import/FmuSlave.hpp"
-#include "import/ModelExchangeInstance.hpp"
+#include "import/CoSimulationSlave.hpp"
 #include "import/ModelExchangeSlave.hpp"
-#include "import/statusToString.hpp"
 
 #endif //FMI4CPP_FMI4CPP_HPP

@@ -64,15 +64,15 @@ std::shared_ptr<CoSimulationModelDescription> ModelExchangeSlave::getModelDescri
     return csModelDescription_;
 }
 
-fmi2Status ModelExchangeSlave::setupExperiment(double startTime, double stopTime, double tolerance) {
+bool ModelExchangeSlave::setupExperiment(double startTime, double stopTime, double tolerance) {
     return instance_->setupExperiment(startTime, stopTime, tolerance);
 }
 
-fmi2Status ModelExchangeSlave::enterInitializationMode() {
+bool ModelExchangeSlave::enterInitializationMode() {
     return instance_->enterInitializationMode();
 }
 
-fmi2Status ModelExchangeSlave::exitInitializationMode() {
+bool ModelExchangeSlave::exitInitializationMode() {
     auto status = instance_->exitInitializationMode();
 
     instance_->eventInfo_.newDiscreteStatesNeeded = fmi2True;
@@ -89,7 +89,7 @@ fmi2Status ModelExchangeSlave::exitInitializationMode() {
 }
 
 
-fmi2Status ModelExchangeSlave::doStep(const double stepSize) {
+bool ModelExchangeSlave::doStep(const double stepSize) {
 
     if (stepSize <= 0) {
         return fmi2Error;
@@ -144,7 +144,7 @@ fmi2Status ModelExchangeSlave::doStep(const double stepSize) {
 
     }
 
-    return fmi2OK;
+    return true;
 }
 
 bool ModelExchangeSlave::solve(double t, double tNext) {
@@ -169,118 +169,121 @@ const double ModelExchangeSlave::getSimulationTime() const {
     return instance_->getSimulationTime();
 }
 
-fmi2Status ModelExchangeSlave::cancelStep() {
-    return fmi2Discard;
+bool ModelExchangeSlave::cancelStep() {
+    return false;
 }
 
-fmi2Status ModelExchangeSlave::reset() {
+bool ModelExchangeSlave::reset() {
     return instance_->reset();
 }
 
-fmi2Status ModelExchangeSlave::terminate() {
+bool ModelExchangeSlave::terminate() {
     return instance_->terminate();
 }
 
 
-fmi2Status ModelExchangeSlave::getFMUstate(fmi2FMUstate &state) {
+bool ModelExchangeSlave::getFMUstate(fmi2FMUstate &state) {
     return instance_->getFMUstate(state);
 }
 
-fmi2Status ModelExchangeSlave::setFMUstate(fmi2FMUstate state) {
+bool ModelExchangeSlave::setFMUstate(fmi2FMUstate state) {
     return instance_->setFMUstate(state);
 }
 
-fmi2Status ModelExchangeSlave::freeFMUstate(fmi2FMUstate &state) {
+bool ModelExchangeSlave::freeFMUstate(fmi2FMUstate &state) {
     return instance_->freeFMUstate(state);
 }
 
-fmi2Status ModelExchangeSlave::serializeFMUstate(const fmi2FMUstate &state,
+bool ModelExchangeSlave::serializeFMUstate(const fmi2FMUstate &state,
                                                  std::vector<fmi2Byte> &serializedState) {
     return instance_->serializeFMUstate(state, serializedState);
 }
 
-fmi2Status ModelExchangeSlave::deSerializeFMUstate(fmi2FMUstate &state,
+bool ModelExchangeSlave::deSerializeFMUstate(fmi2FMUstate &state,
                                                    const std::vector<fmi2Byte> &serializedState) {
     return instance_->deSerializeFMUstate(state, serializedState);
 }
 
-fmi2Status
-ModelExchangeSlave::getDirectionalDerivative(const std::vector<fmi2ValueReference> &vUnkownRef,
+bool ModelExchangeSlave::getDirectionalDerivative(const std::vector<fmi2ValueReference> &vUnknownRef,
                                              const std::vector<fmi2ValueReference> &vKnownRef,
                                              const std::vector<fmi2Real> &dvKnownRef,
-                                             std::vector<fmi2Real> &dvUnknownRef) const {
-    return instance_->getDirectionalDerivative(vUnkownRef, vKnownRef, dvKnownRef, dvUnknownRef);
+                                             std::vector<fmi2Real> &dvUnknownRef) {
+    return instance_->getDirectionalDerivative(vUnknownRef, vKnownRef, dvKnownRef, dvUnknownRef);
 }
 
-fmi2Status ModelExchangeSlave::readInteger(fmi2ValueReference vr, fmi2Integer &ref) const {
+bool ModelExchangeSlave::readInteger(fmi2ValueReference vr, fmi2Integer &ref) {
     return instance_->readInteger(vr, ref);
 }
 
-fmi2Status ModelExchangeSlave::readInteger(const std::vector<fmi2ValueReference> &vr,
-                                           std::vector<fmi2Integer> &ref) const {
+bool ModelExchangeSlave::readInteger(const std::vector<fmi2ValueReference> &vr,
+                                           std::vector<fmi2Integer> &ref) {
     return instance_->readInteger(vr, ref);
 }
 
-fmi2Status ModelExchangeSlave::readReal(fmi2ValueReference vr, fmi2Real &ref) const {
+bool ModelExchangeSlave::readReal(fmi2ValueReference vr, fmi2Real &ref) {
     return instance_->readReal(vr, ref);
 }
 
-fmi2Status ModelExchangeSlave::readReal(const std::vector<fmi2ValueReference> &vr,
-                                        std::vector<fmi2Real> &ref) const {
+bool ModelExchangeSlave::readReal(const std::vector<fmi2ValueReference> &vr,
+                                        std::vector<fmi2Real> &ref) {
     return instance_->readReal(vr, ref);
 }
 
-fmi2Status ModelExchangeSlave::readString(fmi2ValueReference vr, fmi2String &ref) const {
+bool ModelExchangeSlave::readString(fmi2ValueReference vr, fmi2String &ref) {
     return instance_->readString(vr, ref);
 }
 
-fmi2Status ModelExchangeSlave::readString(const std::vector<fmi2ValueReference> &vr,
-                                          std::vector<fmi2String> &ref) const {
+bool ModelExchangeSlave::readString(const std::vector<fmi2ValueReference> &vr,
+                                          std::vector<fmi2String> &ref) {
     return instance_->readString(vr, ref);
 }
 
-fmi2Status ModelExchangeSlave::readBoolean(fmi2ValueReference vr, fmi2Boolean &ref) const {
+bool ModelExchangeSlave::readBoolean(fmi2ValueReference vr, fmi2Boolean &ref) {
     return instance_->readBoolean(vr, ref);
 }
 
-fmi2Status ModelExchangeSlave::readBoolean(const std::vector<fmi2ValueReference> &vr,
-                                           std::vector<fmi2Boolean> &ref) const {
+bool ModelExchangeSlave::readBoolean(const std::vector<fmi2ValueReference> &vr,
+                                           std::vector<fmi2Boolean> &ref) {
     return instance_->readBoolean(vr, ref);
 }
 
-fmi2Status ModelExchangeSlave::writeInteger(fmi2ValueReference vr, fmi2Integer value) {
+bool ModelExchangeSlave::writeInteger(fmi2ValueReference vr, fmi2Integer value) {
     return instance_->writeInteger(vr, value);
 }
 
-fmi2Status ModelExchangeSlave::writeInteger(const std::vector<fmi2ValueReference> &vr,
+bool ModelExchangeSlave::writeInteger(const std::vector<fmi2ValueReference> &vr,
                                             const std::vector<fmi2Integer> &values) {
     return instance_->writeInteger(vr, values);
 }
 
-fmi2Status ModelExchangeSlave::writeReal(fmi2ValueReference vr, fmi2Real value) {
+bool ModelExchangeSlave::writeReal(fmi2ValueReference vr, fmi2Real value) {
     return instance_->writeReal(vr, value);
 }
 
-fmi2Status ModelExchangeSlave::writeReal(const std::vector<fmi2ValueReference> &vr,
+bool ModelExchangeSlave::writeReal(const std::vector<fmi2ValueReference> &vr,
                                          const std::vector<fmi2Real> &values) {
     return instance_->writeReal(vr, values);
 }
 
-fmi2Status ModelExchangeSlave::writeString(fmi2ValueReference vr, fmi2String value) {
+bool ModelExchangeSlave::writeString(fmi2ValueReference vr, fmi2String value) {
     return instance_->writeString(vr, value);
 }
 
-fmi2Status ModelExchangeSlave::writeString(const std::vector<fmi2ValueReference> &vr,
+bool ModelExchangeSlave::writeString(const std::vector<fmi2ValueReference> &vr,
                                            const std::vector<fmi2String> &values) {
     return instance_->writeString(vr, values);
 }
 
-fmi2Status ModelExchangeSlave::writeBoolean(fmi2ValueReference vr, fmi2Boolean value) {
+bool ModelExchangeSlave::writeBoolean(fmi2ValueReference vr, fmi2Boolean value) {
     return instance_->writeBoolean(vr, value);
 }
 
-fmi2Status ModelExchangeSlave::writeBoolean(const std::vector<fmi2ValueReference> &vr,
+bool ModelExchangeSlave::writeBoolean(const std::vector<fmi2ValueReference> &vr,
                                             const std::vector<fmi2Boolean> &values) {
     return instance_->writeBoolean(vr, values);
+}
+
+fmi4cpp::Status ModelExchangeSlave::getLastStatus() const {
+    return instance_->getLastStatus();
 }
 

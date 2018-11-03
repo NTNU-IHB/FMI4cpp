@@ -34,9 +34,9 @@ namespace fmi4cpp::fmi2 {
 
     public:
 
-        virtual fmi2Status doStep(double stepSize) = 0;
+        virtual bool doStep(double stepSize) = 0;
 
-        virtual fmi2Status cancelStep() = 0;
+        virtual bool cancelStep() = 0;
 
         ~FmuSlave() override = default;
 

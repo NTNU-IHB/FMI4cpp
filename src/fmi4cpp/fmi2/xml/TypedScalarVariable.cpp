@@ -29,11 +29,11 @@ using namespace fmi4cpp::fmi2;
 IntegerVariable::IntegerVariable(const ScalarVariable &variable, const IntegerAttribute &attribute)
         : BoundedScalarVariable(variable, attribute) {}
 
-fmi2Status IntegerVariable::read(const FmuReader &reader, int &ref) {
+bool IntegerVariable::read(FmuReader &reader, int &ref) {
     return reader.readInteger(valueReference(), ref);
 }
 
-fmi2Status IntegerVariable::write(FmuWriter &writer, int value) {
+bool IntegerVariable::write(FmuWriter &writer, int value) {
     return writer.writeInteger(valueReference(), value);
 }
 
@@ -68,11 +68,11 @@ bool RealVariable::reinit() const {
     return attribute_.reinit;
 }
 
-fmi2Status RealVariable::read(const FmuReader &reader, double &ref) {
+bool RealVariable::read(FmuReader &reader, double &ref) {
     return reader.readReal(valueReference(), ref);
 }
 
-fmi2Status RealVariable::write(FmuWriter &writer, double value) {
+bool RealVariable::write(FmuWriter &writer, double value) {
     return writer.writeReal(valueReference(), value);
 }
 
@@ -80,14 +80,14 @@ fmi2Status RealVariable::write(FmuWriter &writer, double value) {
 StringVariable::StringVariable(const ScalarVariable &variable, const StringAttribute &attribute) : TypedScalarVariable(
         variable, attribute) {}
 
-fmi2Status StringVariable::read(const FmuReader &reader, std::string &ref) {
+bool StringVariable::read(FmuReader &reader, std::string &ref) {
     fmi2String str;
     auto status = reader.readString(valueReference(), str);
     ref = str;
     return status;
 }
 
-fmi2Status StringVariable::write(FmuWriter &writer, std::string value) {
+bool StringVariable::write(FmuWriter &writer, std::string value) {
     return writer.writeString(valueReference(), value.c_str());
 }
 
@@ -95,14 +95,14 @@ fmi2Status StringVariable::write(FmuWriter &writer, std::string value) {
 BooleanVariable::BooleanVariable(const ScalarVariable &variable, const BooleanAttribute &attribute)
         : TypedScalarVariable(variable, attribute) {}
 
-fmi2Status BooleanVariable::read(const FmuReader &reader, bool &ref) {
+bool BooleanVariable::read(FmuReader &reader, bool &ref) {
     fmi2Boolean _ref;
     auto status = reader.readBoolean(valueReference(), _ref);
     ref = _ref != 0;
     return status;
 }
 
-fmi2Status BooleanVariable::write(FmuWriter &writer, bool value) {
+bool BooleanVariable::write(FmuWriter &writer, bool value) {
     return writer.writeBoolean(valueReference(), value);
 }
 
@@ -110,11 +110,11 @@ fmi2Status BooleanVariable::write(FmuWriter &writer, bool value) {
 EnumerationVariable::EnumerationVariable(const ScalarVariable &variable, const EnumerationAttribute &attribute)
         : TypedScalarVariable(variable, attribute) {}
 
-fmi2Status EnumerationVariable::read(const FmuReader &reader, int &ref) {
+bool EnumerationVariable::read(FmuReader &reader, int &ref) {
     return reader.readInteger(valueReference(), ref);
 }
 
-fmi2Status EnumerationVariable::write(FmuWriter &writer, int value) {
+bool EnumerationVariable::write(FmuWriter &writer, int value) {
     return writer.writeInteger(valueReference(), value);
 }
 

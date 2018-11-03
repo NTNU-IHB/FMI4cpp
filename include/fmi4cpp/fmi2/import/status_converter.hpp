@@ -22,36 +22,33 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMI4CPP_STATUSTOSTRING_HPP
-#define FMI4CPP_STATUSTOSTRING_HPP
+#ifndef FMI4CPP_STATUS_CONVERTER_HPP
+#define FMI4CPP_STATUS_CONVERTER_HPP
 
-#include <string>
+#include <fmi4cpp/fmi2/import/Status.hpp>
+#include <fmi4cpp/fmi2/fmi2FunctionTypes.h>
 
-#include "../fmi2Functions.h"
+namespace fmi4cpp::fmi2 {
 
-namespace {
-
-    const std::string to_string(fmi2Status status) {
+    inline Status convert(fmi2Status status) {
 
         switch (status) {
             case fmi2OK:
-                return "OK";
+                return Status::OK;
             case fmi2Warning:
-                return "Warning";
+                return Status::Warning;
             case fmi2Discard:
-                return "Discard";
+                return Status::Discard;
             case fmi2Error:
-                return "Error";
+                return Status::Error;
             case fmi2Fatal:
-                return "Fatal";
+                return Status::Fatal;
             case fmi2Pending:
-                return "Pending";
-            default:
-                return "Unknown";
+                return Status::Pending;
         }
 
     }
 
 }
 
-#endif //FMI4CPP_STATUSTOSTRING_HPP
+#endif //FMI4CPP_STATUS_CONVERTER_HPP

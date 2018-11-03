@@ -28,10 +28,13 @@
 #include <vector>
 #include <memory>
 
+#include "Status.hpp"
 #include "FmuVariableAccessor.hpp"
 
 namespace fmi4cpp::fmi2 {
-    
+
+    typedef void *fmi2FMUstate;
+
     template <typename T>
     class FmuInstance: public FmuVariableAccessor {
 
@@ -45,30 +48,32 @@ namespace fmi4cpp::fmi2 {
             return simulationTime_;
         }
 
+        virtual fmi4cpp::Status getLastStatus() const = 0;
+
         virtual std::shared_ptr<T> getModelDescription() const = 0;
 
-        virtual fmi2Status setupExperiment(double startTime = 0.0, double stopTime = 0.0, double tolerance = 0.0) = 0;
+        virtual bool setupExperiment(double startTime = 0.0, double stopTime = 0.0, double tolerance = 0.0) = 0;
 
-        virtual fmi2Status enterInitializationMode() = 0;
+        virtual bool enterInitializationMode() = 0;
 
-        virtual fmi2Status exitInitializationMode() = 0;
+        virtual bool exitInitializationMode() = 0;
 
-        virtual fmi2Status reset() = 0;
+        virtual bool reset() = 0;
 
-        virtual fmi2Status terminate() = 0;
+        virtual bool terminate() = 0;
 
-        virtual fmi2Status getFMUstate(fmi2FMUstate &state) = 0;
-        virtual fmi2Status setFMUstate(fmi2FMUstate state) = 0;
-        virtual fmi2Status freeFMUstate(fmi2FMUstate &state) = 0;
+        virtual bool getFMUstate(void* &state) = 0;
+        virtual bool setFMUstate(void* state) = 0;
+        virtual bool freeFMUstate(void* &state) = 0;
 
-        virtual fmi2Status serializeFMUstate(const fmi2FMUstate &state, std::vector<fmi2Byte> &serializedState) = 0;
-        virtual fmi2Status deSerializeFMUstate(fmi2FMUstate &state, const std::vector<fmi2Byte> &serializedState) = 0;
+        virtual bool serializeFMUstate(const fmi2FMUstate &state, std::vector<char> &serializedState) = 0;
+        virtual bool deSerializeFMUstate(fmi2FMUstate &state, const std::vector<char> &serializedState) = 0;
 
-        virtual fmi2Status getDirectionalDerivative(
-                const std::vector<fmi2ValueReference> &vUnknownRef,
-                const std::vector<fmi2ValueReference> &vKnownRef,
-                const std::vector<fmi2Real> &dvKnownRef,
-                std::vector<fmi2Real> &dvUnknownRef) const = 0;
+        virtual bool getDirectionalDerivative(
+                const std::vector<unsigned int> &vUnknownRef,
+                const std::vector<unsigned int> &vKnownRef,
+                const std::vector<double> &dvKnownRef,
+                std::vector<double> &dvUnknownRef) = 0;
 
         virtual ~FmuInstance() = default;
 

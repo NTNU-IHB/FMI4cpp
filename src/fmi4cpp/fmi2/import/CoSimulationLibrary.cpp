@@ -47,49 +47,47 @@ CoSimulationLibrary::CoSimulationLibrary(const std::string &modelIdentifier,
 
 }
 
-fmi2Status CoSimulationLibrary::doStep(const fmi2Component c, const fmi2Real currentCommunicationPoint,
-                                       const fmi2Real communicationStepSize,
-                                       const bool noSetFMUStatePriorToCurrentPoint) const {
-    return fmi2DoStep_(c, currentCommunicationPoint, communicationStepSize, noSetFMUStatePriorToCurrentPoint ? 1 : 0);
+bool CoSimulationLibrary::doStep(const fmi2Component c, const fmi2Real currentCommunicationPoint,
+                                 const fmi2Real communicationStepSize, const bool noSetFMUStatePriorToCurrentPoint) {
+    return updateStatusAndReturnTrueIfOK(
+            fmi2DoStep_(c, currentCommunicationPoint, communicationStepSize, noSetFMUStatePriorToCurrentPoint));
 }
 
-fmi2Status CoSimulationLibrary::cancelStep(const fmi2Component c) const {
-    return fmi2CancelStep_(c);
+bool CoSimulationLibrary::cancelStep(const fmi2Component c) {
+    return updateStatusAndReturnTrueIfOK(fmi2CancelStep_(c));
 }
 
-fmi2Status CoSimulationLibrary::setRealInputDerivatives(const fmi2Component c,
-                                                        const std::vector<fmi2ValueReference> &vr,
-                                                        const std::vector<fmi2Integer> &order,
-                                                        const std::vector<fmi2Real> &value) const {
+bool CoSimulationLibrary::setRealInputDerivatives(const fmi2Component c,
+                                                  const std::vector<fmi2ValueReference> &vr,
+                                                  const std::vector<fmi2Integer> &order,
+                                                  const std::vector<fmi2Real> &value) {
     return fmi2SetRealInputDerivatives_(c, vr.data(), vr.size(), order.data(), value.data());
 }
 
-fmi2Status CoSimulationLibrary::getRealOutputDerivatives(const fmi2Component c,
-                                                         const std::vector<fmi2ValueReference> &vr,
-                                                         const std::vector<fmi2Integer> &order,
-                                                         std::vector<fmi2Real> &value) const {
-    return fmi2GetRealOutputDerivatives_(c, vr.data(), vr.size(), order.data(), value.data());
+bool CoSimulationLibrary::getRealOutputDerivatives(const fmi2Component c,
+                                                   const std::vector<fmi2ValueReference> &vr,
+                                                   const std::vector<fmi2Integer> &order,
+                                                   std::vector<fmi2Real> &value) {
+    return updateStatusAndReturnTrueIfOK(
+            fmi2GetRealOutputDerivatives_(c, vr.data(), vr.size(), order.data(), value.data()));
 }
 
-fmi2Status CoSimulationLibrary::getStatus(const fmi2Component c, const fmi2StatusKind s, fmi2Status &value) const {
-    return fmi2GetStatus_(c, s, &value);
+bool CoSimulationLibrary::getStatus(const fmi2Component c, const fmi2StatusKind s, fmi2Status &value) {
+    return updateStatusAndReturnTrueIfOK(fmi2GetStatus_(c, s, &value));
 }
 
-fmi2Status CoSimulationLibrary::getRealStatus(const fmi2Component c, const fmi2StatusKind s, fmi2Real &value) const {
-    return fmi2GetRealStatus_(c, s, &value);
+bool CoSimulationLibrary::getRealStatus(const fmi2Component c, const fmi2StatusKind s, fmi2Real &value) {
+    return updateStatusAndReturnTrueIfOK(fmi2GetRealStatus_(c, s, &value));
 }
 
-fmi2Status
-CoSimulationLibrary::getIntegerStatus(const fmi2Component c, const fmi2StatusKind s, fmi2Integer &value) const {
-    return fmi2GetIntegerStatus_(c, s, &value);
+bool CoSimulationLibrary::getIntegerStatus(const fmi2Component c, const fmi2StatusKind s, fmi2Integer &value) {
+    return updateStatusAndReturnTrueIfOK(fmi2GetIntegerStatus_(c, s, &value));
 }
 
-fmi2Status
-CoSimulationLibrary::getBooleanStatus(const fmi2Component c, const fmi2StatusKind s, fmi2Boolean &value) const {
-    return fmi2GetBooleanStatus_(c, s, &value);
+bool CoSimulationLibrary::getBooleanStatus(const fmi2Component c, const fmi2StatusKind s, fmi2Boolean &value) {
+    return updateStatusAndReturnTrueIfOK(fmi2GetBooleanStatus_(c, s, &value));
 }
 
-fmi2Status
-CoSimulationLibrary::getStringStatus(const fmi2Component c, const fmi2StatusKind s, fmi2String &value) const {
-    return fmi2GetStringStatus_(c, s, &value);
+bool CoSimulationLibrary::getStringStatus(const fmi2Component c, const fmi2StatusKind s, fmi2String &value) {
+    return updateStatusAndReturnTrueIfOK(fmi2GetStringStatus_(c, s, &value));
 }

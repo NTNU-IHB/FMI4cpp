@@ -30,13 +30,13 @@
 #include <string>
 #include <type_traits>
 
-#include "FmuSlave.hpp"
 #include "FmuResource.hpp"
 #include "CoSimulationLibrary.hpp"
 #include "ModelExchangeLibrary.hpp"
 #include "ModelExchangeInstance.hpp"
 #include "ModelExchangeSlave.hpp"
 
+#include "FmuSlave.hpp"
 #include "../xml/ModelDescription.hpp"
 
 namespace fmi4cpp::fmi2 {
