@@ -26,7 +26,7 @@
 
 using fmi4cpp::fmi2::Causality;
 using fmi4cpp::fmi2::Variability;
-using fmi4cpp::fmi2::fmi2Initial;
+using fmi4cpp::fmi2::Initial;
 
 Causality fmi4cpp::fmi2::parseCausality(const std::string &str) {
     if (str == "calculatedParameter") {
@@ -62,15 +62,15 @@ Variability fmi4cpp::fmi2::parseVariability(const std::string &str) {
     }
 }
 
-fmi2Initial fmi4cpp::fmi2::parseInitial(const std::string &str) {
+Initial fmi4cpp::fmi2::parseInitial(const std::string &str) {
     if (str == "exact") {
-        return fmi2Initial::exact;
+        return Initial::exact;
     } else if (str == "approx") {
-        return fmi2Initial::approx;
+        return Initial::approx;
     } else if (str == "calculated") {
-        return fmi2Initial::calculated;
+        return Initial::calculated;
     } else {
-        return fmi2Initial::unknown;
+        return Initial::unknown;
     }
 
 }

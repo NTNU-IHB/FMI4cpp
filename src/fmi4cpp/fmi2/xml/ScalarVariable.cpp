@@ -47,7 +47,7 @@ Variability ScalarVariableBase::variability() const {
     return variability_;
 }
 
-fmi2Initial ScalarVariableBase::initial() const {
+Initial ScalarVariableBase::initial() const {
     return initial_;
 }
 
@@ -61,7 +61,7 @@ ScalarVariableBase::ScalarVariableBase(const std::string &name,
                                        bool canHandleMultipleSetPerTimelnstant,
                                        Causality causality,
                                        Variability variability,
-                                       fmi2Initial initial)
+                                       Initial initial)
         : name_(name),
           description_(description),
           valueReference_(valueReference),

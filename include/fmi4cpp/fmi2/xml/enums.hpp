@@ -48,7 +48,7 @@ namespace fmi4cpp::fmi2 {
         unknown
     };
 
-    enum class fmi2Initial {
+    enum class Initial {
         exact,
         approx,
         calculated,
@@ -59,7 +59,7 @@ namespace fmi4cpp::fmi2 {
 
     Variability parseVariability(const std::string &str);
 
-    fmi2Initial parseInitial(const std::string &str);
+    Initial parseInitial(const std::string &str);
 
 }
 

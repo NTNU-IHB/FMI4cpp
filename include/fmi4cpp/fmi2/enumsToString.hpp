@@ -93,15 +93,15 @@ namespace {
 
     }
 
-    const std::string to_string(fmi4cpp::fmi2::fmi2Initial initial) {
+    const std::string to_string(fmi4cpp::fmi2::Initial initial) {
         switch (initial) {
-            case fmi4cpp::fmi2::fmi2Initial::exact:
+            case fmi4cpp::fmi2::Initial::exact:
                 return "exact";
-            case fmi4cpp::fmi2::fmi2Initial::approx:
+            case fmi4cpp::fmi2::Initial::approx:
                 return "approx";
-            case fmi4cpp::fmi2::fmi2Initial::calculated:
+            case fmi4cpp::fmi2::Initial::calculated:
                 return "calculated";
-            case fmi4cpp::fmi2::fmi2Initial::unknown:
+            case fmi4cpp::fmi2::Initial::unknown:
             default:
                 return "unknown";
         }

@@ -64,7 +64,7 @@ namespace fmi4cpp::fmi2 {
             return variable_.variability();
         }
 
-        fmi2Initial initial() const {
+        Initial initial() const {
             return variable_.initial();
         }
 
