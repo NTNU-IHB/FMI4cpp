@@ -46,7 +46,7 @@ namespace fmi4cpp::fmi2 {
     class ModelExchangeFmu;
 
     template<class T>
-    class IFmu {
+    class FmuBase {
 
         static_assert(std::is_base_of<ModelDescriptionBase, T>::value, "T must derive from ModelDescription");
 
@@ -63,7 +63,7 @@ namespace fmi4cpp::fmi2 {
 
     };
 
-    class FmuProvider : public virtual IFmu<ModelDescription> {
+    class FmuProvider : public virtual FmuBase<ModelDescription> {
 
     public:
         virtual bool supportsCoSimulation() const = 0;
@@ -107,7 +107,7 @@ namespace fmi4cpp::fmi2 {
 
     };
 
-    class CoSimulationFmu : public IFmu<CoSimulationModelDescription> {
+    class CoSimulationFmu : public FmuBase<CoSimulationModelDescription> {
 
     private:
 
@@ -126,7 +126,7 @@ namespace fmi4cpp::fmi2 {
         
     };
 
-    class ModelExchangeFmu : public virtual IFmu<ModelExchangeModelDescription> {
+    class ModelExchangeFmu : public virtual FmuBase<ModelExchangeModelDescription> {
 
     private:
 
