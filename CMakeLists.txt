@@ -15,6 +15,7 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 option(FMI4CPP_BUILD_TESTS "Build tests" OFF)
 option(FMI4CPP_BUILD_EXAMPLES "Build examples" ON)
+option(FMI4CPP_WITH_ODEINT "Build with odeint solvers" ON)
 
 if (MSVC)
     set(CMAKE_DEBUG_POSTFIX "d")

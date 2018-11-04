@@ -33,6 +33,9 @@
 #include "import/FmuSlave.hpp"
 #include "import/CoSimulationSlave.hpp"
 #include "import/ModelExchangeSlave.hpp"
+
+#if FMI4CPP_WITH_ODEINT
 #include "import/OdeintSolver.hpp"
+#endif
 
 #endif //FMI4CPP_FMI4CPP_HPP
