@@ -25,8 +25,6 @@
 #ifndef FMI4CPP_FMI4CPP_HPP
 #define FMI4CPP_FMI4CPP_HPP
 
-#include <iostream>
-
 #include "xml/enums.hpp"
 #include "xml/ModelDescription.hpp"
 #include "xml/TypedScalarVariable.hpp"
