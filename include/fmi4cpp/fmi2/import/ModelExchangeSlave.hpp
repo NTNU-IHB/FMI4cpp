@@ -34,7 +34,7 @@
 
 namespace fmi4cpp::fmi2 {
 
-    class sys_wrapper {
+    class fmu_wrapper {
 
     public:
         std::shared_ptr<ModelExchangeInstance> instance_;
@@ -51,18 +51,16 @@ namespace fmi4cpp::fmi2 {
 
     private:
 
-        sys_wrapper sys_;
-
+        fmu_wrapper sys_;
         std::unique_ptr<Solver> solver_;
         std::shared_ptr<ModelExchangeInstance> instance_;
         std::shared_ptr<CoSimulationModelDescription> csModelDescription_;
 
         std::vector<fmi2Real> x_;
-
         std::vector<fmi2Real> z_;
         std::vector<fmi2Real> pz_;
 
-        bool solve(double t0, double tNext);
+        std::pair<double, bool> solve(double t0, double tNext);
 
     public:
         ModelExchangeSlave(std::unique_ptr<ModelExchangeInstance> &instance,

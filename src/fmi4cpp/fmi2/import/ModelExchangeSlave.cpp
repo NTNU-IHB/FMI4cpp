@@ -110,10 +110,13 @@ bool ModelExchangeSlave::doStep(const double stepSize) {
 
         bool stateEvent = false;
         if ((tNext - time) > EPS) {
-            stateEvent = solve(time, tNext);
+            auto result = solve(time, tNext);
+            time = result.first;
+            stateEvent = result.second;
+        } else {
+            time = tNext;
         }
-        time = tNext;
-
+        
         instance_->setTime(time);
 
         bool stepEvent = false;
@@ -147,21 +150,23 @@ bool ModelExchangeSlave::doStep(const double stepSize) {
     return true;
 }
 
-bool ModelExchangeSlave::solve(double t, double tNext) {
+std::pair<double, bool> ModelExchangeSlave::solve(double t, double tNext) {
 
     instance_->getContinuousStates(x_);
 
-    solver_->integrate(sys_, x_, t, tNext);
+    double integratedTime = solver_->integrate(sys_, x_, t, tNext);
 
     pz_ = z_;
     instance_->getEventIndicators(z_);
+    bool stateEvent = false;
     for (unsigned int i = 0; i < pz_.size(); i++) {
         if ((pz_[i] * z_[i]) < 0) {
-            return true;
+            stateEvent = true;
+            break;
         }
     }
 
-    return false;
+    return std::make_pair(integratedTime, stateEvent);
 
 }
 

@@ -27,58 +27,22 @@
 
 #include <memory>
 #include <vector>
-#include <boost/numeric/odeint.hpp>
-
-using namespace boost::numeric::odeint;
 
 namespace fmi4cpp::fmi2 {
 
     typedef std::vector<double> state_type;
 
-
-
-    class sys_wrapper;
+    class fmu_wrapper;
 
     class Solver {
 
     public:
 
-        virtual void integrate(sys_wrapper &sys, std::vector<double> &x, double tStart, double tStop) = 0;
+        virtual double integrate(fmu_wrapper &sys, std::vector<double> &x, double tStart, double tStop) = 0;
 
         virtual ~Solver() = default;
 
     };
-
-    template <class T>
-    class OdeintSolver: public Solver {
-
-    protected:
-        T solver_;
-
-    };
-
-    template <class T>
-    class ConstantStepSizeOdeintSolver: public OdeintSolver<T> {
-
-    protected:
-        double stepSize_;
-
-    public:
-        explicit ConstantStepSizeOdeintSolver(double stepSize_): stepSize_(stepSize_) {}
-
-        void integrate(sys_wrapper &sys, std::vector<double> &x, double tStart, double tStop) override {
-            integrate_const(this->solver_, sys, x, tStart, tStop, stepSize_);
-        }
-
-    };
-
-
-    typedef ConstantStepSizeOdeintSolver<euler<state_type>> EulerSolver;
-    typedef ConstantStepSizeOdeintSolver<implicit_euler<state_type>> ImplicitEulerSolver;
-
-    typedef ConstantStepSizeOdeintSolver<runge_kutta4<state_type>> RK4Solver;
-    typedef ConstantStepSizeOdeintSolver<runge_kutta4_classic<state_type>> RK4ClassicSolver;
-
 
     template <typename T, typename ... Args>
     std::unique_ptr<Solver> make_solver(Args ... args) {

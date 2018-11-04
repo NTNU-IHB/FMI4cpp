@@ -22,17 +22,47 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMI4CPP_FMI4CPP_HPP
-#define FMI4CPP_FMI4CPP_HPP
+#ifndef FMI4CPP_ODEINTSOLVER_HPP
+#define FMI4CPP_ODEINTSOLVER_HPP
 
-#include "xml/enums.hpp"
-#include "xml/ModelDescription.hpp"
-#include "xml/TypedScalarVariable.hpp"
+#include <boost/numeric/odeint.hpp>
 
-#include "import/Fmu.hpp"
-#include "import/FmuSlave.hpp"
-#include "import/CoSimulationSlave.hpp"
-#include "import/ModelExchangeSlave.hpp"
-#include "import/OdeintSolver.hpp"
+#include "Solver.hpp"
 
-#endif //FMI4CPP_FMI4CPP_HPP
+using namespace boost::numeric::odeint;
+
+namespace fmi4cpp::fmi2 {
+
+    template <class T>
+    class OdeintSolver: public Solver {
+
+    protected:
+        T solver_;
+
+    };
+
+    template <class T>
+    class ConstantStepSizeOdeintSolver: public OdeintSolver<T> {
+
+    protected:
+        double stepSize_;
+
+    public:
+        explicit ConstantStepSizeOdeintSolver(double stepSize_): stepSize_(stepSize_) {}
+
+        double integrate(fmu_wrapper &sys, std::vector<double> &x, double tStart, double tStop) override {
+            size_t n = integrate_const(this->solver_, sys, x, tStart, tStop, stepSize_);
+            return tStart + n*stepSize_;
+        }
+
+    };
+
+    typedef ConstantStepSizeOdeintSolver<euler<state_type>> EulerSolver;
+    typedef ConstantStepSizeOdeintSolver<implicit_euler<state_type>> ImplicitEulerSolver;
+
+    typedef ConstantStepSizeOdeintSolver<runge_kutta4<state_type>> RK4Solver;
+    typedef ConstantStepSizeOdeintSolver<runge_kutta4_classic<state_type>> RK4ClassicSolver;
+
+}
+
+#endif //FMI4CPP_ODEINTSOLVER_HPP
