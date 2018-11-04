@@ -26,6 +26,8 @@ Install [vcpkg](https://github.com/Microsoft/vcpkg) and run:
 ./vcpkg install boost-property-tree boost-ublas boost-odeint libzip
 ``` 
 
+Note that ```boost-ublas``` and ```boost-odeint``` are optional and can be omitted by passing ```-DFMI4CPP_WITH_ODEINT=OFF``` to CMake.
+
 On linux you _might_ need to install some additional libraries:
 
 ```
