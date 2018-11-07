@@ -10,12 +10,17 @@ For Model Exchange, solvers from [odeint](http://headmyshoulder.github.io/odeint
 
 ### Why should I use this over other C/C++ FMI Libraries
 
-Because this library provides a clean API, is easy to install (through vcpkg) and is easy to use.
+Because this library provides a clean, easy to use API and is easy to install (through vcpkg).
 
 
 ### How do I use it in my own project?
 
-When the library is stable it will be added to the vcpkg package manager.
+Recommended way is to install [vcpkg](https://github.com/Microsoft/vcpkg) and run:
+```
+./vcpkg install fmi4cpp
+``` 
+
+The alternative is to fetch the dependencies manually, put them in the path somewhere and run the regular CMake install procedures. 
 
 
 ### Development dependencies
