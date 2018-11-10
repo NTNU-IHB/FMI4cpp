@@ -47,6 +47,67 @@ namespace fmi4cpp::fmi2 {
 
         bool cancelStep() override;
 
+        virtual std::shared_ptr<CoSimulationModelDescription> getModelDescription() const;
+
+        virtual Status getLastStatus() const;
+
+        virtual bool setupExperiment(double start, double stop, double tolerance);
+
+        virtual bool enterInitializationMode();
+
+        virtual bool exitInitializationMode();
+
+        virtual bool reset();
+
+        virtual bool terminate();
+
+
+        virtual bool readInteger(unsigned int vr, int &ref);
+
+        virtual bool readInteger(const std::vector<unsigned int> &vr, std::vector<int> &ref);
+
+        virtual bool readReal(unsigned int vr, double &ref);
+
+        virtual bool readReal(const std::vector<unsigned int> &vr, std::vector<double> &ref);
+
+        virtual bool readString(unsigned int vr, const char *&ref);
+
+        virtual bool readString(const std::vector<unsigned int> &vr, std::vector<const char *> &ref);
+
+        virtual bool readBoolean(unsigned int vr, int &ref);
+
+        virtual bool readBoolean(const std::vector<unsigned int> &vr, std::vector<int> &ref);
+
+        virtual bool writeInteger(unsigned int vr, int value);
+
+        virtual bool writeInteger(const std::vector<unsigned int> &vr, const std::vector<int> &values);
+
+        virtual bool writeReal(unsigned int vr, double value);
+
+        virtual bool writeReal(const std::vector<unsigned int> &vr, const std::vector<double> &values);
+
+        virtual bool writeString(unsigned int vr, const char *value);
+
+        virtual bool writeString(const std::vector<unsigned int> &vr, const std::vector<const char *> &values);
+
+        virtual bool writeBoolean(unsigned int vr, int value);
+
+        virtual bool writeBoolean(const std::vector<unsigned int> &vr, const std::vector<int> &values);
+
+        virtual bool getFMUstate(void *&state);
+
+        virtual bool setFMUstate(void *state);
+
+        virtual bool freeFMUstate(void *&state);
+
+        virtual bool serializeFMUstate(const fmi2FMUstate &state, std::vector<char> &serializedState);
+
+        virtual bool deSerializeFMUstate(fmi2FMUstate &state, const std::vector<char> &serializedState);
+
+        virtual bool getDirectionalDerivative(const std::vector<unsigned int> &vUnknownRef,
+                                              const std::vector<unsigned int> &vKnownRef,
+                                              const std::vector<double> &dvKnownRef, std::vector<double> &dvUnknownRef);
+
     };
 
 }

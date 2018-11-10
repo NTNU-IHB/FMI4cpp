@@ -42,3 +42,126 @@ bool CoSimulationSlave::doStep(const double stepSize) {
 bool CoSimulationSlave::cancelStep() {
     return library_->cancelStep(c_);
 }
+
+std::shared_ptr<CoSimulationModelDescription> CoSimulationSlave::getModelDescription() const {
+    return AbstractFmuInstance::getModelDescription();
+}
+
+
+fmi4cpp::Status CoSimulationSlave::getLastStatus() const {
+    return AbstractFmuInstance::getLastStatus();
+}
+
+bool CoSimulationSlave::setupExperiment(double start, double stop, double tolerance) {
+    return AbstractFmuInstance::setupExperiment(start, stop, tolerance);
+}
+
+bool CoSimulationSlave::enterInitializationMode() {
+    return AbstractFmuInstance::enterInitializationMode();
+}
+
+bool CoSimulationSlave::exitInitializationMode() {
+    return AbstractFmuInstance::exitInitializationMode();
+}
+
+bool CoSimulationSlave::reset() {
+    return AbstractFmuInstance::reset();
+}
+
+bool CoSimulationSlave::terminate() {
+    return AbstractFmuInstance::terminate();
+}
+
+bool CoSimulationSlave::readInteger(unsigned int vr, int &ref) {
+    return AbstractFmuInstance::readInteger(vr, ref);
+}
+
+bool CoSimulationSlave::readInteger(const std::vector<unsigned int> &vr, std::vector<int> &ref) {
+    return AbstractFmuInstance::readInteger(vr, ref);
+}
+
+bool CoSimulationSlave::readReal(unsigned int vr, double &ref) {
+    return AbstractFmuInstance::readReal(vr, ref);
+}
+
+bool CoSimulationSlave::readReal(const std::vector<unsigned int> &vr, std::vector<double> &ref) {
+    return AbstractFmuInstance::readReal(vr, ref);
+}
+
+bool CoSimulationSlave::readString(unsigned int vr, const char *&ref) {
+    return AbstractFmuInstance::readString(vr, ref);
+}
+
+bool CoSimulationSlave::readString(const std::vector<unsigned int> &vr, std::vector<const char *> &ref) {
+    return AbstractFmuInstance::readString(vr, ref);
+}
+
+bool CoSimulationSlave::readBoolean(unsigned int vr, int &ref) {
+    return AbstractFmuInstance::readBoolean(vr, ref);
+}
+
+bool CoSimulationSlave::readBoolean(const std::vector<unsigned int> &vr, std::vector<int> &ref) {
+    return AbstractFmuInstance::readBoolean(vr, ref);
+}
+
+bool CoSimulationSlave::writeInteger(unsigned int vr, int value) {
+    return AbstractFmuInstance::writeInteger(vr, value);
+}
+
+bool CoSimulationSlave::writeInteger(const std::vector<unsigned int> &vr, const std::vector<int> &values) {
+    return AbstractFmuInstance::writeInteger(vr, values);
+}
+
+bool CoSimulationSlave::writeReal(unsigned int vr, double value) {
+    return AbstractFmuInstance::writeReal(vr, value);
+}
+
+bool CoSimulationSlave::writeReal(const std::vector<unsigned int> &vr, const std::vector<double> &values) {
+    return AbstractFmuInstance::writeReal(vr, values);
+}
+
+bool CoSimulationSlave::writeString(unsigned int vr, const char *value) {
+    return AbstractFmuInstance::writeString(vr, value);
+}
+
+bool CoSimulationSlave::writeString(const std::vector<unsigned int> &vr, const std::vector<const char *> &values) {
+    return AbstractFmuInstance::writeString(vr, values);
+}
+
+bool CoSimulationSlave::writeBoolean(unsigned int vr, int value) {
+    return AbstractFmuInstance::writeBoolean(vr, value);
+}
+
+bool CoSimulationSlave::writeBoolean(const std::vector<unsigned int> &vr, const std::vector<int> &values) {
+    return AbstractFmuInstance::writeBoolean(vr, values);
+}
+
+
+bool CoSimulationSlave::getFMUstate(void *&state) {
+    return AbstractFmuInstance::getFMUstate(state);
+}
+
+bool CoSimulationSlave::setFMUstate(void *state) {
+    return AbstractFmuInstance::setFMUstate(state);
+}
+
+bool CoSimulationSlave::freeFMUstate(void *&state) {
+    return AbstractFmuInstance::freeFMUstate(state);
+}
+
+bool CoSimulationSlave::serializeFMUstate(const fmi2FMUstate &state, std::vector<char> &serializedState) {
+    return AbstractFmuInstance::serializeFMUstate(state, serializedState);
+}
+
+bool CoSimulationSlave::deSerializeFMUstate(fmi2FMUstate &state, const std::vector<char> &serializedState) {
+    return AbstractFmuInstance::deSerializeFMUstate(state, serializedState);
+}
+
+bool CoSimulationSlave::getDirectionalDerivative(const std::vector<unsigned int> &vUnknownRef,
+                                                 const std::vector<unsigned int> &vKnownRef,
+                                                 const std::vector<double> &dvKnownRef,
+                                                 std::vector<double> &dvUnknownRef) {
+    return AbstractFmuInstance::getDirectionalDerivative(vUnknownRef, vKnownRef, dvKnownRef, dvUnknownRef);
+}
+
+
