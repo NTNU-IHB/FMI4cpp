@@ -34,7 +34,7 @@ using namespace std;
 using namespace fmi4cpp::fmi2;
 
 const string fmu_path = string(getenv("TEST_FMUs"))
-                        + "/FMI_2.0/CoSimulation/" + getOs() +
+                        + "/2.0/cs/" + getOs() +
                         "/OpenModelica/v1.11.0/FmuExportCrossCompile/FmuExportCrossCompile.fmu";
 
 BOOST_AUTO_TEST_CASE(FmuExportCrossCompile_test1) {

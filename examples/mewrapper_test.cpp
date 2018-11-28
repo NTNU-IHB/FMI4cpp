@@ -40,7 +40,7 @@ double macroStep = 1.0/10;
 int main() {
 
     const string fmuPath = string(getenv("TEST_FMUs"))
-                           + "/FMI_2.0/ModelExchange/" + getOs() +
+                           + "/2.0/me/" + getOs() +
                            "/OpenModelica/v1.11.0/FmuExportCrossCompile/FmuExportCrossCompile.fmu";
 
     auto fmu = Fmu(fmuPath).asModelExchangeFmu();

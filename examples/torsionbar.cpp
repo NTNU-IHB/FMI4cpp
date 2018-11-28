@@ -36,7 +36,7 @@ const fmi2ValueReference vr = 2;
 int main() {
 
     const string fmu_path = string(getenv("TEST_FMUs"))
-                            + "/FMI_2.0/CoSimulation/" + getOs() +
+                            + "/2.0/cs/" + getOs() +
                             "/20sim/4.6.4.8004/TorsionBar/TorsionBar.fmu";
 
     Fmu fmu(fmu_path);
