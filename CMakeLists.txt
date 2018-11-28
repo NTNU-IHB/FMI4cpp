@@ -13,6 +13,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
+option(FMI4CPP_BUILD_TOOL "Build tool" ON)
 option(FMI4CPP_BUILD_TESTS "Build tests" OFF)
 option(FMI4CPP_BUILD_EXAMPLES "Build examples" ON)
 option(FMI4CPP_WITH_ODEINT "Build with odeint solvers" ON)
@@ -23,6 +24,9 @@ if (MSVC)
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 endif ()
 
+if (FMI4CPP_BUILD_TOOL)
+    SET(BOOST_COMPONENTS ${BOOST_COMPONENTS} program_options)
+endif ()
 if (FMI4CPP_BUILD_TESTS)
     SET(BOOST_COMPONENTS ${BOOST_COMPONENTS} unit_test_framework)
 endif ()
@@ -38,6 +42,11 @@ find_package(LIBZIP REQUIRED)
 
 add_subdirectory(src)
 
+
+if (FMI4CPP_BUILD_TOOL)
+    add_subdirectory(tool)
+endif ()
+
 if (FMI4CPP_BUILD_TESTS)
     add_subdirectory(tests)
 endif ()
@@ -45,3 +54,4 @@ endif ()
 if (FMI4CPP_BUILD_EXAMPLES)
     add_subdirectory(examples)
 endif ()
+

@@ -28,7 +28,7 @@ The alternative is to fetch the dependencies manually, put them in the path some
 Install [vcpkg](https://github.com/Microsoft/vcpkg) and run:
 
 ```
-./vcpkg install boost-property-tree boost-ublas boost-odeint libzip
+./vcpkg install boost-property-tree boost-ublas boost-odeint boost-program-options libzip
 ``` 
 
 Note that ```boost-ublas``` and ```boost-odeint``` are optional and can be omitted by passing ```-DFMI4CPP_WITH_ODEINT=OFF``` to CMake.
