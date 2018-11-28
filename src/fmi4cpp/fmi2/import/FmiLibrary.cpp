@@ -128,7 +128,7 @@ FmiLibrary::FmiLibrary(const std::string &modelIdentifier, const std::shared_ptr
 
 }
 
-inline bool FmiLibrary::updateStatusAndReturnTrueIfOK(fmi2Status status) {
+bool FmiLibrary::updateStatusAndReturnTrueIfOK(fmi2Status status) {
     lastStatus_ = status;
     return status == fmi2OK;
 }
