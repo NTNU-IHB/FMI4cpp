@@ -22,15 +22,26 @@
  * THE SOFTWARE.
  */
 
+#include <memory>
+#include <iostream>
 #include <boost/program_options.hpp>
 
 #include <fmi4cpp/fmi2/fmi4cpp.hpp>
 
 using namespace std;
+using namespace fmi4cpp::fmi2;
 
-namespace po = boost::program_options;
+namespace {
+
+    const int SUCCESS = 0;
+    const int COMMANDLINE_ERROR = 1;
+    const int UNHANDLED_ERROR = 2;
+
+}
 
 int main(int argc, char** argv) {
+
+    namespace po = boost::program_options;
 
     po::options_description desc("Options");
     desc.add_options()
@@ -38,8 +49,78 @@ int main(int argc, char** argv) {
             ("fmu,f", po::value<string>(), "Path to FMU.")
             ("startTime,start", po::value<string>(), "Start time.")
             ("stopTime,stop", po::value<string>(), "Stop time.")
-            ("stepSize,dt", po::value<string>(), "StepSize.")
+            ("stepSize,dt", po::value<string>(), "StepSize.");
+
+    if (argc == 1) {
+        cout << "fmudriver" << endl << desc << endl;
+    }
+
+    po::variables_map vm;
+    try {
+
+        po::store(po::parse_command_line(argc, argv, desc), vm);
+
+        if ( vm.count("help") ) {
+            cout << "fmudriver" << endl << desc << endl;
+            return SUCCESS;
+        }
+
+        po::notify(vm);
+
+    } catch(po::error& e) {
+        std::cerr << "ERROR: " << e.what() << std::endl << std::endl;
+        std::cerr << desc << std::endl;
+        return COMMANDLINE_ERROR;
+    }
 
     return 0;
 
 }
+
+class FmuDriver {
+
+private:
+    const string fmuPath;
+
+public:
+
+    double start;
+    double stop;
+    double stepSize;
+
+    bool modelExchange;
+
+    explicit FmuDriver(const string &fmuPath) : fmuPath(fmuPath) {}
+
+    void simulate(unique_ptr<FmuSlave> slave) {
+
+        slave->setupExperiment(start);
+        slave->enterInitializationMode();
+        slave->exitInitializationMode();
+
+        double t;
+        string outputData = "";
+        while ( (t = slave->getSimulationTime()) <= (stop - stepSize) ) {
+
+            if (!slave->doStep(stepSize)) {
+                break;
+            }
+
+        }
+
+        slave->terminate();
+
+    }
+
+    void run() {
+
+        if (modelExchange) {
+            auto solver = make_solver<RK4ClassicSolver>(1E-3);
+            simulate(Fmu(fmuPath).asModelExchangeFmu()->newInstance(solver));
+        } else {
+            simulate(Fmu(fmuPath).asCoSimulationFmu()->newInstance());
+        }
+
+    }
+
+};
