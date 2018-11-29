@@ -24,6 +24,7 @@
 
 #include <memory>
 #include <iostream>
+#include <vector>
 #include <boost/program_options.hpp>
 
 #include <fmi4cpp/fmi2/fmi4cpp.hpp>
@@ -77,30 +78,92 @@ int main(int argc, char** argv) {
 
 }
 
+struct DriverOptions {
+
+    double startTime = 0.0;
+    double stopTime = 0.0;
+    double stepSize = 1e-3;
+
+    bool modelExchange = false;
+
+    string outputFolder;
+    vector<string> variables;
+
+};
+
 class FmuDriver {
 
-private:
-    const string fmuPath;
 
 public:
 
-    double start;
-    double stop;
-    double stepSize;
 
-    bool modelExchange;
+    FmuDriver(const string &fmuPath, DriverOptions &options) : fmuPath(fmuPath), options(options) {
 
-    explicit FmuDriver(const string &fmuPath) : fmuPath(fmuPath) {}
+        for (const auto v : )
+
+    }
+
+    void run() {
+
+        if (options.modelExchange) {
+            auto solver = make_solver<RK4ClassicSolver>(1E-3);
+            simulate(Fmu(fmuPath).asModelExchangeFmu()->newInstance(solver));
+        } else {
+            simulate(Fmu(fmuPath).asCoSimulationFmu()->newInstance());
+        }
+
+    }
+
+private:
+    const string fmuPath;
+    const DriverOptions options;
+
+    vector<ScalarVariable> variables;
+
+    void addHeader(string &data) {
+
+        data += "\"Time\"";
+
+        auto variables = options.variables;
+        for (unsigned long i = 0; i < variables.size(); i++) {
+            data += "\"" + variables[i] + "\"";
+            if (i != variables.size()-1) {
+                data += ",";
+            }
+        }
+        data += "\n";
+
+    }
+    void addRow(FmuSlave &slave, string &data) {
+
+        data += to_string(slave.getSimulationTime());
+        auto variables = options.variables;
+        for (unsigned long i = 0; i < variables.size(); i++) {
+            data += "\"" + variables[i] + "\"";
+            if (i != variables.size()-1) {
+                data += ",";
+            }
+        }
+        data += "\n";
+
+    }
 
     void simulate(unique_ptr<FmuSlave> slave) {
 
-        slave->setupExperiment(start);
+        auto startTime = options.startTime;
+        auto stopTime = options.stopTime;
+        auto stepSize = options.stepSize;
+
+        slave->setupExperiment(startTime);
         slave->enterInitializationMode();
         slave->exitInitializationMode();
 
         double t;
-        string outputData = "";
-        while ( (t = slave->getSimulationTime()) <= (stop - stepSize) ) {
+        string data = "";
+        addHeader(data);
+        while ( (t = slave->getSimulationTime()) <= (stopTime - stepSize) ) {
+
+            addRow(*slave, data);
 
             if (!slave->doStep(stepSize)) {
                 break;
@@ -112,15 +175,5 @@ public:
 
     }
 
-    void run() {
-
-        if (modelExchange) {
-            auto solver = make_solver<RK4ClassicSolver>(1E-3);
-            simulate(Fmu(fmuPath).asModelExchangeFmu()->newInstance(solver));
-        } else {
-            simulate(Fmu(fmuPath).asCoSimulationFmu()->newInstance());
-        }
-
-    }
 
 };
