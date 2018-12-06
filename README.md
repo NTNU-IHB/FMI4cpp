@@ -42,7 +42,7 @@ On linux you _might_ need to install some additional libraries, which are requir
 
 On *NIX systems the dependencies can of course be installed using the native package handler. 
 
-#### API
+### API
 
 ```cpp
 
@@ -91,9 +91,9 @@ int main() {
 }
 ```
 
-***
 
-### fmu_driver ###
+
+### fmu_driver
 
 FMI4cpp comes with a simple CLI for testing FMUs, called _fmu_driver_. 
 
@@ -108,6 +108,8 @@ Options:
   -v [ --variables ] arg Variables to print.
 
 ```
+
+***
 
 #### Running examples/tests
 
