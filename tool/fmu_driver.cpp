@@ -23,8 +23,13 @@
  */
 
 #include <memory>
-#include <iostream>
 #include <vector>
+#include <string>
+#include <fstream>
+#include <iostream>
+
+#include <experimental/filesystem>
+
 #include <boost/program_options.hpp>
 
 #include <fmi4cpp/fmi2/fmi4cpp.hpp>
@@ -32,49 +37,18 @@
 using namespace std;
 using namespace fmi4cpp::fmi2;
 
+namespace fs = std::experimental::filesystem;
+
 namespace {
 
     const int SUCCESS = 0;
     const int COMMANDLINE_ERROR = 1;
     const int UNHANDLED_ERROR = 2;
 
-}
-
-int main(int argc, char** argv) {
-
-    namespace po = boost::program_options;
-
-    po::options_description desc("Options");
-    desc.add_options()
-            ("help,h", "Print this help message and quits.")
-            ("fmu,f", po::value<string>(), "Path to FMU.")
-            ("startTime,start", po::value<string>(), "Start time.")
-            ("stopTime,stop", po::value<string>(), "Stop time.")
-            ("stepSize,dt", po::value<string>(), "StepSize.");
-
-    if (argc == 1) {
-        cout << "fmudriver" << endl << desc << endl;
-    }
-
-    po::variables_map vm;
-    try {
-
-        po::store(po::parse_command_line(argc, argv, desc), vm);
-
-        if ( vm.count("help") ) {
-            cout << "fmudriver" << endl << desc << endl;
-            return SUCCESS;
-        }
-
-        po::notify(vm);
-
-    } catch(po::error& e) {
-        std::cerr << "ERROR: " << e.what() << std::endl << std::endl;
-        std::cerr << desc << std::endl;
-        return COMMANDLINE_ERROR;
-    }
-
-    return 0;
+    const char* START = "start";
+    const char* STOP = "stop";
+    const char* STEP_SIZE = "stepsize";
+    const char* CSV_SEPARATOR = ", ";
 
 }
 
@@ -86,65 +60,88 @@ struct DriverOptions {
 
     bool modelExchange = false;
 
-    string outputFolder;
-    vector<string> variables;
+    fs::path outputFolder = fs::current_path();
+    vector<ScalarVariable> variables;
 
 };
 
 class FmuDriver {
 
-
 public:
 
-
-    FmuDriver(const string &fmuPath, DriverOptions &options) : fmuPath(fmuPath), options(options) {
-
-        for (const auto v : )
-
-    }
+    FmuDriver(const shared_ptr<Fmu> fmu, DriverOptions &options) : fmu_(fmu), options(options) {}
 
     void run() {
 
         if (options.modelExchange) {
-            auto solver = make_solver<RK4ClassicSolver>(1E-3);
-            simulate(Fmu(fmuPath).asModelExchangeFmu()->newInstance(solver));
+            auto solver = make_solver<EulerSolver>(1E-3);
+            simulate(fmu_->asModelExchangeFmu()->newInstance(solver));
         } else {
-            simulate(Fmu(fmuPath).asCoSimulationFmu()->newInstance());
+            simulate(fmu_->asCoSimulationFmu()->newInstance());
         }
 
     }
 
 private:
-    const string fmuPath;
+    const shared_ptr<Fmu> fmu_;
     const DriverOptions options;
-
-    vector<ScalarVariable> variables;
 
     void addHeader(string &data) {
 
-        data += "\"Time\"";
+        data += "\"Time\", ";
 
         auto variables = options.variables;
         for (unsigned long i = 0; i < variables.size(); i++) {
-            data += "\"" + variables[i] + "\"";
+            data += "\"" + variables[i].name() + "\"";
             if (i != variables.size()-1) {
-                data += ",";
+                data += CSV_SEPARATOR;
             }
         }
-        data += "\n";
 
     }
+
     void addRow(FmuSlave &slave, string &data) {
 
-        data += to_string(slave.getSimulationTime());
+        data += to_string(slave.getSimulationTime()) + CSV_SEPARATOR;
         auto variables = options.variables;
-        for (unsigned long i = 0; i < variables.size(); i++) {
-            data += "\"" + variables[i] + "\"";
+        for (int i = 0; i < variables.size(); i++) {
+            auto var =  variables[i];
+
+            if (var.isInteger()) {
+                int ref = 0;
+                slave.readInteger(var.valueReference(), ref);
+                data += to_string(ref);
+            } else if (var.isReal()) {
+                double ref = 0;
+                slave.readReal(var.valueReference(), ref);
+                data += to_string(ref);
+            } else if (var.isString()) {
+                const char* ref;
+                slave.readString(var.valueReference(), ref);
+                data += ref;
+            } else if (var.isBoolean()) {
+                int ref = 0;
+                slave.readBoolean(var.valueReference(), ref);
+                data += to_string(ref);
+            }
+
             if (i != variables.size()-1) {
-                data += ",";
+                data += CSV_SEPARATOR;
             }
         }
-        data += "\n";
+
+    }
+
+    void dumpOutput(const string &data) {
+
+        const auto fmuName = fs::path(fmu_->fmuFile_).stem().string();
+        const auto outputFile = fs::path(options.outputFolder.string() + "/" + fmuName + ".csv");
+        fs::create_directories(outputFile.parent_path());
+
+        ofstream out(outputFile.string(), ofstream::out);
+        out << data;
+        out.flush();
+        out.close();
 
     }
 
@@ -161,8 +158,9 @@ private:
         double t;
         string data = "";
         addHeader(data);
-        while ( (t = slave->getSimulationTime()) <= (stopTime - stepSize) ) {
+        while ( (t = slave->getSimulationTime()) <= (stopTime) ) {
 
+            data += "\n";
             addRow(*slave, data);
 
             if (!slave->doStep(stepSize)) {
@@ -173,7 +171,88 @@ private:
 
         slave->terminate();
 
+        dumpOutput(data);
+
+    }
+
+};
+
+int main(int argc, char** argv) {
+
+    namespace po = boost::program_options;
+
+    po::options_description desc("Options");
+    desc.add_options()
+            ("help,h", "Print this help message and quits.")
+            ("fmu,f", po::value<string>(), "Path to FMU.")
+            ("output,o", po::value<string>(), "Where to store the generated CSV results.")
+            (START, po::value<double>(), "Start time.")
+            (STOP, po::value<double>(), "Stop time.")
+            (STEP_SIZE, po::value<double>(), "StepSize.")
+            ("variables,v", po::value<vector<string>>()->multitoken(), "Variables to print.");
+
+    if (argc == 1) {
+        cout << "fmu_driver" << endl << desc << endl;
+        return 0;
+    }
+
+    po::variables_map vm;
+    try {
+
+        po::store(po::parse_command_line(argc, argv, desc), vm);
+
+        if ( vm.count("help") ) {
+            cout << "fmu_driver" << endl << desc << endl;
+            return SUCCESS;
+        }
+
+        po::notify(vm);
+
+    } catch(po::error& e) {
+        std::cerr << "ERROR: " << e.what() << std::endl << std::endl;
+        std::cerr << desc << std::endl;
+        return COMMANDLINE_ERROR;
+    }
+
+    if (!vm.count("fmu")) {
+        cout << "Missing path to FMU.. Please try again." << endl;
+        cout << "fmu_driver" << endl << desc << endl;
+        return COMMANDLINE_ERROR;
+    }
+
+    const string fmuPath = vm["fmu"].as<string>();
+    auto fmu = make_shared<Fmu>(fmuPath);
+
+    if (!vm.count("variables")) {
+        cerr << "Missing variables to print.. Please try again." << endl;
+        cout << "fmu_driver" << endl << desc << endl;
+    }
+
+    DriverOptions options;
+
+    auto variables = vm["variables"].as<vector<string>>();
+    for (const auto v : variables) {
+        options.variables.push_back(fmu->getModelDescription()->getVariableByName(v));
+    }
+
+    if (vm.count(START)) {
+        options.startTime = vm[START].as<double>();
+    }
+    if (vm.count(STOP)) {
+        options.stopTime = vm[STOP].as<double>();
+    }
+    if (vm.count(STEP_SIZE)) {
+        options.stepSize = vm[STEP_SIZE].as<double>();
+    }
+
+    if (vm.count("output")) {
+        options.outputFolder = fs::path(vm["output"].as<string>());
     }
 
 
-};
+    FmuDriver driver(fmu, options);
+    driver.run();
+
+    return 0;
+
+}
