@@ -24,10 +24,14 @@
 
 #include <fstream>
 #include <vector>
+#include <iostream>
+
+#include <fmi4cpp/fmi2/fmi4cpp.hpp>
 
 #include "FmuDriver.hpp"
 
 using namespace std;
+using namespace fmi4cpp;
 using namespace fmi4cpp::fmi2;
 
 namespace {
@@ -84,8 +88,12 @@ namespace {
 void FmuDriver::run(DriverOptions options) {
 
     if (options.modelExchange) {
+#if FMI4CPP_WITH_ODEINT
         auto solver = make_solver<EulerSolver>(1E-3);
         simulate(fmu_->asModelExchangeFmu()->newInstance(solver), options);
+#else
+        cerr << "Model Exchange selected, but driver has been built without odeint support!" << endl;
+#endif
     } else {
         simulate(fmu_->asCoSimulationFmu()->newInstance(), options);
     }

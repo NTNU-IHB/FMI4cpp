@@ -34,6 +34,7 @@
 #include "FmuDriver.hpp"
 
 using namespace std;
+using namespace fmi4cpp;
 using namespace fmi4cpp::fmi2;
 
 namespace fs = std::experimental::filesystem;

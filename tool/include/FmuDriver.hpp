@@ -32,27 +32,29 @@
 
 #include "DriverOptions.hpp"
 
-
 namespace fs = std::experimental::filesystem;
 
+namespace fmi4cpp {
 
-class FmuDriver {
+    class FmuDriver {
 
-public:
+    public:
 
-    FmuDriver(const std::shared_ptr<fmi4cpp::fmi2::Fmu> fmu) : fmu_(fmu){}
+        FmuDriver(const std::shared_ptr<fmi4cpp::fmi2::Fmu> fmu) : fmu_(fmu){}
 
-    void run(DriverOptions options);
+        void run(DriverOptions options);
 
-private:
+    private:
 
-    const std::shared_ptr<fmi4cpp::fmi2::Fmu> fmu_;
+        const std::shared_ptr<fmi4cpp::fmi2::Fmu> fmu_;
 
-    void dumpOutput(const std::string &data, const std::string &outputFolder);
+        void dumpOutput(const std::string &data, const std::string &outputFolder);
 
-    void simulate(std::unique_ptr<fmi4cpp::fmi2::FmuSlave> slave, DriverOptions options);
+        void simulate(std::unique_ptr<fmi4cpp::fmi2::FmuSlave> slave, DriverOptions options);
 
-};
+    };
+
+}
 
 
 #endif //FMI4CPP_FMUDRIVER_HPP

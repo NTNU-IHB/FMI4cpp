@@ -28,18 +28,22 @@
 #include <vector>
 #include <fmi4cpp/fmi2/xml/ScalarVariable.hpp>
 
-struct DriverOptions {
+namespace fmi4cpp {
 
-    double startTime = 0.0;
-    double stopTime = 0.0;
-    double stepSize = 1e-3;
+    struct DriverOptions {
 
-    bool modelExchange = false;
+        double startTime = 0.0;
+        double stopTime = 0.0;
+        double stepSize = 1e-3;
 
-    fs::path outputFolder = fs::current_path();
-    std::vector<fmi4cpp::fmi2::ScalarVariable> variables;
+        bool modelExchange = false;
 
-};
+        fs::path outputFolder = fs::current_path();
+        std::vector<fmi4cpp::fmi2::ScalarVariable> variables;
+
+    };
+
+}
 
 
 #endif //FMI4CPP_DRIVEROPTIONS_HPP
