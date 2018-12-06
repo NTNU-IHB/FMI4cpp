@@ -45,6 +45,8 @@ namespace fmi4cpp::fmi2 {
                 return Status::Fatal;
             case fmi2Pending:
                 return Status::Pending;
+            default:
+                return Status::Unknown;
         }
 
     }
