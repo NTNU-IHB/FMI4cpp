@@ -92,6 +92,7 @@ bool ModelExchangeSlave::exitInitializationMode() {
 bool ModelExchangeSlave::doStep(const double stepSize) {
 
     if (stepSize <= 0) {
+        std::cerr << "Error: stepSize <= 0" << std::endl;
         return false;
     }
 
