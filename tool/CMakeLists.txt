@@ -12,3 +12,4 @@ target_link_libraries(fmu_driver fmu_driver_lib Boost::program_options)
 
 install(TARGETS fmu_driver DESTINATION bin)
 
+add_subdirectory(crosscheck)
