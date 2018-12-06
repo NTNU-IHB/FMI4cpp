@@ -1,11 +1,11 @@
 # FMI4cpp (work in progress)
 
-FMI4cpp is a cross-platform FMI 2.0 implementation written in modern C++.
+FMI4cpp is a cross-platform [FMI](https://fmi-standard.org/) 2.0 implementation written in modern C++.
 
 Influenced by it's spiritual brother [FMI4j](https://github.com/SFI-Mechatronics/FMI4j), it aims to be
 an easy to install, easy to use, object oriented and fast FMI implementation for C++.    
 
-FMI4cpp supports both CoSimulation and Model Exchange. <br/>
+FMI4cpp supports both **Co-simulation** and **Model Exchange**. <br/>
 For Model Exchange, solvers from [odeint](http://headmyshoulder.github.io/odeint-v2/doc/boost_numeric_odeint/getting_started/overview.html) can be used. 
 
 ### Why should I use this over other C/C++ FMI Libraries
@@ -33,13 +33,13 @@ Install [vcpkg](https://github.com/Microsoft/vcpkg) and run:
 
 Note that ```boost-ublas``` and ```boost-odeint``` are optional and can be omitted by passing ```-DFMI4CPP_WITH_ODEINT=OFF``` to CMake.
 
-On linux you _might_ need to install some additional libraries:
+On linux you _might_ need to install some additional libraries, which are required by libzip:
 
 ```
 ./vcpkg install bzip2 openssl
 ``` 
 
-These can probably also be installed through the native package handler. 
+On *NIX systems the dependencies can of course be installed using the native package handler. 
 
 #### API
 
