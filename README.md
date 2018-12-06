@@ -32,6 +32,7 @@ Install [vcpkg](https://github.com/Microsoft/vcpkg) and run:
 ``` 
 
 Note that ```boost-ublas``` and ```boost-odeint``` are optional and can be omitted by passing ```-DFMI4CPP_WITH_ODEINT=OFF``` to CMake.
+Similarly, ```boost-program-options``` can be omitted by passing ```-DFMI4CPP_BUILD_TOOL=OFF```.
 
 On linux you _might_ need to install some additional libraries, which are required by libzip:
 
