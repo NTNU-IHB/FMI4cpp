@@ -43,7 +43,7 @@ using namespace fmi4cpp::fmi2;
 
 namespace fs = std::experimental::filesystem;
 
-Fmu::Fmu(const string &fmuFile) {
+Fmu::Fmu(const string &fmuFile): fmuFile_(fmuFile) {
 
 #if FMI4CPP_DEBUG_LOGGING_ENABLED
     cout << "Loading FMU '" << fmuFile << "'" << endl;

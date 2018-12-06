@@ -91,6 +91,8 @@ namespace fmi4cpp::fmi2 {
     public:
         explicit Fmu(const std::string &fmuFile);
 
+        const std::string fmuFile_;
+
         const std::string getModelDescriptionXml() const;
 
         std::shared_ptr<ModelDescription> getModelDescription() const override;
