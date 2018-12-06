@@ -92,7 +92,7 @@ bool ModelExchangeSlave::exitInitializationMode() {
 bool ModelExchangeSlave::doStep(const double stepSize) {
 
     if (stepSize <= 0) {
-        return fmi2Error;
+        return false;
     }
 
     double time = getSimulationTime();
