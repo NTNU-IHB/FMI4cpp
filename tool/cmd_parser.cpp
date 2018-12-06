@@ -25,14 +25,13 @@
 #include <memory>
 #include <vector>
 #include <string>
-#include <fstream>
 #include <iostream>
 
 #include <experimental/filesystem>
-
 #include <boost/program_options.hpp>
-
 #include <fmi4cpp/fmi2/fmi4cpp.hpp>
+
+#include "FmuDriver.hpp"
 
 using namespace std;
 using namespace fmi4cpp::fmi2;
@@ -48,134 +47,9 @@ namespace {
     const char* START = "start";
     const char* STOP = "stop";
     const char* STEP_SIZE = "stepsize";
-    const char* CSV_SEPARATOR = ", ";
 
 }
 
-struct DriverOptions {
-
-    double startTime = 0.0;
-    double stopTime = 0.0;
-    double stepSize = 1e-3;
-
-    bool modelExchange = false;
-
-    fs::path outputFolder = fs::current_path();
-    vector<ScalarVariable> variables;
-
-};
-
-class FmuDriver {
-
-public:
-
-    FmuDriver(const shared_ptr<Fmu> fmu, DriverOptions &options) : fmu_(fmu), options(options) {}
-
-    void run() {
-
-        if (options.modelExchange) {
-            auto solver = make_solver<EulerSolver>(1E-3);
-            simulate(fmu_->asModelExchangeFmu()->newInstance(solver));
-        } else {
-            simulate(fmu_->asCoSimulationFmu()->newInstance());
-        }
-
-    }
-
-private:
-    const shared_ptr<Fmu> fmu_;
-    const DriverOptions options;
-
-    void addHeader(string &data) {
-
-        data += "\"Time\", ";
-
-        auto variables = options.variables;
-        for (unsigned long i = 0; i < variables.size(); i++) {
-            data += "\"" + variables[i].name() + "\"";
-            if (i != variables.size()-1) {
-                data += CSV_SEPARATOR;
-            }
-        }
-
-    }
-
-    void addRow(FmuSlave &slave, string &data) {
-
-        data += to_string(slave.getSimulationTime()) + CSV_SEPARATOR;
-        auto variables = options.variables;
-        for (int i = 0; i < variables.size(); i++) {
-            auto var =  variables[i];
-
-            if (var.isInteger()) {
-                int ref = 0;
-                slave.readInteger(var.valueReference(), ref);
-                data += to_string(ref);
-            } else if (var.isReal()) {
-                double ref = 0;
-                slave.readReal(var.valueReference(), ref);
-                data += to_string(ref);
-            } else if (var.isString()) {
-                const char* ref;
-                slave.readString(var.valueReference(), ref);
-                data += ref;
-            } else if (var.isBoolean()) {
-                int ref = 0;
-                slave.readBoolean(var.valueReference(), ref);
-                data += to_string(ref);
-            }
-
-            if (i != variables.size()-1) {
-                data += CSV_SEPARATOR;
-            }
-        }
-
-    }
-
-    void dumpOutput(const string &data) {
-
-        const auto fmuName = fs::path(fmu_->fmuFile_).stem().string();
-        const auto outputFile = fs::path(options.outputFolder.string() + "/" + fmuName + ".csv");
-        fs::create_directories(outputFile.parent_path());
-
-        ofstream out(outputFile.string(), ofstream::out);
-        out << data;
-        out.flush();
-        out.close();
-
-    }
-
-    void simulate(unique_ptr<FmuSlave> slave) {
-
-        auto startTime = options.startTime;
-        auto stopTime = options.stopTime;
-        auto stepSize = options.stepSize;
-
-        slave->setupExperiment(startTime);
-        slave->enterInitializationMode();
-        slave->exitInitializationMode();
-
-        double t;
-        string data = "";
-        addHeader(data);
-        while ( (t = slave->getSimulationTime()) <= (stopTime) ) {
-
-            data += "\n";
-            addRow(*slave, data);
-
-            if (!slave->doStep(stepSize)) {
-                break;
-            }
-
-        }
-
-        slave->terminate();
-
-        dumpOutput(data);
-
-    }
-
-};
 
 int main(int argc, char** argv) {
 
@@ -249,9 +123,8 @@ int main(int argc, char** argv) {
         options.outputFolder = fs::path(vm["output"].as<string>());
     }
 
-
-    FmuDriver driver(fmu, options);
-    driver.run();
+    FmuDriver driver(fmu);
+    driver.run(options);
 
     return 0;
 
