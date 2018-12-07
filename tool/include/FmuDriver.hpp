@@ -30,11 +30,25 @@
 
 #include <fmi4cpp/fmi2/fmi4cpp.hpp>
 
-#include "DriverOptions.hpp"
-
 namespace fs = std::experimental::filesystem;
 
 namespace fmi4cpp {
+
+    struct DriverOptions {
+
+        double startTime = 0.0;
+        double stopTime = 0.0;
+        double stepSize = 1e-3;
+        double relTol = 0.0;
+        double absTol = 0.0;
+
+        bool modelExchange = false;
+        bool failOnLargeCsv = false;
+
+        fs::path outputFolder = fs::current_path();
+        std::vector<fmi4cpp::fmi2::ScalarVariable> variables;
+
+    };
 
     class FmuDriver {
 

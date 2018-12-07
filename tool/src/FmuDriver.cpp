@@ -54,7 +54,7 @@ namespace {
 
     void addRow(fmi4cpp::fmi2::FmuSlave &slave, vector<ScalarVariable> &variables, string &data) {
 
-        data += to_string(slave.getSimulationTime()) + CSV_SEPARATOR;
+        data += "\n" + to_string(slave.getSimulationTime()) + CSV_SEPARATOR;
         for (int i = 0; i < variables.size(); i++) {
             auto var =  variables[i];
 
@@ -124,17 +124,17 @@ void FmuDriver::simulate(std::unique_ptr<FmuSlave> slave, DriverOptions options)
     slave->enterInitializationMode();
     slave->exitInitializationMode();
 
-    double t;
     string data = "";
     addHeader(options.variables, data);
-    while ( (t = slave->getSimulationTime()) <= (stopTime) ) {
 
-        data += "\n";
-        addRow(*slave, options.variables, data);
+    addRow(*slave, options.variables, data);
+    while (slave->getSimulationTime() <= (stopTime - stepSize)) {
 
         if (!slave->doStep(stepSize)) {
             break;
         }
+
+        addRow(*slave, options.variables, data);
 
     }
 

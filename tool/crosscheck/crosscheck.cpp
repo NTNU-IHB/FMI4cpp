@@ -22,18 +22,213 @@
  * THE SOFTWARE.
  */
 
+#include <string>
+#include <fstream>
+#include <vector>
 #include <iostream>
+#include <memory>
+
+#include <stdlib.h>
 
 #include "FmuDriver.hpp"
 
 #include <fmi4cpp/tools/os_util.hpp>
+#include <boost/algorithm/string.hpp>
+
+#include <experimental/filesystem>
 
 using namespace std;
 
+namespace fs = std::experimental::filesystem;
+
+namespace {
+
+    void write(const fs::path file, const string &data) {
+        ofstream out(file, ofstream::out);
+        out << data;
+        out.flush();
+        out.close();
+    }
+
+    string readFile(const fs::path file) {
+        ifstream stream(file.string());
+        if (stream.is_open()) {
+            return string((istreambuf_iterator<char>(stream)), istreambuf_iterator<char>());
+        } else {
+            return {};
+        }
+    }
+
+    string readLine(const fs::path file) {
+        ifstream stream(file.string());
+        if (stream.is_open()) {
+            string line;
+            getline(stream, line);
+            return line;
+        } else {
+            return {};
+        }
+    }
+
+    vector<string> splitString(const string txt, const char delimiter) {
+        vector<string> lines;
+        boost::split(lines, txt, [&delimiter](char c){return c == delimiter;});
+        return lines;
+    }
+
+    vector<fmi4cpp::fmi2::ScalarVariable> parseVariables(string txt, fmi4cpp::fmi2::ModelVariables &mv) {
+        vector<string> vars;
+        boost::split(vars, txt, [](char c){return c == ',';});
+        vars.erase(vars.begin()); //remove "time"
+
+        vector<fmi4cpp::fmi2::ScalarVariable> variables;
+        for (auto var : vars) {
+            replace(var.begin(), var.end(), '\"', ' ');
+            boost::trim(var);
+            variables.push_back(mv.getByName(var));
+        }
+        return variables;
+    }
+
+    fmi4cpp::DriverOptions parseDefaults(string txt) {
+
+        fmi4cpp::DriverOptions opt;
+        auto lines = splitString(txt, '\n');
+        for (const auto &line : lines) {
+
+            if (line.length() == 0) {
+                break;
+            }
+
+            vector<string> split = splitString(line, ',');
+
+            string token = split[0];
+            string value = split[1];
+
+            if (token == "StartTime") {
+                opt.startTime = std::atof(value.c_str());
+            } else if (token == "StopTime") {
+                opt.stopTime = std::atof(value.c_str());
+            } else if (token == "StepSize") {
+                opt.stepSize = std::atof(value.c_str());
+            }
+
+        }
+
+        return opt;
+    }
+
+}
+
+namespace fmi4cpp::xc {
+
+
+    class CrossChecker {
+
+    public:
+
+        void run(fs::path fmuDir, fs::path resultDir) {
+
+            fs::create_directories(resultDir);
+
+            writeReadme(resultDir);
+
+            try {
+                const string fmuFile = (fmuDir / fmuDir.filename()).string() + ".fmu";
+                const string optFile = (fmuDir / fmuDir.filename()).string() + "_ref.opt";
+                const string refFile = (fmuDir / fmuDir.filename()).string() + "_ref.csv";
+                const string inFile = (fmuDir / fmuDir.filename()).string() + "_in.csv";
+
+                bool hasInput = fs::exists(inFile);
+
+                auto opt = parseDefaults(readFile(optFile));
+                opt.outputFolder = resultDir;
+
+                auto fmu = make_shared<fmi4cpp::fmi2::Fmu>(fmuFile);
+
+                if (opt.startTime >= opt.stopTime) {
+                    reject(resultDir, "Invalid start and/or stop time (startTime >= stopTime).");
+                    return;
+                } else if (opt.stepSize == 0.0) {
+                    fail(resultDir, "Don't know how to handle variable step solver (stepsize=0.0).");
+                    return;
+                } else if (hasInput) {
+                    fail(resultDir, "Unable to handle input files yet.");
+                    return;
+                } else if (fmu->getModelDescription()->asCoSimulationModelDescription()->needsExecutionTool()) {
+                    reject(resultDir, "FMU requires execution tool.");
+                }
+
+                opt.variables = parseVariables(readLine(refFile), *fmu->getModelDescription()->modelVariables());
+
+                fmi4cpp::FmuDriver driver(fmu);
+                driver.run(opt);
+
+                pass(resultDir);
+                cout << "FMU '" << fmuDir << "'"  << endl;
+
+            } catch (exception& ex) {
+                fail(resultDir, "An unexpected program error occurred!");
+            }
+
+        }
+
+
+    private:
+
+        void fail(const fs::path resultDir, const string message) {
+            write(resultDir / "failed", "Reason: " + message);
+        }
+
+        void reject(const fs::path resultDir, const string message) {
+            write(resultDir / "rejected", "Reason: " + message);
+        }
+
+        void pass(fs::path resultDir) {
+            write(resultDir / "passed", "");
+        }
+
+        void writeReadme(const fs::path resultDir) {
+            write(resultDir / "README.md", "    The cross-check results have been generated with FMI4cpp's fmu_driver.\n"
+                                           "    To get more information download the 'fmu_driver' tool from https://github.com/SFI-Mechatronics/FMI4cpp/releases and run:\n"
+                                           "\n"
+                                           "    ```\n"
+                                           "    fmu_driver -h\n"
+                                           "    ```");
+        }
+
+
+    };
+
+}
+
+
 int main(int argc, char** argv) {
 
-    const string xc_dir = argv[1];
+    const string VERSION = "0.4.1";
+    const string os = getOs();
 
-    cout << "hello: " << xc_dir << endl;
+    const fs::path xc_dir = fs::path(argv[1]);
+    const fs::path csFmus = xc_dir / "fmus/2.0/cs" / os;
+    const fs::path csResults = xc_dir / "results/2.0/cs" / os / "FMI4cpp" / VERSION;
+
+    if (fs::exists(csResults)) {
+        fs::remove_all(csResults);
+    }
+
+    fmi4cpp::xc::CrossChecker xc;
+    for (const auto &vendor : fs::directory_iterator(csFmus)) {
+
+        for (const auto &version : fs::directory_iterator(vendor)) {
+            for (const auto &fmuDir : fs::directory_iterator(version)) {
+                fs::path resultDir = csResults / vendor.path().filename() / version.path().filename()  / fmuDir.path().filename() ;
+                xc.run(fmuDir, resultDir);
+            }
+        }
+
+    }
+
+
+    return 0;
 
 }

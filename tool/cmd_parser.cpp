@@ -59,6 +59,7 @@ int main(int argc, char** argv) {
     po::options_description desc("Options");
     desc.add_options()
             ("help,h", "Print this help message and quits.")
+            ("me", "Treat FMU as an Model Exchange FMU.")
             ("fmu,f", po::value<string>(), "Path to FMU.")
             ("output,o", po::value<string>(), "Where to store the generated CSV results.")
             (START, po::value<double>(), "Start time.")
@@ -122,6 +123,10 @@ int main(int argc, char** argv) {
 
     if (vm.count("output")) {
         options.outputFolder = fs::path(vm["output"].as<string>());
+    }
+
+    if (vm.count("me")) {
+        options.modelExchange = true;
     }
 
     FmuDriver driver(fmu);
