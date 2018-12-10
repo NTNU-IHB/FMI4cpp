@@ -27,12 +27,26 @@
 
 #include <string>
 #include <memory>
+#include <experimental/filesystem>
 
 #include <fmi4cpp/fmi2/fmi4cpp.hpp>
 
 namespace fs = std::experimental::filesystem;
 
-namespace fmi4cpp {
+namespace fmi4cpp::driver {
+
+    struct DriverOptions {
+
+        double startTime = 0.0;
+        double stopTime = 0.0;
+        double stepSize = 1e-3;
+
+        bool modelExchange = false;
+
+        fs::path outputFolder = fs::current_path();
+        std::vector<fmi4cpp::fmi2::ScalarVariable> variables;
+
+    };
 
     struct DriverOptions {
 
@@ -54,7 +68,7 @@ namespace fmi4cpp {
 
     public:
 
-        FmuDriver(const std::shared_ptr<fmi4cpp::fmi2::Fmu> fmu) : fmu_(fmu){}
+        explicit FmuDriver(const std::shared_ptr<fmi4cpp::fmi2::Fmu> fmu) : fmu_(fmu){}
 
         void run(DriverOptions options);
 

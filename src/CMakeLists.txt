@@ -1,6 +1,8 @@
 
 SET(SOURCES
 
+        fmi4cpp/driver/FmuDriver.cpp
+
         fmi4cpp/fmi2/import/Fmu.cpp
         fmi4cpp/fmi2/import/CoSimulationFmu.cpp
         fmi4cpp/fmi2/import/ModelExchangeFmu.cpp
