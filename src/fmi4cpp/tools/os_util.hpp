@@ -30,17 +30,19 @@
 namespace {
 
     std::string getOs() {
-#ifdef _WIN32
-        return "win32";
-#elif _WIN64
+#if _WIN32 || _WIN64
+#if _WIN64
         return "win64";
+#else
+        return "win32";
+#endif
 #elif __linux__
         return "linux64";
 #endif
     }
 
     std::string getLibExt() {
-#ifdef WIN32
+#if _WIN32
         return ".dll";
 #elif __linux__
         return ".so";
