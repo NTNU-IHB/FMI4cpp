@@ -105,8 +105,6 @@ namespace fmi4cpp::fmi2 {
 
         std::unique_ptr<ModelExchangeFmu> asModelExchangeFmu() const override;
 
-        ~Fmu();
-
     };
 
     class CoSimulationFmu : public FmuBase<CoSimulationModelDescription> {
