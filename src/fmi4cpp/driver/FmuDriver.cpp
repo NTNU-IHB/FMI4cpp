@@ -101,11 +101,10 @@ void FmuDriver::run(DriverOptions options) {
 
 }
 
-
 void FmuDriver::dumpOutput(const string &data, const string &outputFolder) {
 
     const auto fmuName = fs::path(fmu_->fmuFile_).stem().string();
-    const auto outputFile = fs::path(outputFolder + "/" + fmuName + ".csv");
+    const auto outputFile = fs::path(outputFolder + "/" + fmuName + "_out.csv");
     fs::create_directories(outputFile.parent_path());
 
     ofstream out(outputFile.string(), ofstream::out);
@@ -133,7 +132,7 @@ void FmuDriver::simulate(std::unique_ptr<FmuSlave> slave, DriverOptions options)
 
         if (!slave->doStep(stepSize)) {
             slave->terminate();
-            const string msg = string("FMU instance terminated prematurely.");
+            const string msg = string("Simulation terminated prematurely.");
             throw Failure(msg);
         }
 
