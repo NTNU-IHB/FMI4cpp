@@ -26,18 +26,17 @@
 #include <vector>
 #include <iostream>
 
-#include <fmi4cpp/fmi2/fmi4cpp.hpp>
-
-#include "FmuDriver.hpp"
+#include <fmi4cpp/driver/FmuDriver.hpp>
 
 using namespace std;
 using namespace fmi4cpp;
 using namespace fmi4cpp::fmi2;
 
+using namespace fmi4cpp::driver;
+
 namespace {
 
     const char* CSV_SEPARATOR = ", ";
-
 
     void addHeader(vector<ScalarVariable> &variables, std::string &data) {
 
@@ -55,7 +54,7 @@ namespace {
     void addRow(fmi4cpp::fmi2::FmuSlave &slave, vector<ScalarVariable> &variables, string &data) {
 
         data += to_string(slave.getSimulationTime()) + CSV_SEPARATOR;
-        for (int i = 0; i < variables.size(); i++) {
+        for (unsigned int i = 0; i < variables.size(); i++) {
             auto var =  variables[i];
 
             if (var.isInteger()) {

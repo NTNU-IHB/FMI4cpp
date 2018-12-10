@@ -29,13 +29,14 @@
 
 #include <experimental/filesystem>
 #include <boost/program_options.hpp>
-#include <fmi4cpp/fmi2/fmi4cpp.hpp>
 
-#include "FmuDriver.hpp"
+#include <fmi4cpp/fmi2/fmi4cpp.hpp>
+#include <fmi4cpp/driver/FmuDriver.hpp>
 
 using namespace std;
-using namespace fmi4cpp;
+
 using namespace fmi4cpp::fmi2;
+using namespace fmi4cpp::driver;
 
 namespace fs = std::experimental::filesystem;
 
