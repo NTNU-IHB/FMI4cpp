@@ -152,7 +152,7 @@ fmi2Component FmiLibrary::instantiate(const std::string instanceName, const fmi2
                                        resourceLocation.c_str(), &callback, visible, loggingOn);
 
     if (c == nullptr) {
-        throw std::runtime_error("Fatal: fmi2Instantiate returned nullpptr, unable to instantiate FMU instance!");
+        throw std::runtime_error("Fatal: fmi2Instantiate returned nullptr, unable to instantiate FMU instance!");
     }
 
     return c;
