@@ -94,12 +94,3 @@ bool Fmu::supportsModelExchange() const {
 bool Fmu::supportsCoSimulation() const {
     return modelDescription_->supportsCoSimulation();
 }
-
-Fmu::~Fmu() {
-//#if  FMI4CPP_DEBUG_LOGGING_ENABLED
-//    cout << "~Fmu()" << endl;
-//#endif
-}
-
-
-
