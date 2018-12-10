@@ -117,13 +117,13 @@ namespace fmi4cpp::fmi2 {
 
     public:
 
-        explicit CoSimulationFmu(const std::shared_ptr<FmuResource> &resource,
-                                 const std::shared_ptr<CoSimulationModelDescription> &md);
+        CoSimulationFmu(const std::shared_ptr<FmuResource> &resource,
+                        const std::shared_ptr<CoSimulationModelDescription> &md);
 
         std::shared_ptr<CoSimulationModelDescription> getModelDescription() const override;
 
         std::unique_ptr<FmuSlave> newInstance(bool visible = false, bool loggingOn = false);
-        
+
     };
 
     class ModelExchangeFmu : public virtual FmuBase<ModelExchangeModelDescription> {
@@ -136,8 +136,8 @@ namespace fmi4cpp::fmi2 {
 
     public:
 
-        explicit ModelExchangeFmu(const std::shared_ptr<FmuResource> &resource,
-                                  const std::shared_ptr<ModelExchangeModelDescription> &md);
+        ModelExchangeFmu(const std::shared_ptr<FmuResource> &resource,
+                         const std::shared_ptr<ModelExchangeModelDescription> &md);
 
         std::shared_ptr<ModelExchangeModelDescription> getModelDescription() const override;
 
@@ -145,7 +145,7 @@ namespace fmi4cpp::fmi2 {
 
         std::unique_ptr<ModelExchangeSlave>
         newInstance(std::unique_ptr<Solver> &solver, bool visible = false, bool loggingOn = false);
-        
+
     };
 
 }
