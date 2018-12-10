@@ -30,14 +30,17 @@
 
 #include <stdlib.h>
 
-#include "FmuDriver.hpp"
-
-#include <fmi4cpp/tools/os_util.hpp>
+#include <experimental/filesystem>
 #include <boost/algorithm/string.hpp>
 
-#include <experimental/filesystem>
+#include <fmi4cpp/tools/os_util.hpp>
+#include <fmi4cpp/driver/FmuDriver.hpp>
+
 
 using namespace std;
+
+using namespace fmi4cpp::fmi2;
+using namespace fmi4cpp::driver;
 
 namespace fs = std::experimental::filesystem;
 
@@ -76,12 +79,12 @@ namespace {
         return lines;
     }
 
-    vector<fmi4cpp::fmi2::ScalarVariable> parseVariables(string txt, fmi4cpp::fmi2::ModelVariables &mv) {
+    vector<ScalarVariable> parseVariables(string txt, ModelVariables &mv) {
         vector<string> vars;
         boost::split(vars, txt, [](char c){return c == ',';});
         vars.erase(vars.begin()); //remove "time"
 
-        vector<fmi4cpp::fmi2::ScalarVariable> variables;
+        vector<ScalarVariable> variables;
         for (auto var : vars) {
             replace(var.begin(), var.end(), '\"', ' ');
             boost::trim(var);
@@ -90,9 +93,9 @@ namespace {
         return variables;
     }
 
-    fmi4cpp::DriverOptions parseDefaults(string txt) {
+    DriverOptions parseDefaults(string txt) {
 
-        fmi4cpp::DriverOptions opt;
+        DriverOptions opt;
         auto lines = splitString(txt, '\n');
         for (const auto &line : lines) {
 
@@ -144,7 +147,7 @@ namespace fmi4cpp::xc {
                 auto opt = parseDefaults(readFile(optFile));
                 opt.outputFolder = resultDir;
 
-                auto fmu = make_shared<fmi4cpp::fmi2::Fmu>(fmuFile);
+                auto fmu = make_shared<Fmu>(fmuFile);
 
                 if (opt.startTime >= opt.stopTime) {
                     reject(resultDir, "Invalid start and/or stop time (startTime >= stopTime).");
@@ -161,14 +164,14 @@ namespace fmi4cpp::xc {
 
                 opt.variables = parseVariables(readLine(refFile), *fmu->getModelDescription()->modelVariables());
 
-                fmi4cpp::FmuDriver driver(fmu);
+                FmuDriver driver(fmu);
                 driver.run(opt);
 
                 pass(resultDir);
                 cout << "FMU '" << fmuDir << "'"  << endl;
 
             } catch (exception& ex) {
-                fail(resultDir, "An unexpected program error occurred!");
+                fail(resultDir, string("An unexpected program error occurred: ") + ex.what());
             }
 
         }
