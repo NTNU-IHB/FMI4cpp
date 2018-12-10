@@ -128,7 +128,7 @@ void FmuDriver::simulate(std::unique_ptr<FmuSlave> slave, DriverOptions options)
     addHeader(options.variables, data);
 
     addRow(*slave, options.variables, data);
-    while (slave->getSimulationTime() <= (stopTime - stepSize)) {
+    while (slave->getSimulationTime() <= stopTime) {
 
         if (!slave->doStep(stepSize)) {
             slave->terminate();
