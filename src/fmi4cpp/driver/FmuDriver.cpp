@@ -36,7 +36,7 @@ using namespace fmi4cpp::driver;
 
 namespace {
 
-    const char* CSV_SEPARATOR = ", ";
+    const char* CSV_SEPARATOR = ",";
 
     void addHeader(vector<ScalarVariable> &variables, std::string &data) {
 
