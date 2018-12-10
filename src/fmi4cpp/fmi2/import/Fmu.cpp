@@ -67,7 +67,7 @@ Fmu::Fmu(const string &fmuFile): fmuFile_(fmuFile) {
     if (!extractContents(fmuFile, tmpPath.string())) {
         const string err = "Failed to extract FMU!";
 #if FMI4CPP_DEBUG_LOGGING_ENABLED
-        cout << err << endl;
+        cerr << err << endl;
 #endif
         throw runtime_error(err);
     }
