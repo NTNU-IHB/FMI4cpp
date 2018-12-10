@@ -36,17 +36,17 @@ namespace fs = std::experimental::filesystem;
 
 namespace fmi4cpp::driver {
 
-    class Rejection: public std::exception {
+    class Rejection: public std::runtime_error {
 
     public:
-        explicit Rejection(std::string msg): std::exception(msg.c_str()) {};
+        explicit Rejection(std::string msg): std::runtime_error(msg.c_str()) {};
 
     };
 
-class Failure: public std::exception {
+class Failure: public std::runtime_error {
 
 public:
-    explicit Failure(std::string msg): std::exception(msg.c_str()) {};
+    explicit Failure(std::string msg): std::runtime_error(msg.c_str()) {};
 
 };
 
