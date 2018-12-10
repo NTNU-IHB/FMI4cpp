@@ -77,6 +77,9 @@ Fmu::Fmu(const string &fmuFile): fmuFile_(fmuFile) {
 
 }
 
+const std::string Fmu::getFmuFileName() const {
+    return fs::path(fmuFile_).stem().string();
+}
 
 const string Fmu::getModelDescriptionXml() const {
     ifstream stream(resource_->getModelDescriptionPath());

@@ -92,6 +92,8 @@ namespace fmi4cpp::fmi2 {
         explicit Fmu(const std::string &fmuFile);
 
         const std::string fmuFile_;
+        
+        const std::string getFmuFileName() const;
 
         const std::string getModelDescriptionXml() const;
 
