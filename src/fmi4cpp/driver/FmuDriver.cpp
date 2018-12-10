@@ -36,7 +36,7 @@ using namespace fmi4cpp::driver;
 
 namespace {
 
-    const char* CSV_SEPARATOR = ",";
+    const char *CSV_SEPARATOR = ",";
 
     void addHeader(vector<ScalarVariable> &variables, std::string &data) {
 
@@ -44,7 +44,7 @@ namespace {
 
         for (unsigned long i = 0; i < variables.size(); i++) {
             data += "\"" + variables[i].name() + "\"";
-            if (i != variables.size()-1) {
+            if (i != variables.size() - 1) {
                 data += CSV_SEPARATOR;
             }
         }
@@ -55,7 +55,7 @@ namespace {
 
         data += "\n" + to_string(slave.getSimulationTime()) + CSV_SEPARATOR;
         for (unsigned int i = 0; i < variables.size(); i++) {
-            auto var =  variables[i];
+            auto var = variables[i];
 
             if (var.isInteger()) {
                 int ref = 0;
@@ -66,7 +66,7 @@ namespace {
                 slave.readReal(var.valueReference(), ref);
                 data += to_string(ref);
             } else if (var.isString()) {
-                const char* ref;
+                const char *ref;
                 slave.readString(var.valueReference(), ref);
                 data += ref;
             } else if (var.isBoolean()) {
@@ -75,7 +75,7 @@ namespace {
                 data += to_string(ref);
             }
 
-            if (i != variables.size()-1) {
+            if (i != variables.size() - 1) {
                 data += CSV_SEPARATOR;
             }
         }
@@ -91,7 +91,9 @@ void FmuDriver::run(DriverOptions options) {
         auto solver = make_solver<EulerSolver>(1E-3);
         simulate(fmu_->asModelExchangeFmu()->newInstance(solver), options);
 #else
-        cerr << "Model Exchange selected, but driver has been built without odeint support!" << endl;
+        const char *msg = "Model Exchange mode selected, but driver has been built without odeint support!";
+        cerr << msg << endl;
+        throw Failure(msg);
 #endif
     } else {
         simulate(fmu_->asCoSimulationFmu()->newInstance(), options);
@@ -130,7 +132,9 @@ void FmuDriver::simulate(std::unique_ptr<FmuSlave> slave, DriverOptions options)
     while (slave->getSimulationTime() <= (stopTime - stepSize)) {
 
         if (!slave->doStep(stepSize)) {
-            break;
+            slave->terminate();
+            const string msg = string("FMU instance terminated prematurely.");
+            throw Failure(msg);
         }
 
         addRow(*slave, options.variables, data);
@@ -138,6 +142,14 @@ void FmuDriver::simulate(std::unique_ptr<FmuSlave> slave, DriverOptions options)
     }
 
     slave->terminate();
+
+    if (options.failOnLargeFileSize) {
+        const size_t size = data.size();
+        if (size > 1e6) {
+            double mbSize = ((double) size) / 1e6;
+            throw Rejection(string("Generated csv was larger than 1MB. Was: ") + std::to_string((mbSize)) + "MB");
+        }
+    }
 
     dumpOutput(data, options.outputFolder.string());
 

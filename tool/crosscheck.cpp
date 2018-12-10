@@ -75,13 +75,13 @@ namespace {
 
     vector<string> splitString(const string txt, const char delimiter) {
         vector<string> lines;
-        boost::split(lines, txt, [&delimiter](char c){return c == delimiter;});
+        boost::split(lines, txt, [&delimiter](char c) { return c == delimiter; });
         return lines;
     }
 
     vector<ScalarVariable> parseVariables(string txt, ModelVariables &mv) {
         vector<string> vars;
-        boost::split(vars, txt, [](char c){return c == ',';});
+        boost::split(vars, txt, [](char c) { return c == ','; });
         vars.erase(vars.begin()); //remove "time"
 
         vector<ScalarVariable> variables;
@@ -125,12 +125,13 @@ namespace {
 
 namespace fmi4cpp::xc {
 
-
     class CrossChecker {
 
     public:
 
         void run(fs::path fmuDir, fs::path resultDir) {
+
+            cout << "Cross-checking FMU '" << fmuDir << "'!" << endl;
 
             fs::create_directories(resultDir);
 
@@ -146,32 +147,43 @@ namespace fmi4cpp::xc {
 
                 auto opt = parseDefaults(readFile(optFile));
                 opt.outputFolder = resultDir;
+                opt.failOnLargeFileSize = true;
 
-                auto fmu = make_shared<Fmu>(fmuFile);
+                try {
 
-                if (opt.startTime >= opt.stopTime) {
-                    reject(resultDir, "Invalid start and/or stop time (startTime >= stopTime).");
-                    return;
-                } else if (opt.stepSize == 0.0) {
-                    fail(resultDir, "Don't know how to handle variable step solver (stepsize=0.0).");
-                    return;
-                } else if (hasInput) {
-                    fail(resultDir, "Unable to handle input files yet.");
-                    return;
-                } else if (fmu->getModelDescription()->asCoSimulationModelDescription()->needsExecutionTool()) {
-                    reject(resultDir, "FMU requires execution tool.");
+                    if (opt.startTime >= opt.stopTime) {
+                        throw Rejection("Invalid start and/or stop time (startTime >= stopTime).");
+                    } else if (opt.stepSize == 0.0) {
+                        throw Failure("Don't know how to handle variable step solver (stepsize=0.0).");
+                    } else if (hasInput) {
+                        throw Failure("Unable to handle input files yet.");
+                    }
+
+                    auto fmu = make_shared<Fmu>(fmuFile);
+                    if (fmu->getModelDescription()->asCoSimulationModelDescription()->needsExecutionTool()) {
+                        throw Rejection("FMU requires execution tool.");
+                    }
+
+                    opt.variables = parseVariables(readLine(refFile), *fmu->getModelDescription()->modelVariables());
+
+                    FmuDriver driver(fmu);
+                    driver.run(opt);
+
+                    pass(resultDir);
+                    cout << "Cross-checking FMU '" << fmuDir.filename() << "' passed." << endl;
+
+                } catch (Rejection &ex) {
+                    cerr << "Cross-checking FMU '" << fmuDir.filename() << "' rejected. " << ex.what() << endl;
+                    reject(resultDir, ex.what());
+                } catch (Failure &ex) {
+                    cerr << "Cross-checking FMU '" << fmuDir.filename() << "' failed. " << ex.what() << endl;
+                    fail(resultDir, ex.what());
                 }
 
-                opt.variables = parseVariables(readLine(refFile), *fmu->getModelDescription()->modelVariables());
 
-                FmuDriver driver(fmu);
-                driver.run(opt);
-
-                pass(resultDir);
-                cout << "FMU '" << fmuDir << "'"  << endl;
-
-            } catch (exception& ex) {
-                cerr << string("An unexpected program error occurred: ") + ex.what() << endl;
+            } catch (exception &ex) {
+                cerr << "Cross-checking FMU '" << fmuDir << "' failed. An unexpected program error occurred: "
+                     << ex.what() << endl;
                 fail(resultDir, "An unexpected program error occurred");
             }
 
@@ -193,12 +205,13 @@ namespace fmi4cpp::xc {
         }
 
         void writeReadme(const fs::path resultDir) {
-            write(resultDir / "README.md", "    The cross-check results have been generated with FMI4cpp's fmu_driver.\n"
-                                           "    To get more information download the 'fmu_driver' tool from https://github.com/SFI-Mechatronics/FMI4cpp/releases and run:\n"
-                                           "\n"
-                                           "    ```\n"
-                                           "    fmu_driver -h\n"
-                                           "    ```");
+            write(resultDir / "README.md",
+                  "    The cross-check results have been generated with FMI4cpp's fmu_driver.\n"
+                  "    To get more information download the 'fmu_driver' tool from https://github.com/SFI-Mechatronics/FMI4cpp/releases and run:\n"
+                  "\n"
+                  "    ```\n"
+                  "    fmu_driver -h\n"
+                  "    ```");
         }
 
 
@@ -207,7 +220,7 @@ namespace fmi4cpp::xc {
 }
 
 
-int main(int argc, char** argv) {
+int main(int argc, char **argv) {
 
     const string VERSION = "0.4.1";
     const string os = getOs();
@@ -225,7 +238,8 @@ int main(int argc, char** argv) {
 
         for (const auto &version : fs::directory_iterator(vendor)) {
             for (const auto &fmuDir : fs::directory_iterator(version)) {
-                fs::path resultDir = csResults / vendor.path().filename() / version.path().filename()  / fmuDir.path().filename() ;
+                fs::path resultDir =
+                        csResults / vendor.path().filename() / version.path().filename() / fmuDir.path().filename();
                 xc.run(fmuDir, resultDir);
             }
         }
