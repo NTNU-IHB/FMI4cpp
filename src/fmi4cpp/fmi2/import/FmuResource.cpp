@@ -54,7 +54,7 @@ FmuResource::~FmuResource() {
     if (!success) {
         std::cout << "Deleted temporal folder '" << path_.string() << "'" <<  std::endl;
     } else {
-        std::cout << "Unable to delete temporal folder '" <<  path_.string() << "'" <<  std::endl;
+        std::cerr << "Unable to delete temporal folder '" <<  path_.string() << "'" <<  std::endl;
     }
 #endif
 
