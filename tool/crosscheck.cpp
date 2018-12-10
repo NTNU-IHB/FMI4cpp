@@ -171,9 +171,8 @@ namespace fmi4cpp::xc {
                 cout << "FMU '" << fmuDir << "'"  << endl;
 
             } catch (exception& ex) {
-                string msg = string("An unexpected program error occurred: ") + ex.what();
-                cerr << msg << endl;
-                fail(resultDir, msg);
+                cerr << string("An unexpected program error occurred: ") + ex.what() << endl;
+                fail(resultDir, "An unexpected program error occurred");
             }
 
         }
