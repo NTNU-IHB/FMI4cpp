@@ -51,6 +51,7 @@ if (UNIX)
 endif ()
 
 find_package(LIBZIP REQUIRED)
+find_package(spdlog CONFIG REQUIRED)
 find_package(fmt CONFIG REQUIRED)
 
 add_subdirectory(src)
