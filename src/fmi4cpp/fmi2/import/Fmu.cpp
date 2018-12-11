@@ -22,9 +22,7 @@
  * THE SOFTWARE.
  */
 
-#if FMI4CPP_DEBUG_LOGGING_ENABLED
-#include <iostream>
-#endif
+#include <fmi4cpp/logger.hpp>
 
 #include <experimental/filesystem>
 
@@ -45,30 +43,22 @@ namespace fs = std::experimental::filesystem;
 
 Fmu::Fmu(const string &fmuFile): fmuFile_(fmuFile) {
 
-#if FMI4CPP_DEBUG_LOGGING_ENABLED
-    cout << "Loading FMU '" << fmuFile << "'" << endl;
-#endif
+    fmi4cpp::logger::debug("Loading FMU '{}'", fmuFile);
 
     const string fmuName = fs::path(fmuFile).stem().string();
     fs::path tmpPath(fs::temp_directory_path() /= fs::path("fmi4cpp_" + fmuName + "_" + generate_simple_id(8)));
 
     if (!create_directories(tmpPath)) {
-        string err = "Failed to create temporary directory!";
-#if FMI4CPP_DEBUG_LOGGING_ENABLED
-        cerr << err << endl;
-#endif
+        const string err = "Failed to create temporary directory '" + tmpPath.string() + "' !";
+        fmi4cpp::logger::error(err);
         throw runtime_error(err);
     }
 
-#if FMI4CPP_DEBUG_LOGGING_ENABLED
-    cout << "Created temporary directory '" << tmpPath.string() << "'" << endl;
-#endif
+    fmi4cpp::logger::debug("Created temporary directory '{}'", tmpPath.string());
 
     if (!extractContents(fmuFile, tmpPath.string())) {
-        const string err = "Failed to extract FMU!";
-#if FMI4CPP_DEBUG_LOGGING_ENABLED
-        cerr << err << endl;
-#endif
+        const string err = "Failed to extract FMU '" + fmuFile + "'!";
+        fmi4cpp::logger::error(err);
         throw runtime_error(err);
     }
 

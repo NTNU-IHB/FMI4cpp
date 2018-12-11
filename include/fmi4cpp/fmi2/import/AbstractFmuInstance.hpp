@@ -25,11 +25,6 @@
 #ifndef FMI4CPP_ABSTRACTFMUINSTANCE_HPP
 #define FMI4CPP_ABSTRACTFMUINSTANCE_HPP
 
-#if FMI4CPP_DEBUG_LOGGING_ENABLED
-
-#include <iostream>
-
-#endif
 
 #include <utility>
 #include <string>
@@ -39,7 +34,6 @@
 #include "FmuInstance.hpp"
 #include "status_converter.hpp"
 #include "../xml/ModelDescription.hpp"
-
 
 namespace fmi4cpp::fmi2 {
 

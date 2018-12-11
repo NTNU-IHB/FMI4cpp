@@ -22,17 +22,10 @@
  * THE SOFTWARE.
  */
 
-
-#if FMI4CPP_DEBUG_LOGGING_ENABLED
-
-#include <experimental/filesystem>
-
-namespace fs = std::experimental::filesystem;
-#endif
-
 #include <sstream>
 #include <iostream>
 
+#include <fmi4cpp/logger.hpp>
 #include <fmi4cpp/fmi2/import/FmiLibrary.hpp>
 
 #include "FmiLibraryHelper.hpp"
@@ -80,14 +73,12 @@ FmiLibrary::FmiLibrary(const std::string &modelIdentifier, const std::shared_ptr
 
     const auto libName = resource->getAbsoluteLibraryPath(modelIdentifier);
 
-#if FMI4CPP_DEBUG_LOGGING_ENABLED
-    std::cout << "Loading shared library '" << fs::path(libName).stem() << "'" << std::endl;
-#endif
+    fmi4cpp::logger::debug("Loading shared library '{}'", fs::path(libName).stem().string());
 
     handle_ = loadLibrary(libName);
 
     if (!handle_) {
-        std::cerr << getLastError() << std::endl;
+        fmi4cpp::logger::error(getLastError());
         throw std::runtime_error("Unable to load dynamic library '" + libName + "'!");
     }
 
@@ -325,11 +316,9 @@ FmiLibrary::~FmiLibrary() {
         success = (dlclose(handle_) == 0);
 #endif
 
-#if FMI4CPP_DEBUG_LOGGING_ENABLED
         if (!success) {
-            std::cout << getLastError() << std::endl;
+            fmi4cpp::logger::error(getLastError());
         }
-#endif
 
         handle_ = nullptr;
     }
