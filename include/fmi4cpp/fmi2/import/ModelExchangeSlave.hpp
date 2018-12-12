@@ -52,13 +52,12 @@ namespace fmi4cpp::solver {
 
 namespace fmi4cpp::fmi2 {
 
-
     class ModelExchangeSlave : public FmuSlave {
 
     private:
 
         solver::fmu_wrapper sys_;
-        std::unique_ptr<solver::ModelExchangeSolver> solver_;
+        std::unique_ptr<fmi4cpp::solver::ModelExchangeSolver> solver_;
         std::shared_ptr<ModelExchangeInstance> instance_;
         std::shared_ptr<CoSimulationModelDescription> csModelDescription_;
 
@@ -70,7 +69,7 @@ namespace fmi4cpp::fmi2 {
 
     public:
         ModelExchangeSlave(std::unique_ptr<ModelExchangeInstance> &instance,
-                           std::unique_ptr<solver::ModelExchangeSolver> &solver);
+                           std::unique_ptr<fmi4cpp::solver::ModelExchangeSolver> &solver);
 
         const double getSimulationTime() const override;
 
