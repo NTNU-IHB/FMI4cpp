@@ -28,7 +28,7 @@
 #include <vector>
 #include <memory>
 
-#include "Status.hpp"
+#include "../../Status.hpp"
 #include "FmuVariableAccessor.hpp"
 
 namespace fmi4cpp::fmi2 {

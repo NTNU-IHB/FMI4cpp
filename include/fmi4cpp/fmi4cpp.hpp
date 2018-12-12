@@ -25,19 +25,6 @@
 #ifndef FMI4CPP_FMI4CPP_HPP
 #define FMI4CPP_FMI4CPP_HPP
 
-#include "../fmi4cpp.hpp"
-
-#include "xml/enums.hpp"
-#include "xml/ModelDescription.hpp"
-#include "xml/TypedScalarVariable.hpp"
-
-#include "import/Fmu.hpp"
-#include "import/FmuSlave.hpp"
-#include "import/CoSimulationSlave.hpp"
-#include "import/ModelExchangeSlave.hpp"
-
-#if FMI4CPP_WITH_ODEINT
-#include "import/OdeintSolver.hpp"
-#endif
+#include "Status.hpp"
 
 #endif //FMI4CPP_FMI4CPP_HPP
