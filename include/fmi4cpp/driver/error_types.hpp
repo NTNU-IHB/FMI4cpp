@@ -22,42 +22,24 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMI4CPP_FMUDRIVER_HPP
-#define FMI4CPP_FMUDRIVER_HPP
-
-#include <string>
-#include <memory>
-#include <stdexcept>
-#include <experimental/filesystem>
-
-#include <fmi4cpp/fmi2/fmi4cpp.hpp>
-
-#include "error_types.hpp"
-#include "DriverOptions.hpp"
-
-namespace fs = std::experimental::filesystem;
+#ifndef FMI4CPP_ERROR_TYPES_HPP
+#define FMI4CPP_ERROR_TYPES_HPP
 
 namespace fmi4cpp::driver {
 
-    class FmuDriver {
+    class Rejection: public std::runtime_error {
 
     public:
-
-        explicit FmuDriver(const std::shared_ptr<fmi4cpp::fmi2::Fmu> fmu) : fmu_(fmu){}
-
-        void run(DriverOptions options);
-
-    private:
-
-        const std::shared_ptr<fmi4cpp::fmi2::Fmu> fmu_;
-
-        void dumpOutput(const std::string &data, const std::string &outputFolder);
-
-        void simulate(std::unique_ptr<fmi4cpp::fmi2::FmuSlave> slave, DriverOptions options);
+        explicit Rejection(std::string msg): std::runtime_error(msg.c_str()) {};
 
     };
 
+    class Failure: public std::runtime_error {
+
+    public:
+        explicit Failure(std::string msg): std::runtime_error(msg.c_str()) {};
+
+    };
 }
 
-
-#endif //FMI4CPP_FMUDRIVER_HPP
+#endif //FMI4CPP_ERROR_TYPES_HPP
