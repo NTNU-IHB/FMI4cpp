@@ -60,33 +60,44 @@ const double stepSize = 1.0/100;
 
 int main() {
 
-    auto fmu = Fmu("path/to/fmu.fmu").asCoSimulationFmu();
+    Fmu fmu = Fmu("path/to/fmu.fmu");
     
-    auto md = fmu->getModelDescription();
-    logger::info("modelIdentifier={}", slave1->getModelDescription()->modelIdentifier());
+    auto cs_fmu = fmu.asCoSimulationFmu();
+    auto me_fmu = fmu.asModelExchangeFmu();
     
-    auto var = md->getVariableByName("my_var").asRealVariable();
+    auto cs_md = fmu->getModelDescription(); //smart pointer to a CoSimulationModelDescription instance
+    logger::info("modelIdentifier={}", cs_fmu->getModelDescription()->modelIdentifier());
+    
+    auto me_md = fmu->getModelDescription(); //smart pointer to a ModelExchangeModelDescription instance
+    logger::info("modelIdentifier={}", me_fmu->getModelDescription()->modelIdentifier());
+    
+    auto var = cs_md->getVariableByName("my_var").asRealVariable();
     logger::info("Name={}, start={}", var.name(), var.start().value_or(0));
+              
+    auto slave = cs_fmu->newInstance();
     
-    auto slave = fmu->newInstance();
+    // or 
+    // auto solver = make_solver<RK4ClassicSolver>(1E-3);
+    // auto slave = me_fmu->newInstance(solver);
+         
     slave->setupExperiment();
     slave->enterInitializationMode();
     slave->exitInitializationMode();
-   
+    
     double t;
     double value;
     while ( (t = slave->getSimulationTime()) <= stop) {
 
         if (!slave->doStep(stepSize)) {
-            logger::error("Error! doStep returned with status: {}", to_string(slave->getLastStatus()));
+            logger::error("Error! doStep() returned with status: {}", to_string(slave->getLastStatus()));
             break;
         }
         
         if (!var.read(*slave, value)) {
-            logger::error("Error! readReal returned with status: {}", to_string(slave->getLastStatus()));
+            logger::error("Error! readReal() returned with status: {}", to_string(slave->getLastStatus()));
             break;
         }
-        logger::info("t={}, {}={}",t, var.name(), value);
+        logger::info("t={}, {}={}", t, var.name(), value);
      
     }
     
