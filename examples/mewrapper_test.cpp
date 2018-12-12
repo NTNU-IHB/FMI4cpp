@@ -70,7 +70,7 @@ int main() {
             break;
         }
 
-        fmi4cpp::logger::info("t={}, h={}",  t, ref);
+        logger::info("t={}, h={}",  t, ref);
     }
 
     slave->terminate();
