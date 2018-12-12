@@ -22,8 +22,8 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMI4CPP_FMI4CPP_HPP
-#define FMI4CPP_FMI4CPP_HPP
+#ifndef FMI4CPP_FMI4CPP_FMI2_HPP
+#define FMI4CPP_FMI4CPP_FMI2_HPP
 
 #include "../fmi4cpp.hpp"
 
@@ -40,4 +40,4 @@
 #include "import/OdeintSolver.hpp"
 #endif
 
-#endif //FMI4CPP_FMI4CPP_HPP
+#endif //FMI4CPP_FMI4CPP_FMI2_HPP
