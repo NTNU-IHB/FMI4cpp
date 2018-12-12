@@ -68,7 +68,7 @@ int main() {
     auto vr = md2->getValueReference("Temperature_Room");
     assert(vr == 47);
     slave2->readReal(vr, ref);
-    fmi4cpp::logger::info("Temperature_Room={}, ref");
+    fmi4cpp::logger::info("Temperature_Room={}", ref);
 
     slave1->terminate();
     slave2->terminate();
