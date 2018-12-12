@@ -24,15 +24,16 @@
 
 #include <string>
 #include <memory>
-#include <iostream>
 #include <vector>
+#include <iostream>
 
-#include <fmi4cpp/logger.hpp>
 #include <fmi4cpp/fmi2/fmi4cpp.hpp>
 #include <fmi4cpp/tools/os_util.hpp>
 
 using namespace std;
 using namespace fmi4cpp::fmi2;
+
+namespace logger = fmi4cpp::logger;
 
 const double stop = 1.0;
 const double microStep = 1E-3;
@@ -60,10 +61,12 @@ int main() {
     while ( ( t = slave->getSimulationTime()) <= stop) {
 
         if (!slave->doStep(macroStep)) {
+            logger::error("Error! doStep returned with status: {}", to_string(slave->getLastStatus()));
             break;
         }
 
         if (!hVar.read(*slave, ref)) {
+            logger::error("Error! readReal returned with status: {}", to_string(slave->getLastStatus()));
             break;
         }
 

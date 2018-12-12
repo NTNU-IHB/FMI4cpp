@@ -23,7 +23,7 @@
  */
 
 #include <iostream>
-#include <fmi4cpp/logger.hpp>
+
 #include <fmi4cpp/fmi2/fmi4cpp.hpp>
 #include <fmi4cpp/tools/os_util.hpp>
 
@@ -61,11 +61,11 @@ int main() {
     double ref;
     while ((t = slave->getSimulationTime()) <= (stop - step_size)) {
         if (!slave->doStep(step_size)) {
-            logger::error("Error! doStep returned with status: {}");
+            logger::error("Error! doStep returned with status: {}", to_string(slave->getLastStatus()));
             break;
         }
         if (!slave->readReal(vr, ref)) {
-            logger::error("Error! readReal returned with status: {}");
+            logger::error("Error! readReal returned with status: {}", to_string(slave->getLastStatus()));
             break;
         }
     }

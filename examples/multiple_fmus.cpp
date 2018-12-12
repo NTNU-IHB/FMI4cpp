@@ -25,7 +25,6 @@
 #include <assert.h>
 #include <iostream>
 
-#include <fmi4cpp/logger.hpp>
 #include <fmi4cpp/tools/os_util.hpp>
 #include <fmi4cpp/fmi2/fmi4cpp.hpp>
 
