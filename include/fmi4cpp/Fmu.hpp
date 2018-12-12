@@ -28,11 +28,11 @@
 #include <memory>
 #include <string>
 
+#include "FmuSlave.hpp"
+#include "FmuResource.hpp"
+#include "solver/ModelExchangeSolver.hpp"
+
 namespace fmi4cpp {
-
-    class CoSimulationFmu;
-
-    class ModelExchangeFmu;
 
     template<class ModelDescription>
     class FmuBase {
@@ -50,7 +50,7 @@ namespace fmi4cpp {
 
     };
 
-    template<class ModelDescription>
+    template<class ModelDescription, class CoSimulationFmu, class ModelExchangeFmu>
     class FmuProvider : public virtual FmuBase<ModelDescription> {
 
     public:
@@ -63,6 +63,32 @@ namespace fmi4cpp {
         virtual std::unique_ptr <ModelExchangeFmu> asModelExchangeFmu() const = 0;
 
     };
+
+    template <class CoSimulationSlave, class CoSimulationModelDescription>
+    class CoSimulationFmu : public FmuBase<CoSimulationModelDescription> {
+
+    public:
+
+        virtual std::shared_ptr<CoSimulationModelDescription> getModelDescription() const = 0;
+
+        virtual std::unique_ptr<CoSimulationSlave> newInstance(bool visible, bool loggingOn) = 0;
+
+    };
+
+    template <class ModelExchangeInstance, class ModelExchangeSlave, class ModelExchangeModelDescription>
+    class fmi2ModelExchangeFmu : public FmuBase<ModelExchangeModelDescription> {
+
+    public:
+
+        virtual std::shared_ptr<ModelExchangeModelDescription> getModelDescription() const override = 0;
+
+        virtual std::unique_ptr<ModelExchangeInstance> newInstance(bool visible = false, bool loggingOn = false) = 0;
+
+        virtual std::unique_ptr<ModelExchangeSlave>
+        newInstance(std::unique_ptr<fmi4cpp::solver::ModelExchangeSolver> &solver, bool visible = false, bool loggingOn = false) = 0;
+
+    };
+
 
 }
 

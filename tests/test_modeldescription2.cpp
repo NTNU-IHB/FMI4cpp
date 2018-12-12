@@ -28,7 +28,7 @@
 #include <string>
 #include <boost/test/unit_test.hpp>
 #include <fmi4cpp/tools/os_util.hpp>
-#include <fmi4cpp/fmi2/fmi4cpp.hpp>
+#include <fmi4cpp/fmi2/fmi2.hpp>
 
 using namespace std;
 using namespace fmi4cpp::fmi2;

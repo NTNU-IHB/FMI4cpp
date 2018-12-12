@@ -29,14 +29,14 @@
 
 namespace fmi4cpp {
 
-    template <typename ModelDescription>
-    class FmuSlave: virtual public FmuInstance<ModelDescription> {
+    template <typename CoSimulationModelDescription>
+    class FmuSlave: virtual public FmuInstance<CoSimulationModelDescription> {
+
+    public:
 
         virtual bool doStep(double stepSize) = 0;
 
         virtual bool cancelStep() = 0;
-
-        virtual ~FmuSlave() = default;
 
     };
 

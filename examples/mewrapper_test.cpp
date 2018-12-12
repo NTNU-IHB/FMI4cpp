@@ -27,7 +27,7 @@
 #include <vector>
 #include <iostream>
 
-#include <fmi4cpp/fmi2/fmi4cpp.hpp>
+#include <fmi4cpp/fmi2/fmi2.hpp>
 #include <fmi4cpp/tools/os_util.hpp>
 
 using namespace std;

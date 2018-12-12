@@ -28,7 +28,7 @@
 #include <string>
 #include <memory>
 
-#include <fmi4cpp/fmi2/fmi4cpp.hpp>
+#include <fmi4cpp/fmi2/fmi2.hpp>
 
 #include "error_types.hpp"
 #include "DriverOptions.hpp"

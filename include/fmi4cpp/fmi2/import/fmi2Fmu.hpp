@@ -33,7 +33,6 @@
 #include "fmi4cpp/Fmu.hpp"
 #include "fmi4cpp/solver/ModelExchangeSolver.hpp"
 
-#include "fmi2Slave.hpp"
 #include "fmi2CoSimulationLibrary.hpp"
 #include "fmi2ModelExchangeLibrary.hpp"
 #include "fmi2ModelExchangeInstance.hpp"
@@ -43,7 +42,13 @@
 
 namespace fmi4cpp::fmi2 {
 
-class fmi2Fmu : public virtual FmuProvider<ModelDescription> {
+    class fmi2CoSimulationFmu;
+
+    class fmi2ModelExchangeFmu;
+
+    typedef FmuSlave<CoSimulationModelDescription> fmi2Slave;
+
+class fmi2Fmu : public virtual FmuProvider<ModelDescription, fmi2CoSimulationFmu, fmi2ModelExchangeFmu> {
 
         friend class fmi2CoSimulationFmu;
 
@@ -69,13 +74,13 @@ class fmi2Fmu : public virtual FmuProvider<ModelDescription> {
 
         bool supportsCoSimulation() const override;
 
-        std::unique_ptr<CoSimulationFmu> asCoSimulationFmu() const override;
+        std::unique_ptr<fmi2CoSimulationFmu> asCoSimulationFmu() const override;
 
-        std::unique_ptr<ModelExchangeFmu> asModelExchangeFmu() const override;
+        std::unique_ptr<fmi2ModelExchangeFmu> asModelExchangeFmu() const override;
 
     };
 
-    class fmi2CoSimulationFmu : public FmuBase<CoSimulationModelDescription> {
+    class fmi2CoSimulationFmu : public CoSimulationFmu<fmi2Slave, CoSimulationModelDescription> {
 
     private:
 

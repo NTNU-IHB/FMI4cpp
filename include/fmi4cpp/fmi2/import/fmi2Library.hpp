@@ -100,6 +100,7 @@ namespace fmi4cpp::fmi2 {
         std::string getLastError() const;
 
     protected:
+        
         DLL_HANDLE handle_ = nullptr;
 
         fmi2Status lastStatus_;

@@ -22,26 +22,17 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMI4CPP_FMI2SLAVE_HPP
-#define FMI4CPP_FMI2SLAVE_HPP
+#ifndef FMI4CPP_FMI2_HPP
+#define FMI4CPP_FMI2_HPP
 
-#include "fmi4cpp/FmuSlave.hpp"
-#include "fmi4cpp/fmi2/xml/CoSimulationModelDescription.hpp"
+#include "../fmi4cpp.hpp"
 
-namespace fmi4cpp::fmi2 {
+#include "xml/enums.hpp"
+#include "xml/ModelDescription.hpp"
+#include "xml/TypedScalarVariable.hpp"
 
-    class fmi2Slave : virtual public FmuSlave<CoSimulationModelDescription> {
+#include "fmi4cpp/fmi2/import/fmi2Fmu.hpp"
+#include "fmi4cpp/fmi2/import/fmi2CoSimulationSlave.hpp"
+#include "fmi4cpp/fmi2/import/fmi2ModelExchangeSlave.hpp"
 
-    public:
-
-        virtual bool doStep(double stepSize) = 0;
-
-        virtual bool cancelStep() = 0;
-
-        ~fmi2Slave() override = default;
-
-    };
-
-}
-
-#endif //FMI4CPP_FMI2SLAVE_HPP
+#endif //FMI4CPP_FMI2_HPP

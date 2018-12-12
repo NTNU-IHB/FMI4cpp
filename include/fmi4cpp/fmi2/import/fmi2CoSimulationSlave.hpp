@@ -27,18 +27,19 @@
 
 #include <memory>
 
-#include "fmi2Slave.hpp"
 #include "fmi2CoSimulationLibrary.hpp"
 
+#include "fmi4cpp/FmuSlave.hpp"
 #include "fmi4cpp/AbstractFmuInstance.hpp"
 #include "fmi4cpp/fmi2/xml/ModelDescription.hpp"
 
 namespace fmi4cpp::fmi2 {
 
-    class fmi2CoSimulationSlave : public virtual fmi2Slave,
+    class fmi2CoSimulationSlave : public virtual FmuSlave<CoSimulationModelDescription>,
                               public AbstractFmuInstance<fmi2CoSimulationLibrary, CoSimulationModelDescription> {
 
     public:
+
         fmi2CoSimulationSlave(fmi2Component c,
                           const std::shared_ptr<fmi2CoSimulationLibrary> &library,
                           const std::shared_ptr<CoSimulationModelDescription> &modelDescription);
@@ -46,6 +47,7 @@ namespace fmi4cpp::fmi2 {
         bool doStep(double stepSize) override;
 
         bool cancelStep() override;
+
 
         virtual std::shared_ptr<CoSimulationModelDescription> getModelDescription() const;
 

@@ -30,7 +30,7 @@
 #include <experimental/filesystem>
 #include <boost/program_options.hpp>
 
-#include <fmi4cpp/fmi2/fmi4cpp.hpp>
+#include <fmi4cpp/fmi2/fmi2.hpp>
 #include <fmi4cpp/driver/FmuDriver.hpp>
 
 using namespace std;

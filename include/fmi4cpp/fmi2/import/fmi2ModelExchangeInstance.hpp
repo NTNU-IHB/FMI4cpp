@@ -25,6 +25,7 @@
 #ifndef FMI4CPP_MODELEXCHANGEINSTANCE_HPP
 #define FMI4CPP_MODELEXCHANGEINSTANCE_HPP
 
+#include <memory>
 #include <vector>
 
 #include "fmi2ModelExchangeLibrary.hpp"
@@ -65,6 +66,8 @@ namespace fmi4cpp::fmi2 {
                                      fmi2Boolean &enterEventMode, fmi2Boolean &terminateSimulation);
 
         bool newDiscreteStates();
+
+        Status getLastStatus() const override;
 
     };
 

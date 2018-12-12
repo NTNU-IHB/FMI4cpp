@@ -26,9 +26,7 @@
 #define FMI4CPP_FMI2MODELEXCHANGESLAVE_HPP
 
 #include <memory>
-#include <utility>
 
-#include "fmi2Slave.hpp"
 #include "fmi2ModelExchangeInstance.hpp"
 
 #include "fmi4cpp/solver/ModelExchangeSolver.hpp"
@@ -52,7 +50,7 @@ namespace fmi4cpp::solver {
 
 namespace fmi4cpp::fmi2 {
 
-    class fmi2ModelExchangeSlave : public fmi2Slave {
+    class fmi2ModelExchangeSlave : public FmuSlave<CoSimulationModelDescription> {
 
     private:
 
@@ -68,6 +66,7 @@ namespace fmi4cpp::fmi2 {
         std::pair<double, bool> solve(double t0, double tNext);
 
     public:
+
         fmi2ModelExchangeSlave(std::unique_ptr<fmi2ModelExchangeInstance> &instance,
                            std::unique_ptr<fmi4cpp::solver::ModelExchangeSolver> &solver);
 

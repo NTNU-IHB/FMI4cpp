@@ -293,4 +293,3 @@ bool fmi2ModelExchangeSlave::writeBoolean(const std::vector<fmi2ValueReference> 
 fmi4cpp::Status fmi2ModelExchangeSlave::getLastStatus() const {
     return instance_->getLastStatus();
 }
-

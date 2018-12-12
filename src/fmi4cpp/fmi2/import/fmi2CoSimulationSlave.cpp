@@ -22,6 +22,8 @@
  * THE SOFTWARE.
  */
 
+
+#include <fmi4cpp/fmi2/fmi2StatusConverter.hpp>
 #include <fmi4cpp/fmi2/import/fmi2CoSimulationSlave.hpp>
 
 using namespace fmi4cpp::fmi2;
@@ -30,6 +32,10 @@ fmi2CoSimulationSlave::fmi2CoSimulationSlave(const fmi2Component c,
                                      const std::shared_ptr<fmi2CoSimulationLibrary> &library,
                                      const std::shared_ptr<CoSimulationModelDescription> &modelDescription)
         : AbstractFmuInstance<fmi2CoSimulationLibrary, CoSimulationModelDescription>(c, library, modelDescription) {}
+
+fmi4cpp::Status fmi2CoSimulationSlave::getLastStatus() const {
+    return convert(library_->getLastStatus());
+}
 
 bool fmi2CoSimulationSlave::doStep(const double stepSize) {
     if (library_->doStep(c_, simulationTime_, stepSize, false)) {
@@ -45,11 +51,6 @@ bool fmi2CoSimulationSlave::cancelStep() {
 
 std::shared_ptr<CoSimulationModelDescription> fmi2CoSimulationSlave::getModelDescription() const {
     return AbstractFmuInstance::getModelDescription();
-}
-
-
-fmi4cpp::Status fmi2CoSimulationSlave::getLastStatus() const {
-    return AbstractFmuInstance::getLastStatus();
 }
 
 bool fmi2CoSimulationSlave::setupExperiment(double start, double stop, double tolerance) {

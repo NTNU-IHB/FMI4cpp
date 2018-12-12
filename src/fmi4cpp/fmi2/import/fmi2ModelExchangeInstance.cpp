@@ -22,6 +22,7 @@
  * THE SOFTWARE.
  */
 
+#include <fmi4cpp/fmi2/fmi2StatusConverter.hpp>
 #include <fmi4cpp/fmi2/import/fmi2ModelExchangeInstance.hpp>
 
 using namespace fmi4cpp::fmi2;
@@ -30,6 +31,10 @@ fmi2ModelExchangeInstance::fmi2ModelExchangeInstance(const fmi2Component c,
                                              const std::shared_ptr<fmi2ModelExchangeLibrary> &library,
                                              const std::shared_ptr<ModelExchangeModelDescription> &modelDescription)
         : AbstractFmuInstance<fmi2ModelExchangeLibrary, ModelExchangeModelDescription>(c, library, modelDescription) {}
+
+fmi4cpp::Status fmi2ModelExchangeInstance::getLastStatus() const {
+    return convert(library_->getLastStatus());
+}
 
 bool fmi2ModelExchangeInstance::enterEventMode() {
     return library_->enterEventMode(c_);
