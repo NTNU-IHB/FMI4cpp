@@ -26,10 +26,14 @@
 #define FMI4CPP_FMI2MODELEXCHANGESLAVE_HPP
 
 #include <memory>
+#include <vector>
 
 #include "fmi2ModelExchangeInstance.hpp"
 
+#include "fmi4cpp/FmuSlave.hpp"
 #include "fmi4cpp/solver/ModelExchangeSolver.hpp"
+#include "fmi4cpp/fmi2/xml/CoSimulationModelDescription.hpp"
+
 
 namespace fmi4cpp::solver {
 

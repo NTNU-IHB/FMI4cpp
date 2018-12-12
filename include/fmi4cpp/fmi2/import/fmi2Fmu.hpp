@@ -38,7 +38,8 @@
 #include "fmi2ModelExchangeInstance.hpp"
 #include "fmi2ModelExchangeSlave.hpp"
 
-#include "fmi4cpp/fmi2/xml/ModelDescription.hpp"
+#include "fmi4cpp/fmi2/xml/CoSimulationModelDescription.hpp"
+#include "fmi4cpp/fmi2/xml/ModelExchangeModelDescription.hpp"
 
 namespace fmi4cpp::fmi2 {
 

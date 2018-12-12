@@ -30,7 +30,7 @@
 namespace fmi4cpp {
 
     template <typename CoSimulationModelDescription>
-    class FmuSlave: virtual public FmuInstance<CoSimulationModelDescription> {
+    class FmuSlave: public virtual FmuInstance<CoSimulationModelDescription> {
 
     public:
 
