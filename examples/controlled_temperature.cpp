@@ -46,7 +46,7 @@ int main() {
 
     for (const auto &v : *fmu->getModelDescription()->modelVariables()) {
         if (v.causality() == Causality::output) {
-            logger::info("nNme={}", v.name());
+            logger::info("Name={}", v.name());
         }
     }
 
