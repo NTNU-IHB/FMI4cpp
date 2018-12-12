@@ -53,6 +53,8 @@ On *NIX systems the dependencies can of course be installed using the native pac
 
 using namespace fmi4cpp::fmi2;
 
+namespace logger = fmi4cpp::logger;
+
 const double stop = 10.0;
 const double stepSize = 1.0/100;
 
@@ -61,10 +63,10 @@ int main() {
     auto fmu = Fmu("path/to/fmu.fmu").asCoSimulationFmu();
     
     auto md = fmu->getModelDescription();
-    std::cout << "modelIdentifier=" << md->modelIdentifier() << std::endl;
+    logger::info("modelIdentifier={}", slave1->getModelDescription()->modelIdentifier());
     
     auto var = md->getVariableByName("my_var").asRealVariable();
-    cout << "Name=" << var.name() << ", start=" var.start().value_or(0) << endl;
+    logger::info("Name={}, start={}", var.name(), var.start().value_or(0));
     
     auto slave = fmu->newInstance();
     slave->setupExperiment();
@@ -76,15 +78,15 @@ int main() {
     while ( (t = slave->getSimulationTime()) <= stop) {
 
         if (!slave->doStep(stepSize)) {
-            //error handling
+            logger::error("Error! doStep returned with status: {}", to_string(slave->getLastStatus()));
             break;
         }
         
         if (!var.read(*slave, value)) {
-            //error handling
+            logger::error("Error! readReal returned with status: {}", to_string(slave->getLastStatus()));
             break;
         }
-        std::cout << "t=" << t << ", " << var.name() << "=" << value << std::endl;
+        logger::info("t={}, {}={}",t, var.name(), value);
      
     }
     
@@ -107,7 +109,9 @@ Options:
   --start arg            Start time.
   --stop arg             Stop time.
   --stepsize arg         StepSize.
+  --me                   Treat FMU as an Model Exchange FMU.
   -v [ --variables ] arg Variables to print.
+
 
 ```
 
