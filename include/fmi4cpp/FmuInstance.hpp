@@ -28,14 +28,14 @@
 #include <vector>
 #include <memory>
 
-#include "../../Status.hpp"
+#include "fmi4cpp/Status.hpp"
+#include "fmi4cpp/types.hpp"
+
 #include "FmuVariableAccessor.hpp"
 
-namespace fmi4cpp::fmi2 {
-
-    typedef void *fmi2FMUstate;
-
-    template <typename T>
+namespace fmi4cpp {
+    
+    template <typename ModelDescription>
     class FmuInstance: public FmuVariableAccessor {
 
     protected:
@@ -50,7 +50,7 @@ namespace fmi4cpp::fmi2 {
 
         virtual fmi4cpp::Status getLastStatus() const = 0;
 
-        virtual std::shared_ptr<T> getModelDescription() const = 0;
+        virtual std::shared_ptr<ModelDescription> getModelDescription() const = 0;
 
         virtual bool setupExperiment(double startTime = 0.0, double stopTime = 0.0, double tolerance = 0.0) = 0;
 
@@ -62,18 +62,18 @@ namespace fmi4cpp::fmi2 {
 
         virtual bool terminate() = 0;
 
-        virtual bool getFMUstate(void* &state) = 0;
-        virtual bool setFMUstate(void* state) = 0;
-        virtual bool freeFMUstate(void* &state) = 0;
+        virtual bool getFMUstate(fmi4cppFMUstate &state) = 0;
+        virtual bool setFMUstate(fmi4cppFMUstate state) = 0;
+        virtual bool freeFMUstate(fmi4cppFMUstate &state) = 0;
 
-        virtual bool serializeFMUstate(const fmi2FMUstate &state, std::vector<char> &serializedState) = 0;
-        virtual bool deSerializeFMUstate(fmi2FMUstate &state, const std::vector<char> &serializedState) = 0;
+        virtual bool serializeFMUstate(const fmi4cppFMUstate &state, std::vector<fmi4cppByte> &serializedState) = 0;
+        virtual bool deSerializeFMUstate(fmi4cppFMUstate &state, const std::vector<fmi4cppByte> &serializedState) = 0;
 
         virtual bool getDirectionalDerivative(
-                const std::vector<unsigned int> &vUnknownRef,
-                const std::vector<unsigned int> &vKnownRef,
-                const std::vector<double> &dvKnownRef,
-                std::vector<double> &dvUnknownRef) = 0;
+                const std::vector<fmi4cppValueReference> &vUnknownRef,
+                const std::vector<fmi4cppValueReference> &vKnownRef,
+                const std::vector<fmi4cppReal> &dvKnownRef,
+                std::vector<fmi4cppReal> &dvUnknownRef) = 0;
 
         virtual ~FmuInstance() = default;
 

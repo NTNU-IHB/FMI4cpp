@@ -23,13 +23,13 @@
  */
 
 #include "FmiLibraryHelper.hpp"
-#include <fmi4cpp/fmi2/import/ModelExchangeLibrary.hpp>
+#include <fmi4cpp/fmi2/import/fmi2ModelExchangeLibrary.hpp>
 
 using namespace fmi4cpp::fmi2;
 
-ModelExchangeLibrary::ModelExchangeLibrary(const std::string &modelIdentifier,
+fmi2ModelExchangeLibrary::fmi2ModelExchangeLibrary(const std::string &modelIdentifier,
                                            const std::shared_ptr<FmuResource> &resource)
-        : FmiLibrary(modelIdentifier, resource) {
+        : fmi2Library(modelIdentifier, resource) {
 
     fmi2EnterEventMode_ = loadFunction<fmi2EnterEventModeTYPE *>(handle_, "fmi2EnterEventMode");
     fmi2EnterContinuousTimeMode_ = loadFunction<fmi2EnterContinuousTimeModeTYPE *>(
@@ -47,39 +47,39 @@ ModelExchangeLibrary::ModelExchangeLibrary(const std::string &modelIdentifier,
 
 }
 
-bool ModelExchangeLibrary::enterEventMode(const fmi2Component c) {
+bool fmi2ModelExchangeLibrary::enterEventMode(const fmi2Component c) {
     return updateStatusAndReturnTrueIfOK(fmi2EnterEventMode_(c));
 }
 
-bool ModelExchangeLibrary::enterContinuousTimeMode(const fmi2Component c) {
+bool fmi2ModelExchangeLibrary::enterContinuousTimeMode(const fmi2Component c) {
     return updateStatusAndReturnTrueIfOK(fmi2EnterContinuousTimeMode_(c));
 }
 
-bool ModelExchangeLibrary::setTime(const fmi2Component c, const double time) {
+bool fmi2ModelExchangeLibrary::setTime(const fmi2Component c, const double time) {
     return updateStatusAndReturnTrueIfOK(fmi2SetTime_(c, time));
 }
 
-bool ModelExchangeLibrary::setContinuousStates(const fmi2Component c, const std::vector<fmi2Real> &x) {
+bool fmi2ModelExchangeLibrary::setContinuousStates(const fmi2Component c, const std::vector<fmi2Real> &x) {
     return updateStatusAndReturnTrueIfOK(fmi2SetContinuousStates_(c, x.data(), x.size()));
 }
 
-bool ModelExchangeLibrary::getDerivatives(const fmi2Component c, std::vector<fmi2Real> &derivatives) {
+bool fmi2ModelExchangeLibrary::getDerivatives(const fmi2Component c, std::vector<fmi2Real> &derivatives) {
     return updateStatusAndReturnTrueIfOK(fmi2GetDerivatives_(c, derivatives.data(), derivatives.size()));
 }
 
-bool ModelExchangeLibrary::getEventIndicators(const fmi2Component c, std::vector<fmi2Real> &eventIndicators) {
+bool fmi2ModelExchangeLibrary::getEventIndicators(const fmi2Component c, std::vector<fmi2Real> &eventIndicators) {
     return updateStatusAndReturnTrueIfOK(fmi2GetEventIndicators_(c, eventIndicators.data(), eventIndicators.size()));
 }
 
-bool ModelExchangeLibrary::getContinuousStates(const fmi2Component c, std::vector<fmi2Real> &x) {
+bool fmi2ModelExchangeLibrary::getContinuousStates(const fmi2Component c, std::vector<fmi2Real> &x) {
     return updateStatusAndReturnTrueIfOK(fmi2GetContinuousStates_(c, x.data(), x.size()));
 }
 
-bool ModelExchangeLibrary::getNominalsOfContinuousStates(const fmi2Component c, std::vector<fmi2Real> &x_nominal) {
+bool fmi2ModelExchangeLibrary::getNominalsOfContinuousStates(const fmi2Component c, std::vector<fmi2Real> &x_nominal) {
     return updateStatusAndReturnTrueIfOK(fmi2GetNominalsOfContinuousStates_(c, x_nominal.data(), x_nominal.size()));
 }
 
-bool ModelExchangeLibrary::completedIntegratorStep(const fmi2Component c,
+bool fmi2ModelExchangeLibrary::completedIntegratorStep(const fmi2Component c,
                                                    const fmi2Boolean noSetFMUStatePriorToCurrentPoint,
                                                    fmi2Boolean &enterEventMode,
                                                    fmi2Boolean &terminateSimulation) {
@@ -87,6 +87,6 @@ bool ModelExchangeLibrary::completedIntegratorStep(const fmi2Component c,
             fmi2CompletedIntegratorStep_(c, noSetFMUStatePriorToCurrentPoint, &enterEventMode, &terminateSimulation));
 }
 
-bool ModelExchangeLibrary::newDiscreteStates(const fmi2Component c, fmi2EventInfo &eventInfo) {
+bool fmi2ModelExchangeLibrary::newDiscreteStates(const fmi2Component c, fmi2EventInfo &eventInfo) {
     return updateStatusAndReturnTrueIfOK(fmi2NewDiscreteStates_(c, &eventInfo));
 }

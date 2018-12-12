@@ -22,39 +22,34 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMI4CPP_FMUDRIVER_HPP
-#define FMI4CPP_FMUDRIVER_HPP
+#ifndef FMI4CPP_FMURESOURCE_HPP
+#define FMI4CPP_FMURESOURCE_HPP
 
-#include <string>
-#include <memory>
+#include <experimental/filesystem>
 
-#include <fmi4cpp/fmi2/fmi4cpp.hpp>
+namespace fs = std::experimental::filesystem;
 
-#include "error_types.hpp"
-#include "DriverOptions.hpp"
+namespace fmi4cpp {
 
-
-namespace fmi4cpp::driver {
-
-    class FmuDriver {
-
-    public:
-
-        explicit FmuDriver(const std::shared_ptr<fmi4cpp::fmi2::fmi2Fmu> fmu);
-
-        void run(DriverOptions options);
+    class FmuResource {
 
     private:
 
-        const std::shared_ptr<fmi4cpp::fmi2::fmi2Fmu> fmu_;
+        fs::path path_;
 
-        void dumpOutput(const std::string &data, const std::string &outputFolder);
+    public:
+        explicit FmuResource(fs::path &path);
 
-        void simulate(std::unique_ptr<fmi4cpp::fmi2::fmi2Slave> slave, DriverOptions options);
+        const std::string getResourcePath() const;
+
+        const std::string getModelDescriptionPath() const;
+
+        const std::string getAbsoluteLibraryPath(const std::string &modelIdentifier) const;
+
+        ~FmuResource();
 
     };
 
 }
 
-
-#endif //FMI4CPP_FMUDRIVER_HPP
+#endif //FMI4CPP_FMURESOURCE_HPP

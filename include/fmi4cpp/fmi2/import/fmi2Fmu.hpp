@@ -22,66 +22,32 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMI4CPP_FMU_HPP
-#define FMI4CPP_FMU_HPP
+#ifndef FMI4CPP_FMI2FMU_HPP
+#define FMI4CPP_FMI2FMU_HPP
 
 #include <memory>
 #include <vector>
 #include <string>
 #include <type_traits>
 
-#include "FmuResource.hpp"
-#include "CoSimulationLibrary.hpp"
-#include "ModelExchangeLibrary.hpp"
-#include "ModelExchangeInstance.hpp"
-#include "ModelExchangeSlave.hpp"
+#include "fmi4cpp/Fmu.hpp"
+#include "fmi4cpp/solver/ModelExchangeSolver.hpp"
 
-#include "FmuSlave.hpp"
-#include "../xml/ModelDescription.hpp"
+#include "fmi2Slave.hpp"
+#include "fmi2CoSimulationLibrary.hpp"
+#include "fmi2ModelExchangeLibrary.hpp"
+#include "fmi2ModelExchangeInstance.hpp"
+#include "fmi2ModelExchangeSlave.hpp"
+
+#include "fmi4cpp/fmi2/xml/ModelDescription.hpp"
 
 namespace fmi4cpp::fmi2 {
 
-    class CoSimulationFmu;
+class fmi2Fmu : public virtual FmuProvider<ModelDescription> {
 
-    class ModelExchangeFmu;
+        friend class fmi2CoSimulationFmu;
 
-    template<class T>
-    class FmuBase {
-
-        static_assert(std::is_base_of<ModelDescriptionBase, T>::value, "T must derive from ModelDescription");
-
-    public:
-        std::string guid() const {
-            return getModelDescription()->guid();
-        }
-
-        std::string modelName() const {
-            return getModelDescription()->modelName();
-        }
-
-        virtual std::shared_ptr<T> getModelDescription() const = 0;
-
-    };
-
-    class FmuProvider : public virtual FmuBase<ModelDescription> {
-
-    public:
-        virtual bool supportsCoSimulation() const = 0;
-
-        virtual bool supportsModelExchange() const = 0;
-
-        virtual std::unique_ptr<CoSimulationFmu> asCoSimulationFmu() const = 0;
-
-        virtual std::unique_ptr<ModelExchangeFmu> asModelExchangeFmu() const = 0;
-
-    };
-
-
-    class Fmu : public virtual FmuProvider {
-
-        friend class CoSimulationFmu;
-
-        friend class ModelExchangeFmu;
+        friend class fmi2ModelExchangeFmu;
 
     private:
 
@@ -89,7 +55,7 @@ namespace fmi4cpp::fmi2 {
         std::shared_ptr<ModelDescription> modelDescription_;
 
     public:
-        explicit Fmu(const std::string &fmuFile);
+        explicit fmi2Fmu(const std::string &fmuFile);
 
         const std::string fmuFile_;
         
@@ -109,48 +75,48 @@ namespace fmi4cpp::fmi2 {
 
     };
 
-    class CoSimulationFmu : public FmuBase<CoSimulationModelDescription> {
+    class fmi2CoSimulationFmu : public FmuBase<CoSimulationModelDescription> {
 
     private:
 
         std::shared_ptr<FmuResource> resource_;
-        std::shared_ptr<CoSimulationLibrary> lib_;
+        std::shared_ptr<fmi2CoSimulationLibrary> lib_;
         std::shared_ptr<CoSimulationModelDescription> modelDescription_;
 
     public:
 
-        CoSimulationFmu(const std::shared_ptr<FmuResource> &resource,
+        fmi2CoSimulationFmu(const std::shared_ptr<FmuResource> &resource,
                         const std::shared_ptr<CoSimulationModelDescription> &md);
 
         std::shared_ptr<CoSimulationModelDescription> getModelDescription() const override;
 
-        std::unique_ptr<FmuSlave> newInstance(bool visible = false, bool loggingOn = false);
+        std::unique_ptr<fmi2Slave> newInstance(bool visible = false, bool loggingOn = false);
 
     };
 
-    class ModelExchangeFmu : public virtual FmuBase<ModelExchangeModelDescription> {
+    class fmi2ModelExchangeFmu : public virtual FmuBase<ModelExchangeModelDescription> {
 
     private:
 
         std::shared_ptr<FmuResource> resource_;
-        std::shared_ptr<ModelExchangeLibrary> lib_;
+        std::shared_ptr<fmi2ModelExchangeLibrary> lib_;
         std::shared_ptr<ModelExchangeModelDescription> modelDescription_;
 
     public:
 
-        ModelExchangeFmu(const std::shared_ptr<FmuResource> &resource,
+        fmi2ModelExchangeFmu(const std::shared_ptr<FmuResource> &resource,
                          const std::shared_ptr<ModelExchangeModelDescription> &md);
 
         std::shared_ptr<ModelExchangeModelDescription> getModelDescription() const override;
 
-        std::unique_ptr<ModelExchangeInstance> newInstance(bool visible = false, bool loggingOn = false);
+        std::unique_ptr<fmi2ModelExchangeInstance> newInstance(bool visible = false, bool loggingOn = false);
 
-        std::unique_ptr<ModelExchangeSlave>
-        newInstance(std::unique_ptr<solver::ModelExchangeSolver> &solver, bool visible = false, bool loggingOn = false);
+        std::unique_ptr<fmi2ModelExchangeSlave>
+        newInstance(std::unique_ptr<fmi4cpp::solver::ModelExchangeSolver> &solver, bool visible = false, bool loggingOn = false);
 
     };
 
 }
 
 
-#endif //FMI4CPP_FMU_HPP
+#endif //FMI4CPP_FMI2FMU_HPP

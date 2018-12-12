@@ -22,34 +22,35 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMI4CPP_TEMPORALFOLDER_HPP
-#define FMI4CPP_TEMPORALFOLDER_HPP
+#ifndef FMI4CPP_FMI2STATUSCONVERTER_HPP
+#define FMI4CPP_FMI2STATUSCONVERTER_HPP
 
-#include <experimental/filesystem>
-
-namespace fs = std::experimental::filesystem;
+#include <fmi4cpp/Status.hpp>
+#include <fmi4cpp/fmi2/fmi2FunctionTypes.h>
 
 namespace fmi4cpp::fmi2 {
 
-class FmuResource {
+    inline Status convert(fmi2Status status) {
 
-private:
-    fs::path path_;
+        switch (status) {
+            case fmi2OK:
+                return Status::OK;
+            case fmi2Warning:
+                return Status::Warning;
+            case fmi2Discard:
+                return Status::Discard;
+            case fmi2Error:
+                return Status::Error;
+            case fmi2Fatal:
+                return Status::Fatal;
+            case fmi2Pending:
+                return Status::Pending;
+            default:
+                return Status::Unknown;
+        }
 
-    public:
-        explicit FmuResource(fs::path &path);
-
-        const std::string getResourcePath() const;
-
-        const std::string getModelDescriptionPath() const;
-
-        const std::string getAbsoluteLibraryPath(const std::string &modelIdentifier) const;
-
-        ~FmuResource();
-
-    };
+    }
 
 }
 
-
-#endif //FMI4CPP_TEMPORALFOLDER_HPP
+#endif //FMI4CPP_FMI2STATUSCONVERTER_HPP

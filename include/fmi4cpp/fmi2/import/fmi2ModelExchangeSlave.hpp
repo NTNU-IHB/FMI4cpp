@@ -22,14 +22,14 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMI4CPP_MODELEXCHANGESLAVE_HPP
-#define FMI4CPP_MODELEXCHANGESLAVE_HPP
+#ifndef FMI4CPP_FMI2MODELEXCHANGESLAVE_HPP
+#define FMI4CPP_FMI2MODELEXCHANGESLAVE_HPP
 
 #include <memory>
 #include <utility>
 
-#include "FmuSlave.hpp"
-#include "ModelExchangeInstance.hpp"
+#include "fmi2Slave.hpp"
+#include "fmi2ModelExchangeInstance.hpp"
 
 #include "fmi4cpp/solver/ModelExchangeSolver.hpp"
 
@@ -38,7 +38,7 @@ namespace fmi4cpp::solver {
     class fmu_wrapper {
 
     public:
-        std::shared_ptr<fmi2::ModelExchangeInstance> instance_;
+        std::shared_ptr<fmi2::fmi2ModelExchangeInstance> instance_;
 
         void operator()(const std::vector<double> &x, std::vector<double> &dx, const double t) {
             instance_->setTime(t);
@@ -52,13 +52,13 @@ namespace fmi4cpp::solver {
 
 namespace fmi4cpp::fmi2 {
 
-    class ModelExchangeSlave : public FmuSlave {
+    class fmi2ModelExchangeSlave : public fmi2Slave {
 
     private:
 
         solver::fmu_wrapper sys_;
         std::unique_ptr<fmi4cpp::solver::ModelExchangeSolver> solver_;
-        std::shared_ptr<ModelExchangeInstance> instance_;
+        std::shared_ptr<fmi2ModelExchangeInstance> instance_;
         std::shared_ptr<CoSimulationModelDescription> csModelDescription_;
 
         std::vector<fmi2Real> x_;
@@ -68,7 +68,7 @@ namespace fmi4cpp::fmi2 {
         std::pair<double, bool> solve(double t0, double tNext);
 
     public:
-        ModelExchangeSlave(std::unique_ptr<ModelExchangeInstance> &instance,
+        fmi2ModelExchangeSlave(std::unique_ptr<fmi2ModelExchangeInstance> &instance,
                            std::unique_ptr<fmi4cpp::solver::ModelExchangeSolver> &solver);
 
         const double getSimulationTime() const override;
@@ -143,4 +143,4 @@ namespace fmi4cpp::fmi2 {
 }
 
 
-#endif //FMI4CPP_MODELEXCHANGESLAVE_HPP
+#endif //FMI4CPP_FMI2MODELEXCHANGESLAVE_HPP

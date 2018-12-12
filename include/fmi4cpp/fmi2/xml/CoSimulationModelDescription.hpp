@@ -22,39 +22,27 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMI4CPP_FMUDRIVER_HPP
-#define FMI4CPP_FMUDRIVER_HPP
+#ifndef FMI4CPP_COSIMULATIONMODELDESCRIPTION_HPP
+#define FMI4CPP_COSIMULATIONMODELDESCRIPTION_HPP
 
-#include <string>
-#include <memory>
+#include "SpecificModelDescription.hpp"
 
-#include <fmi4cpp/fmi2/fmi4cpp.hpp>
+namespace fmi4cpp::fmi2 {
 
-#include "error_types.hpp"
-#include "DriverOptions.hpp"
-
-
-namespace fmi4cpp::driver {
-
-    class FmuDriver {
+    class CoSimulationModelDescription : public SpecificModelDescription<CoSimulationAttributes> {
 
     public:
 
-        explicit FmuDriver(const std::shared_ptr<fmi4cpp::fmi2::fmi2Fmu> fmu);
+        CoSimulationModelDescription(const ModelDescriptionBase &base, const CoSimulationAttributes &attributes);
 
-        void run(DriverOptions options);
+        bool canInterpolateInputs() const;
+        bool canRunAsynchronuously() const;
+        bool canHandleVariableCommunicationStepSize() const;
 
-    private:
-
-        const std::shared_ptr<fmi4cpp::fmi2::fmi2Fmu> fmu_;
-
-        void dumpOutput(const std::string &data, const std::string &outputFolder);
-
-        void simulate(std::unique_ptr<fmi4cpp::fmi2::fmi2Slave> slave, DriverOptions options);
+        size_t maxOutputDerivativeOrder() const;
 
     };
 
 }
 
-
-#endif //FMI4CPP_FMUDRIVER_HPP
+#endif //FMI4CPP_COSIMULATIONMODELDESCRIPTION_HPP

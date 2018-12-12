@@ -25,24 +25,17 @@
 #ifndef FMI4CPP_ABSTRACTFMUINSTANCE_HPP
 #define FMI4CPP_ABSTRACTFMUINSTANCE_HPP
 
-
-#include <utility>
+#include <memory>
 #include <string>
-#include <type_traits>
 
-#include "FmiLibrary.hpp"
+#include "types.hpp"
+#include "Status.hpp"
 #include "FmuInstance.hpp"
-#include "status_converter.hpp"
-#include "../xml/ModelDescription.hpp"
 
-namespace fmi4cpp::fmi2 {
+namespace fmi4cpp {
 
-    template<typename T, typename U>
-    class AbstractFmuInstance : public virtual FmuInstance<U> {
-
-        static_assert(std::is_base_of<FmiLibrary, T>::value, "T must derive from FmiLibrary");
-        static_assert(std::is_base_of<ModelDescriptionBase, U>::value,
-                      "U must derive from ModelDescriptionBase");
+    template<typename FmiLibrary, typename ModelDescription>
+    class AbstractFmuInstance : public virtual FmuInstance<ModelDescription> {
 
     private:
 
@@ -52,21 +45,17 @@ namespace fmi4cpp::fmi2 {
     protected:
 
         fmi2Component c_;
-        const std::shared_ptr<T> library_;
-        const std::shared_ptr<U> modelDescription_;
+        const std::shared_ptr<FmiLibrary> library_;
+        const std::shared_ptr<ModelDescription> modelDescription_;
 
     public:
 
         AbstractFmuInstance(fmi2Component c,
-                            const std::shared_ptr<T> &library,
-                            const std::shared_ptr<U> &modelDescription)
+                            const std::shared_ptr<FmiLibrary> &library,
+                            const std::shared_ptr<ModelDescription> &modelDescription)
                 : c_(c), library_(library), modelDescription_(modelDescription) {}
 
-        fmi4cpp::Status getLastStatus() const override {
-            return convert(library_->getLastStatus());
-        }
-
-        std::shared_ptr<U> getModelDescription() const override {
+        std::shared_ptr<ModelDescription> getModelDescription() const override {
             return modelDescription_;
         }
 
@@ -114,98 +103,98 @@ namespace fmi4cpp::fmi2 {
             }
         }
 
-        bool getFMUstate(fmi2FMUstate &state) override {
+        bool getFMUstate(fmi4cppFMUstate &state) override {
             return library_->getFMUstate(c_, state);
         }
 
-        bool setFMUstate(fmi2FMUstate state) override {
+        bool setFMUstate(fmi4cppFMUstate state) override {
             return library_->setFMUstate(c_, state);
         }
 
-        bool freeFMUstate(fmi2FMUstate &state) override {
+        bool freeFMUstate(fmi4cppFMUstate &state) override {
             return library_->freeFMUstate(c_, state);
         }
 
 
-        bool getSerializedFMUstateSize(fmi2FMUstate state, size_t &size) const {
+        bool getSerializedFMUstateSize(fmi4cppFMUstate state, size_t &size) const {
             return library_->getSerializedFMUstateSize(c_, state, size);
         }
 
-        bool serializeFMUstate(const fmi2FMUstate &state, std::vector<fmi2Byte> &serializedState) override {
+        bool serializeFMUstate(const fmi4cppFMUstate &state, std::vector<fmi4cppByte> &serializedState) override {
             return library_->serializeFMUstate(c_, state, serializedState);
         }
 
-        bool deSerializeFMUstate(fmi2FMUstate &state, const std::vector<fmi2Byte> &serializedState) override {
+        bool deSerializeFMUstate(fmi4cppFMUstate &state, const std::vector<fmi4cppByte> &serializedState) override {
             return library_->deSerializeFMUstate(c_, state, serializedState);
         }
 
         bool getDirectionalDerivative(
-                const std::vector<fmi2ValueReference> &vUnknownRef, const std::vector<fmi2ValueReference> &vKnownRef,
-                const std::vector<fmi2Real> &dvKnownRef, std::vector<fmi2Real> &dvUnknownRef) override {
+                const std::vector<fmi4cppValueReference> &vUnknownRef, const std::vector<fmi4cppValueReference> &vKnownRef,
+                const std::vector<fmi4cppReal> &dvKnownRef, std::vector<fmi4cppReal> &dvUnknownRef) override {
             return library_->getDirectionalDerivative(c_, vUnknownRef, vKnownRef, dvKnownRef, dvUnknownRef);
         }
 
-        bool readInteger(const fmi2ValueReference vr, fmi2Integer &ref) override {
+        bool readInteger(const fmi4cppValueReference vr, fmi4cppInteger &ref) override {
             return library_->readInteger(c_, vr, ref);
         }
 
-        bool readInteger(const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Integer> &ref) override {
+        bool readInteger(const std::vector<fmi4cppValueReference> &vr, std::vector<fmi4cppInteger> &ref) override {
             return library_->readInteger(c_, vr, ref);
         }
 
-        bool readReal(const fmi2ValueReference vr, fmi2Real &ref) override {
+        bool readReal(const fmi4cppValueReference vr, fmi4cppReal &ref) override {
             return library_->readReal(c_, vr, ref);
         }
 
-        bool readReal(const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Real> &ref) override {
+        bool readReal(const std::vector<fmi4cppValueReference> &vr, std::vector<fmi4cppReal> &ref) override {
             return library_->readReal(c_, vr, ref);
         }
 
-        bool readString(const fmi2ValueReference vr, fmi2String &ref) override {
+        bool readString(const fmi4cppValueReference vr, fmi4cppString &ref) override {
             return library_->readString(c_, vr, ref);
         }
 
-        bool readString(const std::vector<fmi2ValueReference> &vr, std::vector<fmi2String> &ref) override {
+        bool readString(const std::vector<fmi4cppValueReference> &vr, std::vector<fmi4cppString> &ref) override {
             return library_->readString(c_, vr, ref);
         }
 
-        bool readBoolean(const fmi2ValueReference vr, fmi2Boolean &ref) override {
+        bool readBoolean(const fmi4cppValueReference vr, fmi4cppBoolean &ref) override {
             return library_->readBoolean(c_, vr, ref);
         }
 
-        bool readBoolean(const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Boolean> &ref) override {
+        bool readBoolean(const std::vector<fmi4cppValueReference> &vr, std::vector<fmi4cppBoolean> &ref) override {
             return library_->readBoolean(c_, vr, ref);
         }
 
-        bool writeInteger(const fmi2ValueReference vr, const fmi2Integer value) override {
+        bool writeInteger(const fmi4cppValueReference vr, const fmi4cppInteger value) override {
             return library_->writeInteger(c_, vr, value);
         }
 
-        bool writeInteger(const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2Integer> &values) override {
+        bool writeInteger(const std::vector<fmi4cppValueReference> &vr, const std::vector<fmi4cppInteger> &values) override {
             return library_->writeInteger(c_, vr, values);
         }
 
-        bool writeReal(const fmi2ValueReference vr, const fmi2Real value) override {
+        bool writeReal(const fmi4cppValueReference vr, const fmi4cppReal value) override {
             return library_->writeReal(c_, vr, value);
         }
 
-        bool writeReal(const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2Real> &values) override {
+        bool writeReal(const std::vector<fmi4cppValueReference> &vr, const std::vector<fmi4cppReal> &values) override {
             return library_->writeReal(c_, vr, values);
         }
 
-        bool writeString(const fmi2ValueReference vr, fmi2String value) override {
+        bool writeString(const fmi4cppValueReference vr, fmi4cppString value) override {
             return library_->writeString(c_, vr, value);
         }
 
-        bool writeString(const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2String> &values) override {
+        bool writeString(const std::vector<fmi4cppValueReference> &vr, const std::vector<fmi4cppString> &values) override {
             return library_->writeString(c_, vr, values);
         }
 
-        bool writeBoolean(const fmi2ValueReference vr, const fmi2Boolean value) override {
+        bool writeBoolean(const fmi4cppValueReference vr, const fmi4cppBoolean value) override {
             return library_->writeBoolean(c_, vr, value);
         }
 
-        bool writeBoolean(const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2Boolean> &values) override {
+        bool writeBoolean(const std::vector<fmi4cppValueReference> &vr, const std::vector<fmi4cppBoolean> &values) override {
             return library_->writeBoolean(c_, vr, values);
         }
 

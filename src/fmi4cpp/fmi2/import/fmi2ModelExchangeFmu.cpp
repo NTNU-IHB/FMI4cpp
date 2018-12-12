@@ -22,40 +22,40 @@
  * THE SOFTWARE.
  */
 
-#include <fmi4cpp/fmi2/import/Fmu.hpp>
-#include <fmi4cpp/fmi2/import/ModelExchangeInstance.hpp>
+#include <fmi4cpp/fmi2/import/fmi2Fmu.hpp>
+#include <fmi4cpp/fmi2/import/fmi2ModelExchangeInstance.hpp>
 
 using namespace std;
 using namespace fmi4cpp::fmi2;
 using namespace fmi4cpp::solver;
 
-ModelExchangeFmu::ModelExchangeFmu(const shared_ptr<FmuResource> &resource,
+fmi2ModelExchangeFmu::fmi2ModelExchangeFmu(const shared_ptr<FmuResource> &resource,
                                    const shared_ptr<ModelExchangeModelDescription> &md)
         : resource_(resource), modelDescription_(md) {}
 
 
-shared_ptr<ModelExchangeModelDescription> ModelExchangeFmu::getModelDescription() const {
+shared_ptr<ModelExchangeModelDescription> fmi2ModelExchangeFmu::getModelDescription() const {
     return modelDescription_;
 }
 
-std::unique_ptr<ModelExchangeInstance> ModelExchangeFmu::newInstance(bool visible, bool loggingOn) {
-    shared_ptr<ModelExchangeLibrary> lib = nullptr;
+std::unique_ptr<fmi2ModelExchangeInstance> fmi2ModelExchangeFmu::newInstance(bool visible, bool loggingOn) {
+    shared_ptr<fmi2ModelExchangeLibrary> lib = nullptr;
     string modelIdentifier = modelDescription_->modelIdentifier();
     if (modelDescription_->canBeInstantiatedOnlyOncePerProcess()) {
-        lib = make_shared<ModelExchangeLibrary>(modelIdentifier, resource_);
+        lib = make_shared<fmi2ModelExchangeLibrary>(modelIdentifier, resource_);
     } else {
         if (lib_ == nullptr) {
-            lib_ = make_shared<ModelExchangeLibrary>(modelIdentifier, resource_);
+            lib_ = make_shared<fmi2ModelExchangeLibrary>(modelIdentifier, resource_);
         }
         lib = lib_;
     }
     fmi2Component c = lib->instantiate(modelIdentifier, fmi2ModelExchange, guid(),
                                        resource_->getResourcePath(), visible, loggingOn);
-    return make_unique<ModelExchangeInstance>(c, lib, modelDescription_);
+    return make_unique<fmi2ModelExchangeInstance>(c, lib, modelDescription_);
 }
 
-std::unique_ptr<ModelExchangeSlave>
-ModelExchangeFmu::newInstance(std::unique_ptr<ModelExchangeSolver> &solver, bool visible, bool loggingOn) {
-    unique_ptr<ModelExchangeInstance> instance = newInstance(visible, loggingOn);
-    return make_unique<ModelExchangeSlave>(instance, solver);
+std::unique_ptr<fmi2ModelExchangeSlave>
+fmi2ModelExchangeFmu::newInstance(std::unique_ptr<ModelExchangeSolver> &solver, bool visible, bool loggingOn) {
+    unique_ptr<fmi2ModelExchangeInstance> instance = newInstance(visible, loggingOn);
+    return make_unique<fmi2ModelExchangeSlave>(instance, solver);
 }

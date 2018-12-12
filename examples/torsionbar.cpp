@@ -42,7 +42,7 @@ const string fmu_path = string(getenv("TEST_FMUs"))
 
 int main() {
 
-    Fmu fmu(fmu_path);
+    fmi2Fmu fmu(fmu_path);
     const auto slave = fmu.asCoSimulationFmu()->newInstance();
     slave->setupExperiment();
     slave->enterInitializationMode();

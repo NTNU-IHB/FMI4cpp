@@ -26,9 +26,9 @@
 
 #include <experimental/filesystem>
 
-#include <fmi4cpp/fmi2/import/Fmu.hpp>
-#include <fmi4cpp/fmi2/import/CoSimulationSlave.hpp>
-#include <fmi4cpp/fmi2/import/ModelExchangeInstance.hpp>
+#include <fmi4cpp/fmi2/import/fmi2Fmu.hpp>
+#include <fmi4cpp/fmi2/import/fmi2CoSimulationSlave.hpp>
+#include <fmi4cpp/fmi2/import/fmi2ModelExchangeInstance.hpp>
 
 #include "../xml/ModelDescriptionParser.hpp"
 
@@ -41,7 +41,7 @@ using namespace fmi4cpp::fmi2;
 
 namespace fs = std::experimental::filesystem;
 
-Fmu::Fmu(const string &fmuFile): fmuFile_(fmuFile) {
+fmi2Fmu::fmi2Fmu(const string &fmuFile): fmuFile_(fmuFile) {
 
     fmi4cpp::logger::debug("Loading FMU '{}'", fmuFile);
 
@@ -67,23 +67,23 @@ Fmu::Fmu(const string &fmuFile): fmuFile_(fmuFile) {
 
 }
 
-const std::string Fmu::getFmuFileName() const {
+const std::string fmi2Fmu::getFmuFileName() const {
     return fs::path(fmuFile_).stem().string();
 }
 
-const string Fmu::getModelDescriptionXml() const {
+const string fmi2Fmu::getModelDescriptionXml() const {
     ifstream stream(resource_->getModelDescriptionPath());
     return string((istreambuf_iterator<char>(stream)), istreambuf_iterator<char>());
 }
 
-shared_ptr<ModelDescription> Fmu::getModelDescription() const {
+shared_ptr<ModelDescription> fmi2Fmu::getModelDescription() const {
     return modelDescription_;
 }
 
-bool Fmu::supportsModelExchange() const {
+bool fmi2Fmu::supportsModelExchange() const {
     return modelDescription_->supportsModelExchange();
 }
 
-bool Fmu::supportsCoSimulation() const {
+bool fmi2Fmu::supportsCoSimulation() const {
     return modelDescription_->supportsCoSimulation();
 }

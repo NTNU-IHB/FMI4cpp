@@ -22,14 +22,14 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMI4CPP_MODELEXCHANGELIBRARY_HPP
-#define FMI4CPP_MODELEXCHANGELIBRARY_HPP
+#ifndef FMI4CPP_FMI2MODELEXCHANGELIBRARY_HPP
+#define FMI4CPP_FMI2MODELEXCHANGELIBRARY_HPP
 
-#include "FmiLibrary.hpp"
+#include "fmi2Library.hpp"
 
 namespace fmi4cpp::fmi2 {
 
-    class ModelExchangeLibrary : public FmiLibrary {
+    class fmi2ModelExchangeLibrary : public fmi2Library {
 
     private:
 
@@ -45,7 +45,7 @@ namespace fmi4cpp::fmi2 {
         fmi2NewDiscreteStatesTYPE *fmi2NewDiscreteStates_;
 
     public:
-        explicit ModelExchangeLibrary(const std::string &modelIdentifier, const std::shared_ptr<FmuResource> &resource);
+        explicit fmi2ModelExchangeLibrary(const std::string &modelIdentifier, const std::shared_ptr<FmuResource> &resource);
 
         bool enterEventMode(fmi2Component c);
 
@@ -72,4 +72,4 @@ namespace fmi4cpp::fmi2 {
 
 }
 
-#endif //FMI4CPP_MODELEXCHANGELIBRARY_HPP
+#endif //FMI4CPP_FMI2MODELEXCHANGELIBRARY_HPP

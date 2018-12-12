@@ -31,9 +31,9 @@
 #include "xml/ModelDescription.hpp"
 #include "xml/TypedScalarVariable.hpp"
 
-#include "import/Fmu.hpp"
-#include "import/FmuSlave.hpp"
-#include "import/CoSimulationSlave.hpp"
-#include "import/ModelExchangeSlave.hpp"
+#include "fmi4cpp/fmi2/import/fmi2Fmu.hpp"
+#include "fmi4cpp/fmi2/import/fmi2Slave.hpp"
+#include "fmi4cpp/fmi2/import/fmi2CoSimulationSlave.hpp"
+#include "fmi4cpp/fmi2/import/fmi2ModelExchangeSlave.hpp"
 
 #endif //FMI4CPP_FMI4CPP_FMI2_HPP

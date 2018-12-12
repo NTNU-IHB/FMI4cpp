@@ -159,7 +159,7 @@ namespace fmi4cpp::xc {
                         throw Failure("Unable to handle input files yet.");
                     }
 
-                    auto fmu = make_shared<Fmu>(fmuFile);
+                    auto fmu = make_shared<fmi2Fmu>(fmuFile);
                     if (fmu->getModelDescription()->asCoSimulationModelDescription()->needsExecutionTool()) {
                         throw Rejection("FMU requires execution tool.");
                     }

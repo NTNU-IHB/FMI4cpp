@@ -22,8 +22,8 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMI4CPP_FMILIBRARY_HPP
-#define FMI4CPP_FMILIBRARY_HPP
+#ifndef FMI4CPP_FMI2LIBRARY_HPP
+#define FMI4CPP_FMI2LIBRARY_HPP
 
 #include <string>
 #include <vector>
@@ -52,11 +52,11 @@
 typedef void *function_ptr;
 #endif
 
-#include "FmuResource.hpp"
+#include "fmi4cpp/FmuResource.hpp"
 
 namespace fmi4cpp::fmi2 {
 
-    class FmiLibrary {
+    class fmi2Library {
 
     private:
 
@@ -108,7 +108,7 @@ namespace fmi4cpp::fmi2 {
 
     public:
 
-        FmiLibrary(const std::string &modelIdentifier, const std::shared_ptr<FmuResource> &resource);
+        fmi2Library(const std::string &modelIdentifier, const std::shared_ptr<FmuResource> &resource);
 
         fmi2Status getLastStatus() const;
 
@@ -186,10 +186,10 @@ namespace fmi4cpp::fmi2 {
 
         void freeInstance(fmi2Component c);
 
-        ~FmiLibrary();
+        ~fmi2Library();
 
     };
 
 }
 
-#endif //FMI4CPP_FMILIBRARY_HPP
+#endif //FMI4CPP_FMI2LIBRARY_HPP

@@ -46,7 +46,7 @@ const string fmuPath = string(getenv("TEST_FMUs"))
 
 int main() {
     
-    auto fmu = Fmu(fmuPath).asModelExchangeFmu();
+    auto fmu = fmi2Fmu(fmuPath).asModelExchangeFmu();
 
     auto solver = make_solver<RK4ClassicSolver>(microStep);
     auto slave = fmu->newInstance(solver);

@@ -22,15 +22,15 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMI4CPP_FMUSLAVE_HPP
-#define FMI4CPP_FMUSLAVE_HPP
+#ifndef FMI4CPP_FMI2SLAVE_HPP
+#define FMI4CPP_FMI2SLAVE_HPP
 
-#include "FmuInstance.hpp"
-#include "fmi4cpp/fmi2/xml/ModelDescription.hpp"
+#include "fmi4cpp/FmuSlave.hpp"
+#include "fmi4cpp/fmi2/xml/CoSimulationModelDescription.hpp"
 
 namespace fmi4cpp::fmi2 {
 
-    class FmuSlave : virtual public FmuInstance<CoSimulationModelDescription> {
+    class fmi2Slave : virtual public FmuSlave<CoSimulationModelDescription> {
 
     public:
 
@@ -38,10 +38,10 @@ namespace fmi4cpp::fmi2 {
 
         virtual bool cancelStep() = 0;
 
-        ~FmuSlave() override = default;
+        ~fmi2Slave() override = default;
 
     };
 
 }
 
-#endif //FMI4CPP_FMUSLAVE_HPP
+#endif //FMI4CPP_FMI2SLAVE_HPP

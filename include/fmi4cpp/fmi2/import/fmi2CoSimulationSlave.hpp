@@ -22,25 +22,25 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMI4CPP_COSIMULATIONSLAVE_HPP
-#define FMI4CPP_COSIMULATIONSLAVE_HPP
+#ifndef FMI4CPP_FMI2COSIMULATIONSLAVE_HPP
+#define FMI4CPP_FMI2COSIMULATIONSLAVE_HPP
 
 #include <memory>
 
-#include "AbstractFmuInstance.hpp"
-#include "CoSimulationLibrary.hpp"
+#include "fmi2Slave.hpp"
+#include "fmi2CoSimulationLibrary.hpp"
 
-#include "FmuSlave.hpp"
-#include "../xml/ModelDescription.hpp"
+#include "fmi4cpp/AbstractFmuInstance.hpp"
+#include "fmi4cpp/fmi2/xml/ModelDescription.hpp"
 
 namespace fmi4cpp::fmi2 {
 
-    class CoSimulationSlave : public virtual FmuSlave,
-                              public AbstractFmuInstance<CoSimulationLibrary, CoSimulationModelDescription> {
+    class fmi2CoSimulationSlave : public virtual fmi2Slave,
+                              public AbstractFmuInstance<fmi2CoSimulationLibrary, CoSimulationModelDescription> {
 
     public:
-        CoSimulationSlave(fmi2Component c,
-                          const std::shared_ptr<CoSimulationLibrary> &library,
+        fmi2CoSimulationSlave(fmi2Component c,
+                          const std::shared_ptr<fmi2CoSimulationLibrary> &library,
                           const std::shared_ptr<CoSimulationModelDescription> &modelDescription);
 
         bool doStep(double stepSize) override;
@@ -113,4 +113,4 @@ namespace fmi4cpp::fmi2 {
 }
 
 
-#endif //FMI4CPP_COSIMULATIONSLAVE_HPP
+#endif //FMI4CPP_FMI2COSIMULATIONSLAVE_HPP

@@ -26,7 +26,7 @@
 #define FMI4CPP_TYPEDSCALARVARIABLE_HPP
 
 #include "ScalarVariable.hpp"
-#include "../import/FmuInstance.hpp"
+#include "fmi4cpp/FmuVariableAccessor.hpp"
 
 namespace fmi4cpp::fmi2 {
 

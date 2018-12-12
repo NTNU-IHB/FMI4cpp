@@ -98,7 +98,7 @@ int main(int argc, char** argv) {
     }
 
     const string fmuPath = vm["fmu"].as<string>();
-    auto fmu = make_shared<Fmu>(fmuPath);
+    auto fmu = make_shared<fmi2Fmu>(fmuPath);
 
     if (!vm.count("variables")) {
         cerr << "Missing variables to print.. Please try again." << endl;

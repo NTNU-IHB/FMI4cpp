@@ -41,8 +41,8 @@ const string fmu_path2 = string(getenv("TEST_FMUs"))
 
 int main() {
     
-    Fmu fmu1(fmu_path1);
-    Fmu fmu2(fmu_path2);
+    fmi2Fmu fmu1(fmu_path1);
+    fmi2Fmu fmu2(fmu_path2);
     
     const auto slave1 = fmu1.asCoSimulationFmu()->newInstance();
     const auto md1 = slave1->getModelDescription();

@@ -27,21 +27,21 @@
 
 #include <vector>
 
-#include "ModelExchangeLibrary.hpp"
-#include "AbstractFmuInstance.hpp"
+#include "fmi2ModelExchangeLibrary.hpp"
+#include "fmi4cpp/AbstractFmuInstance.hpp"
 
-#include "../xml/ModelDescription.hpp"
+#include "fmi4cpp/fmi2/xml/ModelExchangeModelDescription.hpp"
 
 namespace fmi4cpp::fmi2 {
 
-    class ModelExchangeInstance : public AbstractFmuInstance<ModelExchangeLibrary, ModelExchangeModelDescription> {
+    class fmi2ModelExchangeInstance : public AbstractFmuInstance<fmi2ModelExchangeLibrary, ModelExchangeModelDescription> {
 
     public:
 
         fmi2EventInfo eventInfo_;
 
-        ModelExchangeInstance(fmi2Component c,
-                              const std::shared_ptr<ModelExchangeLibrary> &library,
+        fmi2ModelExchangeInstance(fmi2Component c,
+                              const std::shared_ptr<fmi2ModelExchangeLibrary> &library,
                               const std::shared_ptr<ModelExchangeModelDescription> &modelDescription);
 
 

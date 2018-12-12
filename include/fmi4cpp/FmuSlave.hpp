@@ -22,35 +22,24 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMI4CPP_STATUS_CONVERTER_HPP
-#define FMI4CPP_STATUS_CONVERTER_HPP
+#ifndef FMI4CPP_FMUSLAVE_HPP
+#define FMI4CPP_FMUSLAVE_HPP
 
-#include <fmi4cpp/Status.hpp>
-#include <fmi4cpp/fmi2/fmi2FunctionTypes.h>
+#include "FmuInstance.hpp"
 
-namespace fmi4cpp::fmi2 {
+namespace fmi4cpp {
 
-    inline Status convert(fmi2Status status) {
+    template <typename ModelDescription>
+    class FmuSlave: virtual public FmuInstance<ModelDescription> {
 
-        switch (status) {
-            case fmi2OK:
-                return Status::OK;
-            case fmi2Warning:
-                return Status::Warning;
-            case fmi2Discard:
-                return Status::Discard;
-            case fmi2Error:
-                return Status::Error;
-            case fmi2Fatal:
-                return Status::Fatal;
-            case fmi2Pending:
-                return Status::Pending;
-            default:
-                return Status::Unknown;
-        }
+        virtual bool doStep(double stepSize) = 0;
 
-    }
+        virtual bool cancelStep() = 0;
+
+        virtual ~FmuSlave() = default;
+
+    };
 
 }
 
-#endif //FMI4CPP_STATUS_CONVERTER_HPP
+#endif //FMI4CPP_FMUSLAVE_HPP

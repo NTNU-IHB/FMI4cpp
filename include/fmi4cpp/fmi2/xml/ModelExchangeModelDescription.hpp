@@ -22,39 +22,22 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMI4CPP_FMUDRIVER_HPP
-#define FMI4CPP_FMUDRIVER_HPP
+#ifndef FMI4CPP_MODELEXCHANGEMODELDESCRIPTION_HPP
+#define FMI4CPP_MODELEXCHANGEMODELDESCRIPTION_HPP
 
-#include <string>
-#include <memory>
+#include "SpecificModelDescription.hpp"
 
-#include <fmi4cpp/fmi2/fmi4cpp.hpp>
+namespace fmi4cpp::fmi2 {
 
-#include "error_types.hpp"
-#include "DriverOptions.hpp"
-
-
-namespace fmi4cpp::driver {
-
-    class FmuDriver {
+    class ModelExchangeModelDescription: public SpecificModelDescription<ModelExchangeAttributes> {
 
     public:
+        ModelExchangeModelDescription(const ModelDescriptionBase &base, const ModelExchangeAttributes &attributes);
 
-        explicit FmuDriver(const std::shared_ptr<fmi4cpp::fmi2::fmi2Fmu> fmu);
-
-        void run(DriverOptions options);
-
-    private:
-
-        const std::shared_ptr<fmi4cpp::fmi2::fmi2Fmu> fmu_;
-
-        void dumpOutput(const std::string &data, const std::string &outputFolder);
-
-        void simulate(std::unique_ptr<fmi4cpp::fmi2::fmi2Slave> slave, DriverOptions options);
+        bool completedIntegratorStepNotNeeded() const;
 
     };
 
 }
 
-
-#endif //FMI4CPP_FMUDRIVER_HPP
+#endif //FMI4CPP_MODELEXCHANGEMODELDESCRIPTION_HPP

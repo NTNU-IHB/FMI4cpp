@@ -22,14 +22,14 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMI4CPP_COSIMULATIONLIBRARY_HPP
-#define FMI4CPP_COSIMULATIONLIBRARY_HPP
+#ifndef FMI4CPP_FMI2COSIMULATIONLIBRARY_HPP
+#define FMI4CPP_FMI2COSIMULATIONLIBRARY_HPP
 
-#include "FmiLibrary.hpp"
+#include "fmi2Library.hpp"
 
 namespace fmi4cpp::fmi2 {
 
-    class CoSimulationLibrary : public FmiLibrary {
+    class fmi2CoSimulationLibrary : public fmi2Library {
 
     private:
 
@@ -47,7 +47,7 @@ namespace fmi4cpp::fmi2 {
 
     public:
 
-        explicit CoSimulationLibrary(const std::string &modelIdentifier, const std::shared_ptr<FmuResource> &resource);
+        explicit fmi2CoSimulationLibrary(const std::string &modelIdentifier, const std::shared_ptr<FmuResource> &resource);
 
         bool doStep(fmi2Component c, fmi2Real currentCommunicationPoint,
                     fmi2Real communicationStepSize, bool noSetFMUStatePriorToCurrentPoint);
@@ -76,4 +76,4 @@ namespace fmi4cpp::fmi2 {
 
 }
 
-#endif //FMI4CPP_COSIMULATIONLIBRARY_HPP
+#endif //FMI4CPP_FMI2COSIMULATIONLIBRARY_HPP

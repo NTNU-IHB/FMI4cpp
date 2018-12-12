@@ -39,7 +39,7 @@ const string fmu_path = string(getenv("TEST_FMUs"))
 
 BOOST_AUTO_TEST_CASE(FmuExportCrossCompile_test1) {
 
-    Fmu fmu(fmu_path);
+    fmi2Fmu fmu(fmu_path);
     auto md = fmu.getModelDescription();
 
     BOOST_CHECK_EQUAL("structured", md->variableNamingConvention().value());

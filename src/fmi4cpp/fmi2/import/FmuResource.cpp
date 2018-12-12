@@ -23,11 +23,11 @@
  */
 
 #include <fmi4cpp/logger.hpp>
-#include <fmi4cpp/fmi2/import/FmuResource.hpp>
+#include <fmi4cpp/FmuResource.hpp>
 
 #include "../../tools/os_util.hpp"
 
-using namespace fmi4cpp::fmi2;
+using namespace fmi4cpp;
 
 FmuResource::FmuResource(fs::path &path): path_(path){}
 

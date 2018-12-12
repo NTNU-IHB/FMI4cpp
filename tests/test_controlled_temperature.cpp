@@ -46,7 +46,7 @@ BOOST_AUTO_TEST_CASE(ControlledTemperature_test1) {
                             + "/2.0/cs/" + getOs() +
                             "/20sim/4.6.4.8004/ControlledTemperature/ControlledTemperature.fmu";
 
-    auto fmu = Fmu(fmu_path).asCoSimulationFmu();
+    auto fmu = fmi2Fmu(fmu_path).asCoSimulationFmu();
 
     size_t numOutputs = 0;
     for (const auto &v : *fmu->getModelDescription()->modelVariables()) {

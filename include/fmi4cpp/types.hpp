@@ -22,39 +22,22 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMI4CPP_FMUDRIVER_HPP
-#define FMI4CPP_FMUDRIVER_HPP
+#ifndef FMI4CPP_TYPES_HPP
+#define FMI4CPP_TYPES_HPP
 
-#include <string>
-#include <memory>
+namespace fmi4cpp {
 
-#include <fmi4cpp/fmi2/fmi4cpp.hpp>
-
-#include "error_types.hpp"
-#include "DriverOptions.hpp"
-
-
-namespace fmi4cpp::driver {
-
-    class FmuDriver {
-
-    public:
-
-        explicit FmuDriver(const std::shared_ptr<fmi4cpp::fmi2::fmi2Fmu> fmu);
-
-        void run(DriverOptions options);
-
-    private:
-
-        const std::shared_ptr<fmi4cpp::fmi2::fmi2Fmu> fmu_;
-
-        void dumpOutput(const std::string &data, const std::string &outputFolder);
-
-        void simulate(std::unique_ptr<fmi4cpp::fmi2::fmi2Slave> slave, DriverOptions options);
-
-    };
+    typedef void *fmi4cppComponent;               /* Pointer to FMU instance       */
+    typedef void *fmi4cppComponentEnvironment;    /* Pointer to FMU environment    */
+    typedef void *fmi4cppFMUstate;                /* Pointer to internal FMU state */
+    typedef unsigned int fmi4cppValueReference;
+    typedef double fmi4cppReal;
+    typedef int fmi4cppInteger;
+    typedef int fmi4cppBoolean;
+    typedef char fmi4cppChar;
+    typedef const fmi4cppChar *fmi4cppString;
+    typedef char fmi4cppByte;
 
 }
 
-
-#endif //FMI4CPP_FMUDRIVER_HPP
+#endif //FMI4CPP_TYPES_HPP

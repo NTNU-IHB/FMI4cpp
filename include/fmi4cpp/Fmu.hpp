@@ -22,39 +22,49 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMI4CPP_FMUDRIVER_HPP
-#define FMI4CPP_FMUDRIVER_HPP
+#ifndef FMI4CPP_FMU_HPP
+#define FMI4CPP_FMU_HPP
 
-#include <string>
 #include <memory>
+#include <string>
 
-#include <fmi4cpp/fmi2/fmi4cpp.hpp>
+namespace fmi4cpp {
 
-#include "error_types.hpp"
-#include "DriverOptions.hpp"
+    class CoSimulationFmu;
 
+    class ModelExchangeFmu;
 
-namespace fmi4cpp::driver {
-
-    class FmuDriver {
+    template<class ModelDescription>
+    class FmuBase {
 
     public:
+        std::string guid() const {
+            return getModelDescription()->guid();
+        }
 
-        explicit FmuDriver(const std::shared_ptr<fmi4cpp::fmi2::fmi2Fmu> fmu);
+        std::string modelName() const {
+            return getModelDescription()->modelName();
+        }
 
-        void run(DriverOptions options);
+        virtual std::shared_ptr <ModelDescription> getModelDescription() const = 0;
 
-    private:
+    };
 
-        const std::shared_ptr<fmi4cpp::fmi2::fmi2Fmu> fmu_;
+    template<class ModelDescription>
+    class FmuProvider : public virtual FmuBase<ModelDescription> {
 
-        void dumpOutput(const std::string &data, const std::string &outputFolder);
+    public:
+        virtual bool supportsCoSimulation() const = 0;
 
-        void simulate(std::unique_ptr<fmi4cpp::fmi2::fmi2Slave> slave, DriverOptions options);
+        virtual bool supportsModelExchange() const = 0;
+
+        virtual std::unique_ptr <CoSimulationFmu> asCoSimulationFmu() const = 0;
+
+        virtual std::unique_ptr <ModelExchangeFmu> asModelExchangeFmu() const = 0;
 
     };
 
 }
 
 
-#endif //FMI4CPP_FMUDRIVER_HPP
+#endif //FMI4CPP_FMU_HPP

@@ -22,43 +22,43 @@
  * THE SOFTWARE.
  */
 
-#include <fmi4cpp/fmi2/import/Fmu.hpp>
-#include <fmi4cpp/fmi2/import/CoSimulationSlave.hpp>
+#include <fmi4cpp/fmi2/import/fmi2Fmu.hpp>
+#include <fmi4cpp/fmi2/import/fmi2CoSimulationSlave.hpp>
 
 using namespace std;
 using namespace fmi4cpp::fmi2;
 
-unique_ptr<CoSimulationFmu> Fmu::asCoSimulationFmu() const {
+unique_ptr<fmi2CoSimulationFmu> fmi2Fmu::asCoSimulationFmu() const {
     shared_ptr<CoSimulationModelDescription> cs = std::move(modelDescription_->asCoSimulationModelDescription());
-    return make_unique<CoSimulationFmu>(resource_, cs);
+    return make_unique<fmi2CoSimulationFmu>(resource_, cs);
 }
 
-unique_ptr<ModelExchangeFmu> Fmu::asModelExchangeFmu() const {
+unique_ptr<fmi2ModelExchangeFmu> fmi2Fmu::asModelExchangeFmu() const {
     shared_ptr<ModelExchangeModelDescription> me = std::move(modelDescription_->asModelExchangeModelDescription());
-    return make_unique<ModelExchangeFmu>(resource_, me);
+    return make_unique<fmi2ModelExchangeFmu>(resource_, me);
 }
 
-CoSimulationFmu::CoSimulationFmu(const shared_ptr<FmuResource> &resource,
+fmi2CoSimulationFmu::fmi2CoSimulationFmu(const shared_ptr<FmuResource> &resource,
                                          const shared_ptr<CoSimulationModelDescription> &md)
         : resource_(resource), modelDescription_(md) {}
 
-shared_ptr<CoSimulationModelDescription> CoSimulationFmu::getModelDescription() const {
+shared_ptr<CoSimulationModelDescription> fmi2CoSimulationFmu::getModelDescription() const {
     return modelDescription_;
 }
 
-unique_ptr<FmuSlave> CoSimulationFmu::newInstance(const bool visible, const bool loggingOn) {
-    shared_ptr<CoSimulationLibrary> lib = nullptr;
+unique_ptr<fmi2Slave> fmi2CoSimulationFmu::newInstance(const bool visible, const bool loggingOn) {
+    shared_ptr<fmi2CoSimulationLibrary> lib = nullptr;
     string modelIdentifier = modelDescription_->modelIdentifier();
     if (modelDescription_->canBeInstantiatedOnlyOncePerProcess()) {
-        lib = make_shared<CoSimulationLibrary>(modelIdentifier, resource_);
+        lib = make_shared<fmi2CoSimulationLibrary>(modelIdentifier, resource_);
     } else {
         if (lib_ == nullptr) {
-            lib_ = make_shared<CoSimulationLibrary>(modelIdentifier, resource_);
+            lib_ = make_shared<fmi2CoSimulationLibrary>(modelIdentifier, resource_);
         }
         lib = lib_;
     }
     fmi2Component c = lib->instantiate(modelIdentifier, fmi2CoSimulation, guid(),
                                        resource_->getResourcePath(), visible, loggingOn);
-    return make_unique<CoSimulationSlave>(c, lib, modelDescription_);
+    return make_unique<fmi2CoSimulationSlave>(c, lib, modelDescription_);
 }
 

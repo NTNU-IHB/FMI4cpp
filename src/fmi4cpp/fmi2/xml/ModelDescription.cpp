@@ -24,6 +24,9 @@
 
 #include <fmi4cpp/fmi2/xml/ModelDescription.hpp>
 
+#include "CoSimulationModelDescription.cpp"
+#include "ModelExchangeModelDescription.cpp"
+
 using namespace fmi4cpp::fmi2;
 
 ModelDescriptionBase::ModelDescriptionBase(const std::string &guid,
@@ -144,32 +147,4 @@ std::unique_ptr<ModelExchangeModelDescription> ModelDescription::asModelExchange
         throw std::runtime_error("ModelExchange not supported!");
     }
     return std::make_unique<ModelExchangeModelDescription>(*this, *modelExchange_);
-}
-
-CoSimulationModelDescription::CoSimulationModelDescription(const ModelDescriptionBase &base,
-                                                           const CoSimulationAttributes &attributes)
-        : SpecificModelDescription(base, attributes) {}
-
-bool CoSimulationModelDescription::canInterpolateInputs() const {
-    return attributes_.canInterpolateInputs;
-}
-
-bool CoSimulationModelDescription::canRunAsynchronuously() const {
-    return attributes_.canRunAsynchronuously;
-}
-
-bool CoSimulationModelDescription::canHandleVariableCommunicationStepSize() const {
-    return attributes_.canHandleVariableCommunicationStepSize;
-}
-
-size_t CoSimulationModelDescription::maxOutputDerivativeOrder() const {
-    return attributes_.maxOutputDerivativeOrder;
-}
-
-ModelExchangeModelDescription::ModelExchangeModelDescription(const ModelDescriptionBase &base,
-                                                             const ModelExchangeAttributes &attributes)
-        : SpecificModelDescription(base, attributes) {}
-
-bool ModelExchangeModelDescription::completedIntegratorStepNotNeeded() const {
-    return attributes_.completedIntegratorStepNotNeeded;
 }

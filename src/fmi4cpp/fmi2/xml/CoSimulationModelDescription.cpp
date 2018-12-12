@@ -22,39 +22,26 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMI4CPP_FMUDRIVER_HPP
-#define FMI4CPP_FMUDRIVER_HPP
+#include <fmi4cpp/fmi2/xml/CoSimulationModelDescription.hpp>
 
-#include <string>
-#include <memory>
+using namespace fmi4cpp::fmi2;
 
-#include <fmi4cpp/fmi2/fmi4cpp.hpp>
+CoSimulationModelDescription::CoSimulationModelDescription(const ModelDescriptionBase &base,
+                                                           const CoSimulationAttributes &attributes)
+        : SpecificModelDescription(base, attributes) {}
 
-#include "error_types.hpp"
-#include "DriverOptions.hpp"
-
-
-namespace fmi4cpp::driver {
-
-    class FmuDriver {
-
-    public:
-
-        explicit FmuDriver(const std::shared_ptr<fmi4cpp::fmi2::fmi2Fmu> fmu);
-
-        void run(DriverOptions options);
-
-    private:
-
-        const std::shared_ptr<fmi4cpp::fmi2::fmi2Fmu> fmu_;
-
-        void dumpOutput(const std::string &data, const std::string &outputFolder);
-
-        void simulate(std::unique_ptr<fmi4cpp::fmi2::fmi2Slave> slave, DriverOptions options);
-
-    };
-
+bool CoSimulationModelDescription::canInterpolateInputs() const {
+    return attributes_.canInterpolateInputs;
 }
 
+bool CoSimulationModelDescription::canRunAsynchronuously() const {
+    return attributes_.canRunAsynchronuously;
+}
 
-#endif //FMI4CPP_FMUDRIVER_HPP
+bool CoSimulationModelDescription::canHandleVariableCommunicationStepSize() const {
+    return attributes_.canHandleVariableCommunicationStepSize;
+}
+
+size_t CoSimulationModelDescription::maxOutputDerivativeOrder() const {
+    return attributes_.maxOutputDerivativeOrder;
+}
