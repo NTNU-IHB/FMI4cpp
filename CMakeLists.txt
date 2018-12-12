@@ -1,7 +1,7 @@
 
 cmake_minimum_required(VERSION 3.10)
 project(FMI4cpp
-        VERSION 0.4.1)
+        VERSION 0.4.2)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
