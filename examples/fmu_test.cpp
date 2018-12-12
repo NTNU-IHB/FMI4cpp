@@ -24,11 +24,15 @@
 
 #include <string>
 #include <iostream>
+
+#include <fmi4cpp/logger.hpp>
 #include <fmi4cpp/tools/os_util.hpp>
 #include <fmi4cpp/fmi2/fmi4cpp.hpp>
 
 using namespace std;
 using namespace fmi4cpp::fmi2;
+
+namespace logger = fmi4cpp::logger;
 
 const double stop = 0.01;
 const double stepSize = 1E-3;
@@ -37,7 +41,6 @@ const string fmuPath = string(getenv("TEST_FMUs"))
                        + "/2.0/cs/" + getOs() +
                        "/20sim/4.6.4.8004/ControlledTemperature/ControlledTemperature.fmu";
 
-
 int main() {
 
     Fmu fmu(fmuPath);
@@ -45,12 +48,12 @@ int main() {
     auto md = cs_fmu->getModelDescription();
 
     auto var = md->modelVariables()->getByValueReference(47).asReal();
-    cout << "Name=" << var.name() << ", start=" << var.start().value_or(0) << endl;
+    logger::info("Name={}, start={}", var.name(), var.start().value_or(0));
 
     auto slave1 = cs_fmu->newInstance();
     auto slave2 = cs_fmu->newInstance();
 
-    cout << "modelIdentifier= " << slave1->getModelDescription()->modelIdentifier() << endl;
+    logger::info("modelIdentifier={}", slave1->getModelDescription()->modelIdentifier());
 
     slave1->setupExperiment();
     slave1->enterInitializationMode();
@@ -69,12 +72,12 @@ int main() {
 
         if (!slave1->doStep(stepSize)) { break; }
         if (!slave1->readReal(vr, ref)) { break; }
-        cout << "t=" << t << ", Temperature_Reference=" << ref[0] << ", Temperature_Room=" << ref[1] << endl;
+        logger::info("t={}, Temperature_Reference={}, Temperature_Room={}", t, ref[0], ref[1]);
 
     }
 
-    cout << "FMU '" << fmu.modelName() << "' terminated with status: " << to_string(slave1->terminate()) << endl;
-    cout << "FMU '" << fmu.modelName() << "' terminated with status: " << to_string(slave2->terminate()) << endl;
+    logger::info("FMU '{}' terminated with success: {}", fmu.modelName(), (slave1->terminate() == 1 ? "true" : "false"));
+    logger::info("FMU '{}' terminated with success: {}", fmu.modelName(), (slave2->terminate() == 1 ? "true" : "false"));
 
     return 0;
 

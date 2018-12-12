@@ -33,11 +33,11 @@ const double stop = 12.0;
 const double step_size = 1E-5;
 const fmi2ValueReference vr = 2;
 
-int main() {
+const string fmu_path = string(getenv("TEST_FMUs"))
+                        + "/2.0/cs/" + getOs() +
+                        "/20sim/4.6.4.8004/TorsionBar/TorsionBar.fmu";
 
-    const string fmu_path = string(getenv("TEST_FMUs"))
-                            + "/2.0/cs/" + getOs() +
-                            "/20sim/4.6.4.8004/TorsionBar/TorsionBar.fmu";
+int main() {
 
     Fmu fmu(fmu_path);
     const auto slave = fmu.asCoSimulationFmu()->newInstance();

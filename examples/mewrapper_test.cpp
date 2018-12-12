@@ -27,22 +27,23 @@
 #include <iostream>
 #include <vector>
 
+#include <fmi4cpp/logger.hpp>
 #include <fmi4cpp/fmi2/fmi4cpp.hpp>
 #include <fmi4cpp/tools/os_util.hpp>
 
 using namespace std;
 using namespace fmi4cpp::fmi2;
 
-double stop = 1.0;
-double microStep = 1E-3;
-double macroStep = 1.0/10;
+const double stop = 1.0;
+const double microStep = 1E-3;
+const double macroStep = 1.0/10;
+
+const string fmuPath = string(getenv("TEST_FMUs"))
+                       + "/2.0/me/" + getOs() +
+                       "/OpenModelica/v1.11.0/FmuExportCrossCompile/FmuExportCrossCompile.fmu";
 
 int main() {
-
-    const string fmuPath = string(getenv("TEST_FMUs"))
-                           + "/2.0/me/" + getOs() +
-                           "/OpenModelica/v1.11.0/FmuExportCrossCompile/FmuExportCrossCompile.fmu";
-
+    
     auto fmu = Fmu(fmuPath).asModelExchangeFmu();
 
     unique_ptr<Solver> solver = make_solver<RK4ClassicSolver>(microStep);
@@ -66,7 +67,7 @@ int main() {
             break;
         }
 
-        cout << "t=" << t << ", h=" << ref << endl;
+        fmi4cpp::logger::info("t={}, h={}",  t, ref);
     }
 
     slave->terminate();
