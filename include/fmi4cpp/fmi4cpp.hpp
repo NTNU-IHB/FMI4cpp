@@ -26,5 +26,6 @@
 #define FMI4CPP_FMI4CPP_COMMON_HPP
 
 #include "Status.hpp"
+#include "logger.hpp"
 
 #endif //FMI4CPP_FMI4CPP_COMMON_HPP
