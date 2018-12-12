@@ -26,6 +26,7 @@
 #define FMI4CPP_ERROR_TYPES_HPP
 
 #include <stdexcept>
+#include <string>
 
 namespace fmi4cpp::driver {
 

@@ -27,6 +27,8 @@
 
 #include <experimental/filesystem>
 
+#include <fmi4cpp/fmi2/xml/ScalarVariable.hpp>
+
 namespace fs = std::experimental::filesystem;
 
 namespace fmi4cpp::driver {

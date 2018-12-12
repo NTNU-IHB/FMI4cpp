@@ -71,6 +71,16 @@ namespace fmi4cpp::logger {
     }
 
     template<typename T>
+    void warn(const T &msg) {
+        console->warn(msg);
+    }
+
+    template<typename... Args>
+    void warn(const char* msg, const Args &... args) {
+        console->warn(msg, args...);
+    }
+
+    template<typename T>
     void error(const T &msg) {
         console->error(msg);
     }

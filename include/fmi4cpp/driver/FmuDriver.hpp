@@ -40,7 +40,7 @@ namespace fmi4cpp::driver {
 
     public:
 
-        explicit FmuDriver(const std::shared_ptr<fmi4cpp::fmi2::Fmu> fmu) : fmu_(fmu){}
+        explicit FmuDriver(const std::shared_ptr<fmi4cpp::fmi2::Fmu> fmu);
 
         void run(DriverOptions options);
 

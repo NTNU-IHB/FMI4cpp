@@ -84,6 +84,8 @@ namespace {
 
 }
 
+FmuDriver::FmuDriver(const std::shared_ptr<fmi4cpp::fmi2::Fmu> fmu) : fmu_(fmu){}
+
 void FmuDriver::run(DriverOptions options) {
 
     if (options.modelExchange) {
@@ -92,7 +94,6 @@ void FmuDriver::run(DriverOptions options) {
         simulate(fmu_->asModelExchangeFmu()->newInstance(solver), options);
 #else
         const char *msg = "Model Exchange mode selected, but driver has been built without odeint support!";
-        cerr << msg << endl;
         throw Failure(msg);
 #endif
     } else {
@@ -132,8 +133,7 @@ void FmuDriver::simulate(std::unique_ptr<FmuSlave> slave, DriverOptions options)
 
         if (!slave->doStep(stepSize)) {
             slave->terminate();
-            const string msg = string("Simulation terminated prematurely.");
-            throw Failure(msg);
+            throw Failure("Simulation terminated prematurely.");
         }
 
         addRow(*slave, options.variables, data);
@@ -144,7 +144,7 @@ void FmuDriver::simulate(std::unique_ptr<FmuSlave> slave, DriverOptions options)
 
     if (options.failOnLargeFileSize) {
         const size_t size = data.size();
-        if (size > 1e6) {
+        if (size >= 1e6) {
             double mbSize = ((double) size) / 1e6;
             throw Rejection(string("Generated csv was larger than 1MB. Was: ") + std::to_string((mbSize)) + "MB");
         }
