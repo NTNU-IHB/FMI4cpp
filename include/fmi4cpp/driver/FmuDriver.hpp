@@ -27,15 +27,12 @@
 
 #include <string>
 #include <memory>
-#include <stdexcept>
-#include <experimental/filesystem>
 
 #include <fmi4cpp/fmi2/fmi4cpp.hpp>
 
 #include "error_types.hpp"
 #include "DriverOptions.hpp"
 
-namespace fs = std::experimental::filesystem;
 
 namespace fmi4cpp::driver {
 

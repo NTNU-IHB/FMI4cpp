@@ -25,6 +25,8 @@
 #ifndef FMI4CPP_ERROR_TYPES_HPP
 #define FMI4CPP_ERROR_TYPES_HPP
 
+#include <stdexcept>
+
 namespace fmi4cpp::driver {
 
     class Rejection: public std::runtime_error {
