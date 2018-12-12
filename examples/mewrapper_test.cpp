@@ -48,7 +48,7 @@ int main() {
     
     auto fmu = Fmu(fmuPath).asModelExchangeFmu();
 
-    unique_ptr<ModelExchangeSolver> solver = make_solver<RK4ClassicSolver>(microStep);
+    auto solver = make_solver<RK4ClassicSolver>(microStep);
     auto slave = fmu->newInstance(solver);
 
     slave->setupExperiment();
