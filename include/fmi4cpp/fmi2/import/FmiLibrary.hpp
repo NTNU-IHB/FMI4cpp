@@ -37,7 +37,6 @@
 #define WIN32_LEAN_AND_MEAN
 
 #include <windows.h>
-#include <fmi4cpp/fmi2/import/Status.hpp>
 
 #define DLL_HANDLE HMODULE
 #else
@@ -117,7 +116,7 @@ namespace fmi4cpp::fmi2 {
 
         fmi2String getTypesPlatform() const;
 
-        bool setDebugLogging(fmi2Component c, bool loggingOn, const std::vector<char *> categories);
+        bool setDebugLogging(fmi2Component c, bool loggingOn, std::vector<char *> categories);
 
         fmi2Component instantiate(std::string instanceName, fmi2Type type,
                                   std::string guid, std::string resourceLocation,
