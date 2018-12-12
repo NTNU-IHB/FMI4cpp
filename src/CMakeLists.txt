@@ -43,6 +43,8 @@ target_include_directories(${FMI4CPP_LIB}
 target_link_libraries(${FMI4CPP_LIB}
     PRIVATE
         LIBZIP::LIBZIP
+        spdlog::spdlog
+        fmt::fmt-header-only
 )
 
 if (UNIX)
@@ -56,7 +58,7 @@ endif()
 target_compile_features(${FMI4CPP_LIB} PUBLIC cxx_std_17)
 
 # Enable fmi4cpp debug messages for debug configurations
-target_compile_definitions(${FMI4CPP_LIB} PRIVATE $<$<CONFIG:Debug>:FMI4CPP_DEBUG_LOGGING_ENABLED>)
+target_compile_definitions(${FMI4CPP_LIB} PRIVATE $<$<CONFIG:Debug>:FMI4CPP_LOG_LEVEL_DEBUG>)
 
 if(FMI4CPP_WITH_ODEINT)
     target_compile_definitions(${FMI4CPP_LIB} INTERFACE FMI4CPP_WITH_ODEINT)

@@ -22,10 +22,7 @@
  * THE SOFTWARE.
  */
 
-#if FMI4CPP_DEBUG_LOGGING_ENABLED
-#include <iostream>
-#endif
-
+#include <fmi4cpp/logger.hpp>
 #include <fmi4cpp/fmi2/import/FmuResource.hpp>
 
 #include "../../tools/os_util.hpp"
@@ -50,12 +47,11 @@ FmuResource::~FmuResource() {
 
     std::error_code success {};
     fs::remove_all(path_, success);
-#if FMI4CPP_DEBUG_LOGGING_ENABLED
+
     if (!success) {
-        std::cout << "Deleted temporal folder '" << path_.string() << "'" <<  std::endl;
+        fmi4cpp::logger::debug("Deleted temporal folder '{}'", path_.string());
     } else {
-        std::cerr << "Unable to delete temporal folder '" <<  path_.string() << "'" <<  std::endl;
+        fmi4cpp::logger::debug("Unable to delete temporal folder '{}'", path_.string());
     }
-#endif
 
 }

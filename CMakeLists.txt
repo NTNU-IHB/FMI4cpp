@@ -12,6 +12,22 @@ option(FMI4CPP_BUILD_TESTS "Build tests" OFF)
 option(FMI4CPP_BUILD_EXAMPLES "Build examples" ON)
 option(FMI4CPP_WITH_ODEINT "Build with odeint solvers" ON)
 
+set(FMI4CPP_LOG_LEVEL "DEFAULT" CACHE STRING "FMI4cpp logging level")
+set(FMI4CPP_LOG_LEVEL_VALUES "DEFAULT;OFF;INFO;DEBUG;TRACE" CACHE STRING "List of possible log levels")
+set_property(CACHE FMI4CPP_LOG_LEVEL PROPERTY STRINGS ${FMI4CPP_LOG_LEVEL_VALUES})
+
+if (FMI4CPP_LOG_LEVEL STREQUAL "OFF")
+    add_definitions(-DFMI4CPP_LOG_LEVEL_OFF)
+elseif (FMI4CPP_LOG_LEVEL STREQUAL "INFO")
+    add_definitions(-DFMI4CPP_LOG_LEVEL_INFO)
+elseif (FMI4CPP_LOG_LEVEL STREQUAL "DEBUG")
+    add_definitions(-DFMI4CPP_LOG_LEVEL_DEBUG)
+elseif (FMI4CPP_LOG_LEVEL STREQUAL "DEBUG")
+    add_definitions(-DFMI4CPP_LOG_LEVEL_TRACE)
+else ()
+    add_definitions(-DFMI4CPP_LOG_LEVEL_DEFAULT)
+endif ()
+
 if (MSVC)
     set(CMAKE_DEBUG_POSTFIX "d")
     add_definitions(-DNOMINMAX)
@@ -35,9 +51,10 @@ if (UNIX)
 endif ()
 
 find_package(LIBZIP REQUIRED)
+find_package(spdlog CONFIG REQUIRED)
+find_package(fmt CONFIG REQUIRED)
 
 add_subdirectory(src)
-
 
 if (FMI4CPP_BUILD_TOOL)
     add_subdirectory(tool)

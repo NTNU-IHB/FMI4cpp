@@ -74,7 +74,7 @@ namespace {
         }
     }
 
-    Unknown parseUnknown(const ptree &node) {
+    fmi4cpp::fmi2::Unknown parseUnknown(const ptree &node) {
         auto index = node.get<unsigned int>("<xmlattr>.index");
         auto dependenciesKind = convert(node.get_optional<std::string>("<xmlattr>.dependenciesKind"));
 
@@ -83,14 +83,14 @@ namespace {
         if (opt_dependencies) {
             parseUnknownDependencies(*opt_dependencies, dependencies);
         }
-        return Unknown(index, dependenciesKind, dependencies);
+        return fmi4cpp::fmi2::Unknown(index, dependenciesKind, dependencies);
     }
 
-    void loadUnknowns(const ptree &node, std::vector<Unknown> &vector) {
+    void loadUnknowns(const ptree &node, std::vector<fmi4cpp::fmi2::Unknown> &vector) {
 
         for (const ptree::value_type &v : node) {
             if (v.first == "Unknown") {
-                Unknown unknown = parseUnknown(v.second);
+                fmi4cpp::fmi2::Unknown unknown = parseUnknown(v.second);
                 vector.push_back(unknown);
             }
         }
@@ -99,9 +99,9 @@ namespace {
 
     std::unique_ptr<ModelStructure> parseModelStructure(const ptree &node) {
 
-        std::vector<Unknown> outputs;
-        std::vector<Unknown> derivatives;
-        std::vector<Unknown> initialUnknowns;
+        std::vector<fmi4cpp::fmi2::Unknown> outputs;
+        std::vector<fmi4cpp::fmi2::Unknown> derivatives;
+        std::vector<fmi4cpp::fmi2::Unknown> initialUnknowns;
 
         for (const ptree::value_type &v : node) {
             if (v.first == "Outputs") {
