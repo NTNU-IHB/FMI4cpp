@@ -27,6 +27,7 @@
 
 using namespace std;
 using namespace fmi4cpp::fmi2;
+using namespace fmi4cpp::solver;
 
 ModelExchangeFmu::ModelExchangeFmu(const shared_ptr<FmuResource> &resource,
                                    const shared_ptr<ModelExchangeModelDescription> &md)
@@ -54,7 +55,7 @@ std::unique_ptr<ModelExchangeInstance> ModelExchangeFmu::newInstance(bool visibl
 }
 
 std::unique_ptr<ModelExchangeSlave>
-ModelExchangeFmu::newInstance(std::unique_ptr<Solver> &solver, bool visible, bool loggingOn) {
+ModelExchangeFmu::newInstance(std::unique_ptr<ModelExchangeSolver> &solver, bool visible, bool loggingOn) {
     unique_ptr<ModelExchangeInstance> instance = newInstance(visible, loggingOn);
     return make_unique<ModelExchangeSlave>(instance, solver);
 }

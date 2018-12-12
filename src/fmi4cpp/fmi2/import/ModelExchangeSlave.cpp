@@ -28,6 +28,7 @@
 #include <fmi4cpp/fmi2/import/ModelExchangeSlave.hpp>
 
 using namespace fmi4cpp::fmi2;
+using namespace fmi4cpp::solver;
 
 namespace {
 
@@ -44,7 +45,7 @@ namespace {
 
 ModelExchangeSlave::ModelExchangeSlave(
         std::unique_ptr<ModelExchangeInstance> &instance,
-        std::unique_ptr<Solver> &solver)
+        std::unique_ptr<ModelExchangeSolver> &solver)
         : instance_(std::move(instance)), solver_(std::move(solver)) {
 
     sys_.instance_ = instance_;

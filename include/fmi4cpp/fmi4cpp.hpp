@@ -28,4 +28,9 @@
 #include "Status.hpp"
 #include "logger.hpp"
 
+#if FMI4CPP_WITH_ODEINT
+#include "fmi4cpp/solver/OdeintModelExchangeSolver.hpp"
+#endif
+
+
 #endif //FMI4CPP_FMI4CPP_COMMON_HPP

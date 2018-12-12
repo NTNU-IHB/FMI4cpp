@@ -32,6 +32,7 @@
 
 using namespace std;
 using namespace fmi4cpp::fmi2;
+using namespace fmi4cpp::solver;
 
 namespace logger = fmi4cpp::logger;
 
@@ -47,7 +48,7 @@ int main() {
     
     auto fmu = Fmu(fmuPath).asModelExchangeFmu();
 
-    unique_ptr<Solver> solver = make_solver<RK4ClassicSolver>(microStep);
+    unique_ptr<ModelExchangeSolver> solver = make_solver<RK4ClassicSolver>(microStep);
     auto slave = fmu->newInstance(solver);
 
     slave->setupExperiment();

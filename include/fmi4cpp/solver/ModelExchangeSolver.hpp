@@ -22,47 +22,33 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMI4CPP_ODEINTSOLVER_HPP
-#define FMI4CPP_ODEINTSOLVER_HPP
+#ifndef FMI4CPP_SOLVER_HPP
+#define FMI4CPP_SOLVER_HPP
 
-#include <boost/numeric/odeint.hpp>
+#include <memory>
+#include <vector>
 
-#include "Solver.hpp"
+namespace fmi4cpp::solver {
 
-using namespace boost::numeric::odeint;
+    typedef std::vector<double> state_type;
 
-namespace fmi4cpp::fmi2 {
+    class fmu_wrapper;
 
-    template <class T>
-    class OdeintSolver: public Solver {
-
-    protected:
-        T solver_;
-
-    };
-
-    template <class T>
-    class ConstantStepSizeOdeintSolver: public OdeintSolver<T> {
-
-    protected:
-        double stepSize_;
+    class ModelExchangeSolver {
 
     public:
-        explicit ConstantStepSizeOdeintSolver(double stepSize_): stepSize_(stepSize_) {}
 
-        double integrate(fmu_wrapper &sys, std::vector<double> &x, double tStart, double tStop) override {
-            size_t n = integrate_const(this->solver_, sys, x, tStart, tStop, stepSize_);
-            return tStart + n*stepSize_;
-        }
+        virtual double integrate(fmu_wrapper &sys, std::vector<double> &x, double tStart, double tStop) = 0;
+
+        virtual ~ModelExchangeSolver() = default;
 
     };
 
-    typedef ConstantStepSizeOdeintSolver<euler<state_type>> EulerSolver;
-    typedef ConstantStepSizeOdeintSolver<implicit_euler<state_type>> ImplicitEulerSolver;
-
-    typedef ConstantStepSizeOdeintSolver<runge_kutta4<state_type>> RK4Solver;
-    typedef ConstantStepSizeOdeintSolver<runge_kutta4_classic<state_type>> RK4ClassicSolver;
+    template <typename T, typename ... Args>
+    std::unique_ptr<ModelExchangeSolver> make_solver(Args ... args) {
+        return std::make_unique<T>(args ...);
+    }
 
 }
 
-#endif //FMI4CPP_ODEINTSOLVER_HPP
+#endif //FMI4CPP_SOLVER_HPP
