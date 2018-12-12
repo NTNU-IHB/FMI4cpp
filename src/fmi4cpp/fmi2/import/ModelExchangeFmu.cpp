@@ -54,7 +54,7 @@ std::unique_ptr<ModelExchangeInstance> ModelExchangeFmu::newInstance(bool visibl
 }
 
 std::unique_ptr<ModelExchangeSlave>
-ModelExchangeFmu::newInstance(std::unique_ptr<Solver> &solver, bool visible, bool loggingOn) {
+ModelExchangeFmu::newInstance(std::unique_ptr<solver::ModelExchangeSolver> &solver, bool visible, bool loggingOn) {
     unique_ptr<ModelExchangeInstance> instance = newInstance(visible, loggingOn);
     return make_unique<ModelExchangeSlave>(instance, solver);
 }

@@ -30,14 +30,15 @@
 
 #include "FmuSlave.hpp"
 #include "ModelExchangeInstance.hpp"
-#include "Solver.hpp"
 
-namespace fmi4cpp::fmi2 {
+#include "fmi4cpp/solver/ModelExchangeSolver.hpp"
+
+namespace fmi4cpp::solver {
 
     class fmu_wrapper {
 
     public:
-        std::shared_ptr<ModelExchangeInstance> instance_;
+        std::shared_ptr<fmi2::ModelExchangeInstance> instance_;
 
         void operator()(const std::vector<double> &x, std::vector<double> &dx, const double t) {
             instance_->setTime(t);
@@ -47,12 +48,17 @@ namespace fmi4cpp::fmi2 {
 
     };
 
+}
+
+namespace fmi4cpp::fmi2 {
+
+
     class ModelExchangeSlave : public FmuSlave {
 
     private:
 
-        fmu_wrapper sys_;
-        std::unique_ptr<Solver> solver_;
+        solver::fmu_wrapper sys_;
+        std::unique_ptr<solver::ModelExchangeSolver> solver_;
         std::shared_ptr<ModelExchangeInstance> instance_;
         std::shared_ptr<CoSimulationModelDescription> csModelDescription_;
 
@@ -64,7 +70,7 @@ namespace fmi4cpp::fmi2 {
 
     public:
         ModelExchangeSlave(std::unique_ptr<ModelExchangeInstance> &instance,
-                           std::unique_ptr<Solver> &solver);
+                           std::unique_ptr<solver::ModelExchangeSolver> &solver);
 
         const double getSimulationTime() const override;
 

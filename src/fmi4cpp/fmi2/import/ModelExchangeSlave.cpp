@@ -44,7 +44,7 @@ namespace {
 
 ModelExchangeSlave::ModelExchangeSlave(
         std::unique_ptr<ModelExchangeInstance> &instance,
-        std::unique_ptr<Solver> &solver)
+        std::unique_ptr<solver::ModelExchangeSolver> &solver)
         : instance_(std::move(instance)), solver_(std::move(solver)) {
 
     sys_.instance_ = instance_;
