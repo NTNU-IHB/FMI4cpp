@@ -33,8 +33,8 @@
 #include <experimental/filesystem>
 #include <boost/algorithm/string.hpp>
 
-#include <fmi4cpp/tools/os_util.hpp>
-#include <fmi4cpp/driver/FmuDriver.hpp>
+#include <fmi4cpp/common/tools/os_util.hpp>
+#include <fmi4cpp/common/driver/FmuDriver.hpp>
 
 
 using namespace std;

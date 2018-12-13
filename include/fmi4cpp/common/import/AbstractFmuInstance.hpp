@@ -28,8 +28,7 @@
 #include <memory>
 #include <string>
 
-#include "types.hpp"
-#include "Status.hpp"
+#include "../types.hpp"
 #include "FmuInstance.hpp"
 
 namespace fmi4cpp {

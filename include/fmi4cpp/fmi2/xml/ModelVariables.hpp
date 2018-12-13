@@ -25,7 +25,6 @@
 #ifndef FMI4CPP_MODELVARIABLES_HPP
 #define FMI4CPP_MODELVARIABLES_HPP
 
-
 #include <vector>
 #include <memory>
 

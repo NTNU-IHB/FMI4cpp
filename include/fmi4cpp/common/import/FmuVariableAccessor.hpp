@@ -27,7 +27,7 @@
 
 #include <vector>
 
-#include "types.hpp"
+#include "../types.hpp"
 
 namespace fmi4cpp {
 

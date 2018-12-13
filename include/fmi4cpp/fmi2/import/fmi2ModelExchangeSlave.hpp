@@ -30,8 +30,9 @@
 
 #include "fmi2ModelExchangeInstance.hpp"
 
-#include "fmi4cpp/FmuSlave.hpp"
-#include "fmi4cpp/solver/ModelExchangeSolver.hpp"
+#include "fmi4cpp/common/import/FmuSlave.hpp"
+#include "fmi4cpp/common/solver/ModelExchangeSolver.hpp"
+
 #include "fmi4cpp/fmi2/xml/CoSimulationModelDescription.hpp"
 
 
@@ -76,7 +77,7 @@ namespace fmi4cpp::fmi2 {
 
         const double getSimulationTime() const override;
 
-        Status getLastStatus() const override;
+        fmi4cpp::Status getLastStatus() const override;
 
         std::shared_ptr<CoSimulationModelDescription> getModelDescription() const override;
 

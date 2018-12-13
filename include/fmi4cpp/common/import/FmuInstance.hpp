@@ -28,8 +28,8 @@
 #include <vector>
 #include <memory>
 
-#include "fmi4cpp/Status.hpp"
-#include "fmi4cpp/types.hpp"
+#include "fmi4cpp/common/types.hpp"
+#include "fmi4cpp/common/import/Status.hpp"
 
 #include "FmuVariableAccessor.hpp"
 

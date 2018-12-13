@@ -29,8 +29,6 @@
 #include <vector>
 #include <optional>
 
-#include "../fmi2TypesPlatform.h"
-
 namespace fmi4cpp::fmi2 {
 
     class Unknown {

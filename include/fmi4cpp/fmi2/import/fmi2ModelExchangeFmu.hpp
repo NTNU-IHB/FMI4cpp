@@ -25,10 +25,12 @@
 #ifndef FMI4CPP_FMI2MODELEXCHANGEFMU_H
 #define FMI4CPP_FMI2MODELEXCHANGEFMU_H
 
-#include "fmi4cpp/Fmu.hpp"
-#include "fmi4cpp/FmuResource.hpp"
-#include "fmi4cpp/fmi2/xml/ModelExchangeModelDescription.hpp"
+#include "fmi4cpp/common/import/Fmu.hpp"
+#include "fmi4cpp/common/import/FmuResource.hpp"
+
 #include "fmi4cpp/fmi2/import/fmi2ModelExchangeSlave.hpp"
+#include "fmi4cpp/fmi2/xml/ModelExchangeModelDescription.hpp"
+
 
 namespace fmi4cpp::fmi2 {
 

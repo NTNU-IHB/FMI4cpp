@@ -25,11 +25,10 @@
 #ifndef FMI4CPP_FMI4CPP_COMMON_HPP
 #define FMI4CPP_FMI4CPP_COMMON_HPP
 
-#include "Status.hpp"
-#include "logger.hpp"
+#include "common/logger.hpp"
 
 #if FMI4CPP_WITH_ODEINT
-#include "fmi4cpp/solver/OdeintModelExchangeSolver.hpp"
+#include "fmi4cpp/common/solver/OdeintModelExchangeSolver.hpp"
 #endif
 
 

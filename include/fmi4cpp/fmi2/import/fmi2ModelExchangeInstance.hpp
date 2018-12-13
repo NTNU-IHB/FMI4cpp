@@ -29,8 +29,7 @@
 #include <vector>
 
 #include "fmi2ModelExchangeLibrary.hpp"
-#include "fmi4cpp/AbstractFmuInstance.hpp"
-
+#include "fmi4cpp/common/import/AbstractFmuInstance.hpp"
 #include "fmi4cpp/fmi2/xml/ModelExchangeModelDescription.hpp"
 
 namespace fmi4cpp::fmi2 {
@@ -67,7 +66,7 @@ namespace fmi4cpp::fmi2 {
 
         bool newDiscreteStates();
 
-        Status getLastStatus() const override;
+        fmi4cpp::Status getLastStatus() const override;
 
     };
 

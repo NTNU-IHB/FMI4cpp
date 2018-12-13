@@ -26,7 +26,7 @@
 #include <vector>
 #include <iostream>
 
-#include <fmi4cpp/driver/FmuDriver.hpp>
+#include <fmi4cpp/common/driver/FmuDriver.hpp>
 
 using namespace std;
 using namespace fmi4cpp;

@@ -28,7 +28,7 @@
 #include <memory>
 #include <string>
 
-#include "fmi4cpp/solver/ModelExchangeSolver.hpp"
+#include "fmi4cpp/common/solver/ModelExchangeSolver.hpp"
 
 namespace fmi4cpp {
 

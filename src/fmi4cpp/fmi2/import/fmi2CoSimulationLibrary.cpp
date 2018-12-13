@@ -23,6 +23,7 @@
  */
 
 #include "FmiLibraryHelper.hpp"
+
 #include <fmi4cpp/fmi2/import/fmi2CoSimulationLibrary.hpp>
 
 using namespace fmi4cpp;

@@ -52,7 +52,7 @@
 typedef void *function_ptr;
 #endif
 
-#include "fmi4cpp/FmuResource.hpp"
+#include "fmi4cpp/common/import/FmuResource.hpp"
 
 namespace fmi4cpp::fmi2 {
 

@@ -107,7 +107,7 @@ namespace fmi4cpp::fmi2 {
 
         const std::optional<DefaultExperiment> defaultExperiment() const;
 
-        fmi2ValueReference getValueReference(const std::string &name) const;
+        unsigned int getValueReference(const std::string &name) const;
         
         const ScalarVariable &getVariableByName(const std::string &name) const;
 

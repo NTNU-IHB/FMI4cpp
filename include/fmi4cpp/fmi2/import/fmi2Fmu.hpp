@@ -28,9 +28,10 @@
 #include <memory>
 #include <string>
 
-#include "fmi4cpp/Fmu.hpp"
 #include "fmi2CoSimulationFmu.hpp"
 #include "fmi2ModelExchangeFmu.hpp"
+
+#include "fmi4cpp/common/import/Fmu.hpp"
 
 #include "fmi4cpp/fmi2/xml/CoSimulationModelDescription.hpp"
 #include "fmi4cpp/fmi2/xml/ModelExchangeModelDescription.hpp"

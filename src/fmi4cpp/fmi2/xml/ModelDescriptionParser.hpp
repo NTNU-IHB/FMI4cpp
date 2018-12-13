@@ -31,7 +31,7 @@
 #include <fmi4cpp/fmi2/xml/ModelDescription.hpp>
 #include <fmi4cpp/fmi2/xml/ScalarVariableAttribute.hpp>
 
-#include "../../tools/optional_converter.hpp"
+#include "../../common/tools/optional_converter.hpp"
 
 using boost::property_tree::ptree;
 using namespace fmi4cpp::fmi2;

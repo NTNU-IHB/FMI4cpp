@@ -25,7 +25,7 @@
 #ifndef FMI4CPP_FMI2STATUSCONVERTER_HPP
 #define FMI4CPP_FMI2STATUSCONVERTER_HPP
 
-#include <fmi4cpp/Status.hpp>
+#include <fmi4cpp/common/import/Status.hpp>
 #include <fmi4cpp/fmi2/fmi2FunctionTypes.h>
 
 namespace fmi4cpp::fmi2 {

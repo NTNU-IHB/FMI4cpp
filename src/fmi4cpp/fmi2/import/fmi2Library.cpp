@@ -25,7 +25,7 @@
 #include <sstream>
 #include <iostream>
 
-#include <fmi4cpp/logger.hpp>
+#include <fmi4cpp/common/logger.hpp>
 #include <fmi4cpp/fmi2/import/fmi2Library.hpp>
 
 #include "FmiLibraryHelper.hpp"

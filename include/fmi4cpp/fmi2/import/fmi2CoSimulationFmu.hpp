@@ -25,9 +25,10 @@
 #ifndef FMI4CPP_FMI2COSIMULATIONFMU_H
 #define FMI4CPP_FMI2COSIMULATIONFMU_H
 
-#include "fmi4cpp/Fmu.hpp"
-#include "fmi4cpp/FmuResource.hpp"
-#include "fmi4cpp/FmuSlave.hpp"
+#include "fmi4cpp/common/import/Fmu.hpp"
+#include "fmi4cpp/common/import/FmuResource.hpp"
+#include "fmi4cpp/common/import/FmuSlave.hpp"
+
 #include "fmi4cpp/fmi2/xml/CoSimulationModelDescription.hpp"
 #include "fmi4cpp/fmi2/import/fmi2CoSimulationLibrary.hpp"
 

@@ -1,8 +1,8 @@
 
 SET(SOURCES
 
-        fmi4cpp/FmuResource.cpp
-        fmi4cpp/driver/FmuDriver.cpp
+        fmi4cpp/common/FmuResource.cpp
+        fmi4cpp/common/driver/FmuDriver.cpp
 
         fmi4cpp/fmi2/import/fmi2Fmu.cpp
         fmi4cpp/fmi2/import/fmi2CoSimulationFmu.cpp
@@ -46,6 +46,7 @@ target_link_libraries(${FMI4CPP_LIB}
     PRIVATE
         LIBZIP::LIBZIP
         spdlog::spdlog
+        fmt::fmt
         fmt::fmt-header-only
 )
 

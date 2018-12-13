@@ -26,14 +26,14 @@
 
 #include <experimental/filesystem>
 
-#include <fmi4cpp/logger.hpp>
+#include <fmi4cpp/common/logger.hpp>
 #include <fmi4cpp/fmi2/import/fmi2Fmu.hpp>
 
 #include "../xml/ModelDescriptionParser.hpp"
 
-#include "../../tools/unzipper.hpp"
-#include "../../tools/os_util.hpp"
-#include "../../tools/simple_id.hpp"
+#include "../../common/tools/unzipper.hpp"
+#include "../../common/tools/os_util.hpp"
+#include "../../common/tools/simple_id.hpp"
 
 using namespace std;
 using namespace fmi4cpp::fmi2;
