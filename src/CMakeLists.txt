@@ -46,14 +46,13 @@ target_link_libraries(${FMI4CPP_LIB}
     PRIVATE
         LIBZIP::LIBZIP
         spdlog::spdlog
-        fmt::fmt
         fmt::fmt-header-only
 )
 
 if (UNIX)
     target_link_libraries(${FMI4CPP_LIB}
         PRIVATE
-            dl stdc++fs ZLIB::ZLIB BZip2::BZip2 OpenSSL::Crypto
+            dl stdc++fs fmt::fmt ZLIB::ZLIB BZip2::BZip2 OpenSSL::Crypto
     )
 endif()
 

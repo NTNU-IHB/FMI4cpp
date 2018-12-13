@@ -24,8 +24,8 @@
 
 #include <fmi4cpp/fmi2/xml/ModelDescription.hpp>
 
-#include "CoSimulationModelDescription.cpp"
-#include "ModelExchangeModelDescription.cpp"
+#include <fmi4cpp/fmi2/xml/CoSimulationModelDescription.hpp>
+#include <fmi4cpp/fmi2/xml/ModelExchangeModelDescription.hpp>
 
 using namespace fmi4cpp::fmi2;
 
