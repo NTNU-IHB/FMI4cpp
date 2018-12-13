@@ -53,7 +53,7 @@ namespace fmi4cpp::fmi2 {
 
         virtual Status getLastStatus() const;
 
-        virtual bool setupExperiment(double start, double stop, double tolerance);
+        virtual bool setupExperiment(double start = 0, double stop = 0, double tolerance = 0);
 
         virtual bool enterInitializationMode();
 

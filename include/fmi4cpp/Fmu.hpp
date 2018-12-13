@@ -28,9 +28,7 @@
 #include <memory>
 #include <string>
 
-#include "FmuSlave.hpp"
-#include "FmuResource.hpp"
-#include "solver/ModelExchangeSolver.hpp"
+#include "fmi4cpp/solver/ModelExchangeSolver.hpp"
 
 namespace fmi4cpp {
 
@@ -76,7 +74,7 @@ namespace fmi4cpp {
     };
 
     template <class ModelExchangeInstance, class ModelExchangeSlave, class ModelExchangeModelDescription>
-    class fmi2ModelExchangeFmu : public FmuBase<ModelExchangeModelDescription> {
+    class ModelExchangeFmu : public FmuBase<ModelExchangeModelDescription> {
 
     public:
 
@@ -88,7 +86,6 @@ namespace fmi4cpp {
         newInstance(std::unique_ptr<fmi4cpp::solver::ModelExchangeSolver> &solver, bool visible = false, bool loggingOn = false) = 0;
 
     };
-
 
 }
 

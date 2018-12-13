@@ -22,10 +22,12 @@
  * THE SOFTWARE.
  */
 
-#include <fmi4cpp/fmi2/import/fmi2Fmu.hpp>
+#include <fmi4cpp/fmi2/import/fmi2ModelExchangeFmu.hpp>
 #include <fmi4cpp/fmi2/import/fmi2ModelExchangeInstance.hpp>
 
 using namespace std;
+
+using namespace fmi4cpp;
 using namespace fmi4cpp::fmi2;
 using namespace fmi4cpp::solver;
 

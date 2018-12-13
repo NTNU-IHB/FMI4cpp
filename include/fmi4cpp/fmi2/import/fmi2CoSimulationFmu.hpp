@@ -22,36 +22,38 @@
  * THE SOFTWARE.
  */
 
-#include <fmi4cpp/logger.hpp>
-#include <fmi4cpp/FmuResource.hpp>
+#ifndef FMI4CPP_FMI2COSIMULATIONFMU_H
+#define FMI4CPP_FMI2COSIMULATIONFMU_H
 
-#include "../../tools/os_util.hpp"
+#include "fmi4cpp/Fmu.hpp"
+#include "fmi4cpp/FmuResource.hpp"
+#include "fmi4cpp/FmuSlave.hpp"
+#include "fmi4cpp/fmi2/xml/CoSimulationModelDescription.hpp"
+#include "fmi4cpp/fmi2/import/fmi2CoSimulationLibrary.hpp"
 
-using namespace fmi4cpp;
+namespace fmi4cpp::fmi2 {
 
-FmuResource::FmuResource(fs::path &path): path_(path){}
+    class fmi2CoSimulationSlave;
 
-const std::string FmuResource::getModelDescriptionPath() const {
-    return path_.string() + "/modelDescription.xml";
+    class fmi2CoSimulationFmu : public CoSimulationFmu<fmi2CoSimulationSlave, CoSimulationModelDescription> {
+
+    private:
+
+        std::shared_ptr<FmuResource> resource_;
+        std::shared_ptr<fmi2CoSimulationLibrary> lib_;
+        std::shared_ptr<CoSimulationModelDescription> modelDescription_;
+
+    public:
+
+        fmi2CoSimulationFmu(const std::shared_ptr<FmuResource> &resource,
+                            const std::shared_ptr<CoSimulationModelDescription> &md);
+
+        std::shared_ptr<CoSimulationModelDescription> getModelDescription() const override;
+
+        std::unique_ptr<fmi2CoSimulationSlave> newInstance(bool visible = false, bool loggingOn = false);
+
+    };
+
 }
 
-const std::string FmuResource::getResourcePath() const {
-    return "file:///" + path_.string() + "/resources/" + getOs() + "/" + getLibExt();
-}
-
-const std::string FmuResource::getAbsoluteLibraryPath(const std::string &modelIdentifier) const {
-    return path_.string() + "/binaries/" + getOs() + "/" + modelIdentifier + getLibExt();
-}
-
-FmuResource::~FmuResource() {
-
-    std::error_code success {};
-    fs::remove_all(path_, success);
-
-    if (!success) {
-        fmi4cpp::logger::debug("Deleted temporal folder '{}'", path_.string());
-    } else {
-        fmi4cpp::logger::debug("Unable to delete temporal folder '{}'", path_.string());
-    }
-
-}
+#endif //FMI4CPP_FMI2COSIMULATIONFMU_H

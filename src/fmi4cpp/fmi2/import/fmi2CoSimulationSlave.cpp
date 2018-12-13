@@ -22,7 +22,6 @@
  * THE SOFTWARE.
  */
 
-
 #include <fmi4cpp/fmi2/fmi2StatusConverter.hpp>
 #include <fmi4cpp/fmi2/import/fmi2CoSimulationSlave.hpp>
 

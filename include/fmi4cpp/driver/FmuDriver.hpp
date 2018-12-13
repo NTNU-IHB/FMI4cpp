@@ -50,7 +50,7 @@ namespace fmi4cpp::driver {
 
         void dumpOutput(const std::string &data, const std::string &outputFolder);
 
-        void simulate(std::unique_ptr<fmi4cpp::fmi2::fmi2Slave> slave, DriverOptions options);
+        void simulate(std::unique_ptr<fmi4cpp::fmi2::fmi2CoSimulationSlave> slave, DriverOptions options);
 
     };
 

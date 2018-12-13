@@ -22,35 +22,38 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMI4CPP_FMURESOURCE_HPP
-#define FMI4CPP_FMURESOURCE_HPP
+#ifndef FMI4CPP_FMI2MODELEXCHANGEFMU_H
+#define FMI4CPP_FMI2MODELEXCHANGEFMU_H
 
-#include <string>
-#include <experimental/filesystem>
+#include "fmi4cpp/Fmu.hpp"
+#include "fmi4cpp/FmuResource.hpp"
+#include "fmi4cpp/fmi2/xml/ModelExchangeModelDescription.hpp"
+#include "fmi4cpp/fmi2/import/fmi2ModelExchangeSlave.hpp"
 
-namespace fs = std::experimental::filesystem;
+namespace fmi4cpp::fmi2 {
 
-namespace fmi4cpp {
-
-    class FmuResource {
+    class fmi2ModelExchangeFmu : public virtual ModelExchangeFmu<fmi2ModelExchangeInstance, fmi2ModelExchangeSlave, ModelExchangeModelDescription> {
 
     private:
 
-        fs::path path_;
+        std::shared_ptr<FmuResource> resource_;
+        std::shared_ptr<fmi2ModelExchangeLibrary> lib_;
+        std::shared_ptr<ModelExchangeModelDescription> modelDescription_;
 
     public:
-        explicit FmuResource(fs::path &path);
 
-        const std::string getResourcePath() const;
+        fmi2ModelExchangeFmu(const std::shared_ptr<FmuResource> &resource,
+                             const std::shared_ptr<ModelExchangeModelDescription> &md);
 
-        const std::string getModelDescriptionPath() const;
+        std::shared_ptr<ModelExchangeModelDescription> getModelDescription() const override;
 
-        const std::string getAbsoluteLibraryPath(const std::string &modelIdentifier) const;
+        std::unique_ptr<fmi2ModelExchangeInstance> newInstance(bool visible = false, bool loggingOn = false);
 
-        ~FmuResource();
+        std::unique_ptr<fmi2ModelExchangeSlave>
+        newInstance(std::unique_ptr<fmi4cpp::solver::ModelExchangeSolver> &solver, bool visible = false, bool loggingOn = false);
 
     };
 
 }
 
-#endif //FMI4CPP_FMURESOURCE_HPP
+#endif //FMI4CPP_FMI2MODELEXCHANGEFMU_H

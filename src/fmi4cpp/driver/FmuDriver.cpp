@@ -51,7 +51,7 @@ namespace {
 
     }
 
-    void addRow(fmi4cpp::fmi2::fmi2Slave &slave, vector<ScalarVariable> &variables, string &data) {
+    void addRow(fmi4cpp::fmi2::fmi2CoSimulationSlave &slave, vector<ScalarVariable> &variables, string &data) {
 
         data += "\n" + to_string(slave.getSimulationTime()) + CSV_SEPARATOR;
         for (unsigned int i = 0; i < variables.size(); i++) {
@@ -115,7 +115,7 @@ void FmuDriver::dumpOutput(const string &data, const string &outputFolder) {
 
 }
 
-void FmuDriver::simulate(std::unique_ptr<fmi2Slave> slave, DriverOptions options) {
+void FmuDriver::simulate(std::unique_ptr<fmi2CoSimulationSlave> slave, DriverOptions options) {
 
     auto startTime = options.startTime;
     auto stopTime = options.stopTime;

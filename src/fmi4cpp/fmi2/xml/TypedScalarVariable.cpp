@@ -24,6 +24,7 @@
 
 #include <fmi4cpp/fmi2/xml/TypedScalarVariable.hpp>
 
+using namespace fmi4cpp;
 using namespace fmi4cpp::fmi2;
 
 IntegerVariable::IntegerVariable(const ScalarVariable &variable, const IntegerAttribute &attribute)

@@ -30,6 +30,7 @@
 
 #include "FmiLibraryHelper.hpp"
 
+using namespace fmi4cpp;
 using namespace fmi4cpp::fmi2;
 
 namespace {

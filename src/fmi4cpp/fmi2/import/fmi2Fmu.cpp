@@ -22,13 +22,12 @@
  * THE SOFTWARE.
  */
 
-#include <fmi4cpp/logger.hpp>
+#include <utility>
 
 #include <experimental/filesystem>
 
+#include <fmi4cpp/logger.hpp>
 #include <fmi4cpp/fmi2/import/fmi2Fmu.hpp>
-#include <fmi4cpp/fmi2/import/fmi2CoSimulationSlave.hpp>
-#include <fmi4cpp/fmi2/import/fmi2ModelExchangeInstance.hpp>
 
 #include "../xml/ModelDescriptionParser.hpp"
 
@@ -86,4 +85,14 @@ bool fmi2Fmu::supportsModelExchange() const {
 
 bool fmi2Fmu::supportsCoSimulation() const {
     return modelDescription_->supportsCoSimulation();
+}
+
+unique_ptr<fmi2CoSimulationFmu> fmi2Fmu::asCoSimulationFmu() const {
+    shared_ptr<CoSimulationModelDescription> cs = std::move(modelDescription_->asCoSimulationModelDescription());
+    return make_unique<fmi2CoSimulationFmu>(resource_, cs);
+}
+
+unique_ptr<fmi2ModelExchangeFmu> fmi2Fmu::asModelExchangeFmu() const {
+    shared_ptr<ModelExchangeModelDescription> me = std::move(modelDescription_->asModelExchangeModelDescription());
+    return make_unique<fmi2ModelExchangeFmu>(resource_, me);
 }

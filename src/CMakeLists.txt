@@ -1,6 +1,7 @@
 
 SET(SOURCES
 
+        fmi4cpp/FmuResource.cpp
         fmi4cpp/driver/FmuDriver.cpp
 
         fmi4cpp/fmi2/import/fmi2Fmu.cpp
@@ -12,7 +13,6 @@ SET(SOURCES
         fmi4cpp/fmi2/import/fmi2CoSimulationSlave.cpp
         fmi4cpp/fmi2/import/fmi2ModelExchangeInstance.cpp
         fmi4cpp/fmi2/import/fmi2ModelExchangeSlave.cpp
-        fmi4cpp/fmi2/import/FmuResource.cpp
 
         fmi4cpp/fmi2/xml/enums.cpp
         fmi4cpp/fmi2/xml/ModelDescription.cpp
@@ -25,7 +25,7 @@ SET(SOURCES
         fmi4cpp/fmi2/xml/DefaultExperiment.cpp
         fmi4cpp/fmi2/xml/ModelStructure.cpp
 
-)
+    )
 
 set(FMI4CPP_LIB fmi4cpp)
 add_library(${FMI4CPP_LIB} ${SOURCES})

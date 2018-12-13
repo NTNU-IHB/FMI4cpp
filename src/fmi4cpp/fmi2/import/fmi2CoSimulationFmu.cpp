@@ -22,23 +22,13 @@
  * THE SOFTWARE.
  */
 
-#include <fmi4cpp/fmi2/import/fmi2Fmu.hpp>
+#include <fmi4cpp/fmi2/import/fmi2CoSimulationFmu.hpp>
 #include <fmi4cpp/fmi2/import/fmi2CoSimulationSlave.hpp>
 
-
-
 using namespace std;
+
+using namespace fmi4cpp;
 using namespace fmi4cpp::fmi2;
-
-unique_ptr<fmi2CoSimulationFmu> fmi2Fmu::asCoSimulationFmu() const {
-    shared_ptr<CoSimulationModelDescription> cs = std::move(modelDescription_->asCoSimulationModelDescription());
-    return make_unique<fmi2CoSimulationFmu>(resource_, cs);
-}
-
-unique_ptr<fmi2ModelExchangeFmu> fmi2Fmu::asModelExchangeFmu() const {
-    shared_ptr<ModelExchangeModelDescription> me = std::move(modelDescription_->asModelExchangeModelDescription());
-    return make_unique<fmi2ModelExchangeFmu>(resource_, me);
-}
 
 fmi2CoSimulationFmu::fmi2CoSimulationFmu(const shared_ptr<FmuResource> &resource,
                                          const shared_ptr<CoSimulationModelDescription> &md)
@@ -48,7 +38,7 @@ shared_ptr<CoSimulationModelDescription> fmi2CoSimulationFmu::getModelDescriptio
     return modelDescription_;
 }
 
-unique_ptr<fmi2Slave> fmi2CoSimulationFmu::newInstance(const bool visible, const bool loggingOn) {
+unique_ptr<fmi2CoSimulationSlave> fmi2CoSimulationFmu::newInstance(const bool visible, const bool loggingOn) {
     shared_ptr<fmi2CoSimulationLibrary> lib = nullptr;
     string modelIdentifier = modelDescription_->modelIdentifier();
     if (modelDescription_->canBeInstantiatedOnlyOncePerProcess()) {
