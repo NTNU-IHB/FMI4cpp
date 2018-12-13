@@ -25,7 +25,7 @@
 #include <fmi4cpp/common/logger.hpp>
 #include <fmi4cpp/common/import/FmuResource.hpp>
 
-#include "tools/os_util.hpp"
+#include "../tools/os_util.hpp"
 
 using namespace fmi4cpp;
 
