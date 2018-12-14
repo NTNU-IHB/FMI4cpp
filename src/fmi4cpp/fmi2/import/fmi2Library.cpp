@@ -23,15 +23,17 @@
  */
 
 #include <sstream>
-#include <iostream>
 
 #include <fmi4cpp/common/logger.hpp>
 #include <fmi4cpp/fmi2/import/fmi2Library.hpp>
 
 #include "FmiLibraryHelper.hpp"
+#include "../../common/tools/os_util.hpp"
 
 using namespace fmi4cpp;
 using namespace fmi4cpp::fmi2;
+
+namespace logger = fmi4cpp::logger;
 
 namespace {
 
@@ -76,12 +78,12 @@ fmi2Library::fmi2Library(const std::string &modelIdentifier, const std::shared_p
 
     const auto libName = resource->getAbsoluteLibraryPath(modelIdentifier);
 
-    fmi4cpp::logger::debug("Loading shared library '{}'", fs::path(libName).stem().string());
+    logger::debug("Loading shared library '{}'", fs::path(libName).stem().string() + getLibExt());
 
     handle_ = loadLibrary(libName);
 
     if (!handle_) {
-        fmi4cpp::logger::error(getLastError());
+        logger::error("Unable to load dynamic library '{}': {}", libName, getLastError());
         throw std::runtime_error("Unable to load dynamic library '" + libName + "'!");
     }
 
@@ -146,7 +148,9 @@ fmi2Component fmi2Library::instantiate(const std::string instanceName, const fmi
                                        resourceLocation.c_str(), &callback, visible, loggingOn);
 
     if (c == nullptr) {
-        throw std::runtime_error("Fatal: fmi2Instantiate returned nullptr, unable to instantiate FMU instance!");
+        const std::string msg = "Fatal: fmi2Instantiate returned nullptr, unable to instantiate FMU instance!";
+        logger::error(msg);
+        throw std::runtime_error(msg);
     }
 
     return c;
@@ -154,7 +158,7 @@ fmi2Component fmi2Library::instantiate(const std::string instanceName, const fmi
 }
 
 bool fmi2Library::setDebugLogging(fmi2Component c, bool loggingOn,
-                                 const std::vector<char *> categories) {
+                                 const std::vector<fmi2String > categories) {
     return updateStatusAndReturnTrueIfOK(fmi2SetDebugLogging_(c, loggingOn, categories.size(), categories.data()));
 }
 
@@ -323,7 +327,7 @@ fmi2Library::~fmi2Library() {
 #endif
 
         if (!success) {
-            fmi4cpp::logger::error(getLastError());
+            logger::error(getLastError());
         }
 
         handle_ = nullptr;

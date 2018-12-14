@@ -117,7 +117,7 @@ namespace fmi4cpp::fmi2 {
 
         fmi2String getTypesPlatform() const;
 
-        bool setDebugLogging(fmi2Component c, bool loggingOn, std::vector<char *> categories);
+        bool setDebugLogging(fmi2Component c, bool loggingOn, std::vector<fmi2String> categories);
 
         fmi2Component instantiate(std::string instanceName, fmi2Type type,
                                   std::string guid, std::string resourceLocation,
