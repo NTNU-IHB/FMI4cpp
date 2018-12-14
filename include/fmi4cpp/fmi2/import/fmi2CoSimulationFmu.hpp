@@ -27,15 +27,13 @@
 
 #include "fmi4cpp/common/import/Fmu.hpp"
 #include "fmi4cpp/common/import/FmuResource.hpp"
-#include "fmi4cpp/common/import/FmuSlave.hpp"
 
 #include "fmi4cpp/fmi2/xml/CoSimulationModelDescription.hpp"
 #include "fmi4cpp/fmi2/import/fmi2CoSimulationLibrary.hpp"
+#include <fmi4cpp/fmi2/import/fmi2CoSimulationSlave.hpp>
 
 namespace fmi4cpp::fmi2 {
-
-    class fmi2CoSimulationSlave;
-
+    
     class fmi2CoSimulationFmu : public CoSimulationFmu<fmi2CoSimulationSlave, CoSimulationModelDescription> {
 
     private:

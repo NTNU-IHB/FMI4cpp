@@ -23,7 +23,6 @@
  */
 
 #include <fmi4cpp/fmi2/import/fmi2CoSimulationFmu.hpp>
-#include <fmi4cpp/fmi2/import/fmi2CoSimulationSlave.hpp>
 
 using namespace std;
 
