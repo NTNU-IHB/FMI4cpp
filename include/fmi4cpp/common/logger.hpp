@@ -54,59 +54,88 @@ namespace {
         return console;
     };
 
-    auto console = getOrCreateLogger();
+    const auto console = getOrCreateLogger();
 
 }
 
 namespace fmi4cpp::logger {
 
+    enum class LogLevel {
+
+        OFF,
+        INFO,
+        WARN,
+        DEBUG,
+        ERROR
+    };
+
+    inline void setLogLevel(const LogLevel level) {
+        switch (level) {
+            case LogLevel::OFF:
+                console->set_level(spdlog::level::off);
+                break;
+            case LogLevel ::INFO:
+                console->set_level(spdlog::level::info);
+                break;
+            case LogLevel ::WARN:
+                console->set_level(spdlog::level::warn);
+                break;
+            case LogLevel ::DEBUG:
+                console->set_level(spdlog::level::debug);
+                break;
+            case LogLevel ::ERROR:
+                console->set_level(spdlog::level::err);
+                break;
+        }
+    }
+
     template<typename T>
-    void info(const T &msg) {
+    inline void info(const T &msg) {
         console->info(msg);
     }
 
     template<typename... Args>
-    void info(const char* msg, const Args &... args) {
+    inline void info(const char* msg, const Args &... args) {
         console->info(msg, args...);
     }
 
     template<typename T>
-    void warn(const T &msg) {
+    inline void warn(const T &msg) {
         console->warn(msg);
     }
 
     template<typename... Args>
-    void warn(const char* msg, const Args &... args) {
+    inline void warn(const char* msg, const Args &... args) {
         console->warn(msg, args...);
     }
 
     template<typename T>
-    void error(const T &msg) {
+    inline void error(const T &msg) {
         console->error(msg);
     }
 
     template<typename... Args>
-    void error(const char* msg, const Args &... args) {
+    inline void error(const char* msg, const Args &... args) {
         console->error(msg, args...);
     }
 
     template<typename T>
-    void debug(const T &msg) {
+    inline void debug(const T &msg) {
         console->debug(msg);
     }
 
     template<typename... Args>
-    void debug(const char* msg, const Args &... args) {
+    inline void debug(const char* msg, const Args &... args) {
         console->debug(msg, args...);
     }
 
     template<typename T>
-    void trace(const T &msg) {
+    inline void trace(const T &msg) {
         console->trace(msg);
     }
 
     template<typename... Args>
-    void trace(const char* msg, const Args &... args) {
+    inline void trace(const char* msg, const Args &... args) {
         console->trace(msg, args...);
     }
 
