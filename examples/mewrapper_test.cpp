@@ -25,9 +25,9 @@
 #include <string>
 #include <memory>
 #include <vector>
-#include <iostream>
 
 #include <fmi4cpp/fmi2/fmi2.hpp>
+#include <fmi4cpp/common/logger.hpp>
 #include <fmi4cpp/common/tools/os_util.hpp>
 
 using namespace std;

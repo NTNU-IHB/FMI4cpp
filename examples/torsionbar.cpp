@@ -22,9 +22,10 @@
  * THE SOFTWARE.
  */
 
-#include <iostream>
+#include <ctime>
 
 #include <fmi4cpp/fmi2/fmi2.hpp>
+#include <fmi4cpp/common/logger.hpp>
 #include <fmi4cpp/common/tools/os_util.hpp>
 
 using namespace std;

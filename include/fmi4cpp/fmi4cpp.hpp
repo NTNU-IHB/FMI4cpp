@@ -22,14 +22,11 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMI4CPP_FMI4CPP_COMMON_HPP
-#define FMI4CPP_FMI4CPP_COMMON_HPP
-
-#include "common/logger.hpp"
+#ifndef FMI4CPP_FMI4CPP_HPP
+#define FMI4CPP_FMI4CPP_HPP
 
 #if FMI4CPP_WITH_ODEINT
 #include "fmi4cpp/common/solver/OdeintModelExchangeSolver.hpp"
 #endif
 
-
-#endif //FMI4CPP_FMI4CPP_COMMON_HPP
+#endif //FMI4CPP_FMI4CPP_HPP
