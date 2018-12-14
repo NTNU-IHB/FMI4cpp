@@ -22,11 +22,20 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMI4CPP_FMI4CPP_HPP
-#define FMI4CPP_FMI4CPP_HPP
+#ifndef FMI4CPP_FMI2_HPP
+#define FMI4CPP_FMI2_HPP
 
-#if FMI4CPP_WITH_ODEINT
-#include "fmi4cpp/common/solver/OdeintModelExchangeSolver.hpp"
-#endif
+#include "../fmi4cpp.hpp"
 
-#endif //FMI4CPP_FMI4CPP_HPP
+#include "xml/enums.hpp"
+#include "xml/ModelDescription.hpp"
+#include "xml/TypedScalarVariable.hpp"
+
+#include "import/fmi2Fmu.hpp"
+#include "import/fmi2CoSimulationFmu.hpp"
+#include "import/fmi2ModelExchangeFmu.hpp"
+
+#include "import/fmi2CoSimulationSlave.hpp"
+#include "import/fmi2ModelExchangeSlave.hpp"
+
+#endif //FMI4CPP_FMI2_HPP

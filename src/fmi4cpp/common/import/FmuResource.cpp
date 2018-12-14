@@ -22,11 +22,36 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMI4CPP_FMI4CPP_HPP
-#define FMI4CPP_FMI4CPP_HPP
+#include <fmi4cpp/common/logger.hpp>
+#include <fmi4cpp/common/import/FmuResource.hpp>
 
-#if FMI4CPP_WITH_ODEINT
-#include "fmi4cpp/common/solver/OdeintModelExchangeSolver.hpp"
-#endif
+#include "../tools/os_util.hpp"
 
-#endif //FMI4CPP_FMI4CPP_HPP
+using namespace fmi4cpp;
+
+FmuResource::FmuResource(fs::path &path): path_(path){}
+
+const std::string FmuResource::getModelDescriptionPath() const {
+    return path_.string() + "/modelDescription.xml";
+}
+
+const std::string FmuResource::getResourcePath() const {
+    return "file:///" + path_.string() + "/resources/" + getOs() + "/" + getLibExt();
+}
+
+const std::string FmuResource::getAbsoluteLibraryPath(const std::string &modelIdentifier) const {
+    return path_.string() + "/binaries/" + getOs() + "/" + modelIdentifier + getLibExt();
+}
+
+FmuResource::~FmuResource() {
+
+    std::error_code success {};
+    fs::remove_all(path_, success);
+
+    if (!success) {
+        fmi4cpp::logger::debug("Deleted temporal folder '{}'", path_.string());
+    } else {
+        fmi4cpp::logger::debug("Unable to delete temporal folder '{}'", path_.string());
+    }
+
+}

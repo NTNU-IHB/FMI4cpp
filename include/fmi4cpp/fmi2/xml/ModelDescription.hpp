@@ -107,7 +107,7 @@ namespace fmi4cpp::fmi2 {
 
         const std::optional<DefaultExperiment> defaultExperiment() const;
 
-        fmi2ValueReference getValueReference(const std::string &name) const;
+        unsigned int getValueReference(const std::string &name) const;
         
         const ScalarVariable &getVariableByName(const std::string &name) const;
 
@@ -135,79 +135,6 @@ namespace fmi4cpp::fmi2 {
         std::unique_ptr<CoSimulationModelDescription> asCoSimulationModelDescription() const;
 
         std::unique_ptr<ModelExchangeModelDescription> asModelExchangeModelDescription() const;
-
-    };
-
-    template <typename T>
-    class SpecificModelDescription : public ModelDescriptionBase {
-
-    protected:
-
-        const T attributes_;
-
-    public:
-
-        SpecificModelDescription(const ModelDescriptionBase &base, const T &attributes)
-                : ModelDescriptionBase(base), attributes_(attributes) {}
-
-        const SourceFiles &sourceFiles() const {
-            return attributes_.sourceFiles;
-        }
-
-        std::string modelIdentifier() const {
-            return attributes_.modelIdentifier;
-        }
-
-        bool canGetAndSetFMUstate() const {
-            return attributes_.canGetAndSetFMUstate;
-        }
-
-        bool canSerializeFMUstate() const {
-            return attributes_.canSerializeFMUstate;
-        }
-
-        bool needsExecutionTool() const {
-            return attributes_.needsExecutionTool;
-        }
-
-        bool canNotUseMemoryManagementFunctions() const {
-            return attributes_.canNotUseMemoryManagementFunctions;
-        }
-
-        bool canBeInstantiatedOnlyOncePerProcess() const {
-            return attributes_.canBeInstantiatedOnlyOncePerProcess;
-        }
-
-        bool providesDirectionalDerivative() const {
-            return attributes_.providesDirectionalDerivative;
-        }
-
-        const T &attributes() const {
-            return attributes_;
-        }
-
-    };
-
-    class CoSimulationModelDescription : public SpecificModelDescription<CoSimulationAttributes> {
-
-    public:
-
-        CoSimulationModelDescription(const ModelDescriptionBase &base, const CoSimulationAttributes &attributes);
-
-        bool canInterpolateInputs() const;
-        bool canRunAsynchronuously() const;
-        bool canHandleVariableCommunicationStepSize() const;
-
-        size_t maxOutputDerivativeOrder() const;
-
-    };
-
-    class ModelExchangeModelDescription: public SpecificModelDescription<ModelExchangeAttributes> {
-
-    public:
-        ModelExchangeModelDescription(const ModelDescriptionBase &base, const ModelExchangeAttributes &attributes);
-
-        bool completedIntegratorStepNotNeeded() const;
 
     };
 

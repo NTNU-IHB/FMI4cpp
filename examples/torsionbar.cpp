@@ -22,10 +22,11 @@
  * THE SOFTWARE.
  */
 
-#include <iostream>
+#include <ctime>
 
-#include <fmi4cpp/fmi2/fmi4cpp.hpp>
-#include <fmi4cpp/tools/os_util.hpp>
+#include <fmi4cpp/fmi2/fmi2.hpp>
+#include <fmi4cpp/common/logger.hpp>
+#include <fmi4cpp/common/tools/os_util.hpp>
 
 using namespace std;
 using namespace fmi4cpp::fmi2;
@@ -42,7 +43,8 @@ const string fmu_path = string(getenv("TEST_FMUs"))
 
 int main() {
 
-    Fmu fmu(fmu_path);
+    fmi2Fmu fmu(fmu_path);
+
     const auto slave = fmu.asCoSimulationFmu()->newInstance();
     slave->setupExperiment();
     slave->enterInitializationMode();

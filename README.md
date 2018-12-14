@@ -48,8 +48,8 @@ On *NIX systems the dependencies can of course be installed using the native pac
 
 ```cpp
 
-#include <iostream>
-#include <fmi4cpp/fmi2/fmi4cpp.hpp>
+#include <fmi4cpp/fmi2/fmi2.hpp>
+#include <fmi4cpp/common/logger.hpp>
 
 using namespace fmi4cpp::fmi2;
 

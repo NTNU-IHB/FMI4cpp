@@ -22,47 +22,35 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMI4CPP_MODELVARIABLES_HPP
-#define FMI4CPP_MODELVARIABLES_HPP
+#ifndef FMI4CPP_FMI2STATUSCONVERTER_HPP
+#define FMI4CPP_FMI2STATUSCONVERTER_HPP
 
-#include <vector>
-#include <memory>
-
-#include <fmi4cpp/fmi2/xml/ScalarVariable.hpp>
+#include <fmi4cpp/common/import/Status.hpp>
+#include <fmi4cpp/fmi2/fmi2FunctionTypes.h>
 
 namespace fmi4cpp::fmi2 {
 
-    class ModelVariables {
+    inline Status convert(fmi2Status status) {
 
-    private:
+        switch (status) {
+            case fmi2OK:
+                return Status::OK;
+            case fmi2Warning:
+                return Status::Warning;
+            case fmi2Discard:
+                return Status::Discard;
+            case fmi2Error:
+                return Status::Error;
+            case fmi2Fatal:
+                return Status::Fatal;
+            case fmi2Pending:
+                return Status::Pending;
+            default:
+                return Status::Unknown;
+        }
 
-        std::vector<ScalarVariable> variables_;
-
-    public:
-
-        ModelVariables();
-
-        explicit ModelVariables(const std::vector<ScalarVariable> &variables);
-
-        size_t size() const;
-        
-        const std::vector<ScalarVariable> variables() const;
-
-        const ScalarVariable &operator[](size_t index) const;
-        const ScalarVariable &getByName(const std::string &name) const;
-        const ScalarVariable &getByValueReference(fmi2ValueReference vr) const;
-
-        void getByValueReference(fmi2ValueReference vr, std::vector<ScalarVariable> &store) const;
-        void getByCausality(Causality causality, std::vector<ScalarVariable> &store) const;
-
-        std::vector<ScalarVariable>::iterator begin();
-        std::vector<ScalarVariable>::iterator end();
-
-        std::vector<ScalarVariable>::const_iterator begin() const;
-        std::vector<ScalarVariable>::const_iterator end() const;
-
-    };
+    }
 
 }
 
-#endif //FMI4CPP_MODELVARIABLES_HPP
+#endif //FMI4CPP_FMI2STATUSCONVERTER_HPP

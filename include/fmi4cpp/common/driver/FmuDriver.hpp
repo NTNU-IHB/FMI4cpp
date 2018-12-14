@@ -22,47 +22,39 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMI4CPP_MODELVARIABLES_HPP
-#define FMI4CPP_MODELVARIABLES_HPP
+#ifndef FMI4CPP_FMUDRIVER_HPP
+#define FMI4CPP_FMUDRIVER_HPP
 
-#include <vector>
+#include <string>
 #include <memory>
 
-#include <fmi4cpp/fmi2/xml/ScalarVariable.hpp>
+#include <fmi4cpp/fmi2/fmi2.hpp>
 
-namespace fmi4cpp::fmi2 {
+#include "error_types.hpp"
+#include "DriverOptions.hpp"
 
-    class ModelVariables {
 
-    private:
+namespace fmi4cpp::driver {
 
-        std::vector<ScalarVariable> variables_;
+    class FmuDriver {
 
     public:
 
-        ModelVariables();
+        explicit FmuDriver(const std::shared_ptr<fmi4cpp::fmi2::fmi2Fmu> fmu);
 
-        explicit ModelVariables(const std::vector<ScalarVariable> &variables);
+        void run(DriverOptions options);
 
-        size_t size() const;
-        
-        const std::vector<ScalarVariable> variables() const;
+    private:
 
-        const ScalarVariable &operator[](size_t index) const;
-        const ScalarVariable &getByName(const std::string &name) const;
-        const ScalarVariable &getByValueReference(fmi2ValueReference vr) const;
+        const std::shared_ptr<fmi4cpp::fmi2::fmi2Fmu> fmu_;
 
-        void getByValueReference(fmi2ValueReference vr, std::vector<ScalarVariable> &store) const;
-        void getByCausality(Causality causality, std::vector<ScalarVariable> &store) const;
+        void dumpOutput(const std::string &data, const std::string &outputFolder);
 
-        std::vector<ScalarVariable>::iterator begin();
-        std::vector<ScalarVariable>::iterator end();
-
-        std::vector<ScalarVariable>::const_iterator begin() const;
-        std::vector<ScalarVariable>::const_iterator end() const;
+        void simulate(std::unique_ptr<fmi4cpp::fmi2::fmi2CoSimulationSlave> slave, DriverOptions options);
 
     };
 
 }
 
-#endif //FMI4CPP_MODELVARIABLES_HPP
+
+#endif //FMI4CPP_FMUDRIVER_HPP

@@ -23,10 +23,10 @@
  */
 
 #include <string>
-#include <iostream>
 
-#include <fmi4cpp/tools/os_util.hpp>
-#include <fmi4cpp/fmi2/fmi4cpp.hpp>
+#include <fmi4cpp/fmi2/fmi2.hpp>
+#include <fmi4cpp/common/logger.hpp>
+#include <fmi4cpp/common/tools/os_util.hpp>
 
 using namespace std;
 using namespace fmi4cpp::fmi2;
@@ -42,7 +42,7 @@ const string fmuPath = string(getenv("TEST_FMUs"))
 
 int main() {
 
-    Fmu fmu(fmuPath);
+    fmi2Fmu fmu(fmuPath);
     auto cs_fmu = fmu.asCoSimulationFmu();
     auto md = cs_fmu->getModelDescription();
 

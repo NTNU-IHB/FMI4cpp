@@ -33,9 +33,9 @@
 #include <experimental/filesystem>
 #include <boost/algorithm/string.hpp>
 
-#include <fmi4cpp/tools/os_util.hpp>
-#include <fmi4cpp/driver/FmuDriver.hpp>
-
+#include <fmi4cpp/common/logger.hpp>
+#include <fmi4cpp/common/tools/os_util.hpp>
+#include <fmi4cpp/common/driver/FmuDriver.hpp>
 
 using namespace std;
 
@@ -159,7 +159,7 @@ namespace fmi4cpp::xc {
                         throw Failure("Unable to handle input files yet.");
                     }
 
-                    auto fmu = make_shared<Fmu>(fmuFile);
+                    auto fmu = make_shared<fmi2Fmu>(fmuFile);
                     if (fmu->getModelDescription()->asCoSimulationModelDescription()->needsExecutionTool()) {
                         throw Rejection("FMU requires execution tool.");
                     }

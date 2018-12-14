@@ -1,21 +1,23 @@
 
 SET(SOURCES
 
-        fmi4cpp/driver/FmuDriver.cpp
+        fmi4cpp/common/import/FmuResource.cpp
+        fmi4cpp/common/driver/FmuDriver.cpp
 
-        fmi4cpp/fmi2/import/Fmu.cpp
-        fmi4cpp/fmi2/import/CoSimulationFmu.cpp
-        fmi4cpp/fmi2/import/ModelExchangeFmu.cpp
-        fmi4cpp/fmi2/import/FmiLibrary.cpp
-        fmi4cpp/fmi2/import/CoSimulationLibrary.cpp
-        fmi4cpp/fmi2/import/ModelExchangeLibrary.cpp
-        fmi4cpp/fmi2/import/CoSimulationSlave.cpp
-        fmi4cpp/fmi2/import/ModelExchangeInstance.cpp
-        fmi4cpp/fmi2/import/ModelExchangeSlave.cpp
-        fmi4cpp/fmi2/import/FmuResource.cpp
+        fmi4cpp/fmi2/import/fmi2Fmu.cpp
+        fmi4cpp/fmi2/import/fmi2CoSimulationFmu.cpp
+        fmi4cpp/fmi2/import/fmi2ModelExchangeFmu.cpp
+        fmi4cpp/fmi2/import/fmi2Library.cpp
+        fmi4cpp/fmi2/import/fmi2CoSimulationLibrary.cpp
+        fmi4cpp/fmi2/import/fmi2ModelExchangeLibrary.cpp
+        fmi4cpp/fmi2/import/fmi2CoSimulationSlave.cpp
+        fmi4cpp/fmi2/import/fmi2ModelExchangeInstance.cpp
+        fmi4cpp/fmi2/import/fmi2ModelExchangeSlave.cpp
 
         fmi4cpp/fmi2/xml/enums.cpp
         fmi4cpp/fmi2/xml/ModelDescription.cpp
+        fmi4cpp/fmi2/xml/CoSimulationModelDescription.cpp
+        fmi4cpp/fmi2/xml/ModelExchangeModelDescription.cpp
         fmi4cpp/fmi2/xml/ModelVariables.cpp
         fmi4cpp/fmi2/xml/ScalarVariable.cpp
         fmi4cpp/fmi2/xml/TypedScalarVariable.cpp
@@ -23,7 +25,7 @@ SET(SOURCES
         fmi4cpp/fmi2/xml/DefaultExperiment.cpp
         fmi4cpp/fmi2/xml/ModelStructure.cpp
 
-)
+    )
 
 set(FMI4CPP_LIB fmi4cpp)
 add_library(${FMI4CPP_LIB} ${SOURCES})
@@ -50,7 +52,7 @@ target_link_libraries(${FMI4CPP_LIB}
 if (UNIX)
     target_link_libraries(${FMI4CPP_LIB}
         PRIVATE
-            dl stdc++fs ZLIB::ZLIB BZip2::BZip2 OpenSSL::Crypto
+            dl stdc++fs fmt::fmt ZLIB::ZLIB BZip2::BZip2 OpenSSL::Crypto
     )
 endif()
 

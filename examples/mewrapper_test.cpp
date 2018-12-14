@@ -25,10 +25,10 @@
 #include <string>
 #include <memory>
 #include <vector>
-#include <iostream>
 
-#include <fmi4cpp/fmi2/fmi4cpp.hpp>
-#include <fmi4cpp/tools/os_util.hpp>
+#include <fmi4cpp/fmi2/fmi2.hpp>
+#include <fmi4cpp/common/logger.hpp>
+#include <fmi4cpp/common/tools/os_util.hpp>
 
 using namespace std;
 using namespace fmi4cpp::fmi2;
@@ -46,7 +46,7 @@ const string fmuPath = string(getenv("TEST_FMUs"))
 
 int main() {
     
-    auto fmu = Fmu(fmuPath).asModelExchangeFmu();
+    auto fmu = fmi2Fmu(fmuPath).asModelExchangeFmu();
 
     auto solver = make_solver<RK4ClassicSolver>(microStep);
     auto slave = fmu->newInstance(solver);

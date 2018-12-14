@@ -28,8 +28,8 @@
 #include <iostream>
 #include <boost/test/unit_test.hpp>
 
-#include <fmi4cpp/tools/os_util.hpp>
-#include <fmi4cpp/fmi2/fmi4cpp.hpp>
+#include <fmi4cpp/fmi2/fmi2.hpp>
+#include <fmi4cpp/common/tools/os_util.hpp>
 
 using namespace std;
 using namespace fmi4cpp::fmi2;
@@ -40,7 +40,7 @@ const string fmu_path = string(getenv("TEST_FMUs"))
 
 BOOST_AUTO_TEST_CASE(ControlledTemperature_test1) {
 
-    Fmu fmu(fmu_path);
+    fmi2Fmu fmu(fmu_path);
     auto md = fmu.getModelDescription();
     auto md_cs = md->asCoSimulationModelDescription();
 

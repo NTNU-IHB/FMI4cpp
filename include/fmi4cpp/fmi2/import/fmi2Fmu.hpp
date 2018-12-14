@@ -22,47 +22,54 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMI4CPP_MODELVARIABLES_HPP
-#define FMI4CPP_MODELVARIABLES_HPP
+#ifndef FMI4CPP_FMI2FMU_HPP
+#define FMI4CPP_FMI2FMU_HPP
 
-#include <vector>
 #include <memory>
+#include <string>
 
-#include <fmi4cpp/fmi2/xml/ScalarVariable.hpp>
+#include "fmi2CoSimulationFmu.hpp"
+#include "fmi2ModelExchangeFmu.hpp"
+
+#include "fmi4cpp/common/import/Fmu.hpp"
+
+#include "fmi4cpp/fmi2/xml/CoSimulationModelDescription.hpp"
+#include "fmi4cpp/fmi2/xml/ModelExchangeModelDescription.hpp"
 
 namespace fmi4cpp::fmi2 {
 
-    class ModelVariables {
+class fmi2Fmu : public virtual FmuProvider<ModelDescription, fmi2CoSimulationFmu, fmi2ModelExchangeFmu> {
+
+        friend class fmi2CoSimulationFmu;
+        friend class fmi2ModelExchangeFmu;
 
     private:
 
-        std::vector<ScalarVariable> variables_;
+        std::shared_ptr<FmuResource> resource_;
+        std::shared_ptr<ModelDescription> modelDescription_;
 
     public:
+        explicit fmi2Fmu(const std::string &fmuFile);
 
-        ModelVariables();
-
-        explicit ModelVariables(const std::vector<ScalarVariable> &variables);
-
-        size_t size() const;
+        const std::string fmuFile_;
         
-        const std::vector<ScalarVariable> variables() const;
+        const std::string getFmuFileName() const;
 
-        const ScalarVariable &operator[](size_t index) const;
-        const ScalarVariable &getByName(const std::string &name) const;
-        const ScalarVariable &getByValueReference(fmi2ValueReference vr) const;
+        const std::string getModelDescriptionXml() const;
 
-        void getByValueReference(fmi2ValueReference vr, std::vector<ScalarVariable> &store) const;
-        void getByCausality(Causality causality, std::vector<ScalarVariable> &store) const;
+        std::shared_ptr<ModelDescription> getModelDescription() const override;
 
-        std::vector<ScalarVariable>::iterator begin();
-        std::vector<ScalarVariable>::iterator end();
+        bool supportsModelExchange() const override;
 
-        std::vector<ScalarVariable>::const_iterator begin() const;
-        std::vector<ScalarVariable>::const_iterator end() const;
+        bool supportsCoSimulation() const override;
+
+        std::unique_ptr<fmi2CoSimulationFmu> asCoSimulationFmu() const override;
+
+        std::unique_ptr<fmi2ModelExchangeFmu> asModelExchangeFmu() const override;
 
     };
 
 }
 
-#endif //FMI4CPP_MODELVARIABLES_HPP
+
+#endif //FMI4CPP_FMI2FMU_HPP

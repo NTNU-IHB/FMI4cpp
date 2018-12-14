@@ -22,11 +22,15 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMI4CPP_FMI4CPP_HPP
-#define FMI4CPP_FMI4CPP_HPP
+#include <fmi4cpp/fmi2/xml/ModelExchangeModelDescription.hpp>
 
-#if FMI4CPP_WITH_ODEINT
-#include "fmi4cpp/common/solver/OdeintModelExchangeSolver.hpp"
-#endif
+using namespace fmi4cpp::fmi2;
 
-#endif //FMI4CPP_FMI4CPP_HPP
+
+ModelExchangeModelDescription::ModelExchangeModelDescription(const ModelDescriptionBase &base,
+                                                             const ModelExchangeAttributes &attributes)
+        : SpecificModelDescription(base, attributes) {}
+
+bool ModelExchangeModelDescription::completedIntegratorStepNotNeeded() const {
+    return attributes_.completedIntegratorStepNotNeeded;
+}

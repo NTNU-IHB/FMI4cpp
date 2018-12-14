@@ -22,47 +22,27 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMI4CPP_MODELVARIABLES_HPP
-#define FMI4CPP_MODELVARIABLES_HPP
+#ifndef FMI4CPP_COSIMULATIONMODELDESCRIPTION_HPP
+#define FMI4CPP_COSIMULATIONMODELDESCRIPTION_HPP
 
-#include <vector>
-#include <memory>
-
-#include <fmi4cpp/fmi2/xml/ScalarVariable.hpp>
+#include "SpecificModelDescription.hpp"
 
 namespace fmi4cpp::fmi2 {
 
-    class ModelVariables {
-
-    private:
-
-        std::vector<ScalarVariable> variables_;
+    class CoSimulationModelDescription : public SpecificModelDescription<CoSimulationAttributes> {
 
     public:
 
-        ModelVariables();
+        CoSimulationModelDescription(const ModelDescriptionBase &base, const CoSimulationAttributes &attributes);
 
-        explicit ModelVariables(const std::vector<ScalarVariable> &variables);
+        bool canInterpolateInputs() const;
+        bool canRunAsynchronuously() const;
+        bool canHandleVariableCommunicationStepSize() const;
 
-        size_t size() const;
-        
-        const std::vector<ScalarVariable> variables() const;
-
-        const ScalarVariable &operator[](size_t index) const;
-        const ScalarVariable &getByName(const std::string &name) const;
-        const ScalarVariable &getByValueReference(fmi2ValueReference vr) const;
-
-        void getByValueReference(fmi2ValueReference vr, std::vector<ScalarVariable> &store) const;
-        void getByCausality(Causality causality, std::vector<ScalarVariable> &store) const;
-
-        std::vector<ScalarVariable>::iterator begin();
-        std::vector<ScalarVariable>::iterator end();
-
-        std::vector<ScalarVariable>::const_iterator begin() const;
-        std::vector<ScalarVariable>::const_iterator end() const;
+        size_t maxOutputDerivativeOrder() const;
 
     };
 
 }
 
-#endif //FMI4CPP_MODELVARIABLES_HPP
+#endif //FMI4CPP_COSIMULATIONMODELDESCRIPTION_HPP

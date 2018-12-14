@@ -22,47 +22,24 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMI4CPP_MODELVARIABLES_HPP
-#define FMI4CPP_MODELVARIABLES_HPP
+#ifndef FMI4CPP_FMUSLAVE_HPP
+#define FMI4CPP_FMUSLAVE_HPP
 
-#include <vector>
-#include <memory>
+#include "FmuInstance.hpp"
 
-#include <fmi4cpp/fmi2/xml/ScalarVariable.hpp>
+namespace fmi4cpp {
 
-namespace fmi4cpp::fmi2 {
-
-    class ModelVariables {
-
-    private:
-
-        std::vector<ScalarVariable> variables_;
+    template <typename CoSimulationModelDescription>
+    class FmuSlave: public virtual FmuInstance<CoSimulationModelDescription> {
 
     public:
 
-        ModelVariables();
+        virtual bool doStep(double stepSize) = 0;
 
-        explicit ModelVariables(const std::vector<ScalarVariable> &variables);
-
-        size_t size() const;
-        
-        const std::vector<ScalarVariable> variables() const;
-
-        const ScalarVariable &operator[](size_t index) const;
-        const ScalarVariable &getByName(const std::string &name) const;
-        const ScalarVariable &getByValueReference(fmi2ValueReference vr) const;
-
-        void getByValueReference(fmi2ValueReference vr, std::vector<ScalarVariable> &store) const;
-        void getByCausality(Causality causality, std::vector<ScalarVariable> &store) const;
-
-        std::vector<ScalarVariable>::iterator begin();
-        std::vector<ScalarVariable>::iterator end();
-
-        std::vector<ScalarVariable>::const_iterator begin() const;
-        std::vector<ScalarVariable>::const_iterator end() const;
+        virtual bool cancelStep() = 0;
 
     };
 
 }
 
-#endif //FMI4CPP_MODELVARIABLES_HPP
+#endif //FMI4CPP_FMUSLAVE_HPP

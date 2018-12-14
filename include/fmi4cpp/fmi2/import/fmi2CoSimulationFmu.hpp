@@ -22,47 +22,39 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMI4CPP_MODELVARIABLES_HPP
-#define FMI4CPP_MODELVARIABLES_HPP
+#ifndef FMI4CPP_FMI2COSIMULATIONFMU_H
+#define FMI4CPP_FMI2COSIMULATIONFMU_H
 
-#include <vector>
-#include <memory>
+#include "fmi4cpp/common/import/Fmu.hpp"
+#include "fmi4cpp/common/import/FmuResource.hpp"
+#include "fmi4cpp/common/import/FmuSlave.hpp"
 
-#include <fmi4cpp/fmi2/xml/ScalarVariable.hpp>
+#include "fmi4cpp/fmi2/xml/CoSimulationModelDescription.hpp"
+#include "fmi4cpp/fmi2/import/fmi2CoSimulationLibrary.hpp"
 
 namespace fmi4cpp::fmi2 {
 
-    class ModelVariables {
+    class fmi2CoSimulationSlave;
+
+    class fmi2CoSimulationFmu : public CoSimulationFmu<fmi2CoSimulationSlave, CoSimulationModelDescription> {
 
     private:
 
-        std::vector<ScalarVariable> variables_;
+        std::shared_ptr<FmuResource> resource_;
+        std::shared_ptr<fmi2CoSimulationLibrary> lib_;
+        std::shared_ptr<CoSimulationModelDescription> modelDescription_;
 
     public:
 
-        ModelVariables();
+        fmi2CoSimulationFmu(const std::shared_ptr<FmuResource> &resource,
+                            const std::shared_ptr<CoSimulationModelDescription> &md);
 
-        explicit ModelVariables(const std::vector<ScalarVariable> &variables);
+        std::shared_ptr<CoSimulationModelDescription> getModelDescription() const override;
 
-        size_t size() const;
-        
-        const std::vector<ScalarVariable> variables() const;
-
-        const ScalarVariable &operator[](size_t index) const;
-        const ScalarVariable &getByName(const std::string &name) const;
-        const ScalarVariable &getByValueReference(fmi2ValueReference vr) const;
-
-        void getByValueReference(fmi2ValueReference vr, std::vector<ScalarVariable> &store) const;
-        void getByCausality(Causality causality, std::vector<ScalarVariable> &store) const;
-
-        std::vector<ScalarVariable>::iterator begin();
-        std::vector<ScalarVariable>::iterator end();
-
-        std::vector<ScalarVariable>::const_iterator begin() const;
-        std::vector<ScalarVariable>::const_iterator end() const;
+        std::unique_ptr<fmi2CoSimulationSlave> newInstance(bool visible = false, bool loggingOn = false);
 
     };
 
 }
 
-#endif //FMI4CPP_MODELVARIABLES_HPP
+#endif //FMI4CPP_FMI2COSIMULATIONFMU_H

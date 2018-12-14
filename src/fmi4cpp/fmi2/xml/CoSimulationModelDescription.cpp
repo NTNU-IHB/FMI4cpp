@@ -22,11 +22,26 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMI4CPP_FMI4CPP_HPP
-#define FMI4CPP_FMI4CPP_HPP
+#include <fmi4cpp/fmi2/xml/CoSimulationModelDescription.hpp>
 
-#if FMI4CPP_WITH_ODEINT
-#include "fmi4cpp/common/solver/OdeintModelExchangeSolver.hpp"
-#endif
+using namespace fmi4cpp::fmi2;
 
-#endif //FMI4CPP_FMI4CPP_HPP
+CoSimulationModelDescription::CoSimulationModelDescription(const ModelDescriptionBase &base,
+                                                           const CoSimulationAttributes &attributes)
+        : SpecificModelDescription(base, attributes) {}
+
+bool CoSimulationModelDescription::canInterpolateInputs() const {
+    return attributes_.canInterpolateInputs;
+}
+
+bool CoSimulationModelDescription::canRunAsynchronuously() const {
+    return attributes_.canRunAsynchronuously;
+}
+
+bool CoSimulationModelDescription::canHandleVariableCommunicationStepSize() const {
+    return attributes_.canHandleVariableCommunicationStepSize;
+}
+
+size_t CoSimulationModelDescription::maxOutputDerivativeOrder() const {
+    return attributes_.maxOutputDerivativeOrder;
+}

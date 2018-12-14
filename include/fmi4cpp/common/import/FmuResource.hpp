@@ -22,47 +22,35 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMI4CPP_MODELVARIABLES_HPP
-#define FMI4CPP_MODELVARIABLES_HPP
+#ifndef FMI4CPP_FMURESOURCE_HPP
+#define FMI4CPP_FMURESOURCE_HPP
 
-#include <vector>
-#include <memory>
+#include <string>
+#include <experimental/filesystem>
 
-#include <fmi4cpp/fmi2/xml/ScalarVariable.hpp>
+namespace fs = std::experimental::filesystem;
 
-namespace fmi4cpp::fmi2 {
+namespace fmi4cpp {
 
-    class ModelVariables {
+    class FmuResource {
 
     private:
 
-        std::vector<ScalarVariable> variables_;
+        fs::path path_;
 
     public:
+        explicit FmuResource(fs::path &path);
 
-        ModelVariables();
+        const std::string getResourcePath() const;
 
-        explicit ModelVariables(const std::vector<ScalarVariable> &variables);
+        const std::string getModelDescriptionPath() const;
 
-        size_t size() const;
-        
-        const std::vector<ScalarVariable> variables() const;
+        const std::string getAbsoluteLibraryPath(const std::string &modelIdentifier) const;
 
-        const ScalarVariable &operator[](size_t index) const;
-        const ScalarVariable &getByName(const std::string &name) const;
-        const ScalarVariable &getByValueReference(fmi2ValueReference vr) const;
-
-        void getByValueReference(fmi2ValueReference vr, std::vector<ScalarVariable> &store) const;
-        void getByCausality(Causality causality, std::vector<ScalarVariable> &store) const;
-
-        std::vector<ScalarVariable>::iterator begin();
-        std::vector<ScalarVariable>::iterator end();
-
-        std::vector<ScalarVariable>::const_iterator begin() const;
-        std::vector<ScalarVariable>::const_iterator end() const;
+        ~FmuResource();
 
     };
 
 }
 
-#endif //FMI4CPP_MODELVARIABLES_HPP
+#endif //FMI4CPP_FMURESOURCE_HPP
