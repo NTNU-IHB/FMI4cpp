@@ -45,6 +45,7 @@ namespace fmi4cpp::fmi2 {
         fmi2NewDiscreteStatesTYPE *fmi2NewDiscreteStates_;
 
     public:
+
         explicit fmi2ModelExchangeLibrary(const std::string &modelIdentifier, const std::shared_ptr<FmuResource> &resource);
 
         bool enterEventMode(fmi2Component c);

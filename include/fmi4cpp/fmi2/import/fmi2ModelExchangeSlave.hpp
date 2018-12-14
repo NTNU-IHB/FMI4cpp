@@ -35,12 +35,12 @@
 
 #include "fmi4cpp/fmi2/xml/CoSimulationModelDescription.hpp"
 
-
 namespace fmi4cpp::solver {
 
     class fmu_wrapper {
 
     public:
+
         std::shared_ptr<fmi2::fmi2ModelExchangeInstance> instance_;
 
         void operator()(const std::vector<double> &x, std::vector<double> &dx, const double t) {
@@ -60,8 +60,8 @@ namespace fmi4cpp::fmi2 {
     private:
 
         solver::fmu_wrapper sys_;
-        std::unique_ptr<fmi4cpp::solver::ModelExchangeSolver> solver_;
         std::shared_ptr<fmi2ModelExchangeInstance> instance_;
+        std::unique_ptr<fmi4cpp::solver::ModelExchangeSolver> solver_;
         std::shared_ptr<CoSimulationModelDescription> csModelDescription_;
 
         std::vector<fmi2Real> x_;

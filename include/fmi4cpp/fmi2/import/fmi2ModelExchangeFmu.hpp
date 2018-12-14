@@ -31,7 +31,6 @@
 #include "fmi4cpp/fmi2/import/fmi2ModelExchangeSlave.hpp"
 #include "fmi4cpp/fmi2/xml/ModelExchangeModelDescription.hpp"
 
-
 namespace fmi4cpp::fmi2 {
 
     class fmi2ModelExchangeFmu : public virtual ModelExchangeFmu<fmi2ModelExchangeInstance, fmi2ModelExchangeSlave, ModelExchangeModelDescription> {

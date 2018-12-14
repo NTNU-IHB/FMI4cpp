@@ -22,9 +22,9 @@
  * THE SOFTWARE.
  */
 
-#include <stdexcept>
-#include <iostream>
+#include <utility>
 
+#include <fmi4cpp/common/logger.hpp>
 #include <fmi4cpp/fmi2/import/fmi2ModelExchangeSlave.hpp>
 
 using namespace fmi4cpp::fmi2;
@@ -93,7 +93,7 @@ bool fmi2ModelExchangeSlave::exitInitializationMode() {
 bool fmi2ModelExchangeSlave::doStep(const double stepSize) {
 
     if (stepSize <= 0) {
-        std::cerr << "Error: stepSize <= 0" << std::endl;
+        fmi4cpp::logger::error("Error: stepSize <= 0");
         return false;
     }
 
