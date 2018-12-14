@@ -37,6 +37,7 @@ namespace fmi4cpp::solver {
     class OdeintModelExchangeSolver: public ModelExchangeSolver {
 
     protected:
+
         T solver_;
 
     };
@@ -45,13 +46,15 @@ namespace fmi4cpp::solver {
     class ConstantStepSizeOdeintSolver: public OdeintModelExchangeSolver<T> {
 
     protected:
+
         double stepSize_;
 
     public:
-        explicit ConstantStepSizeOdeintSolver(double stepSize_): stepSize_(stepSize_) {}
 
-        double integrate(fmu_wrapper &sys, std::vector<double> &x, double tStart, double tStop) override {
-            size_t n = integrate_const(this->solver_, sys, x, tStart, tStop, stepSize_);
+        explicit ConstantStepSizeOdeintSolver(double stepSize): stepSize_(stepSize) {}
+
+        double integrate(FmuWrapper &wrapper, state_type &x, double tStart, double tStop) override {
+            size_t n = integrate_const(this->solver_, wrapper, x, tStart, tStop, stepSize_);
             return tStart + n*stepSize_;
         }
 

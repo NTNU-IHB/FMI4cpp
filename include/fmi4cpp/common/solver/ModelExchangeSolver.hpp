@@ -32,13 +32,13 @@ namespace fmi4cpp::solver {
 
     typedef std::vector<double> state_type;
 
-    class fmu_wrapper;
+    class FmuWrapper;
 
     class ModelExchangeSolver {
 
     public:
 
-        virtual double integrate(fmu_wrapper &sys, std::vector<double> &x, double tStart, double tStop) = 0;
+        virtual double integrate(FmuWrapper &wrapper, std::vector<double> &x, double tStart, double tStop) = 0;
 
         virtual ~ModelExchangeSolver() = default;
 

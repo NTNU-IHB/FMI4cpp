@@ -37,13 +37,13 @@
 
 namespace fmi4cpp::solver {
 
-    class fmu_wrapper {
+    class FmuWrapper {
 
     public:
 
         std::shared_ptr<fmi2::fmi2ModelExchangeInstance> instance_;
 
-        void operator()(const std::vector<double> &x, std::vector<double> &dx, const double t) {
+        void operator()(const state_type &x, state_type &dx, const double t) {
             instance_->setTime(t);
             instance_->setContinuousStates(x);
             instance_->getDerivatives(dx);
@@ -59,7 +59,7 @@ namespace fmi4cpp::fmi2 {
 
     private:
 
-        solver::fmu_wrapper sys_;
+        solver::FmuWrapper sys_;
         std::shared_ptr<fmi2ModelExchangeInstance> instance_;
         std::unique_ptr<fmi4cpp::solver::ModelExchangeSolver> solver_;
         std::shared_ptr<CoSimulationModelDescription> csModelDescription_;
