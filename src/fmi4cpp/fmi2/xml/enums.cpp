@@ -90,6 +90,7 @@ const std::string fmi4cpp::fmi2::to_string(Causality causality) {
             return "local";
         case Causality::independent:
             return "independent";
+        case Causality::unknown:
         default:
             return "unknown";
     }
@@ -109,6 +110,7 @@ const std::string fmi4cpp::fmi2::to_string(Variability variability) {
             return "discrete";
         case Variability::continuous:
             return "continuous";
+        case Variability::unknown:
         default:
             return "unknown";
     }
