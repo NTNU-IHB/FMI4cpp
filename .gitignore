@@ -12,3 +12,5 @@ CTestTestfile.cmake
 /**/cmake-build-release
 
 .idea
+
+/vcpkg
