@@ -28,19 +28,13 @@ The alternative is to fetch the dependencies manually, put them in the path some
 Install [vcpkg](https://github.com/Microsoft/vcpkg) and run:
 
 ```
-./vcpkg install boost-property-tree boost-ublas boost-odeint boost-program-options libzip spdlog
+./vcpkg install boost-property-tree boost-ublas boost-odeint boost-program-options libzip
 ``` 
 
 Then tell CMake about your vcpkg installation by passing <br> ```-DCMAKE_TOOLCHAIN_FILE=C:\vcpkg\scripts\buildsystems\vcpkg.cmake``` to it. 
 
 Note that ```boost-ublas``` and ```boost-odeint``` are optional and can be omitted by passing ```-DFMI4CPP_WITH_ODEINT=OFF``` to CMake.
 Similarly, ```boost-program-options``` can be omitted by passing ```-DFMI4CPP_BUILD_TOOL=OFF```.
-
-On linux you _might_ need to install some additional libraries, which are required by libzip:
-
-```
-./vcpkg install bzip2 openssl
-``` 
 
 On *NIX systems the dependencies can of course be installed using the native package handler. 
 
