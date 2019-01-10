@@ -35,24 +35,21 @@ target_include_directories(${FMI4CPP_LIB}
     PUBLIC
         $<INSTALL_INTERFACE:include>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>
-    INTERFACE
+    PRIVATE
         ${Boost_INCLUDE_DIRS}
         ${LIBZIP_INCLUDE_DIRS}
-    PRIVATE
         ${CURRENT_CMAKE_SOURCE_DIR}/../src
 )
 
 target_link_libraries(${FMI4CPP_LIB}
     PRIVATE
         LIBZIP::LIBZIP
-        spdlog::spdlog
-        fmt::fmt-header-only
 )
 
 if (UNIX)
     target_link_libraries(${FMI4CPP_LIB}
         PRIVATE
-            dl stdc++fs fmt::fmt ZLIB::ZLIB BZip2::BZip2 OpenSSL::Crypto
+            dl stdc++fs ZLIB::ZLIB BZip2::BZip2
     )
 endif()
 

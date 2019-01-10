@@ -47,12 +47,9 @@ find_package(Boost 1.65 COMPONENTS ${BOOST_COMPONENTS} REQUIRED)
 if (UNIX)
     find_package(ZLIB REQUIRED)
     find_package(BZip2 REQUIRED)
-    find_package(OpenSSL COMPONENTS Crypto REQUIRED)
 endif ()
 
 find_package(LIBZIP REQUIRED)
-find_package(spdlog CONFIG REQUIRED)
-find_package(fmt CONFIG REQUIRED)
 
 add_subdirectory(src)
 
