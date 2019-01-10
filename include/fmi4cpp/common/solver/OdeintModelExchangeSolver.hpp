@@ -25,6 +25,8 @@
 #ifndef FMI4CPP_ODEINTSOLVER_HPP
 #define FMI4CPP_ODEINTSOLVER_HPP
 
+#if FMI4CPP_WITH_ODEINT
+
 #include <boost/numeric/odeint.hpp>
 
 #include "ModelExchangeSolver.hpp"
@@ -67,5 +69,7 @@ namespace fmi4cpp::solver {
     typedef ConstantStepSizeOdeintSolver<runge_kutta4_classic<state_type>> RK4ClassicSolver;
 
 }
+
+#endif
 
 #endif //FMI4CPP_ODEINTSOLVER_HPP
