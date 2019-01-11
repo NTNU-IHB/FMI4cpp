@@ -50,8 +50,14 @@ target_link_libraries(${FMI4CPP_LIB}
 if (UNIX)
     target_link_libraries(${FMI4CPP_LIB}
         PRIVATE
-            dl stdc++fs ZLIB::ZLIB BZip2::BZip2
+            dl stdc++fs
     )
+    if (FMI4CPP_USING_VCPKG)
+        target_link_libraries(${FMI4CPP_LIB}
+            PRIVATE
+                ZLIB::ZLIB BZip2::BZip2
+            )
+    endif()
 endif()
 
 # Make sure that also downstream libraries that use fmi4cpp compile as C++17
