@@ -51,7 +51,7 @@ namespace {
 
     }
 
-    void addRow(fmi2CoSimulationSlave &slave, vector<ScalarVariable> &variables, string &data) {
+    void addRow(FmuSlave<CoSimulationModelDescription> &slave, vector<ScalarVariable> &variables, string &data) {
 
         data += "\n" + to_string(slave.getSimulationTime()) + CSV_SEPARATOR;
         for (unsigned int i = 0; i < variables.size(); i++) {
@@ -90,7 +90,7 @@ void FmuDriver::run(DriverOptions options) {
 
     if (options.modelExchange) {
 #if FMI4CPP_WITH_ODEINT
-        auto solver = make_solver<EulerSolver>(1E-3);
+        auto solver = solver::make_solver<solver::EulerSolver>(1E-3);
         simulate(fmu_->asModelExchangeFmu()->newInstance(solver), options);
 #else
         const char *msg = "Model Exchange mode selected, but driver has been built without odeint support!";
@@ -115,7 +115,7 @@ void FmuDriver::dumpOutput(const string &data, const string &outputFolder) {
 
 }
 
-void FmuDriver::simulate(std::unique_ptr<fmi2CoSimulationSlave> slave, DriverOptions options) {
+void FmuDriver::simulate(std::unique_ptr<FmuSlave<CoSimulationModelDescription>> slave, DriverOptions options) {
 
     auto startTime = options.startTime;
     auto stopTime = options.stopTime;
