@@ -22,6 +22,8 @@
  * THE SOFTWARE.
  */
 
+#if FMI4CPP_WITH_ODEINT
+
 #include <string>
 #include <memory>
 #include <vector>
@@ -45,7 +47,7 @@ const string fmuPath = string(getenv("TEST_FMUs"))
                        "/OpenModelica/v1.11.0/FmuExportCrossCompile/FmuExportCrossCompile.fmu";
 
 int main() {
-    
+
     auto fmu = fmi2Fmu(fmuPath).asModelExchangeFmu();
 
     auto solver = make_solver<RK4ClassicSolver>(microStep);
@@ -76,5 +78,7 @@ int main() {
 
     slave->terminate();
 
-
 }
+
+
+#endif
