@@ -25,4 +25,4 @@ jobs:
            command: 'cmake --build build'
        - run:
            name: Unit Testing
-           command: '/home/laht/Documents/FMI4cpp/cmake-build-debug/tests/test_model_description1 --run_test=ControlledTemperature_test1 --logger=HRF,all --color_output=false --report_format=HRF --show_progress=no'
+           command: 'build/tests/test_model_description1 --run_test=ControlledTemperature_test1 --logger=HRF,all --color_output=false --report_format=HRF --show_progress=no'
