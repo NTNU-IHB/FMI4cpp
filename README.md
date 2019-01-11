@@ -24,7 +24,8 @@ Because this library provides a clean, easy to use API and is easy to install (t
 ### How do I use it in my own project?
 
 Recommended way is to install [vcpkg](https://github.com/Microsoft/vcpkg) and run:
-```
+
+```bash
 ./vcpkg install fmi4cpp
 ``` 
 
@@ -35,7 +36,7 @@ The alternative is to fetch the dependencies manually, put them in the path some
 
 Install [vcpkg](https://github.com/Microsoft/vcpkg) and run:
 
-```
+```bash
 ./vcpkg install boost-property-tree boost-ublas boost-odeint boost-program-options libzip
 ``` 
 
@@ -45,6 +46,10 @@ Note that ```boost-ublas``` and ```boost-odeint``` are optional and can be omitt
 Similarly, ```boost-program-options``` can be omitted by passing ```-DFMI4CPP_BUILD_TOOL=OFF```.
 
 On *NIX systems the dependencies can of course be installed using the native package handler. 
+
+```bash
+sudo apt-get install libzip-dev libboost-dev libboost-test-dev
+``` 
 
 ### API
 
