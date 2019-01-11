@@ -222,7 +222,12 @@ namespace fmi4cpp::xc {
 
 int main(int argc, char **argv) {
 
-    const string VERSION = "0.4.1";
+    if (! argv[1]) {
+        cerr << "Path to XC directory missing!" << endl;
+        return 1;
+    }
+
+    const string VERSION = "0.5.0";
     const string os = getOs();
 
     const fs::path xc_dir = fs::path(argv[1]);
