@@ -59,6 +59,11 @@ if (FMI4CPP_BUILD_TOOL)
 endif ()
 
 if (FMI4CPP_BUILD_TESTS)
+
+    if (NOT FMI4CPP_USING_VCPKG)
+        add_definitions(-DBOOST_TEST_DYN_LINK)
+    endif()
+
     add_subdirectory(tests)
 endif ()
 
