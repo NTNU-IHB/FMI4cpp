@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-#include "FmiLibraryHelper.hpp"
+#include "../../common/import/FmiLibraryHelper.hpp"
 
 #include <fmi4cpp/fmi2/import/fmi2CoSimulationLibrary.hpp>
 

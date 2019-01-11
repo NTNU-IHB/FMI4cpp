@@ -27,8 +27,8 @@
 #include <fmi4cpp/common/logger.hpp>
 #include <fmi4cpp/fmi2/import/fmi2Library.hpp>
 
-#include "FmiLibraryHelper.hpp"
 #include "../../common/tools/os_util.hpp"
+#include "../../common/import/FmiLibraryHelper.hpp"
 
 using namespace fmi4cpp;
 using namespace fmi4cpp::fmi2;

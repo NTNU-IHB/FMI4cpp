@@ -22,8 +22,9 @@
  * THE SOFTWARE.
  */
 
-#include "FmiLibraryHelper.hpp"
 #include <fmi4cpp/fmi2/import/fmi2ModelExchangeLibrary.hpp>
+
+#include "../../common/import/FmiLibraryHelper.hpp"
 
 using namespace fmi4cpp;
 using namespace fmi4cpp::fmi2;
