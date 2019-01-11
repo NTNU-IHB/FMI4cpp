@@ -19,7 +19,7 @@ jobs:
          command: 'sudo apt-get install -y cmake'
       - run:
           name: Install libraries
-          command: 'apt install -y libzip-dev boost-program-options1.65.1'
+          command: 'apt install -y libzip-dev liboost-dev'
       - run:
          name: Creating Build Files
          command: 'cmake -H. -Bbuild -DFMI4CPP_USING_VCPKG=OFF -DFMI4CPP_WITH_ODEINT=OFF -DFMI4CPP_BUILD_TOOL=OFF -DFMI4CPP_BUILD_TESTS=ON'
