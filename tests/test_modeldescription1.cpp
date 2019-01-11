@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-#define BOOST_TEST_MODULE ControlledTemperature_Modeldescription_Test
+#define BOOST_TEST_MODULE ControlledTemperature_test1
 
 #include <string>
 #include <iostream>
@@ -31,17 +31,19 @@
 #include <fmi4cpp/fmi2/fmi2.hpp>
 #include <fmi4cpp/common/tools/os_util.hpp>
 
+#include <experimental/filesystem>
+
 using namespace std;
 using namespace fmi4cpp::fmi2;
 
-const string fmu_path = string(getenv("TEST_FMUs"))
-                        + "/2.0/cs/" + getOs() +
-                        "/20sim/4.6.4.8004/ControlledTemperature/ControlledTemperature.fmu";
+namespace fs = std::experimental::filesystem;
+
+const string fmu_path = "resources/2.0/cs/" + getOs() +
+                        "/20sim/4.6.4.8004/ControlledTemperature/modelDescription.xml";
 
 BOOST_AUTO_TEST_CASE(ControlledTemperature_test1) {
 
-    fmi2Fmu fmu(fmu_path);
-    auto md = fmu.getModelDescription();
+    auto md = parseModelDescription(fmu_path);
     auto md_cs = md->asCoSimulationModelDescription();
 
     BOOST_CHECK_EQUAL("2.0", md->fmiVersion());

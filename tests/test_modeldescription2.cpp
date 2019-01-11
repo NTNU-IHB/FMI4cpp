@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-#define BOOST_TEST_MODULE FmuExportCrossCompile_Modeldescription_Test
+#define BOOST_TEST_MODULE FmuExportCrossCompile_test1
 
 #include <vector>
 #include <string>
@@ -34,14 +34,12 @@
 using namespace std;
 using namespace fmi4cpp::fmi2;
 
-const string fmu_path = string(getenv("TEST_FMUs"))
-                        + "/2.0/cs/" + getOs() +
+const string fmu_path = "resources/2.0/cs/" + getOs() +
                         "/OpenModelica/v1.11.0/FmuExportCrossCompile/FmuExportCrossCompile.fmu";
 
 BOOST_AUTO_TEST_CASE(FmuExportCrossCompile_test1) {
 
-    fmi2Fmu fmu(fmu_path);
-    auto md = fmu.getModelDescription();
+    auto md = parseModelDescription(fmu_path);
 
     BOOST_CHECK_EQUAL("structured", md->variableNamingConvention().value());
 

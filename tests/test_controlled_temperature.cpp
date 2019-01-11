@@ -22,8 +22,8 @@
  * THE SOFTWARE.
  */
 
-#define BOOST_TEST_MODULE ControlledTemperature_Test
 
+#define BOOST_TEST_MODULE ControlledTemperature_test1
 
 #include <string>
 #include <iostream>
