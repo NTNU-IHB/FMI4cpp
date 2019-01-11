@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-#if FMI4CPP_WITH_ODEINT
+
 
 #include <string>
 #include <memory>
@@ -47,6 +47,8 @@ const string fmuPath = string(getenv("TEST_FMUs"))
                        "/OpenModelica/v1.11.0/FmuExportCrossCompile/FmuExportCrossCompile.fmu";
 
 int main() {
+
+#if FMI4CPP_WITH_ODEINT
 
     auto fmu = fmi2Fmu(fmuPath).asModelExchangeFmu();
 
@@ -78,7 +80,7 @@ int main() {
 
     slave->terminate();
 
-}
-
 
 #endif
+
+}
