@@ -16,7 +16,7 @@ jobs:
          command: 'sudo apt-get install -y cmake'
       - run:
           name: Install dependencies
-          command: 'apt-get update && apt-get install -y libzip-dev libboost-dev'
+          command: 'apt-get update && apt-get install -y libzip-dev libboost-dev libboost-test-dev'
       - run:
          name: Creating Build Files
          command: 'cmake -H. -Bbuild -DFMI4CPP_USING_VCPKG=OFF -DFMI4CPP_WITH_ODEINT=OFF -DFMI4CPP_BUILD_TOOL=OFF -DFMI4CPP_BUILD_TESTS=ON'
