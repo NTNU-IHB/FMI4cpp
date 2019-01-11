@@ -28,8 +28,7 @@
 
 #include <fmi4cpp/common/logger.hpp>
 #include <fmi4cpp/fmi2/import/fmi2Fmu.hpp>
-
-#include "../xml/ModelDescriptionParser.hpp"
+#include <fmi4cpp/fmi2/xml/ModelDescriptionParser.hpp>
 
 #include "../../common/tools/unzipper.hpp"
 #include "../../common/tools/os_util.hpp"

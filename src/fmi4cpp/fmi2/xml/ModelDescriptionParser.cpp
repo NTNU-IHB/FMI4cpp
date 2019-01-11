@@ -22,13 +22,10 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMI4CPP_MODELDESCRIPTIONPARSER_HPP
-#define FMI4CPP_MODELDESCRIPTIONPARSER_HPP
-
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 
-#include <fmi4cpp/fmi2/xml/ModelDescription.hpp>
+#include <fmi4cpp/fmi2/xml/ModelDescriptionParser.hpp>
 #include <fmi4cpp/fmi2/xml/ScalarVariableAttribute.hpp>
 
 #include "../../common/tools/optional_converter.hpp"
@@ -251,71 +248,65 @@ namespace {
 
 }
 
+std::unique_ptr<ModelDescription> fmi4cpp::fmi2::parseModelDescription(const std::string &fileName) {
 
-namespace fmi4cpp::fmi2 {
+    ptree tree;
+    read_xml(fileName, tree);
+    ptree root = tree.get_child("fmiModelDescription");
 
-    std::unique_ptr<ModelDescription> parseModelDescription(const std::string &fileName) {
+    auto guid = root.get<std::string>("<xmlattr>.guid");
+    auto fmiVersion = root.get<std::string>("<xmlattr>.fmiVersion");
+    auto modelName = root.get<std::string>("<xmlattr>.modelName");
+    auto description = root.get<std::string>("<xmlattr>.description", "");
+    auto author = root.get<std::string>("<xmlattr>.author", "");
+    auto version = root.get<std::string>("<xmlattr>.version", "");
+    auto license = root.get<std::string>("<xmlattr>.license", "");
+    auto copyright = root.get<std::string>("<xmlattr>.copyright", "");
+    auto generationTool = root.get<std::string>("<xmlattr>.generationTool", "");
+    auto generationDateAndTime = root.get<std::string>("<xmlattr>.generationDateAndTime", "");
+    auto numberOfEventIndicators = root.get<size_t>("<xmlattr>.numberOfEventIndicators", 0);
+    auto variableNamingConvention = root.get<std::string>("<xmlattr>.variableNamingConvention",
+                                                          DEFAULT_VARIABLE_NAMING_CONVENTION);
 
-        ptree tree;
-        read_xml(fileName, tree);
-        ptree root = tree.get_child("fmiModelDescription");
+    std::shared_ptr<ModelVariables> modelVariables;
+    std::shared_ptr<ModelStructure> modelStructure;
+    std::optional<DefaultExperiment> defaultExperiment;
+    std::optional<CoSimulationAttributes> coSimulation;
+    std::optional<ModelExchangeAttributes> modelExchange;
 
-        auto guid = root.get<std::string>("<xmlattr>.guid");
-        auto fmiVersion = root.get<std::string>("<xmlattr>.fmiVersion");
-        auto modelName = root.get<std::string>("<xmlattr>.modelName");
-        auto description = root.get<std::string>("<xmlattr>.description", "");
-        auto author = root.get<std::string>("<xmlattr>.author", "");
-        auto version = root.get<std::string>("<xmlattr>.version", "");
-        auto license = root.get<std::string>("<xmlattr>.license", "");
-        auto copyright = root.get<std::string>("<xmlattr>.copyright", "");
-        auto generationTool = root.get<std::string>("<xmlattr>.generationTool", "");
-        auto generationDateAndTime = root.get<std::string>("<xmlattr>.generationDateAndTime", "");
-        auto numberOfEventIndicators = root.get<size_t>("<xmlattr>.numberOfEventIndicators", 0);
-        auto variableNamingConvention = root.get<std::string>("<xmlattr>.variableNamingConvention",
-                                                              DEFAULT_VARIABLE_NAMING_CONVENTION);
+    for (const ptree::value_type &v : root) {
 
-        std::shared_ptr<ModelVariables> modelVariables;
-        std::shared_ptr<ModelStructure> modelStructure;
-        std::optional<DefaultExperiment> defaultExperiment;
-        std::optional<CoSimulationAttributes> coSimulation;
-        std::optional<ModelExchangeAttributes> modelExchange;
-
-        for (const ptree::value_type &v : root) {
-
-            if (v.first == "CoSimulation") {
-                coSimulation = parseCoSimulationAttributes(v.second);
-            } else if (v.first == "ModelExchange") {
-                modelExchange = parseModelExchangeAttributes(v.second);
-            } else if (v.first == "DefaultExperiment") {
-                defaultExperiment = parseDefaultExperiment(v.second);
-            } else if (v.first == "ModelVariables") {
-                modelVariables = std::move(parseModelVariables(v.second));
-            } else if (v.first == "ModelStructure") {
-                modelStructure = std::move(parseModelStructure(v.second));
-            }
-
+        if (v.first == "CoSimulation") {
+            coSimulation = parseCoSimulationAttributes(v.second);
+        } else if (v.first == "ModelExchange") {
+            modelExchange = parseModelExchangeAttributes(v.second);
+        } else if (v.first == "DefaultExperiment") {
+            defaultExperiment = parseDefaultExperiment(v.second);
+        } else if (v.first == "ModelVariables") {
+            modelVariables = std::move(parseModelVariables(v.second));
+        } else if (v.first == "ModelStructure") {
+            modelStructure = std::move(parseModelStructure(v.second));
         }
-
-        const ModelDescriptionBase base(guid,
-                                        fmiVersion,
-                                        modelName,
-                                        description,
-                                        version,
-                                        author,
-                                        license,
-                                        copyright,
-                                        generationTool,
-                                        generationDateAndTime,
-                                        variableNamingConvention,
-                                        numberOfEventIndicators,
-                                        modelVariables,
-                                        modelStructure,
-                                        defaultExperiment);
-
-        return std::make_unique<ModelDescription>(base, coSimulation, modelExchange);
 
     }
 
+    const ModelDescriptionBase base(guid,
+                                    fmiVersion,
+                                    modelName,
+                                    description,
+                                    version,
+                                    author,
+                                    license,
+                                    copyright,
+                                    generationTool,
+                                    generationDateAndTime,
+                                    variableNamingConvention,
+                                    numberOfEventIndicators,
+                                    modelVariables,
+                                    modelStructure,
+                                    defaultExperiment);
+
+    return std::make_unique<ModelDescription>(base, coSimulation, modelExchange);
+
 }
 
-#endif //FMI4CPP_MODELDESCRIPTIONPARSER_HPP

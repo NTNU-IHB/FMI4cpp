@@ -22,21 +22,18 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMI4CPP_FMI2_HPP
-#define FMI4CPP_FMI2_HPP
+#ifndef FMI4CPP_MODELDESCRIPTIONPARSER_HPP
+#define FMI4CPP_MODELDESCRIPTIONPARSER_HPP
 
-#include "../fmi4cpp.hpp"
+#include <string>
+#include <memory>
 
-#include "xml/enums.hpp"
-#include "xml/ModelDescription.hpp"
-#include "xml/ModelDescriptionParser.hpp"
-#include "xml/TypedScalarVariable.hpp"
+#include "ModelDescription.hpp"
 
-#include "import/fmi2Fmu.hpp"
-#include "import/fmi2CoSimulationFmu.hpp"
-#include "import/fmi2ModelExchangeFmu.hpp"
+namespace fmi4cpp::fmi2 {
 
-#include "import/fmi2CoSimulationSlave.hpp"
-#include "import/fmi2ModelExchangeSlave.hpp"
+    std::unique_ptr<ModelDescription> parseModelDescription(const std::string &fileName);
 
-#endif //FMI4CPP_FMI2_HPP
+}
+
+#endif //FMI4CPP_MODELDESCRIPTIONPARSER_HPP
