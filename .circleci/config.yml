@@ -24,5 +24,5 @@ jobs:
          name: Creating Binary Files
          command: 'cmake --build build'
       - run:
-         name: Unit Testing
-         command: 'build/tests/test_model_description1 --run_test=ControlledTemperature_test1 --logger=HRF,all --color_output=false --report_format=HRF --show_progress=no'
+         name: Unit Testing 1
+         command: 'cd build/tests && ./test_model_description1 --run_test=ControlledTemperature_test1 --logger=HRF,all --color_output=false --report_format=HRF --show_progress=no'
