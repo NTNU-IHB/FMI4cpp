@@ -46,6 +46,7 @@ target_include_directories(${FMI4CPP_LIB}
 target_link_libraries(${FMI4CPP_LIB}
     PRIVATE
         LIBZIP::LIBZIP
+        spdlog::spdlog
 )
 
 if (UNIX)

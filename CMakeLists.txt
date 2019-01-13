@@ -29,6 +29,8 @@ else ()
     add_definitions(-DFMI4CPP_LOG_LEVEL_DEFAULT)
 endif ()
 
+add_definitions(-DFMT_HEADER_ONLY)
+
 if (MSVC)
     set(CMAKE_DEBUG_POSTFIX "d")
     add_definitions(-DNOMINMAX)
@@ -51,6 +53,7 @@ if (FMI4CPP_USING_VCPKG AND UNIX)
 endif ()
 
 find_package(LIBZIP REQUIRED)
+find_package(spdlog CONFIG REQUIRED)
 
 add_subdirectory(src)
 
