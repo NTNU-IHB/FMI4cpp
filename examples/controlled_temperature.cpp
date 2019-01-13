@@ -39,9 +39,8 @@ const fmi2ValueReference vr = 46;
 
 int main() {
 
-    const string fmu_path = string(getenv("TEST_FMUs"))
-                            + "/2.0/cs/" + getOs() +
-                            "/20sim/4.6.4.8004/ControlledTemperature/ControlledTemperature.fmu";
+    const string fmu_path = "../resources/2.0/cs/20sim/4.6.4.8004/"
+                            "ControlledTemperature/ControlledTemperature.fmu";
 
     auto fmu = fmi2Fmu(fmu_path).asCoSimulationFmu();
 

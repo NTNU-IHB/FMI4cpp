@@ -5,5 +5,3 @@ link_libraries(FMI4cpp::fmi4cpp ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY})
 add_executable(test_controlled_temperature test_controlled_temperature.cpp)
 add_executable(test_model_description1 test_modeldescription1.cpp)
 add_executable(test_model_description2 test_modeldescription2.cpp)
-
-file(COPY resources DESTINATION ${CMAKE_CURRENT_BINARY_DIR})

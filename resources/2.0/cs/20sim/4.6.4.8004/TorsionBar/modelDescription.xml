@@ -1,0 +1,580 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<fmiModelDescription fmiVersion="2.0" modelName="TorsionBar" guid="{50e200c0-056f-4a6a-9cbf-55f668ea75fd}" generationTool="20-sim" numberOfEventIndicators="0" copyright="Controllab Products B.V." license="-">
+<CoSimulation modelIdentifier="TorsionBar" needsExecutionTool="false" canHandleVariableCommunicationStepSize="true" canInterpolateInputs="false" maxOutputDerivativeOrder="0" canRunAsynchronuously="false" canBeInstantiatedOnlyOncePerProcess="false" canNotUseMemoryManagementFunctions="true" canGetAndSetFMUstate="false" canSerializeFMUstate="false" providesDirectionalDerivative="false">
+<SourceFiles>
+<File name="EulerAngles.c" />
+<File name="MotionProfiles.c" />
+<File name="xxfuncs.c" />
+<File name="xxinteg.c" />
+<File name="xxinverse.c" />
+<File name="xxmatrix.c" />
+<File name="xxmodel.c" />
+<File name="xxsubmod.c" />
+<File name="xxTable2D.c" />
+</SourceFiles>
+</CoSimulation>
+<DefaultExperiment startTime="0.0" stopTime="12.5663706143592" stepSize="1.0e-5" />
+<ModelVariables>
+<ScalarVariable name="Amplifier.Amplifier.input" valueReference="53" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="Amplifier.Amplifier.output" valueReference="50" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="Amplifier.Amplifier.VCC" valueReference="2" variability="tunable" causality="parameter">
+<Real start="12.0" />
+</ScalarVariable>
+<ScalarVariable name="Amplifier.DA.input" valueReference="62" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="Amplifier.DA.output" valueReference="53" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="Amplifier.DA.minimum" valueReference="3" variability="tunable" causality="parameter">
+<Real start="-5.0" />
+</ScalarVariable>
+<ScalarVariable name="Amplifier.DA.maximum" valueReference="4" variability="tunable" causality="parameter">
+<Real start="5.0" />
+</ScalarVariable>
+<ScalarVariable name="Amplifier.DA.bits" valueReference="5" variability="tunable" causality="parameter">
+<Real start="12.0" />
+</ScalarVariable>
+<ScalarVariable name="Amplifier.DA.windowed_signal" valueReference="51" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="Amplifier.DA.quantisized_signal" valueReference="52" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="Amplifier.DA.rounded_signal" valueReference="53" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="Amplifier.DA.lsb" valueReference="54" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="Amplifier.DA.half_lsb" valueReference="55" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="Amplifier.output" valueReference="50" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="Amplifier.input" valueReference="62" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="Belt.p_in.T" valueReference="56" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="Belt.p_in.omega" valueReference="109" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="Belt.p_out.T" valueReference="57" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="Belt.i" valueReference="6" description="gearbox ratio" variability="tunable" causality="parameter">
+<Real start="3.75" />
+</ScalarVariable>
+<ScalarVariable name="BeltFriction.p1.T" valueReference="57" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="BeltFriction.p2.T" valueReference="90" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="BeltFriction.p1.omega" valueReference="123" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="BeltFriction.p2.omega" valueReference="123" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="BeltFriction.p.T" valueReference="58" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="BeltFriction.p.omega" valueReference="123" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="BeltFriction.d" valueReference="7" description="rotational damping" variability="tunable" causality="parameter">
+<Real start="0.005" />
+</ScalarVariable>
+<ScalarVariable name="BeltFriction.Tc" valueReference="8" description="coulomb (static) friction torque" variability="tunable" causality="parameter">
+<Real start="0.06" />
+</ScalarVariable>
+<ScalarVariable name="BeltFriction.slope" valueReference="9" description="steepness of coulomb friction curve" variability="tunable" causality="parameter">
+<Real start="1000.0" />
+</ScalarVariable>
+<ScalarVariable name="Controller.EncToRevLoadDisk.input" valueReference="77" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="Controller.EncToRevLoadDisk.output" valueReference="59" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="Controller.EncToRevLoadDisk.counts" valueReference="10" variability="tunable" causality="parameter">
+<Real start="2000.0" />
+</ScalarVariable>
+<ScalarVariable name="Controller.EncToRevMotor.input" valueReference="81" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="Controller.EncToRevMotor.output" valueReference="60" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="Controller.EncToRevMotor.counts" valueReference="11" variability="tunable" causality="parameter">
+<Real start="2000.0" />
+</ScalarVariable>
+<ScalarVariable name="Controller.Error.output" valueReference="61" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="Controller.Error.plus1" valueReference="65" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="Controller.Error.minus1" valueReference="64" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="Controller.PID.error" valueReference="61" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="Controller.PID.output" valueReference="62" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="Controller.PID.kp" valueReference="12" description="Proportional gain" variability="tunable" causality="parameter">
+<Real start="2.0" />
+</ScalarVariable>
+<ScalarVariable name="Controller.PID.tauD" valueReference="13" description="Derivative time constant: tauD &gt; 0" variability="tunable" causality="parameter">
+<Real start="5.0e-5" />
+</ScalarVariable>
+<ScalarVariable name="Controller.PID.beta" valueReference="14" description="Tameness constant: 0 &lt; beta &lt;&lt; 1" variability="tunable" causality="parameter">
+<Real start="0.1" />
+</ScalarVariable>
+<ScalarVariable name="Controller.PID.tauI" valueReference="15" description="Integral time constant: tauI &gt; 0" variability="tunable" causality="parameter">
+<Real start="1.0" />
+</ScalarVariable>
+<ScalarVariable name="Controller.PID.pdout" valueReference="63" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="Controller.RevMotorToRevMotorDisk.input" valueReference="60" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="Controller.RevMotorToRevMotorDisk.output" valueReference="64" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="Controller.RevMotorToRevMotorDisk.i_belt" valueReference="16" variability="tunable" causality="parameter">
+<Real start="3.75" />
+</ScalarVariable>
+<ScalarVariable name="Controller.SP.x" valueReference="65" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="Controller.SP.v" valueReference="66" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="Controller.SP.a" valueReference="67" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="Controller.SP.stroke" valueReference="17" variability="tunable" causality="parameter">
+<Real start="1.0" />
+</ScalarVariable>
+<ScalarVariable name="Controller.SP.start_time" valueReference="18" variability="tunable" causality="parameter">
+<Real start="0.0" />
+</ScalarVariable>
+<ScalarVariable name="Controller.SP.stop_time" valueReference="19" variability="tunable" causality="parameter">
+<Real start="0.7" />
+</ScalarVariable>
+<ScalarVariable name="Controller.SP.return_time" valueReference="20" variability="tunable" causality="parameter">
+<Real start="3.0" />
+</ScalarVariable>
+<ScalarVariable name="Controller.SP.end_time" valueReference="21" variability="tunable" causality="parameter">
+<Real start="3.7" />
+</ScalarVariable>
+<ScalarVariable name="Controller.SP.period" valueReference="22" variability="tunable" causality="parameter">
+<Real start="5.0" />
+</ScalarVariable>
+<ScalarVariable name="Controller.EncoderLoad" valueReference="77" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="Controller.EncoderMotor" valueReference="81" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="Controller.PWM" valueReference="62" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="EncoderLoad.p.T" valueReference="76" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="EncoderLoad.output" valueReference="77" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="EncoderLoad.counts" valueReference="23" description="pulses per revolution" variability="tunable" causality="parameter">
+<Real start="2000.0" />
+</ScalarVariable>
+<ScalarVariable name="EncoderMotor.p.T" valueReference="80" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="EncoderMotor.output" valueReference="81" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="EncoderMotor.counts" valueReference="24" description="pulses per revolution" variability="tunable" causality="parameter">
+<Real start="2000.0" />
+</ScalarVariable>
+<ScalarVariable name="FlexibleShaft.p.T" valueReference="84" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="FlexibleShaft.p_high.T" valueReference="84" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="FlexibleShaft.p_high.omega" valueReference="123" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="FlexibleShaft.p_low.T" valueReference="84" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="FlexibleShaft.p_low.omega" valueReference="107" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="FlexibleShaft.Gb" valueReference="25" description="shear modulus of the bar (steel)" variability="tunable" causality="parameter">
+<Real start="1.07e9" />
+</ScalarVariable>
+<ScalarVariable name="FlexibleShaft.lb" valueReference="26" description="bar length" variability="tunable" causality="parameter">
+<Real start="0.295" />
+</ScalarVariable>
+<ScalarVariable name="FlexibleShaft.db" valueReference="27" description="bar diameter" variability="tunable" causality="parameter">
+<Real start="0.0063" />
+</ScalarVariable>
+<ScalarVariable name="FlexibleShaft.d" valueReference="28" description="viscous damping of the bar		" variability="tunable" causality="parameter">
+<Real start="5.0e-4" />
+</ScalarVariable>
+<ScalarVariable name="FlexibleShaft.k" valueReference="85" description="roational stiffness of the rod" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="Ground.p1.u" valueReference="86" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="Ground.p2.u" valueReference="86" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="Ground.p1.i" valueReference="118" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="Ground.p2.i" valueReference="118" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="Ground.p.u" valueReference="86" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="Ground.p.i" valueReference="87" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="JLoadDisk.p1.T" valueReference="84" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="JLoadDisk.p2.T" valueReference="96" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="JLoadDisk.p1.omega" valueReference="107" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="JLoadDisk.p2.omega" valueReference="107" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="JLoadDisk.p.T" valueReference="88" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="JLoadDisk.J" valueReference="29" variability="tunable" causality="parameter">
+<Real start="0.00137" />
+</ScalarVariable>
+<ScalarVariable name="Jmotor.p1.T" valueReference="56" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="Jmotor.p2.T" valueReference="98" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="Jmotor.p1.omega" valueReference="109" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="Jmotor.p2.omega" valueReference="109" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="Jmotor.p.T" valueReference="89" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="Jmotor.J" valueReference="30" variability="tunable" causality="parameter">
+<Real start="6.76e-6" />
+</ScalarVariable>
+<ScalarVariable name="JMotorDisk.p1.T" valueReference="90" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="JMotorDisk.p2.T" valueReference="84" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="JMotorDisk.p1.omega" valueReference="123" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="JMotorDisk.p2.omega" valueReference="123" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="JMotorDisk.p.T" valueReference="91" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="JMotorDisk.J" valueReference="31" variability="tunable" causality="parameter">
+<Real start="9.07e-4" />
+</ScalarVariable>
+<ScalarVariable name="K.p1.u" valueReference="92" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="K.p1.i" valueReference="118" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="K.p1_high.u" valueReference="93" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="K.p1_high.i" valueReference="118" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="K.p1_low.u" valueReference="86" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="K.p1_low.i" valueReference="118" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="K.p2.T" valueReference="94" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="K.p2.omega" valueReference="109" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="K.k" valueReference="32" variability="tunable" causality="parameter">
+<Real start="0.0389" />
+</ScalarVariable>
+<ScalarVariable name="L.p.u" valueReference="95" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="L.p_high.u" valueReference="100" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="L.p_high.i" valueReference="118" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="L.p_low.u" valueReference="93" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="L.p_low.i" valueReference="118" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="L.L" valueReference="33" variability="tunable" causality="parameter">
+<Real start="0.00134" />
+</ScalarVariable>
+<ScalarVariable name="LoadDiskBearing.p1.T" valueReference="96" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="LoadDiskBearing.p2.T" valueReference="76" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="LoadDiskBearing.p1.omega" valueReference="107" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="LoadDiskBearing.p2.omega" valueReference="107" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="LoadDiskBearing.p.T" valueReference="97" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="LoadDiskBearing.p.omega" valueReference="107" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="LoadDiskBearing.d" valueReference="34" description="rotational damping" variability="tunable" causality="parameter">
+<Real start="2.5e-5" />
+</ScalarVariable>
+<ScalarVariable name="LoadDiskBearing.Tc" valueReference="35" description="coulomb (static) friction torque" variability="tunable" causality="parameter">
+<Real start="2.25e-4" />
+</ScalarVariable>
+<ScalarVariable name="LoadDiskBearing.slope" valueReference="36" description="steepness of coulomb friction curve" variability="tunable" causality="parameter">
+<Real start="1000.0" />
+</ScalarVariable>
+<ScalarVariable name="Node1.p1.T" valueReference="94" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="Node1.p2.T" valueReference="80" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="Node1.p3.T" valueReference="98" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="Node1.p1.omega" valueReference="109" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="Node1.p2.omega" valueReference="109" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="Node1.p3.omega" valueReference="109" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="R.p.u" valueReference="99" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="R.p.i" valueReference="118" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="R.p_high.u" valueReference="103" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="R.p_high.i" valueReference="118" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="R.p_low.u" valueReference="100" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="R.p_low.i" valueReference="118" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="R.R" valueReference="37" variability="tunable" causality="parameter">
+<Real start="1.23" />
+</ScalarVariable>
+<ScalarVariable name="RadToRevLoadDisk.input" valueReference="114" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="RadToRevLoadDisk.output" valueReference="101" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="RadToRevMotor.input" valueReference="115" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="RadToRevMotor.output" valueReference="102" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="V.p.u" valueReference="50" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="V.p.i" valueReference="118" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="V.p_high.u" valueReference="103" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="V.p_high.i" valueReference="118" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="V.p_low.u" valueReference="86" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="V.p_low.i" valueReference="118" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="V.u" valueReference="50" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="LoadDiskRev" valueReference="104" variability="continuous" causality="output">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="MotorDiskRev" valueReference="105" variability="continuous" causality="output">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="Belt.p_out.omega" valueReference="123" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="Belt.load1pos" valueReference="111" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="Belt.load1pos_initial" valueReference="42" variability="fixed" causality="parameter">
+<Real start="0.0" />
+</ScalarVariable>
+<ScalarVariable name="Controller.PID.pdrate" valueReference="124" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="Controller.PID.pdstate" valueReference="112" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="Controller.PID.pdstate_initial" valueReference="43" variability="fixed" causality="parameter">
+<Real start="0.0" />
+</ScalarVariable>
+<ScalarVariable name="Controller.PID.pirate" valueReference="125" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="Controller.PID.pistate" valueReference="113" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="Controller.PID.pistate_initial" valueReference="44" variability="fixed" causality="parameter">
+<Real start="0.0" />
+</ScalarVariable>
+<ScalarVariable name="EncoderLoad.p.omega" valueReference="126" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="EncoderLoad.rev" valueReference="114" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="EncoderLoad.rev_initial" valueReference="45" variability="fixed" causality="parameter">
+<Real start="0.0" />
+</ScalarVariable>
+<ScalarVariable name="EncoderMotor.p.omega" valueReference="127" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="EncoderMotor.rev" valueReference="115" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="EncoderMotor.rev_initial" valueReference="46" variability="fixed" causality="parameter">
+<Real start="0.0" />
+</ScalarVariable>
+<ScalarVariable name="FlexibleShaft.p.omega" valueReference="128" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="FlexibleShaft.phi" valueReference="116" description="angular extension" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="FlexibleShaft.phi_initial" valueReference="47" variability="fixed" causality="parameter">
+<Real start="0.0" />
+</ScalarVariable>
+<ScalarVariable name="JLoadDisk.alpha" valueReference="119" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="JLoadDisk.p.omega_initial" valueReference="38" variability="fixed" causality="parameter">
+<Real start="0.0" />
+</ScalarVariable>
+<ScalarVariable name="JLoadDisk.p.omega" valueReference="107" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="JLoadDisk.phi" valueReference="108" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="JLoadDisk.phi_initial" valueReference="39" variability="fixed" causality="parameter">
+<Real start="0.0" />
+</ScalarVariable>
+<ScalarVariable name="Jmotor.alpha" valueReference="121" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="Jmotor.p.omega_initial" valueReference="40" variability="fixed" causality="parameter">
+<Real start="0.0" />
+</ScalarVariable>
+<ScalarVariable name="Jmotor.p.omega" valueReference="109" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="Jmotor.phi" valueReference="110" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="Jmotor.phi_initial" valueReference="41" variability="fixed" causality="parameter">
+<Real start="0.0" />
+</ScalarVariable>
+<ScalarVariable name="JMotorDisk.phi_dot" valueReference="129" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="JMotorDisk.phi" valueReference="117" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="JMotorDisk.phi_initial" valueReference="48" variability="fixed" causality="parameter">
+<Real start="0.0" />
+</ScalarVariable>
+<ScalarVariable name="L.p.i_dot" valueReference="130" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="L.p.i" valueReference="118" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="L.p.i_initial" valueReference="49" variability="fixed" causality="parameter">
+<Real start="0.0" />
+</ScalarVariable>
+<ScalarVariable name="JMotorDisk.p.omega" valueReference="123" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+<ScalarVariable name="JMotorDisk.alpha_in" valueReference="106" variability="continuous" causality="local">
+<Real />
+</ScalarVariable>
+</ModelVariables>
+<ModelStructure>
+<Outputs>
+<Unknown index="148" />
+<Unknown index="149" />
+</Outputs>
+</ModelStructure>
+</fmiModelDescription>

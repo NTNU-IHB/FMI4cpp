@@ -38,8 +38,8 @@ using namespace fmi4cpp::fmi2;
 
 namespace fs = std::experimental::filesystem;
 
-const string fmu_path = "resources/2.0/cs/" + getOs() +
-                        "/20sim/4.6.4.8004/ControlledTemperature/modelDescription.xml";
+const string fmu_path = "../resources/2.0/cs/20sim/4.6.4.8004/"
+                        "ControlledTemperature/modelDescription.xml";
 
 BOOST_AUTO_TEST_CASE(ControlledTemperature_test1) {
 

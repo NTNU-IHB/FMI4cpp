@@ -36,9 +36,8 @@ namespace logger = fmi4cpp::logger;
 const double stop = 0.01;
 const double stepSize = 1E-3;
 
-const string fmuPath = string(getenv("TEST_FMUs"))
-                       + "/2.0/cs/" + getOs() +
-                       "/20sim/4.6.4.8004/ControlledTemperature/ControlledTemperature.fmu";
+const string fmuPath = "../resources/2.0/cs/20sim/4.6.4.8004/" 
+                       "ControlledTemperature/ControlledTemperature.fmu";
 
 int main() {
 

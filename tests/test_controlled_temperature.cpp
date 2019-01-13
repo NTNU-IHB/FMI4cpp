@@ -22,7 +22,6 @@
  * THE SOFTWARE.
  */
 
-
 #define BOOST_TEST_MODULE ControlledTemperature_test1
 
 #include <string>
@@ -35,16 +34,14 @@
 using namespace std;
 using namespace fmi4cpp::fmi2;
 
-
 const double stop = 10.0;
 const double step_size = 1E-4;
 const fmi2ValueReference vr = 46;
 
 BOOST_AUTO_TEST_CASE(ControlledTemperature_test1) {
 
-    const string fmu_path = string(getenv("TEST_FMUs"))
-                            + "/2.0/cs/" + getOs() +
-                            "/20sim/4.6.4.8004/ControlledTemperature/ControlledTemperature.fmu";
+    const string fmu_path = "../resources/2.0/cs/20sim/4.6.4.8004/"
+                            "ControlledTemperature/ControlledTemperature.fmu";
 
     auto fmu = fmi2Fmu(fmu_path).asCoSimulationFmu();
 
