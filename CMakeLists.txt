@@ -58,16 +58,14 @@ if (FMI4CPP_BUILD_TOOL)
     add_subdirectory(tool)
 endif ()
 
-if (FMI4CPP_BUILD_TEST OR FMI4CPP_BUILD_EXAMPLES)
+if (FMI4CPP_BUILD_TESTS OR FMI4CPP_BUILD_EXAMPLES)
     file(COPY resources DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 endif()
 
 if (FMI4CPP_BUILD_TESTS)
-
     if (NOT FMI4CPP_USING_VCPKG)
         add_definitions(-DBOOST_TEST_DYN_LINK)
     endif()
-
     add_subdirectory(tests)
 endif ()
 
