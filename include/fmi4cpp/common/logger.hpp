@@ -26,7 +26,7 @@
 #define FMI4CPP_LOGGER_HPP
 
 #include <spdlog/spdlog.h>
-#include <spdlog/sinks/stdout_color_sinks.h>
+#include <spdlog/sinks/stdout_sinks.h>
 
 namespace {
 
@@ -36,7 +36,7 @@ namespace {
         console = spdlog::get("console");
 
         if (console == nullptr) {
-            console = spdlog::stdout_color_mt("console");
+            console = spdlog::stdout_logger_mt("console");
         }
 
 #ifdef FMI4CPP_LOG_LEVEL_OFF

@@ -29,8 +29,6 @@ else ()
     add_definitions(-DFMI4CPP_LOG_LEVEL_DEFAULT)
 endif ()
 
-add_definitions(-DFMT_HEADER_ONLY)
-
 if (MSVC)
     set(CMAKE_DEBUG_POSTFIX "d")
     add_definitions(-DNOMINMAX)
@@ -47,7 +45,13 @@ if (FMI4CPP_BUILD_TESTS)
 endif ()
 find_package(Boost 1.65 COMPONENTS ${BOOST_COMPONENTS} REQUIRED)
 
+
+add_definitions(-DFMT_HEADER_ONLY)
+
 if (FMI4CPP_USING_VCPKG AND UNIX)
+
+    add_definitions(-DSPDLOG_FMT_EXTERNAL)
+
     find_package(ZLIB REQUIRED)
     find_package(BZip2 REQUIRED)
 endif ()

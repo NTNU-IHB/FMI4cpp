@@ -52,7 +52,7 @@ target_link_libraries(${FMI4CPP_LIB}
 if (UNIX)
     target_link_libraries(${FMI4CPP_LIB}
         PRIVATE
-            dl stdc++fs
+            dl stdc++fs pthread
     )
     if (FMI4CPP_USING_VCPKG)
         target_link_libraries(${FMI4CPP_LIB}
