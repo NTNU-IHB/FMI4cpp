@@ -57,7 +57,7 @@ if (UNIX)
     if (FMI4CPP_USING_VCPKG)
         target_link_libraries(${FMI4CPP_LIB}
             PRIVATE
-                ZLIB::ZLIB BZip2::BZip2
+                ZLIB::ZLIB BZip2::BZip2 OpenSSL::Crypto
             )
     endif()
 endif()

@@ -54,6 +54,7 @@ if (FMI4CPP_USING_VCPKG AND UNIX)
 
     find_package(ZLIB REQUIRED)
     find_package(BZip2 REQUIRED)
+    find_package(OpenSSL COMPONENTS Crypto REQUIRED)
 endif ()
 
 find_package(LIBZIP REQUIRED)
