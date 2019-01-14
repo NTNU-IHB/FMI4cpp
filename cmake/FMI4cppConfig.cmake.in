@@ -10,6 +10,7 @@ if (UNIX)
     find_dependency(OpenSSL COMPONENTS Crypto REQUIRED)
 endif()
 find_dependency(LIBZIP REQUIRED)
+find_dependency(spdlog CONFIG REQUIRED)
 list(REMOVE_AT CMAKE_MODULE_PATH -1)
 
 if(NOT TARGET FMI4cpp::FMI4cpp)
