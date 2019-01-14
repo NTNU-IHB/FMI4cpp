@@ -66,7 +66,7 @@ const double stepSize = 1.0/100;
 
 int main() {
 
-    auto fmu = fmi2Fmu("path/to/fmu.fmu");
+    fmi2Fmu fmu("path/to/fmu.fmu");
     
     auto cs_fmu = fmu.asCoSimulationFmu();
     auto me_fmu = fmu.asModelExchangeFmu();
