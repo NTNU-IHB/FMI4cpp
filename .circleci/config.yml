@@ -13,7 +13,7 @@ jobs:
           command: 'apt-get update && apt-get install -y gcc g++ cmake libzip-dev libboost-dev libboost-program-options-dev libboost-test-dev libspdlog-dev'
       - run:
          name: Creating Build Files
-         command: 'cmake -H. -Bbuild -DFMI4CPP_USING_VCPKG=OFF -DFMI4CPP_WITH_ODEINT=OFF -DFMI4CPP_BUILD_TOOL=ON -DFMI4CPP_BUILD_TESTS=ON -DFMI4CPP_BUILD_EXAMPLES=ON'
+         command: 'cmake -H. -Bbuild -DFMI4CPP_USING_VCPKG=OFF -DFMI4CPP_WITH_ODEINT=ON -DFMI4CPP_BUILD_TOOL=ON -DFMI4CPP_BUILD_TESTS=ON -DFMI4CPP_BUILD_EXAMPLES=ON'
       - run:
          name: Creating Binary Files
          command: 'cmake --build build'
