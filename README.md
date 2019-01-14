@@ -37,8 +37,11 @@ The alternative is to fetch the dependencies manually, put them in the path some
 Install [vcpkg](https://github.com/Microsoft/vcpkg) and run:
 
 ```bash
-./vcpkg install boost-property-tree boost-ublas boost-odeint boost-program-options libzip
+./vcpkg install boost-property-tree boost-ublas boost-odeint boost-program-options libzip spdlog
 ``` 
+```bash
+Linux:~/$ sudo apt install libzip-dev libboost-dev libboost-test-dev libspdlog-dev
+```
 
 Then tell CMake about your vcpkg installation by passing <br> ```-DCMAKE_TOOLCHAIN_FILE=C:\vcpkg\scripts\buildsystems\vcpkg.cmake``` to it. 
 
@@ -130,6 +133,16 @@ Options:
   -v [ --variables ] arg Variables to print.
 ```
 
+It's not built by default. Pass ```FMI4CPP_BUILD_TOOL=ON``` to build it. 
+An additional dependency is needed if you do:
+
+```bash
+./vcpkg boost-program-options
+```
+```bash
+Linux:~/$ libboost-program-options-dev
+```
+
 ***
 
 #### Running examples/tests
@@ -142,3 +155,6 @@ To run the tests you will need an additional dependency:
 ```
 ./vcpkg install boost-test
 ``` 
+```bash
+Linux:~/$ sudo apt-get install libboost-test-dev
+```
