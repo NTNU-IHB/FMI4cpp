@@ -52,6 +52,8 @@ if (FMI4CPP_USING_VCPKG)
         find_package(BZip2 REQUIRED)
         find_package(OpenSSL COMPONENTS Crypto REQUIRED)
     endif()
+else()
+    add_definitions(-DFMT_HEADER_ONLY)
 endif ()
 
 find_package(LIBZIP REQUIRED)
