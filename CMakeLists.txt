@@ -45,16 +45,13 @@ if (FMI4CPP_BUILD_TESTS)
 endif ()
 find_package(Boost 1.65 COMPONENTS ${BOOST_COMPONENTS} REQUIRED)
 
-
-add_definitions(-DFMT_HEADER_ONLY)
-
-if (FMI4CPP_USING_VCPKG AND UNIX)
-
+if (FMI4CPP_USING_VCPKG)
     add_definitions(-DSPDLOG_FMT_EXTERNAL)
-
-    find_package(ZLIB REQUIRED)
-    find_package(BZip2 REQUIRED)
-    find_package(OpenSSL COMPONENTS Crypto REQUIRED)
+    if (UNIX)
+        find_package(ZLIB REQUIRED)
+        find_package(BZip2 REQUIRED)
+        find_package(OpenSSL COMPONENTS Crypto REQUIRED)
+    endif()
 endif ()
 
 find_package(LIBZIP REQUIRED)
