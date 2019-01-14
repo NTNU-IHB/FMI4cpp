@@ -136,7 +136,7 @@ An additional dependency is needed if you do:
 ./vcpkg boost-program-options
 ```
 ```bash
-Linux:~/$ sudo apt-gete install libboost-program-options-dev
+Linux:~/$ sudo apt-get install libboost-program-options-dev
 ```
 
 ***
