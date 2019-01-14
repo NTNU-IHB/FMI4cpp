@@ -140,7 +140,7 @@ An additional dependency is needed if you do:
 ./vcpkg boost-program-options
 ```
 ```bash
-Linux:~/$ libboost-program-options-dev
+Linux:~/$ sudo apt-gete install libboost-program-options-dev
 ```
 
 ***
