@@ -39,9 +39,6 @@ Install [vcpkg](https://github.com/Microsoft/vcpkg) and run:
 ```bash
 ./vcpkg install boost-property-tree boost-ublas boost-odeint libzip spdlog
 ``` 
-```bash
-Linux:~/$ sudo apt install libzip-dev libboost-dev libboost-test-dev libspdlog-dev
-```
 
 Then tell CMake about your vcpkg installation by passing <br> ```-DCMAKE_TOOLCHAIN_FILE=C:\vcpkg\scripts\buildsystems\vcpkg.cmake``` to it. 
 
@@ -50,7 +47,7 @@ Note that ```boost-ublas``` and ```boost-odeint``` are optional and can be omitt
 On *NIX the dependencies can also be installed using the native package handler. 
 
 ```bash
-Linux:~/$ sudo apt-get install libzip-dev libboost-dev libboost-test-dev
+Linux:~/$ sudo apt-get install libzip-dev libboost-dev libspdlog-dev
 ``` 
 
 ### API
