@@ -24,8 +24,9 @@
 
 #include <utility>
 
-#include <fmi4cpp/common/logger.hpp>
 #include <fmi4cpp/fmi2/import/fmi2ModelExchangeSlave.hpp>
+
+#include "../../common//logger.hpp"
 
 using namespace fmi4cpp::fmi2;
 using namespace fmi4cpp::solver;

@@ -26,10 +26,11 @@
 
 #include <experimental/filesystem>
 
-#include <fmi4cpp/common/logger.hpp>
+
 #include <fmi4cpp/fmi2/import/fmi2Fmu.hpp>
 #include <fmi4cpp/fmi2/xml/ModelDescriptionParser.hpp>
 
+#include "../../common//logger.hpp"
 #include "../../common/tools/unzipper.hpp"
 #include "../../common/tools/os_util.hpp"
 #include "../../common/tools/simple_id.hpp"

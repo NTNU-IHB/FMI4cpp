@@ -22,9 +22,9 @@
  * THE SOFTWARE.
  */
 
-#include <fmi4cpp/common/logger.hpp>
 #include <fmi4cpp/common/import/FmuResource.hpp>
 
+#include "../logger.hpp"
 #include "../tools/os_util.hpp"
 
 using namespace fmi4cpp;

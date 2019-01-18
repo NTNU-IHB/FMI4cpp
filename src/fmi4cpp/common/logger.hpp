@@ -60,35 +60,6 @@ namespace {
 
 namespace fmi4cpp::logger {
 
-    enum class LogLevel {
-
-        LEVEL_OFF,
-        LEVEL_INFO,
-        LEVEL_WARN,
-        LEVEL_DEBUG,
-        LEVEL_ERROR
-    };
-
-    inline void setLogLevel(const LogLevel level) {
-        switch (level) {
-            case LogLevel::LEVEL_OFF:
-                console->set_level(spdlog::level::off);
-                break;
-            case LogLevel ::LEVEL_INFO:
-                console->set_level(spdlog::level::info);
-                break;
-            case LogLevel ::LEVEL_WARN:
-                console->set_level(spdlog::level::warn);
-                break;
-            case LogLevel ::LEVEL_DEBUG:
-                console->set_level(spdlog::level::debug);
-                break;
-            case LogLevel ::LEVEL_ERROR:
-                console->set_level(spdlog::level::err);
-                break;
-        }
-    }
-
     template<typename T>
     inline void info(const T &msg) {
         console->info(msg);
