@@ -38,10 +38,10 @@ if (MSVC)
 endif ()
 
 if (FMI4CPP_BUILD_TOOL)
-    SET(BOOST_COMPONENTS ${BOOST_COMPONENTS} program_options)
+    list(APPEND BOOST_COMPONENTS program_options)
 endif ()
 if (FMI4CPP_BUILD_TESTS)
-    SET(BOOST_COMPONENTS ${BOOST_COMPONENTS} unit_test_framework)
+    list(APPEND BOOST_COMPONENTS unit_test_framework)
 endif ()
 find_package(Boost 1.65 COMPONENTS ${BOOST_COMPONENTS} REQUIRED)
 
@@ -79,4 +79,3 @@ endif ()
 if (FMI4CPP_BUILD_EXAMPLES)
     add_subdirectory(examples)
 endif ()
-
