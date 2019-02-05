@@ -47,8 +47,6 @@ const string fmuPath = "../resources/2.0/me/OpenModelica/v1.11.0/"
 
 int main() {
 
-#if FMI4CPP_WITH_ODEINT
-
     auto fmu = fmi2Fmu(fmuPath).asModelExchangeFmu();
 
     auto solver = make_solver<RK4ClassicSolver>(microStep);
@@ -79,7 +77,5 @@ int main() {
 
     slave->terminate();
 
-
-#endif
 
 }
