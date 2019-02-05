@@ -17,8 +17,9 @@ jobs:
       - run:
          name: Creating Binary Files
          command: 'cmake --build build'
+      - store_artifacts:
+         path: '/build/tool/fmu_driver'
+         destination: 'fmu_driver'
       - run:
          name: Unit tests
          command: 'cd build/tests && ctest'
-      - store_artifacts:
-         path: /build/tool/fmu_driver
