@@ -54,12 +54,11 @@ Linux:~/$ sudo apt-get install libzip-dev libboost-dev libspdlog-dev
 
 ```cpp
 
+#include <iostream> 
 #include <fmi4cpp/fmi2/fmi2.hpp>
-#include <fmi4cpp/common/logger.hpp>
 
+using namespace std;
 using namespace fmi4cpp::fmi2;
-
-namespace logger = fmi4cpp::logger;
 
 const double stop = 10.0;
 const double stepSize = 1.0/100;
@@ -72,13 +71,13 @@ int main() {
     auto me_fmu = fmu.asModelExchangeFmu();
     
     auto cs_md = fmu->getModelDescription(); //smart pointer to a CoSimulationModelDescription instance
-    logger::info("modelIdentifier={}", cs_fmu->getModelDescription()->modelIdentifier());
+    cout << "modelIdentifier=" << cs_fmu->getModelDescription()->modelIdentifier() << endl;
     
     auto me_md = fmu->getModelDescription(); //smart pointer to a ModelExchangeModelDescription instance
-    logger::info("modelIdentifier={}", me_fmu->getModelDescription()->modelIdentifier());
+    cout << "modelIdentifier=" << me_fmu->getModelDescription()->modelIdentifier() << endl;
     
     auto var = cs_md->getVariableByName("my_var").asRealVariable();
-    logger::info("Name={}, start={}", var.name(), var.start().value_or(0));
+    cout << "Name=" << var.name() <<  ", start=" << var.start().value_or(0) << endl;
               
     auto slave = cs_fmu->newInstance();
     
@@ -95,19 +94,21 @@ int main() {
     while ( (t = slave->getSimulationTime()) <= stop) {
 
         if (!slave->doStep(stepSize)) {
-            logger::error("Error! doStep() returned with status: {}", to_string(slave->getLastStatus()));
+            cerr << "Error! doStep() returned with status: " << to_string(slave->getLastStatus()) << endl;
             break;
         }
         
         if (!var.read(*slave, value)) {
-            logger::error("Error! readReal() returned with status: {}", to_string(slave->getLastStatus()));
+            cerr << "Error! doStep() returned with status: " << to_string(slave->getLastStatus()) << endl;
             break;
         }
-        logger::info("t={}, {}={}", t, var.name(), value);
+        cout << "t=" << t << ", " << var.name << "=" << value << endl;
      
     }
     
     slave->terminate();
+    
+    return 0;
     
 }
 ```
