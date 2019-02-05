@@ -37,7 +37,7 @@ The alternative is to fetch the dependencies manually, put them in the path some
 Install [vcpkg](https://github.com/Microsoft/vcpkg) and run:
 
 ```bash
-./vcpkg install boost-property-tree boost-ublas boost-odeint libzip spdlog
+./vcpkg install boost-property-tree boost-ublas boost-odeint libzip[core] spdlog
 ``` 
 
 Then tell CMake about your vcpkg installation by passing <br> ```-DCMAKE_TOOLCHAIN_FILE=C:\vcpkg\scripts\buildsystems\vcpkg.cmake``` to it. 

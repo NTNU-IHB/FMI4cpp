@@ -31,8 +31,7 @@ endif ()
 
 if (MSVC)
     set(CMAKE_DEBUG_POSTFIX "d")
-    add_definitions(-DNOMINMAX)
-    add_definitions(-D_CRT_SECURE_NO_WARNINGS)
+    add_definitions("-DNOMINMAX" "-D_CRT_SECURE_NO_WARNINGS")
     add_compile_options(/wd4996) # suppress warning appearing in boost headers under MSVC.
     #https://docs.microsoft.com/en-us/cpp/error-messages/compiler-warnings/compiler-warning-level-3-c4996?view=vs-2017
 endif ()
@@ -46,14 +45,10 @@ endif ()
 find_package(Boost 1.65 COMPONENTS ${BOOST_COMPONENTS} REQUIRED)
 
 if (FMI4CPP_USING_VCPKG)
-    add_definitions(-DSPDLOG_FMT_EXTERNAL)
     if (UNIX)
         find_package(ZLIB REQUIRED)
         find_package(BZip2 REQUIRED)
-        find_package(OpenSSL COMPONENTS Crypto REQUIRED)
     endif()
-else()
-    add_definitions(-DFMT_HEADER_ONLY)
 endif ()
 
 find_package(LIBZIP REQUIRED)
