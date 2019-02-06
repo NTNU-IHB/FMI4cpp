@@ -39,7 +39,7 @@ jobs:
           command: 'git clone https://github.com/Microsoft/vcpkg.git'
       - run:
           name: Creating Binary Files
-          command: 'cd vcpkg && ./bootstrap'
+          command: 'cd vcpkg && ./bootstrap-vcpkg.sh'
       - run:
           name: Unit test 1
           command: 'cd vcpkg && ./vcpkg install boost-property-tree libzip[core] spdlog'
