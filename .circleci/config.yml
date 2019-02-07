@@ -29,11 +29,14 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Unit test 1
+          name: Update vcpkg
+          command: 'cd /vcpkg && git pull'
+      - run:
+          name: Install dependencies
           command: 'cd /vcpkg && ./vcpkg install boost-property-tree libzip[core] spdlog'
       - run:
           name: Creating Build Files
-          command: 'cmake -H. -Bbuild -DCMAKE_TOOLCHAIN_FILE=/vcpkg/scripts/buildsystems/vcpkg.cmake -DFMI4CPP_USING_VCPKG=ON -DFMI4CPP_WITH_ODEINT=OFF -DFMI4CPP_BUILD_TOOL=OFF -DFMI4CPP_BUILD_TESTS=OFF -DFMI4CPP_BUILD_EXAMPLES=OFF'
+          command: 'cmake -H. -Bbuild -DCMAKE_TOOLCHAIN_FILE=/home/vcpkg/scripts/buildsystems/vcpkg.cmake -DFMI4CPP_USING_VCPKG=ON -DFMI4CPP_WITH_ODEINT=OFF -DFMI4CPP_BUILD_TOOL=OFF -DFMI4CPP_BUILD_TESTS=OFF -DFMI4CPP_BUILD_EXAMPLES=OFF'
       - run:
           name: Creating Binary Files
           command: 'cmake --build build'
