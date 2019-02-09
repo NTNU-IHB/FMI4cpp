@@ -45,15 +45,14 @@ class fmi2Fmu : public virtual FmuProvider<ModelDescription, fmi2CoSimulationFmu
 
     private:
 
+        const std::string fmuName_;
         std::shared_ptr<FmuResource> resource_;
         std::shared_ptr<ModelDescription> modelDescription_;
 
     public:
         explicit fmi2Fmu(const std::string &fmuFile);
 
-        const std::string fmuFile_;
-        
-        const std::string getFmuFileName() const;
+        const std::string getFmuName() const;
 
         const std::string getModelDescriptionXml() const;
 

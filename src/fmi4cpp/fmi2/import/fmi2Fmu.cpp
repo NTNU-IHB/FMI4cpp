@@ -40,7 +40,7 @@ using namespace fmi4cpp::fmi2;
 
 namespace fs = std::experimental::filesystem;
 
-fmi2Fmu::fmi2Fmu(const string &fmuFile): fmuFile_(fmuFile) {
+fmi2Fmu::fmi2Fmu(const string &fmuFile): fmuName_(fs::path(fmuFile).stem().string()) {
 
     fmi4cpp::logger::debug("Loading FMU '{}'", fmuFile);
 
@@ -66,8 +66,8 @@ fmi2Fmu::fmi2Fmu(const string &fmuFile): fmuFile_(fmuFile) {
 
 }
 
-const std::string fmi2Fmu::getFmuFileName() const {
-    return fs::path(fmuFile_).stem().string();
+const std::string fmi2Fmu::getFmuName() const {
+    return fmuName_;
 }
 
 const string fmi2Fmu::getModelDescriptionXml() const {
