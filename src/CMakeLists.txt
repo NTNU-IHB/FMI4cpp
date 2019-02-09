@@ -49,6 +49,17 @@ target_link_libraries(${FMI4CPP_LIB}
         spdlog::spdlog
 )
 
+if (FMI4CPP_WITH_CURL)
+    target_include_directories(
+        PRIVATE
+            ${CURL_INCLUDE_DIRS}
+    )
+    target_link_libraries(${FMI4CPP_LIB}
+        PRIVATE
+            ${CURL_LIBRARIES}
+    )
+endif()
+
 if (UNIX)
     target_link_libraries(${FMI4CPP_LIB}
         PRIVATE

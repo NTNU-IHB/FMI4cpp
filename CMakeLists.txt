@@ -11,6 +11,7 @@ option(FMI4CPP_BUILD_TOOL "Build tool" OFF)
 option(FMI4CPP_BUILD_TESTS "Build tests" OFF)
 option(FMI4CPP_BUILD_EXAMPLES "Build examples" ON)
 option(FMI4CPP_WITH_ODEINT "Build with odeint solvers" ON)
+option(FMI4CPP_WITH_CURL "Build with curl. Allows URL paths to FMUs" OFF)
 option(FMI4CPP_USING_VCPKG "Build using vcpkg" ON)
 
 set(FMI4CPP_LOG_LEVEL "DEFAULT" CACHE STRING "FMI4cpp logging level")
@@ -53,6 +54,10 @@ endif ()
 
 find_package(LIBZIP REQUIRED)
 find_package(spdlog CONFIG REQUIRED)
+
+if (FMI4CPP_WITH_CURL)
+    find_package(CURL REQUIRED)
+endif()
 
 add_subdirectory(src)
 
