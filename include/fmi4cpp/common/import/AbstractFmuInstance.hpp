@@ -43,13 +43,13 @@ namespace fmi4cpp {
 
     protected:
 
-        fmi2Component c_;
+        fmi4cppComponent c_;
         const std::shared_ptr<FmiLibrary> library_;
         const std::shared_ptr<ModelDescription> modelDescription_;
 
     public:
 
-        AbstractFmuInstance(fmi2Component c,
+        AbstractFmuInstance(fmi4cppComponent c,
                             const std::shared_ptr<FmiLibrary> &library,
                             const std::shared_ptr<ModelDescription> &modelDescription)
                 : c_(c), library_(library), modelDescription_(modelDescription) {}
