@@ -80,11 +80,11 @@ target_compile_features(${FMI4CPP_LIB} PUBLIC cxx_std_17)
 target_compile_definitions(${FMI4CPP_LIB} PRIVATE $<$<CONFIG:Debug>:FMI4CPP_LOG_LEVEL_DEBUG>)
 
 if(FMI4CPP_WITH_ODEINT)
-    target_compile_definitions(${FMI4CPP_LIB} INTERFACE FMI4CPP_WITH_ODEINT)
+    target_compile_definitions(${FMI4CPP_LIB} PUBLIC FMI4CPP_WITH_ODEINT)
 endif()
 
 if(FMI4CPP_WITH_CURL)
-    target_compile_definitions(${FMI4CPP_LIB} INTERFACE FMI4CPP_WITH_CURL)
+    target_compile_definitions(${FMI4CPP_LIB} PUBLIC FMI4CPP_WITH_CURL)
 endif()
 
 ##############################################
