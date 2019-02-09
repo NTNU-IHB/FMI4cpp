@@ -22,10 +22,14 @@
  * THE SOFTWARE.
  */
 
+#ifdef FMI4CPP_WITH_CURL
+#include <curl/curl.h>
+#include <iostream>
+#include <fstream>
+#endif
+
 #include <utility>
-
 #include <experimental/filesystem>
-
 
 #include <fmi4cpp/fmi2/import/fmi2Fmu.hpp>
 #include <fmi4cpp/fmi2/xml/ModelDescriptionParser.hpp>
@@ -40,11 +44,20 @@ using namespace fmi4cpp::fmi2;
 
 namespace fs = std::experimental::filesystem;
 
-fmi2Fmu::fmi2Fmu(const string &fmuFile): fmuName_(fs::path(fmuFile).stem().string()) {
+#ifdef FMI4CPP_WITH_CURL
+namespace {
+    size_t write_data(void *ptr, size_t size, size_t nmemb, FILE *stream) {
+        size_t written = fwrite(ptr, size, nmemb, stream);
+        return written;
+    }
+}
+#endif
 
-    fmi4cpp::logger::debug("Loading FMU '{}'", fmuFile);
+fmi2Fmu::fmi2Fmu(const string &fmuPath): fmuName_(fs::path(fmuPath).stem().string()) {
 
-    const string fmuName = fs::path(fmuFile).stem().string();
+    fmi4cpp::logger::debug("Loading FMU '{}'", fmuPath);
+
+    const string fmuName = fs::path(fmuPath).stem().string();
     fs::path tmpPath(fs::temp_directory_path() /= fs::path("fmi4cpp_" + fmuName + "_" + generate_simple_id(8)));
 
     if (!create_directories(tmpPath)) {
@@ -55,8 +68,8 @@ fmi2Fmu::fmi2Fmu(const string &fmuFile): fmuName_(fs::path(fmuFile).stem().strin
 
     fmi4cpp::logger::debug("Created temporary directory '{}'", tmpPath.string());
 
-    if (!extractContents(fmuFile, tmpPath.string())) {
-        const string err = "Failed to extract FMU '" + fmuFile + "'!";
+    if (!extractContents(fmuPath, tmpPath.string())) {
+        const string err = "Failed to extract FMU '" + fmuPath + "'!";
         fmi4cpp::logger::error(err);
         throw runtime_error(err);
     }
@@ -96,3 +109,30 @@ unique_ptr<fmi2ModelExchangeFmu> fmi2Fmu::asModelExchangeFmu() const {
     shared_ptr<ModelExchangeModelDescription> me = std::move(modelDescription_->asModelExchangeModelDescription());
     return make_unique<fmi2ModelExchangeFmu>(resource_, me);
 }
+
+#ifdef FMI4CPP_WITH_CURL
+fmi2Fmu fmi2Fmu::fromUrl(const std::string &fmuPath) {
+
+    auto fmuName = fs::path(fmuPath).filename();
+    fs::path tmp(fs::temp_directory_path() /= fmuName);
+    CURL *curl = curl_easy_init();
+    if (curl) {
+        FILE *fp = fopen(tmp.string().c_str(), "wb");
+        curl_easy_setopt(curl, CURLOPT_URL, fmuPath.c_str());
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);
+        CURLcode res = curl_easy_perform(curl);
+        if (res != CURLE_OK) {
+            fmi4cpp::logger::error("Failed to download fmu from url {}", fmuPath);
+        }
+        /* always cleanup */
+        curl_easy_cleanup(curl);
+        fclose(fp);
+    }
+
+    auto fmu = fmi2Fmu(tmp.string());
+    fs::remove(tmp);
+    return fmu;
+
+}
+#endif
