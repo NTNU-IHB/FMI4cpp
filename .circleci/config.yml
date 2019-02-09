@@ -6,16 +6,13 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Installing SUDO
-          command: 'apt-get update && apt-get install -y sudo && rm -rf /var/lib/apt/lists/*'
+          name: Installing tools and libraries
+          command: 'apt-get update && apt-get install -y sudo gcc g++ cmake libzip-dev libboost-dev libboost-program-options-dev libboost-test-dev libspdlog-dev && rm -rf /var/lib/apt/lists/*'
       - run:
-          name: Installing tools & dev dependencies
-          command: 'apt-get update && apt-get install -y gcc g++ cmake libzip-dev libboost-dev libboost-program-options-dev libboost-test-dev libspdlog-dev'
+          name: Configuring
+          command: 'cmake -H. -Bbuild -DFMI4CPP_USING_VCPKG=OFF -DFMI4CPP_WITH_ODEINT=ON -DFMI4CPP_BUILD_TOOL=ON -DFMI4CPP_BUILD_TESTS=ON -DFMI4CPP_BUILD_EXAMPLES=ON'
       - run:
-          name: Creating Build Files
-          command: 'cmake -H. -Bbuild -DFMI4CPP_USING_VCPKG=OFF -DFMI4CPP_WITH_ODEINT=ON -DFMI4CPP_WITH_CURL=ON -DFMI4CPP_BUILD_TOOL=ON -DFMI4CPP_BUILD_TESTS=ON -DFMI4CPP_BUILD_EXAMPLES=ON'
-      - run:
-          name: Creating Binary Files
+          name: Building
           command: 'cmake --build build'
       - store_artifacts:
           path: 'build/tool/fmu_driver'
@@ -35,10 +32,10 @@ jobs:
           name: Install dependencies
           command: 'cd /home/vcpkg && ./vcpkg install boost-property-tree libzip[core] spdlog'
       - run:
-          name: Creating Build Files
+          name: Configuring
           command: 'cmake -H. -Bbuild -DCMAKE_TOOLCHAIN_FILE=/home/vcpkg/scripts/buildsystems/vcpkg.cmake -DFMI4CPP_USING_VCPKG=ON -DFMI4CPP_WITH_ODEINT=OFF -DFMI4CPP_BUILD_TOOL=OFF -DFMI4CPP_BUILD_TESTS=OFF -DFMI4CPP_BUILD_EXAMPLES=OFF'
       - run:
-          name: Creating Binary Files
+          name: Building
           command: 'cmake --build build'
 workflows:
   version: 2
