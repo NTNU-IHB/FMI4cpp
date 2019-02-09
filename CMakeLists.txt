@@ -10,7 +10,7 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 option(FMI4CPP_BUILD_TOOL "Build tool" OFF)
 option(FMI4CPP_BUILD_TESTS "Build tests" OFF)
 option(FMI4CPP_BUILD_EXAMPLES "Build examples" ON)
-option(FMI4CPP_WITH_ODEINT "Build with odeint solvers" ON)
+option(FMI4CPP_WITH_ODEINT "Build with odeint solvers. Allows ME models to be wrapped as CS ones" ON)
 option(FMI4CPP_WITH_CURL "Build with curl. Allows URL paths to FMUs" OFF)
 option(FMI4CPP_USING_VCPKG "Build using vcpkg" ON)
 

@@ -73,4 +73,6 @@ int main() {
     slave1->terminate();
     slave2->terminate();
     
+    return 0;
+    
 }

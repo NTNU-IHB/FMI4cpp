@@ -22,11 +22,11 @@
  * THE SOFTWARE.
  */
 
-#include <ctime>
 
 #include <fmi4cpp/fmi2/fmi2.hpp>
 #include <fmi4cpp/common/logger.hpp>
 #include <fmi4cpp/common/tools/os_util.hpp>
+#include <fmi4cpp/common/tools/time_util.hpp>
 
 using namespace std;
 using namespace fmi4cpp::fmi2;
@@ -55,26 +55,27 @@ int main() {
     slave->enterInitializationMode();
     slave->exitInitializationMode();
 
-    clock_t begin = clock();
-    
-    double t;
-    double ref;
-    while ((t = slave->getSimulationTime()) <= (stop - step_size)) {
-        if (!slave->doStep(step_size)) {
-            logger::error("Error! doStep returned with status: {}", to_string(slave->getLastStatus()));
-            break;
-        }
-        if (!slave->readReal(vr, ref)) {
-            logger::error("Error! readReal returned with status: {}", to_string(slave->getLastStatus()));
-            break;
-        }
-    }
+    auto elapsed = measure_time_sec([&slave]{
 
-    clock_t end = clock();
+        double t;
+        double ref;
+        while ((t = slave->getSimulationTime()) <= (stop - step_size)) {
+            if (!slave->doStep(step_size)) {
+                logger::error("Error! doStep returned with status: {}", to_string(slave->getLastStatus()));
+                break;
+            }
+            if (!slave->readReal(vr, ref)) {
+                logger::error("Error! readReal returned with status: {}", to_string(slave->getLastStatus()));
+                break;
+            }
+        }
 
-    long elapsed_ms =  (long) ((double(end-begin) / CLOCKS_PER_SEC) * 1000.0);
-    logger::info("Time elapsed={}ms", elapsed_ms);
+    });
+
+    logger::info("Time elapsed={}s", elapsed);
 
     slave->terminate();
+    
+    return 0;
 
 }

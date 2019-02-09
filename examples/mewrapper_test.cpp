@@ -77,5 +77,6 @@ int main() {
 
     slave->terminate();
 
-
+    return 0;
+    
 }
