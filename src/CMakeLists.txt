@@ -50,7 +50,7 @@ target_link_libraries(${FMI4CPP_LIB}
 )
 
 if (FMI4CPP_WITH_CURL)
-    target_include_directories(
+    target_include_directories(${FMI4CPP_LIB}
         PRIVATE
             ${CURL_INCLUDE_DIRS}
     )
