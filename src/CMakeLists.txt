@@ -83,7 +83,9 @@ if(FMI4CPP_WITH_ODEINT)
     target_compile_definitions(${FMI4CPP_LIB} INTERFACE FMI4CPP_WITH_ODEINT)
 endif()
 
-
+if(FMI4CPP_WITH_CURL)
+    target_compile_definitions(${FMI4CPP_LIB} INTERFACE FMI4CPP_WITH_CURL)
+endif()
 
 ##############################################
 # Installation instructions
