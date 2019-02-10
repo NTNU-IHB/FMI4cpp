@@ -7,7 +7,7 @@ jobs:
       - checkout
       - run:
           name: Installing tools and libraries
-          command: 'apt-get update && apt-get install -y sudo gcc g++ cmake libcurl-dev libzip-dev libboost-dev libboost-program-options-dev libboost-test-dev libspdlog-dev && rm -rf /var/lib/apt/lists/*'
+          command: 'apt-get update && apt-get install -y sudo gcc g++ cmake libcurl4-openssl-dev libzip-dev libboost-dev libboost-program-options-dev libboost-test-dev libspdlog-dev && rm -rf /var/lib/apt/lists/*'
       - run:
           name: Configuring
           command: 'cmake -H. -Bbuild -DFMI4CPP_USING_VCPKG=OFF -DFMI4CPP_WITH_ODEINT=ON -DFMI4CPP_WITH_CURL=ON -DFMI4CPP_BUILD_TOOL=ON -DFMI4CPP_BUILD_TESTS=ON -DFMI4CPP_BUILD_EXAMPLES=ON'
