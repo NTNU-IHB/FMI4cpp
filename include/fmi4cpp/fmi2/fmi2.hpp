@@ -38,6 +38,4 @@
 #include "import/fmi2ModelExchangeSlave.hpp"
 
 
-
-
 #endif //FMI4CPP_FMI2_HPP
