@@ -1,5 +1,5 @@
 
-include_directories(../src)
+include_directories(${FMI4cpp_SOURCE_DIR}/src)
 link_libraries(FMI4cpp::fmi4cpp)
 
 if (UNIX AND FMI4CPP_USING_VCPKG AND FMI4CPP_WITH_CURL)

@@ -87,6 +87,18 @@ if(FMI4CPP_WITH_CURL)
     target_compile_definitions(${FMI4CPP_LIB} PUBLIC FMI4CPP_WITH_CURL)
 endif()
 
+if (FMI4CPP_LOG_LEVEL STREQUAL "OFF")
+    target_compile_definitions(${FMI4CPP_LIB} PUBLIC FMI4CPP_LOG_LEVEL_OFF)
+elseif (FMI4CPP_LOG_LEVEL STREQUAL "INFO")
+    target_compile_definitions(${FMI4CPP_LIB} PUBLIC FMI4CPP_LOG_LEVEL_INFO)
+elseif (FMI4CPP_LOG_LEVEL STREQUAL "DEBUG")
+    target_compile_definitions(${FMI4CPP_LIB} PUBLIC FMI4CPP_LOG_LEVEL_DEBUG)
+elseif (FMI4CPP_LOG_LEVEL STREQUAL "DEBUG")
+    target_compile_definitions(${FMI4CPP_LIB} PUBLIC FMI4CPP_LOG_LEVEL_TRACE)
+else ()
+    target_compile_definitions(${FMI4CPP_LIB} PUBLIC FMI4CPP_LOG_LEVEL_DEFAULT)
+endif ()
+
 ##############################################
 # Installation instructions
 include(GNUInstallDirs)
