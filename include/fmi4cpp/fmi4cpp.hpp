@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017-2018 Norwegian University of Technology
+ * Copyright 2017-2019 Norwegian University of Technology
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,8 +25,11 @@
 #ifndef FMI4CPP_FMI4CPP_HPP
 #define FMI4CPP_FMI4CPP_HPP
 
-#if FMI4CPP_WITH_ODEINT
-#include "fmi4cpp/common/solver/OdeintModelExchangeSolver.hpp"
+#include "fmi2/fmi2.hpp"
+
+
+#ifdef FMI4CPP_WITH_ODEINT
+#include "common/solver/OdeintModelExchangeSolver.hpp"
 #endif
 
 #endif //FMI4CPP_FMI4CPP_HPP

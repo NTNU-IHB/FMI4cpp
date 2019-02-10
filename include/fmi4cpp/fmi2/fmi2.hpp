@@ -25,8 +25,6 @@
 #ifndef FMI4CPP_FMI2_HPP
 #define FMI4CPP_FMI2_HPP
 
-#include "../fmi4cpp.hpp"
-
 #include "xml/enums.hpp"
 #include "xml/ModelDescription.hpp"
 #include "xml/ModelDescriptionParser.hpp"
@@ -38,5 +36,8 @@
 
 #include "import/fmi2CoSimulationSlave.hpp"
 #include "import/fmi2ModelExchangeSlave.hpp"
+
+
+
 
 #endif //FMI4CPP_FMI2_HPP

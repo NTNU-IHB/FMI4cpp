@@ -31,7 +31,7 @@
 #include <boost/program_options.hpp>
 
 #include <fmi4cpp/fmi2/fmi2.hpp>
-#include <fmi4cpp/common/driver/FmuDriver.hpp>
+#include <fmi4cpp/common/driver/fmu_driver.hpp>
 
 using namespace std;
 
@@ -105,7 +105,7 @@ int main(int argc, char** argv) {
         cout << "fmu_driver" << endl << desc << endl;
     }
 
-    DriverOptions options;
+    driver_options options;
 
     auto variables = vm["variables"].as<vector<string>>();
     for (const auto v : variables) {
@@ -130,7 +130,7 @@ int main(int argc, char** argv) {
         options.modelExchange = true;
     }
 
-    FmuDriver driver(fmu);
+    fmu_driver driver(fmu);
     driver.run(options);
 
     return 0;

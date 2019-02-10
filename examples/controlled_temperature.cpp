@@ -23,9 +23,8 @@
  */
 
 
-#include <fmi4cpp/fmi2/fmi2.hpp>
+#include <fmi4cpp/fmi4cpp.hpp>
 #include <fmi4cpp/common/logger.hpp>
-#include <fmi4cpp/common/tools/os_util.hpp>
 #include <fmi4cpp/common/tools/time_util.hpp>
 
 using namespace std;

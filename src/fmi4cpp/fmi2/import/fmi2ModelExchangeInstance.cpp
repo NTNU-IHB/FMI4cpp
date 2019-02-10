@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-#include <fmi4cpp/fmi2/fmi2StatusConverter.hpp>
+#include "fmi2StatusConverter.hpp"
 #include <fmi4cpp/fmi2/import/fmi2ModelExchangeInstance.hpp>
 
 using namespace fmi4cpp::fmi2;

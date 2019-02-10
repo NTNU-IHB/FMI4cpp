@@ -35,7 +35,7 @@
 
 #include <fmi4cpp/common/logger.hpp>
 #include <fmi4cpp/common/tools/os_util.hpp>
-#include <fmi4cpp/common/driver/FmuDriver.hpp>
+#include <fmi4cpp/common/driver/fmu_driver.hpp>
 
 using namespace std;
 
@@ -46,14 +46,14 @@ namespace fs = std::experimental::filesystem;
 
 namespace {
 
-    void write(const fs::path file, const string &data) {
+    void write(const fs::path &file, const string &data) {
         ofstream out(file, ofstream::out);
         out << data;
         out.flush();
         out.close();
     }
 
-    string readFile(const fs::path file) {
+    string readFile(const fs::path &file) {
         ifstream stream(file.string());
         if (stream.is_open()) {
             return string((istreambuf_iterator<char>(stream)), istreambuf_iterator<char>());
@@ -62,7 +62,7 @@ namespace {
         }
     }
 
-    string readLine(const fs::path file) {
+    string readLine(const fs::path &file) {
         ifstream stream(file.string());
         if (stream.is_open()) {
             string line;
@@ -73,7 +73,7 @@ namespace {
         }
     }
 
-    vector<string> splitString(const string txt, const char delimiter) {
+    vector<string> splitString(const string &txt, const char delimiter) {
         vector<string> lines;
         boost::split(lines, txt, [&delimiter](char c) { return c == delimiter; });
         return lines;
@@ -93,9 +93,9 @@ namespace {
         return variables;
     }
 
-    DriverOptions parseDefaults(string txt) {
+    driver_options parseDefaults(string txt) {
 
-        DriverOptions opt;
+        driver_options opt;
         auto lines = splitString(txt, '\n');
         for (const auto &line : lines) {
 
@@ -129,7 +129,7 @@ namespace fmi4cpp::xc {
 
     public:
 
-        void run(fs::path fmuDir, fs::path resultDir) {
+        void run(const fs::path &fmuDir, const fs::path &resultDir) {
 
             fmi4cpp::logger::info("Cross-checking FMU '{}'!", fmuDir.string());
 
@@ -166,7 +166,7 @@ namespace fmi4cpp::xc {
 
                     opt.variables = parseVariables(readLine(refFile), *fmu->getModelDescription()->modelVariables());
 
-                    FmuDriver driver(fmu);
+                    fmu_driver driver(fmu);
                     driver.run(opt);
 
                     pass(resultDir);
@@ -192,19 +192,19 @@ namespace fmi4cpp::xc {
 
     private:
 
-        void fail(const fs::path resultDir, const string message) {
+        void fail(const fs::path &resultDir, const string &message) {
             write(resultDir / "failed", "Reason: " + message);
         }
 
-        void reject(const fs::path resultDir, const string message) {
+        void reject(const fs::path &resultDir, const string &message) {
             write(resultDir / "rejected", "Reason: " + message);
         }
 
-        void pass(fs::path resultDir) {
+        void pass(const fs::path &resultDir) {
             write(resultDir / "passed", "");
         }
 
-        void writeReadme(const fs::path resultDir) {
+        void writeReadme(const fs::path &resultDir) {
             write(resultDir / "README.md",
                   "    The cross-check results have been generated with FMI4cpp's fmu_driver.\n"
                   "    To get more information download the 'fmu_driver' tool from https://github.com/SFI-Mechatronics/FMI4cpp/releases and run:\n"

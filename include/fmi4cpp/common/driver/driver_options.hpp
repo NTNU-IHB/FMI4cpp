@@ -22,40 +22,31 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMI4CPP_FMUDRIVER_HPP
-#define FMI4CPP_FMUDRIVER_HPP
+#ifndef FMI4CPP_DRIVEROPTIONS_HPP
+#define FMI4CPP_DRIVEROPTIONS_HPP
 
-#include <string>
-#include <memory>
+#include <experimental/filesystem>
 
-#include <fmi4cpp/fmi2/fmi2.hpp>
+#include <fmi4cpp/fmi2/xml/ScalarVariable.hpp>
 
-#include "error_types.hpp"
-#include "DriverOptions.hpp"
-
+namespace fs = std::experimental::filesystem;
 
 namespace fmi4cpp::driver {
 
-    class FmuDriver {
+    struct driver_options {
 
-    public:
+        double startTime = 0.0;
+        double stopTime = 0.0;
+        double stepSize = 1e-3;
 
-        explicit FmuDriver(const std::shared_ptr<fmi4cpp::fmi2::fmi2Fmu> fmu);
+        bool modelExchange = false;
+        bool failOnLargeFileSize = false;
 
-        void run(DriverOptions options);
-
-    private:
-
-        const std::shared_ptr<fmi4cpp::fmi2::fmi2Fmu> fmu_;
-
-        void dumpOutput(const std::string &data, const std::string &outputFolder);
-
-        void simulate(std::unique_ptr<fmi4cpp::FmuSlave<fmi4cpp::fmi2::CoSimulationModelDescription>> slave,
-                      DriverOptions options);
+        fs::path outputFolder = fs::current_path();
+        std::vector<fmi4cpp::fmi2::ScalarVariable> variables;
 
     };
 
 }
 
-
-#endif //FMI4CPP_FMUDRIVER_HPP
+#endif //FMI4CPP_DRIVEROPTIONS_HPP

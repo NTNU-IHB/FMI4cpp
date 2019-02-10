@@ -24,8 +24,6 @@
 
 #ifdef FMI4CPP_WITH_CURL
 #include <curl/curl.h>
-#include <iostream>
-#include <fstream>
 #endif
 
 #include <utility>
@@ -111,7 +109,9 @@ unique_ptr<fmi2ModelExchangeFmu> fmi2Fmu::asModelExchangeFmu() const {
 }
 
 #ifdef FMI4CPP_WITH_CURL
-fmi2Fmu fmi2Fmu::fromUrl(const std::string &fmuPath) {
+std::unique_ptr<fmi2Fmu> fmi2Fmu::fromUrl(const std::string &fmuPath) {
+
+    fmi4cpp::logger::debug("Loading FMU from URL: {}", fmuPath);
 
     auto fmuName = fs::path(fmuPath).filename();
     fs::path tmp(fs::temp_directory_path() /= fmuName);
@@ -123,15 +123,17 @@ fmi2Fmu fmi2Fmu::fromUrl(const std::string &fmuPath) {
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);
         CURLcode res = curl_easy_perform(curl);
         if (res != CURLE_OK) {
-            fmi4cpp::logger::error("Failed to download fmu from url {}", fmuPath);
+            std::string err = "Failed to download FMU from URL:" + fmuPath;
+            fmi4cpp::logger::error(err);
+            throw runtime_error(err);
         }
         /* always cleanup */
         curl_easy_cleanup(curl);
         fclose(fp);
     }
 
-    auto fmu = fmi2Fmu(tmp.string());
-    fs::remove(tmp);
+    auto fmu = std::make_unique<fmi2Fmu>(tmp.string());
+    fs::remove(tmp); //delete downloaded FMU, it has been extracted by now.
     return fmu;
 
 }

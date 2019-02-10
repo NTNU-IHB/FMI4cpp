@@ -26,7 +26,7 @@
 #include <vector>
 #include <iostream>
 
-#include <fmi4cpp/common/driver/FmuDriver.hpp>
+#include <fmi4cpp/common/driver/fmu_driver.hpp>
 
 using namespace std;
 using namespace fmi4cpp;
@@ -84,12 +84,12 @@ namespace {
 
 }
 
-FmuDriver::FmuDriver(const std::shared_ptr<fmi2Fmu> fmu) : fmu_(fmu){}
+fmu_driver::fmu_driver(const std::shared_ptr<fmi2Fmu> fmu) : fmu_(fmu){}
 
-void FmuDriver::run(DriverOptions options) {
+void fmu_driver::run(driver_options options) {
 
     if (options.modelExchange) {
-#if FMI4CPP_WITH_ODEINT
+#ifdef FMI4CPP_WITH_ODEINT
         auto solver = solver::make_solver<solver::EulerSolver>(1E-3);
         simulate(fmu_->asModelExchangeFmu()->newInstance(solver), options);
 #else
@@ -102,7 +102,7 @@ void FmuDriver::run(DriverOptions options) {
 
 }
 
-void FmuDriver::dumpOutput(const string &data, const string &outputFolder) {
+void fmu_driver::dumpOutput(const string &data, const string &outputFolder) {
 
     const auto fmuName = fs::path(fmu_->getFmuName()).stem().string();
     const auto outputFile = fs::path(outputFolder + "/" + fmuName + "_out.csv");
@@ -115,7 +115,7 @@ void FmuDriver::dumpOutput(const string &data, const string &outputFolder) {
 
 }
 
-void FmuDriver::simulate(std::unique_ptr<FmuSlave<CoSimulationModelDescription>> slave, DriverOptions options) {
+void fmu_driver::simulate(std::unique_ptr<FmuSlave<CoSimulationModelDescription>> slave, driver_options options) {
 
     auto startTime = options.startTime;
     auto stopTime = options.stopTime;

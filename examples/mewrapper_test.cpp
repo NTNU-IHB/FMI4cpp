@@ -28,9 +28,8 @@
 #include <memory>
 #include <vector>
 
-#include <fmi4cpp/fmi2/fmi2.hpp>
+#include <fmi4cpp/fmi4cpp.hpp>
 #include <fmi4cpp/common/logger.hpp>
-#include <fmi4cpp/common/tools/os_util.hpp>
 
 using namespace std;
 using namespace fmi4cpp::fmi2;

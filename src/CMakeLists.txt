@@ -2,7 +2,7 @@
 SET(SOURCES
 
         fmi4cpp/common/import/FmuResource.cpp
-        fmi4cpp/common/driver/FmuDriver.cpp
+        fmi4cpp/common/driver/fmu_driver.cpp
 
         fmi4cpp/fmi2/import/fmi2Fmu.cpp
         fmi4cpp/fmi2/import/fmi2CoSimulationFmu.cpp
