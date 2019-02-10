@@ -57,6 +57,7 @@ find_package(spdlog CONFIG REQUIRED)
 
 if (FMI4CPP_WITH_CURL)
     find_package(CURL REQUIRED)
+    find_package(OpenSSL COMPONENTS Crypto SSL REQUIRED)
 endif()
 
 add_subdirectory(src)
