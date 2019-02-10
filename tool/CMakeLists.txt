@@ -1,7 +1,7 @@
 
 include_directories(${FMI4cpp_SOURCE_DIR}/include)
 
-if (UNIX AND FMI4CPP_WITH_CURL)
+if (UNIX AND FMI4CPP_USING_VCPKG AND FMI4CPP_WITH_CURL)
     link_libraries(${CURL_LIBRARIES} OpenSSL::Crypto OpenSSL::SSL)
 endif ()
 
