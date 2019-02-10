@@ -62,7 +62,7 @@ Linux:~/$ sudo apt-get install libzip-dev libboost-dev libspdlog-dev
 ```cpp
 
 #include <iostream> 
-#include <fmi4cpp/fmi2/fmi2.hpp>
+#include <fmi4cpp/fmi4cpp.hpp>
 
 using namespace std;
 using namespace fmi4cpp::fmi2;
@@ -77,13 +77,13 @@ int main() {
     auto cs_fmu = fmu.asCoSimulationFmu();
     auto me_fmu = fmu.asModelExchangeFmu();
     
-    auto cs_md = fmu->getModelDescription(); //smart pointer to a CoSimulationModelDescription instance
+    auto cs_md = fmu.getModelDescription(); //smart pointer to a CoSimulationModelDescription instance
     cout << "modelIdentifier=" << cs_fmu->getModelDescription()->modelIdentifier() << endl;
     
-    auto me_md = fmu->getModelDescription(); //smart pointer to a ModelExchangeModelDescription instance
+    auto me_md = fmu.getModelDescription(); //smart pointer to a ModelExchangeModelDescription instance
     cout << "modelIdentifier=" << me_fmu->getModelDescription()->modelIdentifier() << endl;
     
-    auto var = cs_md->getVariableByName("my_var").asRealVariable();
+    auto var = cs_md->getVariableByName("my_var").asReal();
     cout << "Name=" << var.name() <<  ", start=" << var.start().value_or(0) << endl;
               
     auto slave = cs_fmu->newInstance();
@@ -109,7 +109,7 @@ int main() {
             cerr << "Error! doStep() returned with status: " << to_string(slave->getLastStatus()) << endl;
             break;
         }
-        cout << "t=" << t << ", " << var.name << "=" << value << endl;
+        cout << "t=" << t << ", " << var.name() << "=" << value << endl;
      
     }
     
