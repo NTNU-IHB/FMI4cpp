@@ -57,9 +57,8 @@ int main() {
 
     auto elapsed = measure_time_sec([&slave]{
 
-        double t;
         double ref;
-        while ((t = slave->getSimulationTime()) <= (stop - step_size)) {
+        while ((slave->getSimulationTime()) <= (stop - step_size)) {
             if (!slave->doStep(step_size)) {
                 logger::error("Error! doStep returned with status: {}", to_string(slave->getLastStatus()));
                 break;
