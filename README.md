@@ -37,7 +37,13 @@ The alternative is to fetch the dependencies manually, put them in the path some
 Install [vcpkg](https://github.com/Microsoft/vcpkg) and run:
 
 ```bash
-./vcpkg install boost-property-tree boost-ublas boost-odeint libzip[core] spdlog
+./vcpkg install boost-property-tree libzip[core] spdlog
+``` 
+
+[Optional] For wrapping ME models as CS ones, you'll need some additional dependencies:
+
+```bash
+./vcpkg install boost-ublas boost-odeint
 ``` 
 
 On windows you might want to specify the target architecture (defaults to x86) by appending
@@ -47,8 +53,6 @@ On windows you might want to specify the target architecture (defaults to x86) b
 ```
 
 Then tell CMake about your vcpkg installation by passing <br> ```-DCMAKE_TOOLCHAIN_FILE=<path/to/vcpkg>/scripts/buildsystems/vcpkg.cmake``` to it.
-
-_Note: ```boost-ublas``` and ```boost-odeint``` are optional and can be omitted by passing ```-DFMI4CPP_WITH_ODEINT=OFF``` to CMake._
 
 
 On *NIX the dependencies can also be installed using the native package handler. 
