@@ -30,10 +30,10 @@ jobs:
           command: 'cd /home/vcpkg && git pull'
       - run:
           name: Install dependencies
-          command: 'cd /home/vcpkg && ./vcpkg install boost-property-tree libzip[core] spdlog boost-odeint'
+          command: 'cd /home/vcpkg && ./vcpkg install boost-property-tree libzip[core] spdlog'
       - run:
           name: Configuring
-          command: 'cmake -H. -Bbuild -DCMAKE_TOOLCHAIN_FILE=/home/vcpkg/scripts/buildsystems/vcpkg.cmake -DFMI4CPP_USING_VCPKG=ON -DFMI4CPP_WITH_CURL=OFF -DFMI4CPP_WITH_ODEINT=ON -DFMI4CPP_BUILD_TOOL=OFF -DFMI4CPP_BUILD_TESTS=OFF -DFMI4CPP_BUILD_EXAMPLES=ON'
+          command: 'cmake -H. -Bbuild -DCMAKE_TOOLCHAIN_FILE=/home/vcpkg/scripts/buildsystems/vcpkg.cmake -DFMI4CPP_USING_VCPKG=ON -DFMI4CPP_WITH_CURL=OFF -DFMI4CPP_WITH_ODEINT=OFF -DFMI4CPP_BUILD_TOOL=OFF -DFMI4CPP_BUILD_TESTS=OFF -DFMI4CPP_BUILD_EXAMPLES=ON'
       - run:
           name: Building
           command: 'cmake --build build'
