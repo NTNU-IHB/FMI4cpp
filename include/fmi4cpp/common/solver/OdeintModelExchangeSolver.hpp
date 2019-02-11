@@ -25,9 +25,13 @@
 #ifndef FMI4CPP_ODEINTSOLVER_HPP
 #define FMI4CPP_ODEINTSOLVER_HPP
 
-#if FMI4CPP_WITH_ODEINT
+#include <boost/numeric/odeint/stepper/euler.hpp>
+#include <boost/numeric/odeint/stepper/implicit_euler.hpp>
 
-#include <boost/numeric/odeint.hpp>
+#include <boost/numeric/odeint/stepper/runge_kutta4.hpp>
+#include <boost/numeric/odeint/stepper/runge_kutta4_classic.hpp>
+
+#include <boost/numeric/odeint/integrate/integrate_const.hpp>
 
 #include "ModelExchangeSolver.hpp"
 
@@ -69,7 +73,5 @@ namespace fmi4cpp::solver {
     typedef ConstantStepSizeOdeintSolver<runge_kutta4_classic<state_type>> RK4ClassicSolver;
 
 }
-
-#endif
 
 #endif //FMI4CPP_ODEINTSOLVER_HPP
