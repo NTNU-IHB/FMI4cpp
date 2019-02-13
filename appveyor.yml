@@ -17,7 +17,6 @@ install:
   - cd %APPVEYOR_BUILD_FOLDER%
 
 before_build:
-  - cmake
   - cmake -G "Visual Studio 15 2017 Win64" . -DCMAKE_TOOLCHAIN_FILE=c:\tools\vcpkg\scripts\buildsystems\vcpkg.cmake -DFMI4CPP_USING_VCPKG=ON -DFMI4CPP_WITH_CURL=OFF -DFMI4CPP_WITH_ODEINT=OFF -DFMI4CPP_BUILD_TOOL=OFF -DFMI4CPP_BUILD_TESTS=OFF -DFMI4CPP_BUILD_EXAMPLES=OFF
 
 build:
