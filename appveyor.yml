@@ -13,7 +13,7 @@ install:
   - cd C:\Tools\vcpkg
   - git pull
   - .\bootstrap-vcpkg.bat
-  - .\vcpkg boost-property-tree libzip[core] spdlog
+  - .\vcpkg boost-property-tree libzip[core] spdlog --triplet x64-windows
   - cd %APPVEYOR_BUILD_FOLDER%
 
 before_build:
