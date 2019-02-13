@@ -36,7 +36,7 @@ The alternative is to fetch the dependencies manually, put them in the path some
 
 You are free to use either `vcpkg`, `conan` or `apt-get` for getting the required dependencies
 
-#####vcpkg
+##### vcpkg
 
 Install [vcpkg](https://github.com/Microsoft/vcpkg) and run:
 
@@ -60,7 +60,7 @@ Then tell CMake about your vcpkg installation by passing <br> ```-DCMAKE_TOOLCHA
 
 On Linux, make sure the CMake option `FMI4CPP_WITH_VCPKG` is set to `ON`
 
-#####conan
+##### conan
 
 Install [conan](https://conan.io/) and run `conan install`:
 
@@ -75,7 +75,7 @@ The `curl` option can be set to `False` if you plan to build with `-DFMI4CPP_WIT
 
 When using conan `FMI4CPP_WITH_CONAN=ON` must be set.
 
-#####apt-get
+##### apt-get
 
 On *NIX the dependencies can also be installed using the native package handler. 
 
