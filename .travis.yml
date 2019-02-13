@@ -3,7 +3,9 @@ os: linux
 compiler: gcc
 
 before_install:
-  - sudo apt-get install -y gcc g++ cmake libzip-dev libboost-dev libboost-program-options-dev libboost-test-dev libspdlog-dev
+  - sudo apt-get install -y libzip-dev libboost-dev libboost-program-options-dev libboost-test-dev
+  - wget http://mirrors.kernel.org/ubuntu/pool/universe/s/spdlog/libspdlog-dev_1.6-1_amd64.deb
+  - sudo dpkg -i libspdlog-dev_1.6-1_amd64.deb
 addons:
   apt:
     update: true
