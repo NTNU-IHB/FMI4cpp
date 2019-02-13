@@ -6,7 +6,7 @@
 
 
 [![CircleCI](https://circleci.com/gh/NTNU-IHB/FMI4cpp/tree/master.svg?style=svg)](https://circleci.com/gh/NTNU-IHB/FMI4cpp/tree/master)
-
+[![Build status](https://ci.appveyor.com/api/projects/status/7hrmwc7q6ake6jsd?svg=true)](https://ci.appveyor.com/project/markaren/fmi4cpp)
 
 FMI4cpp is a cross-platform [FMI](https://fmi-standard.org/) 2.0 implementation written in modern C++.
 
