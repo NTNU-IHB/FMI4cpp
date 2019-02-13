@@ -57,3 +57,4 @@ workflows:
     jobs:
       - apt-get
       - vcpkg
+      - conan
