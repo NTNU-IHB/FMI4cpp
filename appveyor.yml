@@ -10,14 +10,14 @@ configuration:
   - Debug
 
 install:
-  - cd C:\Tools\vcpkg
+  - cd c:\tools\vcpkg
   - git pull
   - .\bootstrap-vcpkg.bat
-  - .\vcpkg install boost-property-tree libzip[core] spdlog --triplet x64-windows
+  - .\vcpkg install boost-property-tree boost-ublas boost-odeint boost-program-options libzip[core] spdlog --triplet x64-windows
   - cd %APPVEYOR_BUILD_FOLDER%
 
 before_build:
-  - cmake -G "Visual Studio 15 2017 Win64" . -DCMAKE_TOOLCHAIN_FILE=c:\tools\vcpkg\scripts\buildsystems\vcpkg.cmake -DFMI4CPP_USING_VCPKG=ON -DFMI4CPP_WITH_CURL=OFF -DFMI4CPP_WITH_ODEINT=OFF -DFMI4CPP_BUILD_TOOL=OFF -DFMI4CPP_BUILD_TESTS=OFF -DFMI4CPP_BUILD_EXAMPLES=OFF
+  - cmake -G "Visual Studio 15 2017 Win64" . -DCMAKE_TOOLCHAIN_FILE=c:\tools\vcpkg\scripts\buildsystems\vcpkg.cmake -DFMI4CPP_USING_VCPKG=ON -DFMI4CPP_WITH_CURL=ON -DFMI4CPP_WITH_ODEINT=ON -DFMI4CPP_BUILD_TOOL=ON -DFMI4CPP_BUILD_TESTS=OFF -DFMI4CPP_BUILD_EXAMPLES=ON
 
 build:
   project: $(APPVEYOR_BUILD_FOLDER)\$(APPVEYOR_PROJECT_NAME).sln
