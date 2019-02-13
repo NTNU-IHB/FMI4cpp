@@ -27,7 +27,7 @@ jobs:
       - checkout
       - run:
           name: Update conan
-          command: 'pip install conan --upgrade'
+          command: 'sudo pip install conan --upgrade'
       - run:
           name: Conan install
           command: 'conan install . -s build_type=Debug -s compiler.libcxx=libstdc++11 --install-folder=build'
