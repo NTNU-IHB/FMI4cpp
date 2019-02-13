@@ -1,0 +1,21 @@
+language: cpp
+os:
+  - linux
+  - windows
+compiler: gcc
+
+addons:
+  apt:
+    packages:
+      - gcc
+      - g++
+      - cmake
+      - libzip-dev
+      - libboost-dev
+      - libboost-test-dev
+      - libspdlog-dev
+
+script:
+  - cmake -H. -Bbuild -DFMI4CPP_USING_VCPKG=OFF -DFMI4CPP_WITH_ODEINT=ON -DFMI4CPP_WITH_CURL=OFF -DFMI4CPP_BUILD_TESTS=ON -DFMI4CPP_BUILD_EXAMPLES=ON
+  - cmake --build build
+  - cd build/tests && ctest
