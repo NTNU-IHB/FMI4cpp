@@ -50,12 +50,12 @@ jobs:
           command: 'cd /home/vcpkg && git pull'
       - restore_cache:
           keys:
-            - cache-v1
+            - cache-v1-{{ epoch }}
       - run:
           name: Install dependencies
           command: 'cd /home/vcpkg && ./vcpkg upgrade --no-dry-run && ./vcpkg install boost-property-tree libzip[core] spdlog curl'
       - save_cache:
-          key: cache-v1
+          key: cache-v1-{{ epoch }}
           paths:
             - '/home/vcpkg/installed'
       - run:
