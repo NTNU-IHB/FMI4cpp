@@ -1,4 +1,20 @@
 
+option(FMI4CPP_BUILD_TOOL "Build tool" OFF)
+option(FMI4CPP_BUILD_TESTS "Build tests" OFF)
+option(FMI4CPP_BUILD_EXAMPLES "Build examples" ON)
+option(FMI4CPP_WITH_ODEINT "Build with odeint solvers. Allows ME models to be wrapped as CS ones" OFF)
+option(FMI4CPP_WITH_CURL "Build with curl. Allows URL paths to FMUs" OFF)
+option(FMI4CPP_USING_VCPKG "Build using vcpkg" ON)
+option(FMI4CPP_USING_CONAN "Build using conan" OFF)
+
+if (FMI4CPP_USING_VCPKG AND FMI4CPP_USING_CONAN)
+    message(FATAL_ERROR "Cannot use both vcpkg and conan!")
+endif()
+
+if(NOT FMI4CPP_USING_VCPKG)
+    set(CMAKE_TOOLCHAIN_FILE "")
+endif()
+
 cmake_minimum_required(VERSION 3.10)
 project(FMI4cpp
         VERSION 0.5.4)
@@ -7,17 +23,20 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
-option(FMI4CPP_BUILD_TOOL "Build tool" OFF)
-option(FMI4CPP_BUILD_TESTS "Build tests" OFF)
-option(FMI4CPP_BUILD_EXAMPLES "Build examples" ON)
-option(FMI4CPP_WITH_ODEINT "Build with odeint solvers. Allows ME models to be wrapped as CS ones" OFF)
-option(FMI4CPP_WITH_CURL "Build with curl. Allows URL paths to FMUs" OFF)
-option(FMI4CPP_USING_VCPKG "Build using vcpkg" ON)
 
 set(FMI4CPP_LOG_LEVEL "DEFAULT" CACHE STRING "FMI4cpp logging level")
 set(FMI4CPP_LOG_LEVEL_VALUES "DEFAULT;OFF;INFO;DEBUG;TRACE" CACHE STRING "List of possible log levels")
 set_property(CACHE FMI4CPP_LOG_LEVEL PROPERTY STRINGS ${FMI4CPP_LOG_LEVEL_VALUES})
 
+if (FMI4CPP_USING_CONAN)
+    if(EXISTS ${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+        include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+        conan_basic_setup()
+    else()
+        message(FATAL_ERROR "The file conanbuildinfo.cmake doesn't exist, you have to run conan install first!")
+    endif()
+
+endif()
 
 if (MSVC)
     set(CMAKE_DEBUG_POSTFIX "d")
