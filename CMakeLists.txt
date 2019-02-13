@@ -15,7 +15,7 @@ if(NOT FMI4CPP_USING_VCPKG)
     set(CMAKE_TOOLCHAIN_FILE "")
 endif()
 
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.9.2)
 project(FMI4cpp
         VERSION 0.5.4)
 
