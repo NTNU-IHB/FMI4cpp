@@ -18,8 +18,13 @@ class FMI4cppConan(ConanFile):
         "libzip:shared=True"
     )
 
+    def configure(self):
+        if self.options.curl:
+            self.options["libcurl"].shared=True
+
     def requirements(self):
         if self.options.curl:
             self.requires("OpenSSL/1.0.2o@conan/stable")
             self.requires("libcurl/7.61.1@bincrafters/stable")
+
 
