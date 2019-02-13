@@ -26,8 +26,11 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Installing tools and libraries
-          command: 'conan install . -s build_type=Debug --install-folder=build'
+          name: Update conan
+          command: 'pip install conan --upgrade'
+      - run:
+          name: Conan install
+          command: 'conan install . -s build_type=Debug -s compiler.libcxx=libstdc++11 --install-folder=build'
       - run:
           name: Configuring
           command: 'cmake -H. -Bbuild -DFMI4CPP_USING_VCPKG=OFF -DFMI4CPP_USING_CONAN=ON -DFMI4CPP_WITH_ODEINT=ON -DFMI4CPP_WITH_CURL=OFF -DFMI4CPP_BUILD_TOOL=OFF -DFMI4CPP_BUILD_TESTS=ON -DFMI4CPP_BUILD_EXAMPLES=ON'
