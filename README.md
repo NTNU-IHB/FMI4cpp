@@ -34,6 +34,10 @@ The alternative is to fetch the dependencies manually, put them in the path some
 
 ### Development dependencies
 
+You are free to use either `vcpkg`, `conan` or `apt-get` for getting the required dependencies
+
+#####vcpkg
+
 Install [vcpkg](https://github.com/Microsoft/vcpkg) and run:
 
 ```bash
@@ -54,6 +58,24 @@ On windows you might want to specify the target architecture (defaults to x86) b
 
 Then tell CMake about your vcpkg installation by passing <br> ```-DCMAKE_TOOLCHAIN_FILE=<path/to/vcpkg>/scripts/buildsystems/vcpkg.cmake``` to it.
 
+On Linux, make sure the CMake option `FMI4CPP_WITH_VCPKG` is set to `ON`
+
+#####conan
+
+Install [conan](https://conan.io/) and run `conan install`:
+
+```
+conan install . -s build_type=Debug --install-folder=cmake-build-debug -o curl=True
+conan install . -s build_type=Release --install-folder=cmake-build-release -o curl=True
+```
+
+On linux you should add `-s compiler.libcxx=libstdc++11` to the command
+
+The `curl` option can be set to `False` if you plan to build with `-DFMI4CPP_WITH_CURL=OFF`
+
+When using conan `FMI4CPP_WITH_CONAN=ON` must be set.
+
+#####apt-get
 
 On *NIX the dependencies can also be installed using the native package handler. 
 
