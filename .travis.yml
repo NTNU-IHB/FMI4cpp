@@ -3,7 +3,10 @@ os: linux
 compiler: gcc
 
 before_install:
-  - apt-get update && apt-get install -y sudo gcc g++ cmake libzip-dev libboost-dev libboost-program-options-dev libboost-test-dev libspdlog-dev && rm -rf /var/lib/apt/lists/*
+  - sudo apt-get install -y gcc g++ cmake libzip-dev libboost-dev libboost-program-options-dev libboost-test-dev libspdlog-dev
+addons:
+  apt:
+    update: true
 
 script:
   - cmake -H. -Bbuild -DFMI4CPP_USING_VCPKG=OFF -DFMI4CPP_WITH_ODEINT=ON -DFMI4CPP_WITH_CURL=OFF -DFMI4CPP_BUILD_TESTS=ON -DFMI4CPP_BUILD_EXAMPLES=ON
