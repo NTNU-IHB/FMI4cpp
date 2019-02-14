@@ -53,7 +53,7 @@ jobs:
             - cache-v1-{{ checksum "/home/vcpkg/ports/boost/CONTROL" }}
       - run:
           name: Install dependencies
-          command: 'cd /home/vcpkg && ./vcpkg upgrade --no-dry-run && ./vcpkg install boost-property-tree boots-test libzip[core] spdlog curl'
+          command: 'cd /home/vcpkg && ./vcpkg upgrade --no-dry-run && ./vcpkg install boost-property-tree boost-test libzip[core] spdlog curl'
       - save_cache:
           key: cache-v2
           paths:
