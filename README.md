@@ -50,7 +50,7 @@ Install [vcpkg](https://github.com/Microsoft/vcpkg) and run:
 ./vcpkg install boost-ublas boost-odeint
 ``` 
 
-On windows you might want to specify the target architecture (defaults to x86) by appending
+On windows you might want to specify the target architecture (defaults to x86) by appending:
 
 ```bash
 --triplet [x86-windows|x64-windows]

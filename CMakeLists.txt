@@ -35,7 +35,6 @@ if (FMI4CPP_USING_CONAN)
     else()
         message(FATAL_ERROR "The file conanbuildinfo.cmake doesn't exist, you have to run conan install first!")
     endif()
-
 endif()
 
 if (MSVC)
@@ -48,9 +47,11 @@ endif ()
 if (FMI4CPP_BUILD_TOOL)
     list(APPEND BOOST_COMPONENTS program_options)
 endif ()
+
 if (FMI4CPP_BUILD_TESTS)
     list(APPEND BOOST_COMPONENTS unit_test_framework)
 endif ()
+
 find_package(Boost 1.58 COMPONENTS ${BOOST_COMPONENTS} REQUIRED)
 
 if (FMI4CPP_USING_VCPKG)
