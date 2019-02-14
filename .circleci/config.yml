@@ -50,14 +50,16 @@ jobs:
           command: 'cd /home/vcpkg && git pull'
       - restore_cache:
           keys:
-            - cache-v1-{{ epoch }}
+            - cache-v1-{{ checksum "/home/vcpkg/ports/boost/CONTROL" }}
+            - cache-v1-{{ arch }}-{{ .Branch }}
+            - cache-v1
       - run:
           name: Install dependencies
           command: 'cd /home/vcpkg && ./vcpkg upgrade --no-dry-run && ./vcpkg install boost-property-tree libzip[core] spdlog curl'
       - save_cache:
-          key: cache-v1-{{ epoch }}
+          key: cache-v1-{{ checksum "/home/vcpkg/ports/boost/CONTROL" }}
           paths:
-            - '/home/vcpkg/installed'
+            - '/home/vcpkg/installed/'
       - run:
           name: Configuring
           command: 'cmake -H. -Bbuild -DCMAKE_TOOLCHAIN_FILE=/home/vcpkg/scripts/buildsystems/vcpkg.cmake -DFMI4CPP_USING_VCPKG=ON -DFMI4CPP_WITH_CURL=ON -DFMI4CPP_WITH_ODEINT=OFF -DFMI4CPP_BUILD_TOOL=OFF -DFMI4CPP_BUILD_TESTS=OFF -DFMI4CPP_BUILD_EXAMPLES=ON'
