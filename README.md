@@ -181,8 +181,8 @@ Options:
   -v [ --variables ] arg Variables to print.
 ```
 
-It's not built by default. Pass ```FMI4CPP_BUILD_TOOL=ON``` to build it. 
-An additional dependency is needed if you do:
+It's not built by default. To build it, pass ```FMI4CPP_BUILD_TOOL=ON``` to CMake. 
+An additional dependency is required if you do:
 
 ##### vcpkg
 ```bash
