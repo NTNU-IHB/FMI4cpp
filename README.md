@@ -10,7 +10,7 @@
 
 FMI4cpp is a cross-platform [FMI](https://fmi-standard.org/) 2.0 implementation written in modern C++.
 
-Influenced by it's spiritual brother [FMI4j](https://github.com/SFI-Mechatronics/FMI4j), it aims to be
+Influenced by it's spiritual brother [FMI4j](https://github.com/NTNU-IHB/FMI4j), it aims to be
 an easy to install, easy to use, object oriented and fast FMI implementation for C++.    
 
 FMI4cpp supports both **Co-simulation** and **Model Exchange**. <br/>
@@ -18,8 +18,8 @@ For Model Exchange, solvers from [odeint](http://headmyshoulder.github.io/odeint
 
 ### Why should I use this over other C/C++ FMI Libraries
 
-Because this library provides a clean, easy to use API and is easy to install (through vcpkg).
-
+Because it provides a clean, easy to use API and is easy to install (through vcpkg).
+It perform just as good as FMI Library, provides more features and is significantly easier to both build and use.
 
 ### How do I use it in my own project?
 
@@ -28,9 +28,6 @@ Recommended way is to install [vcpkg](https://github.com/Microsoft/vcpkg) and ru
 ```bash
 ./vcpkg install fmi4cpp
 ``` 
-
-The alternative is to fetch the dependencies manually, put them in the path somewhere and run the regular CMake install procedures. 
-
 
 ### Development dependencies
 
@@ -44,12 +41,6 @@ Install [vcpkg](https://github.com/Microsoft/vcpkg) and run:
 ./vcpkg install boost-property-tree libzip[core] spdlog
 ``` 
 
-[Optional] For wrapping ME models as CS ones, you'll need some additional dependencies:
-
-```bash
-./vcpkg install boost-ublas boost-odeint
-``` 
-
 On windows you might want to specify the target architecture (defaults to x86) by appending:
 
 ```bash
@@ -58,20 +49,18 @@ On windows you might want to specify the target architecture (defaults to x86) b
 
 Then tell CMake about your vcpkg installation by passing <br> ```-DCMAKE_TOOLCHAIN_FILE=<path/to/vcpkg>/scripts/buildsystems/vcpkg.cmake``` to it.
 
-On Linux, set `FMI4CPP_USING_VCPKG=ON`
+On Linux, set `-DFMI4CPP_USING_VCPKG=ON`
 
 ##### conan
 
 Install [conan](https://conan.io/) and run `conan install`:
 
 ```bash
-conan install . -s build_type=Debug --install-folder=cmake-build-debug -o curl=True
-conan install . -s build_type=Release --install-folder=cmake-build-release -o curl=True
+conan install . -s build_type=Debug --install-folder=cmake-build-debug
+conan install . -s build_type=Release --install-folder=cmake-build-release
 ```
 
 On linux you should add `-s compiler.libcxx=libstdc++11` to the command
-
-The `curl` option can be set to `False` if you plan to build with `-DFMI4CPP_WITH_CURL=OFF`
 
 When using conan, set `FMI4CPP_USING_CONAN=ON`.
 
@@ -80,27 +69,54 @@ When using conan, set `FMI4CPP_USING_CONAN=ON`.
 ```bash
 Linux:~/$ sudo apt-get install libzip-dev libboost-dev libspdlog-dev
 ``` 
-And optionally:
+
+
+## Optional features
+
+#### Load FMUs from URL
+
+Set `-DFMI4CPP_WITH_CURL=ON`
+Requires libcurl
+
+##### vcpkg
+`./vcpkg install curl`
+
+##### conan
+pass `-o curl=True` to the install command
+
+##### apt-get
 ```bash
-Linux:~/$ sudo apt-get install libcurl4-openssl-dev
+sudo apt-get install libcurl4-openssl-dev
 ``` 
 
-### API
+#### Wrap Model Exchange models as Co-simulation models
+
+Set `-DFMI4CPP_WITH_ODEINT=ON`
+Requires boost-odeint
+
+##### vcpkg
+`./vcpkg install boost-ublas boost-odeint` 
+
+##### conan & apt-get
+_Dependencies should already be fulfilled.._
+
+#### API
 
 ```cpp
-
 #include <iostream> 
 #include <fmi4cpp/fmi4cpp.hpp>
 
 using namespace std;
 using namespace fmi4cpp::fmi2;
 
-const double stop = 10.0;
-const double stepSize = 1.0/100;
+const double stop = ...;
+const double stepSize = ...;
 
 int main() {
 
     fmi2Fmu fmu("path/to/fmu.fmu");
+    // or (with -DFMI4CPP_WITH_CURL=ON)
+    // auto fmu = fmi2Fmu::fromUrl("http://somewebsite.org/somefmu.fmu")
     
     auto cs_fmu = fmu.asCoSimulationFmu();
     auto me_fmu = fmu.asModelExchangeFmu();
@@ -116,7 +132,7 @@ int main() {
               
     auto slave = cs_fmu->newInstance();
     
-    // or 
+    // or (with -DFMI4CPP_WITH_ODEINT=ON)
     // auto solver = make_solver<RK4ClassicSolver>(1E-3);
     // auto slave = me_fmu->newInstance(solver);
          
@@ -148,7 +164,7 @@ int main() {
 }
 ```
 
-
+----
 ### fmu_driver
 
 FMI4cpp comes with a simple CLI for testing FMUs, called _fmu_driver_. 
@@ -168,14 +184,19 @@ Options:
 It's not built by default. Pass ```FMI4CPP_BUILD_TOOL=ON``` to build it. 
 An additional dependency is needed if you do:
 
+##### vcpkg
 ```bash
-./vcpkg boost-program-options
+./vcpkg install boost-program-options
 ```
+##### conan
+_Dependency should already be fulfilled.._
+
+##### apt-get
 ```bash
 Linux:~/$ sudo apt-get install libboost-program-options-dev
 ```
 
-***
+----
 
 #### Running examples/tests
 
@@ -184,9 +205,14 @@ Test are on the other hand _not_ built by default. To change this pass ```-DFMI4
 
 To run the tests you will need an additional dependency:
 
+##### vcpkg
 ```
 ./vcpkg install boost-test
 ``` 
+##### conan
+_Dependency should already be fulfilled.._
+
+##### apt-get
 ```bash
 Linux:~/$ sudo apt-get install libboost-test-dev
 ```
