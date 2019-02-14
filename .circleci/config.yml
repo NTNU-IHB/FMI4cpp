@@ -50,7 +50,7 @@ jobs:
           command: 'cd /home/vcpkg && git pull'
       - restore_cache:
           keys:
-            - cache-v1-{{ checksum "/home/vcpkg/ports/boost/CONTROL" }}
+            - cache-v2
       - run:
           name: Install dependencies
           command: 'cd /home/vcpkg && ./vcpkg upgrade --no-dry-run && ./vcpkg install boost-property-tree boost-test libzip[core] spdlog curl'
