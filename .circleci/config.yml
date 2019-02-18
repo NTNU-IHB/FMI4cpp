@@ -28,9 +28,20 @@ jobs:
       - run:
           name: Update conan
           command: 'sudo pip install conan --upgrade'
+
+      - restore_cache:
+          keys:
+            - conan-cache-v1--{{ checksum "conanfile.py" }}
+            - conan-cache-v1
       - run:
           name: Conan install
           command: 'conan install . -s build_type=Debug -s compiler.libcxx=libstdc++11 --install-folder=build'
+
+      - save_cache:
+          paths:
+            - ~/.conan
+          key: conan-cache-v1--{{ checksum "conanfile.py" }}
+
       - run:
           name: Configuring
           command: 'cmake -H. -Bbuild -DFMI4CPP_USING_VCPKG=OFF -DFMI4CPP_USING_CONAN=ON -DFMI4CPP_WITH_ODEINT=ON -DFMI4CPP_WITH_CURL=OFF -DFMI4CPP_BUILD_TOOL=OFF -DFMI4CPP_BUILD_TESTS=ON -DFMI4CPP_BUILD_EXAMPLES=ON'
