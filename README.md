@@ -23,11 +23,21 @@ It perform just as good as FMI Library, provides more features and is significan
 
 ### How do I use it in my own project?
 
-Recommended way is to install [vcpkg](https://github.com/Microsoft/vcpkg) and run:
+#### vcpkg 
+
+Install [vcpkg](https://github.com/Microsoft/vcpkg) and run:
 
 ```bash
 ./vcpkg install fmi4cpp
 ``` 
+
+#### conan
+
+Clone this repository and run:
+
+```bash
+conan create . FMI4cpp/local
+```
 
 ### Development dependencies
 
