@@ -51,7 +51,7 @@ Install [vcpkg](https://github.com/Microsoft/vcpkg) and run:
 ./vcpkg install boost-property-tree libzip[core] spdlog
 ``` 
 
-On windows you might want to specify the target architecture (defaults to x86) by appending:
+On Windows you might want to specify the target architecture (defaults to x86) by appending:
 
 ```bash
 --triplet [x86-windows|x64-windows]
@@ -59,7 +59,7 @@ On windows you might want to specify the target architecture (defaults to x86) b
 
 Then tell CMake about your vcpkg installation by passing <br> ```-DCMAKE_TOOLCHAIN_FILE=<path/to/vcpkg>/scripts/buildsystems/vcpkg.cmake``` to it.
 
-On Linux, set `-DFMI4CPP_USING_VCPKG=ON`
+When using vcpkg, set `-DFMI4CPP_USING_VCPKG=ON`
 
 ##### conan
 
@@ -70,7 +70,7 @@ conan install . -s build_type=Debug --install-folder=cmake-build-debug
 conan install . -s build_type=Release --install-folder=cmake-build-release
 ```
 
-On linux you should add `-s compiler.libcxx=libstdc++11` to the command
+On Linux you should add `-s compiler.libcxx=libstdc++11` to the command.
 
 When using conan, set `FMI4CPP_USING_CONAN=ON`.
 
