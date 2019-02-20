@@ -41,7 +41,7 @@ const double stop = 1.0;
 const double microStep = 1E-3;
 const double macroStep = 1.0/10;
 
-const string fmuPath = "../resources/2.0/me/OpenModelica/v1.11.0/"
+const string fmuPath = "../resources/fmus/2.0/me/OpenModelica/v1.11.0/"
                        "FmuExportCrossCompile/FmuExportCrossCompile.fmu";
 
 int main() {

@@ -31,10 +31,10 @@
 using namespace std;
 using namespace fmi4cpp::fmi2;
 
-const string fmu_path1 = "../resources/2.0/cs/20sim/4.6.4.8004/"
+const string fmu_path1 = "../resources/fmus/2.0/cs/20sim/4.6.4.8004/"
                          "TorsionBar/TorsionBar.fmu";
 
-const string fmu_path2 = "../resources/2.0/cs/20sim/4.6.4.8004/"
+const string fmu_path2 = "../resources/fmus/2.0/cs/20sim/4.6.4.8004/"
                          "ControlledTemperature/ControlledTemperature.fmu";
 
 int main() {

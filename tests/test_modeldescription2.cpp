@@ -34,7 +34,7 @@
 using namespace std;
 using namespace fmi4cpp::fmi2;
 
-const string fmu_path = "../resources/2.0/cs/OpenModelica/v1.11.0/"
+const string fmu_path = "../resources/fmus/2.0/cs/OpenModelica/v1.11.0/"
                         "FmuExportCrossCompile/modelDescription.xml";
 
 BOOST_AUTO_TEST_CASE(FmuExportCrossCompile_test1) {
