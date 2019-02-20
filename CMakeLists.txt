@@ -4,7 +4,7 @@ option(FMI4CPP_BUILD_TESTS "Build tests" OFF)
 option(FMI4CPP_BUILD_EXAMPLES "Build examples" ON)
 option(FMI4CPP_WITH_ODEINT "Build with odeint solvers. Allows ME models to be wrapped as CS ones" OFF)
 option(FMI4CPP_WITH_CURL "Build with curl. Allows URL paths to FMUs" OFF)
-option(FMI4CPP_USING_VCPKG "Build using vcpkg" ON)
+option(FMI4CPP_USING_VCPKG "Build using vcpkg" OFF)
 option(FMI4CPP_USING_CONAN "Build using conan" OFF)
 
 if (FMI4CPP_USING_VCPKG AND FMI4CPP_USING_CONAN)
