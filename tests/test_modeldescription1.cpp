@@ -46,19 +46,19 @@ BOOST_AUTO_TEST_CASE(ControlledTemperature_test1) {
     auto md = parseModelDescription(fmu_path);
     auto md_cs = md->asCoSimulationModelDescription();
 
-    BOOST_CHECK_EQUAL("2.0", md->fmiVersion());
-    BOOST_CHECK_EQUAL("ControlledTemperature", md->modelName());
+    BOOST_CHECK_EQUAL("2.0", md->fmiVersion);
+    BOOST_CHECK_EQUAL("ControlledTemperature", md->modelName);
 
-    BOOST_CHECK_EQUAL("{06c2700b-b39c-4895-9151-304ddde28443}", md->guid());
-    BOOST_CHECK_EQUAL("{06c2700b-b39c-4895-9151-304ddde28443}", md_cs->guid());
-    BOOST_CHECK_EQUAL("20-sim", *md->generationTool());
-    BOOST_CHECK_EQUAL("20-sim", *md_cs->generationTool());
+    BOOST_CHECK_EQUAL("{06c2700b-b39c-4895-9151-304ddde28443}", md->guid);
+    BOOST_CHECK_EQUAL("{06c2700b-b39c-4895-9151-304ddde28443}", md_cs->guid);
+    BOOST_CHECK_EQUAL("20-sim", *md->generationTool);
+    BOOST_CHECK_EQUAL("20-sim", *md_cs->generationTool);
 
     BOOST_CHECK_EQUAL(true, md->supportsCoSimulation());
     BOOST_CHECK_EQUAL(false, md->supportsModelExchange());
 
-    BOOST_CHECK_EQUAL(120, md->modelVariables()->size());
-    BOOST_CHECK_EQUAL(120, md_cs->modelVariables()->size());
+    BOOST_CHECK_EQUAL(120, md->modelVariables->size());
+    BOOST_CHECK_EQUAL(120, md_cs->modelVariables->size());
 
     const RealVariable& heatCapacity1 = md->getVariableByName("HeatCapacity1.T0").asReal();
     BOOST_CHECK_EQUAL(1, heatCapacity1.valueReference());
@@ -69,21 +69,21 @@ BOOST_AUTO_TEST_CASE(ControlledTemperature_test1) {
     BOOST_CHECK_EQUAL("starting temperature", heatCapacity1.description());
     BOOST_CHECK_EQUAL(false, heatCapacity1.quantity().has_value());
 
-    auto& thermalConductor = md->modelVariables()->getByValueReference(12);
-    BOOST_CHECK_EQUAL("TemperatureSource.T", thermalConductor.name());
-    BOOST_CHECK(Variability::tunable == thermalConductor.variability());
-    BOOST_CHECK(Causality::parameter == thermalConductor.causality());
+    auto& thermalConductor = md->modelVariables->getByValueReference(12);
+    BOOST_CHECK_EQUAL("TemperatureSource.T", thermalConductor.name);
+    BOOST_CHECK(Variability::tunable == thermalConductor.variability);
+    BOOST_CHECK(Causality::parameter == thermalConductor.causality);
 
     SourceFiles sourceFiles = md_cs->sourceFiles();
     BOOST_CHECK_EQUAL(10, sourceFiles.size());
     BOOST_CHECK_EQUAL("EulerAngles.c", sourceFiles[0].name);
 
-    std::vector<Unknown> modelStructureOutputs = md->modelStructure()->outputs();
+    std::vector<Unknown> modelStructureOutputs = md->modelStructure->outputs;
     BOOST_CHECK_EQUAL(2, modelStructureOutputs.size());
-    BOOST_CHECK_EQUAL(115, modelStructureOutputs[0].index());
-    BOOST_CHECK_EQUAL(116, modelStructureOutputs[1].index());
+    BOOST_CHECK_EQUAL(115, modelStructureOutputs[0].index);
+    BOOST_CHECK_EQUAL(116, modelStructureOutputs[1].index);
 
-    std::optional<DefaultExperiment> de = md->defaultExperiment();
+    std::optional<DefaultExperiment> de = md->defaultExperiment;
     BOOST_CHECK(de.has_value());
     BOOST_CHECK_EQUAL(0.0, *de->startTime);
     BOOST_CHECK_EQUAL(20.0, *de->stopTime);
@@ -91,16 +91,16 @@ BOOST_AUTO_TEST_CASE(ControlledTemperature_test1) {
     BOOST_CHECK_EQUAL(false, de->tolerance.has_value());
 
     size_t count = 0;
-    auto mv = md->modelVariables();
+    auto mv = md->modelVariables;
     for (const auto &v : *mv) {
-        if (v.causality() == Causality::output) {
+        if (v.causality == Causality::output) {
             count++;
         }
     }
     BOOST_CHECK_EQUAL(2, count);
 
     vector<ScalarVariable> outputs = {};
-    md->modelVariables()->getByCausality(Causality::output, outputs);
+    md->modelVariables->getByCausality(Causality::output, outputs);
 
     BOOST_CHECK_EQUAL(count, outputs.size());
 

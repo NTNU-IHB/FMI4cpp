@@ -32,11 +32,11 @@ using namespace fmi4cpp::fmi2;
 using namespace fmi4cpp::solver;
 
 fmi2ModelExchangeFmu::fmi2ModelExchangeFmu(const shared_ptr<FmuResource> &resource,
-                                   const shared_ptr<ModelExchangeModelDescription> &md)
+                                   const shared_ptr<const ModelExchangeModelDescription> &md)
         : resource_(resource), modelDescription_(md) {}
 
 
-shared_ptr<ModelExchangeModelDescription> fmi2ModelExchangeFmu::getModelDescription() const {
+shared_ptr<const ModelExchangeModelDescription> fmi2ModelExchangeFmu::getModelDescription() const {
     return modelDescription_;
 }
 

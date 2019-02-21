@@ -35,7 +35,7 @@ namespace {
 
     const double EPS = 1E-13;
 
-    std::shared_ptr<CoSimulationModelDescription> wrap(const ModelExchangeModelDescription &me) {
+    std::shared_ptr<const CoSimulationModelDescription> wrap(const ModelExchangeModelDescription &me) {
         CoSimulationAttributes attributes(me.attributes());
         attributes.canHandleVariableCommunicationStepSize = true;
         attributes.maxOutputDerivativeOrder = 0;
@@ -53,7 +53,7 @@ fmi2ModelExchangeSlave::fmi2ModelExchangeSlave(
     csModelDescription_ = wrap(*instance_->getModelDescription());
 
     size_t numberOfContinuousStates = instance_->getModelDescription()->numberOfContinuousStates();
-    size_t numberOfEventIndicators = instance_->getModelDescription()->numberOfEventIndicators();
+    size_t numberOfEventIndicators = instance_->getModelDescription()->numberOfEventIndicators;
 
     x_ = std::vector<double>(numberOfContinuousStates);
 
@@ -62,7 +62,7 @@ fmi2ModelExchangeSlave::fmi2ModelExchangeSlave(
 
 }
 
-std::shared_ptr<CoSimulationModelDescription> fmi2ModelExchangeSlave::getModelDescription() const {
+std::shared_ptr<const CoSimulationModelDescription> fmi2ModelExchangeSlave::getModelDescription() const {
     return csModelDescription_;
 }
 

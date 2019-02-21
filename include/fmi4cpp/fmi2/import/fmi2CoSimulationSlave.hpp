@@ -45,14 +45,14 @@ namespace fmi4cpp::fmi2 {
 
         fmi2CoSimulationSlave(fmi2Component c,
                           const std::shared_ptr<fmi2CoSimulationLibrary> &library,
-                          const std::shared_ptr<CoSimulationModelDescription> &modelDescription);
+                          const std::shared_ptr<const CoSimulationModelDescription> &modelDescription);
 
         bool doStep(double stepSize) override;
 
         bool cancelStep() override;
 
 
-        virtual std::shared_ptr<CoSimulationModelDescription> getModelDescription() const;
+        virtual std::shared_ptr<const CoSimulationModelDescription> getModelDescription() const;
 
         virtual Status getLastStatus() const;
 

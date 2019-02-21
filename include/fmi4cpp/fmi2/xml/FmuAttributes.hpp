@@ -1,3 +1,7 @@
+#include <utility>
+
+#include <utility>
+
 /*
  * The MIT License
  *
@@ -33,42 +37,42 @@ namespace fmi4cpp::fmi2 {
 
     struct FmuAttributes {
 
-        bool canGetAndSetFMUstate;
-        bool canSerializeFMUstate;
-        bool needsExecutionTool;
-        bool canNotUseMemoryManagementFunctions;
-        bool canBeInstantiatedOnlyOncePerProcess;
-        bool providesDirectionalDerivative;
+        bool canGetAndSetFMUstate = false;
+        bool canSerializeFMUstate = false;
+        bool needsExecutionTool = false;
+        bool canNotUseMemoryManagementFunctions = false;
+        bool canBeInstantiatedOnlyOncePerProcess = false;
+        bool providesDirectionalDerivative = false;
 
         SourceFiles sourceFiles;
         std::string modelIdentifier;
 
         FmuAttributes() = default;
 
-        FmuAttributes(const std::string &modelIdentifier, bool canGetAndSetFMUstate,
+        FmuAttributes(std::string modelIdentifier, bool canGetAndSetFMUstate,
                       bool canSerializeFMUstate, bool needsExecutionTool,
                       bool canNotUseMemoryManagementFunctions, bool canBeInstantiatedOnlyOncePerProcess,
-                      bool providesDirectionalDerivative, const SourceFiles &sourceFiles)
-                : modelIdentifier(modelIdentifier),
+                      bool providesDirectionalDerivative, SourceFiles sourceFiles)
+                : modelIdentifier(std::move(modelIdentifier)),
                   canGetAndSetFMUstate(canGetAndSetFMUstate),
                   canSerializeFMUstate(canSerializeFMUstate),
                   needsExecutionTool(needsExecutionTool),
                   canNotUseMemoryManagementFunctions(canNotUseMemoryManagementFunctions),
                   canBeInstantiatedOnlyOncePerProcess(canBeInstantiatedOnlyOncePerProcess),
                   providesDirectionalDerivative(providesDirectionalDerivative),
-                  sourceFiles(sourceFiles) {};
+                  sourceFiles(std::move(sourceFiles)) {};
 
     };
 
     struct CoSimulationAttributes : FmuAttributes {
 
-        bool canInterpolateInputs;
-        bool canRunAsynchronuously;
-        bool canHandleVariableCommunicationStepSize;
+        bool canInterpolateInputs = false;
+        bool canRunAsynchronuously = false;
+        bool canHandleVariableCommunicationStepSize = false;
 
-        unsigned int maxOutputDerivativeOrder;
+        unsigned int maxOutputDerivativeOrder{};
 
-        CoSimulationAttributes() {}
+        CoSimulationAttributes() = default;
 
         explicit CoSimulationAttributes(const FmuAttributes &attributes) : FmuAttributes(attributes) {}
 
@@ -85,9 +89,9 @@ namespace fmi4cpp::fmi2 {
 
     struct ModelExchangeAttributes : FmuAttributes {
 
-        bool completedIntegratorStepNotNeeded;
+        bool completedIntegratorStepNotNeeded = false;
 
-        ModelExchangeAttributes() {}
+        ModelExchangeAttributes() = default;
 
         explicit ModelExchangeAttributes(const FmuAttributes &attributes) : FmuAttributes(attributes) {}
 

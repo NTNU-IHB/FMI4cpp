@@ -86,7 +86,7 @@ const string fmi2Fmu::getModelDescriptionXml() const {
     return string((istreambuf_iterator<char>(stream)), istreambuf_iterator<char>());
 }
 
-shared_ptr<ModelDescription> fmi2Fmu::getModelDescription() const {
+shared_ptr<const ModelDescription> fmi2Fmu::getModelDescription() const {
     return modelDescription_;
 }
 
@@ -99,12 +99,12 @@ bool fmi2Fmu::supportsCoSimulation() const {
 }
 
 unique_ptr<fmi2CoSimulationFmu> fmi2Fmu::asCoSimulationFmu() const {
-    shared_ptr<CoSimulationModelDescription> cs = std::move(modelDescription_->asCoSimulationModelDescription());
+    shared_ptr<const CoSimulationModelDescription> cs = std::move(modelDescription_->asCoSimulationModelDescription());
     return make_unique<fmi2CoSimulationFmu>(resource_, cs);
 }
 
 unique_ptr<fmi2ModelExchangeFmu> fmi2Fmu::asModelExchangeFmu() const {
-    shared_ptr<ModelExchangeModelDescription> me = std::move(modelDescription_->asModelExchangeModelDescription());
+    shared_ptr<const ModelExchangeModelDescription> me = std::move(modelDescription_->asModelExchangeModelDescription());
     return make_unique<fmi2ModelExchangeFmu>(resource_, me);
 }
 

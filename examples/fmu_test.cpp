@@ -44,7 +44,7 @@ int main() {
     auto cs_fmu = fmu.asCoSimulationFmu();
     auto md = cs_fmu->getModelDescription();
 
-    auto var = md->modelVariables()->getByValueReference(47).asReal();
+    auto var = md->modelVariables->getByValueReference(47).asReal();
     logger::info("Name={}, start={}", var.name(), var.start().value_or(0));
 
     auto slave1 = cs_fmu->newInstance();

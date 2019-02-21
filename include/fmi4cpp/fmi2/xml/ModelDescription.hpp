@@ -36,105 +36,57 @@
 
 namespace fmi4cpp::fmi2 {
 
-    class ModelDescriptionBase {
+    struct ModelDescriptionBase {
 
-    private:
-        std::string guid_;
-        std::string fmiVersion_;
-        std::string modelName_;
-        std::optional<std::string> description_;
-        std::optional<std::string> version_;
-        std::optional<std::string> author_;
-        std::optional<std::string> license_;
-        std::optional<std::string> copyright_;
-        std::optional<std::string> generationTool_;
-        std::optional<std::string> generationDateAndTime_;
-        std::optional<std::string> variableNamingConvention_;
+        std::string guid;
+        std::string modelName;
+        std::string fmiVersion;
 
-        size_t numberOfEventIndicators_;
+        std::optional<std::string> author;
+        std::optional<std::string> version;
+        std::optional<std::string> license;
+        std::optional<std::string> copyright;
+        std::optional<std::string> description;
+        std::optional<std::string> generationTool;
+        std::optional<std::string> generationDateAndTime;
+        std::optional<std::string> variableNamingConvention;
 
-        std::shared_ptr<ModelVariables> modelVariables_;
-        std::shared_ptr<ModelStructure> modelStructure_;
+        std::shared_ptr<const ModelVariables> modelVariables;
+        std::shared_ptr<const ModelStructure> modelStructure;
 
-        std::optional<DefaultExperiment> defaultExperiment_;
+        std::optional<DefaultExperiment> defaultExperiment;
 
-    public:
-        ModelDescriptionBase(const std::string &guid,
-                             const std::string &fmiVersion,
-                             const std::string &modelName,
-                             const std::optional<std::string> &description,
-                             const std::optional<std::string> &version,
-                             const std::optional<std::string> &author,
-                             const std::optional<std::string> &license,
-                             const std::optional<std::string> &copyright,
-                             const std::optional<std::string> &generationTool,
-                             const std::optional<std::string> &generationDateAndTime,
-                             const std::optional<std::string> &variableNamingConvention,
-                             const size_t numberOfEventIndicators,
-                             const std::shared_ptr<ModelVariables> &modelVariables,
-                             const std::shared_ptr<ModelStructure> &modelStructure,
-                             const std::optional<DefaultExperiment> &defaultExperiment);
-
-        std::string guid() const;
-
-        std::string fmiVersion() const;
-
-        std::string modelName() const;
-
-        std::optional<std::string> description() const;
-
-        std::optional<std::string> version() const;
-
-        std::optional<std::string> author() const;
-
-        std::optional<std::string> license() const;
-
-        std::optional<std::string> copyright() const;
-
-        std::optional<std::string> generationTool() const;
-
-        std::optional<std::string> generationDateAndTime() const;
-
-        std::optional<std::string> variableNamingConvention() const;
-
-        size_t numberOfEventIndicators() const;
-
+        size_t numberOfEventIndicators;
         size_t numberOfContinuousStates() const;
 
-        const std::shared_ptr<ModelVariables> &modelVariables() const;
-
-        const std::shared_ptr<ModelStructure> &modelStructure() const;
-
-        const std::optional<DefaultExperiment> defaultExperiment() const;
-
         unsigned int getValueReference(const std::string &name) const;
-        
+
         const ScalarVariable &getVariableByName(const std::string &name) const;
 
     };
 
-    class CoSimulationModelDescription;
-    class ModelExchangeModelDescription;
+    struct CoSimulationModelDescription;
+    struct ModelExchangeModelDescription;
 
     class ModelDescription : public ModelDescriptionBase {
 
     protected:
-        std::optional<CoSimulationAttributes> coSimulation_;
-        std::optional<ModelExchangeAttributes> modelExchange_;
+        std::optional<const CoSimulationAttributes> coSimulation_;
+        std::optional<const ModelExchangeAttributes> modelExchange_;
 
     public:
 
         ModelDescription(const ModelDescriptionBase &base,
-                         const std::optional<CoSimulationAttributes> &coSimulation,
-                         const std::optional<ModelExchangeAttributes> &modelExchange);
+                         const std::optional<const CoSimulationAttributes> &coSimulation,
+                         const std::optional<const ModelExchangeAttributes> &modelExchange);
 
         bool supportsCoSimulation() const;
 
         bool supportsModelExchange() const;
 
-        std::unique_ptr<CoSimulationModelDescription> asCoSimulationModelDescription() const;
+        std::unique_ptr<const CoSimulationModelDescription> asCoSimulationModelDescription() const;
 
-        std::unique_ptr<ModelExchangeModelDescription> asModelExchangeModelDescription() const;
+        std::unique_ptr<const ModelExchangeModelDescription> asModelExchangeModelDescription() const;
 
     };
 

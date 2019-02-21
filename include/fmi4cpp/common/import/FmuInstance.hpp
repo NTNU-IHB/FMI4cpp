@@ -50,7 +50,7 @@ namespace fmi4cpp {
 
         virtual fmi4cpp::Status getLastStatus() const = 0;
 
-        virtual std::shared_ptr<ModelDescription> getModelDescription() const = 0;
+        virtual std::shared_ptr<const ModelDescription> getModelDescription() const = 0;
 
         virtual bool setupExperiment(double startTime = 0.0, double stopTime = 0.0, double tolerance = 0.0) = 0;
 

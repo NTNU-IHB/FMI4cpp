@@ -37,7 +37,7 @@ namespace {
 
     const std::string DEFAULT_VARIABLE_NAMING_CONVENTION = "flat";
 
-    DefaultExperiment parseDefaultExperiment(const ptree &node) {
+    const DefaultExperiment parseDefaultExperiment(const ptree &node) {
         return DefaultExperiment(
                 convert(node.get_optional<double>("<xmlattr>.startTime")),
                 convert(node.get_optional<double>("<xmlattr>.stopTime")),
@@ -46,22 +46,22 @@ namespace {
     }
 
 
-    SourceFile parseFile(const ptree &node) {
-        std::string name = node.get<std::string>("<xmlattr>.name");
+    const SourceFile parseFile(const ptree &node) {
+        auto name = node.get<std::string>("<xmlattr>.name");
         return SourceFile(name);
     }
 
     void parseSourceFiles(const ptree &node, SourceFiles &files) {
         for (const ptree::value_type &v : node) {
             if (v.first == "File") {
-                SourceFile file = parseFile(v.second);
+                auto file = parseFile(v.second);
                 files.push_back(file);
             }
         }
     }
 
     void parseUnknownDependencies(const std::string &str, std::vector<unsigned int> &store) {
-        int i;
+        unsigned int i;
         std::stringstream ss(str);
         while (ss >> i) {
             store.push_back(i);
@@ -71,7 +71,7 @@ namespace {
         }
     }
 
-    fmi4cpp::fmi2::Unknown parseUnknown(const ptree &node) {
+    const Unknown parseUnknown(const ptree &node) {
         auto index = node.get<unsigned int>("<xmlattr>.index");
         auto dependenciesKind = convert(node.get_optional<std::string>("<xmlattr>.dependenciesKind"));
 
@@ -80,25 +80,25 @@ namespace {
         if (opt_dependencies) {
             parseUnknownDependencies(*opt_dependencies, dependencies);
         }
-        return fmi4cpp::fmi2::Unknown(index, dependenciesKind, dependencies);
+        return Unknown(index, dependenciesKind, dependencies);
     }
 
-    void loadUnknowns(const ptree &node, std::vector<fmi4cpp::fmi2::Unknown> &vector) {
+    void loadUnknowns(const ptree &node, std::vector<Unknown> &vector) {
 
         for (const ptree::value_type &v : node) {
             if (v.first == "Unknown") {
-                fmi4cpp::fmi2::Unknown unknown = parseUnknown(v.second);
+                auto unknown = parseUnknown(v.second);
                 vector.push_back(unknown);
             }
         }
 
     }
 
-    std::unique_ptr<ModelStructure> parseModelStructure(const ptree &node) {
+    std::unique_ptr<const ModelStructure> parseModelStructure(const ptree &node) {
 
-        std::vector<fmi4cpp::fmi2::Unknown> outputs;
-        std::vector<fmi4cpp::fmi2::Unknown> derivatives;
-        std::vector<fmi4cpp::fmi2::Unknown> initialUnknowns;
+        std::vector<Unknown> outputs;
+        std::vector<Unknown> derivatives;
+        std::vector<Unknown> initialUnknowns;
 
         for (const ptree::value_type &v : node) {
             if (v.first == "Outputs") {
@@ -110,7 +110,7 @@ namespace {
             }
         }
 
-        return std::make_unique<ModelStructure>(outputs, derivatives, initialUnknowns);
+        return std::make_unique<const ModelStructure>(outputs, derivatives, initialUnknowns);
 
     }
 
@@ -138,7 +138,7 @@ namespace {
 
     }
 
-    CoSimulationAttributes parseCoSimulationAttributes(const ptree &node) {
+    const CoSimulationAttributes parseCoSimulationAttributes(const ptree &node) {
 
         auto commonAttributes = parseFmuAttributes(node);
         auto maxOutputDerivativeOrder = node.get<unsigned int>("<xmlattr>.maxOutputDerivativeOrder", 0);
@@ -152,7 +152,7 @@ namespace {
 
     }
 
-    ModelExchangeAttributes parseModelExchangeAttributes(const ptree &node) {
+    const ModelExchangeAttributes parseModelExchangeAttributes(const ptree &node) {
         auto commonAttributes = parseFmuAttributes(node);
         auto completedIntegratorStepNotNeeded = node.get<bool>("<xmlattr>.completedIntegratorStepNotNeeded", false);
         return ModelExchangeAttributes(commonAttributes, completedIntegratorStepNotNeeded);
@@ -203,19 +203,18 @@ namespace {
     }
 
 
-    ScalarVariable parseScalarVariable(const ptree &node) {
+    const ScalarVariable parseScalarVariable(const ptree &node) {
 
-        auto name = node.get<std::string>("<xmlattr>.name");
-        auto description = node.get<std::string>("<xmlattr>.description", "");
-        auto valueReference = node.get<fmi2ValueReference>("<xmlattr>.valueReference");
-        auto canHandleMultipleSetPerTimelnstant = node.get<bool>("<xmlattr>.canHandleMultipleSetPerTimelnstant", false);
+        ScalarVariableBase base;
 
-        auto causality = parseCausality(node.get<std::string>("<xmlattr>.causality", ""));
-        auto variability = parseVariability(node.get<std::string>("<xmlattr>.variability", ""));
-        auto initial = parseInitial(node.get<std::string>("<xmlattr>.initial", ""));
+        base.name = node.get<std::string>("<xmlattr>.name");
+        base.description = node.get<std::string>("<xmlattr>.description", "");
+        base.valueReference = node.get<fmi2ValueReference>("<xmlattr>.valueReference");
+        base.canHandleMultipleSetPerTimelnstant = node.get<bool>("<xmlattr>.canHandleMultipleSetPerTimelnstant", false);
 
-        ScalarVariableBase base(name, description, valueReference, canHandleMultipleSetPerTimelnstant, causality,
-                                variability, initial);
+        base.causality = parseCausality(node.get<std::string>("<xmlattr>.causality", ""));
+        base.variability = parseVariability(node.get<std::string>("<xmlattr>.variability", ""));
+        base.initial = parseInitial(node.get<std::string>("<xmlattr>.initial", ""));
 
         for (const ptree::value_type &v : node) {
             if (v.first == INTEGER_TYPE) {
@@ -235,7 +234,7 @@ namespace {
 
     }
 
-    std::unique_ptr<ModelVariables> parseModelVariables(const ptree &node) {
+    std::unique_ptr<const ModelVariables> parseModelVariables(const ptree &node) {
         std::vector<ScalarVariable> variables;
         for (const ptree::value_type &v : node) {
             if (v.first == "ScalarVariable") {
@@ -243,34 +242,33 @@ namespace {
                 variables.push_back(var);
             }
         }
-        return std::make_unique<ModelVariables>(variables);
+        return std::make_unique<const ModelVariables>(variables);
     }
 
 }
 
-std::unique_ptr<ModelDescription> fmi4cpp::fmi2::parseModelDescription(const std::string &fileName) {
+std::unique_ptr<const ModelDescription> fmi4cpp::fmi2::parseModelDescription(const std::string &fileName) {
 
     ptree tree;
     read_xml(fileName, tree);
     ptree root = tree.get_child("fmiModelDescription");
 
-    auto guid = root.get<std::string>("<xmlattr>.guid");
-    auto fmiVersion = root.get<std::string>("<xmlattr>.fmiVersion");
-    auto modelName = root.get<std::string>("<xmlattr>.modelName");
-    auto description = root.get<std::string>("<xmlattr>.description", "");
-    auto author = root.get<std::string>("<xmlattr>.author", "");
-    auto version = root.get<std::string>("<xmlattr>.version", "");
-    auto license = root.get<std::string>("<xmlattr>.license", "");
-    auto copyright = root.get<std::string>("<xmlattr>.copyright", "");
-    auto generationTool = root.get<std::string>("<xmlattr>.generationTool", "");
-    auto generationDateAndTime = root.get<std::string>("<xmlattr>.generationDateAndTime", "");
-    auto numberOfEventIndicators = root.get<size_t>("<xmlattr>.numberOfEventIndicators", 0);
-    auto variableNamingConvention = root.get<std::string>("<xmlattr>.variableNamingConvention",
+    ModelDescriptionBase base;
+
+    base.guid = root.get<std::string>("<xmlattr>.guid");
+    base.fmiVersion = root.get<std::string>("<xmlattr>.fmiVersion");
+    base.modelName = root.get<std::string>("<xmlattr>.modelName");
+    base.description = root.get<std::string>("<xmlattr>.description", "");
+    base.author = root.get<std::string>("<xmlattr>.author", "");
+    base.version = root.get<std::string>("<xmlattr>.version", "");
+    base.license = root.get<std::string>("<xmlattr>.license", "");
+    base.copyright = root.get<std::string>("<xmlattr>.copyright", "");
+    base.generationTool = root.get<std::string>("<xmlattr>.generationTool", "");
+    base.generationDateAndTime = root.get<std::string>("<xmlattr>.generationDateAndTime", "");
+    base.numberOfEventIndicators = root.get<size_t>("<xmlattr>.numberOfEventIndicators", 0);
+    base.variableNamingConvention = root.get<std::string>("<xmlattr>.variableNamingConvention",
                                                           DEFAULT_VARIABLE_NAMING_CONVENTION);
 
-    std::shared_ptr<ModelVariables> modelVariables;
-    std::shared_ptr<ModelStructure> modelStructure;
-    std::optional<DefaultExperiment> defaultExperiment;
     std::optional<CoSimulationAttributes> coSimulation;
     std::optional<ModelExchangeAttributes> modelExchange;
 
@@ -281,32 +279,16 @@ std::unique_ptr<ModelDescription> fmi4cpp::fmi2::parseModelDescription(const std
         } else if (v.first == "ModelExchange") {
             modelExchange = parseModelExchangeAttributes(v.second);
         } else if (v.first == "DefaultExperiment") {
-            defaultExperiment = parseDefaultExperiment(v.second);
+            base.defaultExperiment = parseDefaultExperiment(v.second);
         } else if (v.first == "ModelVariables") {
-            modelVariables = std::move(parseModelVariables(v.second));
+            base.modelVariables = std::move(parseModelVariables(v.second));
         } else if (v.first == "ModelStructure") {
-            modelStructure = std::move(parseModelStructure(v.second));
+            base.modelStructure = std::move(parseModelStructure(v.second));
         }
 
     }
 
-    const ModelDescriptionBase base(guid,
-                                    fmiVersion,
-                                    modelName,
-                                    description,
-                                    version,
-                                    author,
-                                    license,
-                                    copyright,
-                                    generationTool,
-                                    generationDateAndTime,
-                                    variableNamingConvention,
-                                    numberOfEventIndicators,
-                                    modelVariables,
-                                    modelStructure,
-                                    defaultExperiment);
-
-    return std::make_unique<ModelDescription>(base, coSimulation, modelExchange);
+    return std::make_unique<const ModelDescription>(base, coSimulation, modelExchange);
 
 }
 
