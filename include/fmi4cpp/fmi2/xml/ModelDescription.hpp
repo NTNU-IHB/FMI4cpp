@@ -65,8 +65,8 @@ namespace fmi4cpp::fmi2 {
 
     };
 
-    struct CoSimulationModelDescription;
-    struct ModelExchangeModelDescription;
+    class CoSimulationModelDescription;
+    class ModelExchangeModelDescription;
 
     class ModelDescription : public ModelDescriptionBase {
 
