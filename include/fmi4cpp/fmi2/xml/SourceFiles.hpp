@@ -36,8 +36,6 @@ namespace fmi4cpp::fmi2 {
 
         std::string name;
 
-        explicit SourceFile(std::string name) : name(std::move(name)) {}
-
     };
 
     typedef std::vector<SourceFile> SourceFiles;

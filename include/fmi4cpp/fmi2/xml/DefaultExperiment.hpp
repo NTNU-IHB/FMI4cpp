@@ -38,16 +38,6 @@ namespace fmi4cpp::fmi2 {
         std::optional<double> stepSize;
         std::optional<double> tolerance;
 
-        DefaultExperiment() = default;
-
-        DefaultExperiment(std::optional<double> startTime,
-                          std::optional<double> stopTime,
-                          std::optional<double> stepSize,
-                          std::optional<double> tolerance)
-                : startTime(std::move(startTime)), stopTime(std::move(stopTime)), stepSize(std::move(stepSize)),
-                  tolerance(std::move(tolerance)) {}
-
-
     };
 
 }

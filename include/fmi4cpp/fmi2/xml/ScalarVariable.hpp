@@ -64,24 +64,6 @@ namespace fmi4cpp::fmi2 {
         fmi2ValueReference valueReference;
         bool canHandleMultipleSetPerTimelnstant;
 
-        ScalarVariableBase() = default;
-
-        ScalarVariableBase(std::string name,
-                           std::string description,
-                           fmi2ValueReference valueReference,
-                           bool canHandleMultipleSetPerTimelnstant,
-                           Causality causality,
-                           Variability variability,
-                           Initial initial)
-                : name(std::move(name)),
-                  description(std::move(description)),
-                  valueReference(valueReference),
-                  canHandleMultipleSetPerTimelnstant(canHandleMultipleSetPerTimelnstant),
-                  causality(causality),
-                  variability(variability),
-                  initial(initial) {}
-
-
     };
 
     class ScalarVariable : public ScalarVariableBase {

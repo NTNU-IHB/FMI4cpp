@@ -38,17 +38,18 @@ namespace {
     const std::string DEFAULT_VARIABLE_NAMING_CONVENTION = "flat";
 
     const DefaultExperiment parseDefaultExperiment(const ptree &node) {
-        return DefaultExperiment(
-                convert(node.get_optional<double>("<xmlattr>.startTime")),
-                convert(node.get_optional<double>("<xmlattr>.stopTime")),
-                convert(node.get_optional<double>("<xmlattr>.stepSize")),
-                convert(node.get_optional<double>("<xmlattr>.tolerance")));
+        DefaultExperiment ex;
+        ex.startTime = convert(node.get_optional<double>("<xmlattr>.startTime"));
+        ex.stopTime = convert(node.get_optional<double>("<xmlattr>.stopTime"));
+        ex.stepSize = convert(node.get_optional<double>("<xmlattr>.stepSize"));
+        ex.tolerance = convert(node.get_optional<double>("<xmlattr>.tolerance"));
+        return ex;
     }
 
-
     const SourceFile parseFile(const ptree &node) {
-        auto name = node.get<std::string>("<xmlattr>.name");
-        return SourceFile(name);
+        SourceFile file;
+        file.name = node.get<std::string>("<xmlattr>.name");
+        return file;
     }
 
     void parseSourceFiles(const ptree &node, SourceFiles &files) {
@@ -72,26 +73,27 @@ namespace {
     }
 
     const Unknown parseUnknown(const ptree &node) {
-        auto index = node.get<unsigned int>("<xmlattr>.index");
-        auto dependenciesKind = convert(node.get_optional<std::string>("<xmlattr>.dependenciesKind"));
 
-        std::vector<unsigned int> dependencies;
+        Unknown unknown;
+        unknown.index = node.get<unsigned int>("<xmlattr>.index");
+        unknown.dependenciesKind = convert(node.get_optional<std::string>("<xmlattr>.dependenciesKind"));
+
         auto opt_dependencies = node.get_optional<std::string>("<xmlattr>.dependencies");
         if (opt_dependencies) {
+            std::vector<unsigned int> dependencies;
             parseUnknownDependencies(*opt_dependencies, dependencies);
+            unknown.dependencies = dependencies;
         }
-        return Unknown(index, dependenciesKind, dependencies);
+        return unknown;
     }
 
     void loadUnknowns(const ptree &node, std::vector<Unknown> &vector) {
-
         for (const ptree::value_type &v : node) {
             if (v.first == "Unknown") {
                 auto unknown = parseUnknown(v.second);
                 vector.push_back(unknown);
             }
         }
-
     }
 
     std::unique_ptr<const ModelStructure> parseModelStructure(const ptree &node) {

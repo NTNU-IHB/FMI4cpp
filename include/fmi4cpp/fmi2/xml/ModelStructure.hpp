@@ -1,5 +1,9 @@
 #include <utility>
 
+#include <utility>
+
+#include <utility>
+
 /*
  * The MIT License
  *
@@ -39,30 +43,18 @@ namespace fmi4cpp::fmi2 {
         std::optional<std::string> dependenciesKind;
         std::optional<std::vector<unsigned int >> dependencies;
 
-        Unknown() = default;
-
-        Unknown(const unsigned int index,
-                std::optional<std::string> dependenciesKind,
-                std::optional<std::vector<unsigned int>> dependencies)
-                : index(index), dependenciesKind(std::move(dependenciesKind)), dependencies(std::move(dependencies)) {}
-
-
     };
 
     struct ModelStructure {
 
-        std::vector<Unknown> outputs;
-        std::vector<Unknown> derivatives;
-        std::vector<Unknown> initialUnknowns;
+        const std::vector<Unknown> outputs;
+        const std::vector<Unknown> derivatives;
+        const std::vector<Unknown> initialUnknowns;
 
-        ModelStructure() = default;
-
-        ModelStructure(std::vector<Unknown> outputs,
-                       std::vector<Unknown> derivatives,
-                       std::vector<Unknown> initialUnknowns)
-                : outputs(std::move(outputs)), derivatives(std::move(derivatives)), initialUnknowns(
-                std::move(initialUnknowns)) {}
-
+        ModelStructure(std::vector<Unknown> outputs, std::vector<Unknown> derivatives,
+                       std::vector<Unknown> initialUnknowns) : outputs(std::move(outputs)),
+                                                               derivatives(std::move(derivatives)),
+                                                               initialUnknowns(std::move(initialUnknowns)) {}
 
     };
 
