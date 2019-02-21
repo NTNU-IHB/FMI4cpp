@@ -37,30 +37,15 @@ namespace fmi4cpp::fmi2 {
 
     struct FmuAttributes {
 
+        SourceFiles sourceFiles;
+        std::string modelIdentifier;
+
         bool canGetAndSetFMUstate = false;
         bool canSerializeFMUstate = false;
         bool needsExecutionTool = false;
         bool canNotUseMemoryManagementFunctions = false;
         bool canBeInstantiatedOnlyOncePerProcess = false;
         bool providesDirectionalDerivative = false;
-
-        SourceFiles sourceFiles;
-        std::string modelIdentifier;
-
-        FmuAttributes() = default;
-
-        FmuAttributes(std::string modelIdentifier, bool canGetAndSetFMUstate,
-                      bool canSerializeFMUstate, bool needsExecutionTool,
-                      bool canNotUseMemoryManagementFunctions, bool canBeInstantiatedOnlyOncePerProcess,
-                      bool providesDirectionalDerivative, SourceFiles sourceFiles)
-                : modelIdentifier(std::move(modelIdentifier)),
-                  canGetAndSetFMUstate(canGetAndSetFMUstate),
-                  canSerializeFMUstate(canSerializeFMUstate),
-                  needsExecutionTool(needsExecutionTool),
-                  canNotUseMemoryManagementFunctions(canNotUseMemoryManagementFunctions),
-                  canBeInstantiatedOnlyOncePerProcess(canBeInstantiatedOnlyOncePerProcess),
-                  providesDirectionalDerivative(providesDirectionalDerivative),
-                  sourceFiles(std::move(sourceFiles)) {};
 
     };
 
@@ -72,18 +57,8 @@ namespace fmi4cpp::fmi2 {
 
         unsigned int maxOutputDerivativeOrder{};
 
-        CoSimulationAttributes() = default;
-
         explicit CoSimulationAttributes(const FmuAttributes &attributes) : FmuAttributes(attributes) {}
 
-        CoSimulationAttributes(const FmuAttributes &attributes, bool canInterpolateInputs,
-                               bool canRunAsynchronuously, bool canHandleVariableCommunicationStepSize,
-                               unsigned int maxOutputDerivativeOrder)
-                : FmuAttributes(attributes),
-                  canInterpolateInputs(canInterpolateInputs),
-                  canRunAsynchronuously(canRunAsynchronuously),
-                  canHandleVariableCommunicationStepSize(canHandleVariableCommunicationStepSize),
-                  maxOutputDerivativeOrder(maxOutputDerivativeOrder) {};
 
     };
 
@@ -91,12 +66,7 @@ namespace fmi4cpp::fmi2 {
 
         bool completedIntegratorStepNotNeeded = false;
 
-        ModelExchangeAttributes() = default;
-
         explicit ModelExchangeAttributes(const FmuAttributes &attributes) : FmuAttributes(attributes) {}
-
-        ModelExchangeAttributes(const FmuAttributes &attributes, bool completedIntegratorStepNotNeeded)
-                : FmuAttributes(attributes), completedIntegratorStepNotNeeded(completedIntegratorStepNotNeeded) {};
 
     };
 

@@ -73,20 +73,10 @@ size_t ModelVariables::size() const {
     return variables_[index];
 }
 
-std::vector<ScalarVariable>::iterator ModelVariables::begin() {
-    return variables_.begin();
-}
-std::vector<ScalarVariable>::iterator ModelVariables::end() {
-    return variables_.end();
-}
 
 std::vector<ScalarVariable>::const_iterator ModelVariables::begin() const{
     return variables_.begin();
 }
 std::vector<ScalarVariable>::const_iterator ModelVariables::end() const {
     return variables_.end();
-}
-
-const std::vector<ScalarVariable> ModelVariables::variables() const {
-    return variables_;
 }

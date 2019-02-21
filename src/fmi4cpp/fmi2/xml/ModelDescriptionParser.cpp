@@ -116,46 +116,46 @@ namespace {
 
     FmuAttributes parseFmuAttributes(const ptree &node) {
 
-        auto modelIdentifier = node.get<std::string>("<xmlattr>.modelIdentifier");
+        FmuAttributes attributes;
 
-        auto needsExecutionTool = node.get<bool>("xmlattr>.needsExecutionTool", false);
-        auto canGetAndSetFMUstate = node.get<bool>("xmlattr>.canGetAndSetFMUstate", false);
-        auto canSerializeFMUstate = node.get<bool>("xmlattr>.canSerializeFMUstate", false);
-        auto providesDirectionalDerivative = node.get<bool>("xmlattr>.providesDirectionalDerivative", false);
-        auto canNotUseMemoryManagementFunctions = node.get<bool>("xmlattr>.canNotUseMemoryManagementFunctions", false);
-        auto canBeInstantiatedOnlyOncePerProcess = node.get<bool>("xmlattr>.canBeInstantiatedOnlyOncePerProcess",
-                                                                  false);
-        SourceFiles sourceFiles;
+        attributes.modelIdentifier = node.get<std::string>("<xmlattr>.modelIdentifier");
+        attributes.needsExecutionTool = node.get<bool>("xmlattr>.needsExecutionTool", false);
+        attributes.canGetAndSetFMUstate = node.get<bool>("xmlattr>.canGetAndSetFMUstate", false);
+        attributes.canSerializeFMUstate = node.get<bool>("xmlattr>.canSerializeFMUstate", false);
+        attributes.providesDirectionalDerivative = node.get<bool>("xmlattr>.providesDirectionalDerivative", false);
+        attributes.canNotUseMemoryManagementFunctions = node.get<bool>("xmlattr>.canNotUseMemoryManagementFunctions",
+                                                                       false);
+        attributes.canBeInstantiatedOnlyOncePerProcess = node.get<bool>("xmlattr>.canBeInstantiatedOnlyOncePerProcess",
+                                                                        false);
+
         for (const ptree::value_type &v : node) {
             if (v.first == "SourceFiles") {
-                parseSourceFiles(v.second, sourceFiles);
+                parseSourceFiles(v.second, attributes.sourceFiles);
             }
         }
 
-        return FmuAttributes(modelIdentifier, canGetAndSetFMUstate, canSerializeFMUstate, needsExecutionTool,
-                             canNotUseMemoryManagementFunctions, canBeInstantiatedOnlyOncePerProcess,
-                             providesDirectionalDerivative, sourceFiles);
+        return attributes;
 
     }
 
     const CoSimulationAttributes parseCoSimulationAttributes(const ptree &node) {
 
-        auto commonAttributes = parseFmuAttributes(node);
-        auto maxOutputDerivativeOrder = node.get<unsigned int>("<xmlattr>.maxOutputDerivativeOrder", 0);
-        auto canInterpolateInputs = node.get<bool>("<xmlattr>.canInterpolateInputs", false);
-        auto canRunAsynchronuously = node.get<bool>("<xmlattr>.canRunAsynchronuously", false);
-        auto canHandleVariableCommunicationStepSize = node.get<bool>("<xmlattr>.canHandleVariableCommunicationStepSize",
-                                                                     false);
-
-        return CoSimulationAttributes(commonAttributes, canInterpolateInputs, canRunAsynchronuously,
-                                      canHandleVariableCommunicationStepSize, maxOutputDerivativeOrder);
+        CoSimulationAttributes attributes(parseFmuAttributes(node));
+        attributes.maxOutputDerivativeOrder = node.get<unsigned int>("<xmlattr>.maxOutputDerivativeOrder", 0);
+        attributes.canInterpolateInputs = node.get<bool>("<xmlattr>.canInterpolateInputs", false);
+        attributes.canRunAsynchronuously = node.get<bool>("<xmlattr>.canRunAsynchronuously", false);
+        attributes.canHandleVariableCommunicationStepSize = node.get<bool>(
+                "<xmlattr>.canHandleVariableCommunicationStepSize",
+                false);
+        return attributes;
 
     }
 
     const ModelExchangeAttributes parseModelExchangeAttributes(const ptree &node) {
-        auto commonAttributes = parseFmuAttributes(node);
-        auto completedIntegratorStepNotNeeded = node.get<bool>("<xmlattr>.completedIntegratorStepNotNeeded", false);
-        return ModelExchangeAttributes(commonAttributes, completedIntegratorStepNotNeeded);
+        ModelExchangeAttributes attributes(parseFmuAttributes(node));
+        attributes.completedIntegratorStepNotNeeded = node.get<bool>("<xmlattr>.completedIntegratorStepNotNeeded",
+                                                                     false);
+        return attributes;
     }
 
     template<typename T>

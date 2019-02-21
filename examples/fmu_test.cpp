@@ -61,8 +61,8 @@ int main() {
     slave2->exitInitializationMode();
 
     vector<fmi2Real> ref(2);
-    vector<fmi2ValueReference> vr = {md->getVariableByName("Temperature_Reference").valueReference(),
-                                     md->getVariableByName("Temperature_Room").valueReference()};
+    vector<fmi2ValueReference> vr = {md->getVariableByName("Temperature_Reference").valueReference,
+                                     md->getVariableByName("Temperature_Room").valueReference};
 
     double t = 0;
     while ((t = slave1->getSimulationTime()) <= stop) {
