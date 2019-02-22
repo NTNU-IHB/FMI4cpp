@@ -40,14 +40,14 @@ namespace fmi4cpp::fmi2 {
 
         std::shared_ptr<FmuResource> resource_;
         std::shared_ptr<fmi2CoSimulationLibrary> lib_;
-        std::shared_ptr<CoSimulationModelDescription> modelDescription_;
+        std::shared_ptr<const CoSimulationModelDescription> modelDescription_;
 
     public:
 
         fmi2CoSimulationFmu(const std::shared_ptr<FmuResource> &resource,
-                            const std::shared_ptr<CoSimulationModelDescription> &md);
+                            const std::shared_ptr<const CoSimulationModelDescription> &md);
 
-        std::shared_ptr<CoSimulationModelDescription> getModelDescription() const override;
+        std::shared_ptr<const CoSimulationModelDescription> getModelDescription() const override;
 
         std::unique_ptr<fmi2CoSimulationSlave> newInstance(bool visible = false, bool loggingOn = false);
 

@@ -75,7 +75,7 @@ Initial fmi4cpp::fmi2::parseInitial(const std::string &str) {
 
 }
 
-const std::string fmi4cpp::fmi2::to_string(Causality causality) {
+std::string fmi4cpp::fmi2::to_string(Causality causality) {
 
     switch (causality) {
         case Causality::calculatedParameter:
@@ -97,7 +97,7 @@ const std::string fmi4cpp::fmi2::to_string(Causality causality) {
 
 }
 
-const std::string fmi4cpp::fmi2::to_string(Variability variability) {
+std::string fmi4cpp::fmi2::to_string(Variability variability) {
 
     switch (variability) {
         case Variability::constant:
@@ -117,7 +117,7 @@ const std::string fmi4cpp::fmi2::to_string(Variability variability) {
 
 }
 
-const std::string fmi4cpp::fmi2::to_string(Initial initial) {
+std::string fmi4cpp::fmi2::to_string(Initial initial) {
     switch (initial) {
         case Initial::exact:
             return "exact";

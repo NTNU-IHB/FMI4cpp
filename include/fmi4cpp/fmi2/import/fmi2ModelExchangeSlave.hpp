@@ -62,7 +62,7 @@ namespace fmi4cpp::fmi2 {
         solver::FmuWrapper sys_;
         std::shared_ptr<fmi2ModelExchangeInstance> instance_;
         std::unique_ptr<fmi4cpp::solver::ModelExchangeSolver> solver_;
-        std::shared_ptr<CoSimulationModelDescription> csModelDescription_;
+        std::shared_ptr<const CoSimulationModelDescription> csModelDescription_;
 
         std::vector<fmi2Real> x_;
         std::vector<fmi2Real> z_;
@@ -79,7 +79,7 @@ namespace fmi4cpp::fmi2 {
 
         fmi4cpp::Status getLastStatus() const override;
 
-        std::shared_ptr<CoSimulationModelDescription> getModelDescription() const override;
+        std::shared_ptr<const CoSimulationModelDescription> getModelDescription() const override;
 
         bool doStep(double stepSize) override;
 

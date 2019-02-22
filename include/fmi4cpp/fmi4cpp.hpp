@@ -27,7 +27,6 @@
 
 #include "fmi2/fmi2.hpp"
 
-
 #ifdef FMI4CPP_WITH_ODEINT
 #include "common/solver/OdeintModelExchangeSolver.hpp"
 #endif

@@ -43,9 +43,9 @@ int main() {
 
     auto fmu = fmi2Fmu(fmu_path).asCoSimulationFmu();
 
-    for (const auto &v : *fmu->getModelDescription()->modelVariables()) {
-        if (v.causality() == Causality::output) {
-            logger::info("Name={}", v.name());
+    for (const auto &v : *fmu->getModelDescription()->modelVariables) {
+        if (v.causality == Causality::output) {
+            logger::info("Name={}, description={}", v.name, v.description);
         }
     }
 

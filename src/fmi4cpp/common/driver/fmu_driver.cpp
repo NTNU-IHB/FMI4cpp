@@ -43,7 +43,7 @@ namespace {
         data += "\"Time\", ";
 
         for (unsigned long i = 0; i < variables.size(); i++) {
-            data += "\"" + variables[i].name() + "\"";
+            data += "\"" + variables[i].name + "\"";
             if (i != variables.size() - 1) {
                 data += CSV_SEPARATOR;
             }
@@ -59,19 +59,19 @@ namespace {
 
             if (var.isInteger()) {
                 int ref = 0;
-                slave.readInteger(var.valueReference(), ref);
+                slave.readInteger(var.valueReference, ref);
                 data += to_string(ref);
             } else if (var.isReal()) {
                 double ref = 0;
-                slave.readReal(var.valueReference(), ref);
+                slave.readReal(var.valueReference, ref);
                 data += to_string(ref);
             } else if (var.isString()) {
                 const char *ref;
-                slave.readString(var.valueReference(), ref);
+                slave.readString(var.valueReference, ref);
                 data += ref;
             } else if (var.isBoolean()) {
                 int ref = 0;
-                slave.readBoolean(var.valueReference(), ref);
+                slave.readBoolean(var.valueReference, ref);
                 data += to_string(ref);
             }
 
@@ -115,7 +115,7 @@ void fmu_driver::dumpOutput(const string &data, const string &outputFolder) {
 
 }
 
-void fmu_driver::simulate(std::unique_ptr<FmuSlave<CoSimulationModelDescription>> slave, driver_options options) {
+void fmu_driver::simulate(std::unique_ptr<FmuSlave<CoSimulationModelDescription>> slave, driver_options &options) {
 
     auto startTime = options.startTime;
     auto stopTime = options.stopTime;

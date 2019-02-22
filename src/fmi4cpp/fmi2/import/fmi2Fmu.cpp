@@ -42,24 +42,14 @@ using namespace fmi4cpp::fmi2;
 
 namespace fs = std::experimental::filesystem;
 
-#ifdef FMI4CPP_WITH_CURL
-namespace {
-    size_t write_data(void *ptr, size_t size, size_t nmemb, FILE *stream) {
-        size_t written = fwrite(ptr, size, nmemb, stream);
-        return written;
-    }
-}
-#endif
-
 fmi2Fmu::fmi2Fmu(const string &fmuPath): fmuName_(fs::path(fmuPath).stem().string()) {
 
     fmi4cpp::logger::debug("Loading FMU '{}'", fmuPath);
 
-    const string fmuName = fs::path(fmuPath).stem().string();
-    fs::path tmpPath(fs::temp_directory_path() /= fs::path("fmi4cpp_" + fmuName + "_" + generate_simple_id(8)));
+    fs::path tmpPath(fs::temp_directory_path() /= fs::path("fmi4cpp_" + fmuName_ + "_" + generate_simple_id(8)));
 
     if (!create_directories(tmpPath)) {
-        const string err = "Failed to create temporary directory '" + tmpPath.string() + "' !";
+        auto err = "Failed to create temporary directory '" + tmpPath.string() + "' !";
         fmi4cpp::logger::error(err);
         throw runtime_error(err);
     }
@@ -67,7 +57,7 @@ fmi2Fmu::fmi2Fmu(const string &fmuPath): fmuName_(fs::path(fmuPath).stem().strin
     fmi4cpp::logger::debug("Created temporary directory '{}'", tmpPath.string());
 
     if (!extractContents(fmuPath, tmpPath.string())) {
-        const string err = "Failed to extract FMU '" + fmuPath + "'!";
+        auto err = "Failed to extract FMU '" + fmuPath + "'!";
         fmi4cpp::logger::error(err);
         throw runtime_error(err);
     }
@@ -76,17 +66,16 @@ fmi2Fmu::fmi2Fmu(const string &fmuPath): fmuName_(fs::path(fmuPath).stem().strin
     modelDescription_ = std::move(parseModelDescription(resource_->getModelDescriptionPath()));
 
 }
-
-const std::string fmi2Fmu::getFmuName() const {
+ const std::string fmi2Fmu::getFmuName() const {
     return fmuName_;
 }
 
-const string fmi2Fmu::getModelDescriptionXml() const {
+const std:: string fmi2Fmu::getModelDescriptionXml() const {
     ifstream stream(resource_->getModelDescriptionPath());
     return string((istreambuf_iterator<char>(stream)), istreambuf_iterator<char>());
 }
 
-shared_ptr<ModelDescription> fmi2Fmu::getModelDescription() const {
+shared_ptr<const ModelDescription> fmi2Fmu::getModelDescription() const {
     return modelDescription_;
 }
 
@@ -99,16 +88,24 @@ bool fmi2Fmu::supportsCoSimulation() const {
 }
 
 unique_ptr<fmi2CoSimulationFmu> fmi2Fmu::asCoSimulationFmu() const {
-    shared_ptr<CoSimulationModelDescription> cs = std::move(modelDescription_->asCoSimulationModelDescription());
+    shared_ptr<const CoSimulationModelDescription> cs = std::move(modelDescription_->asCoSimulationModelDescription());
     return make_unique<fmi2CoSimulationFmu>(resource_, cs);
 }
 
 unique_ptr<fmi2ModelExchangeFmu> fmi2Fmu::asModelExchangeFmu() const {
-    shared_ptr<ModelExchangeModelDescription> me = std::move(modelDescription_->asModelExchangeModelDescription());
+    shared_ptr<const ModelExchangeModelDescription> me = std::move(modelDescription_->asModelExchangeModelDescription());
     return make_unique<fmi2ModelExchangeFmu>(resource_, me);
 }
 
 #ifdef FMI4CPP_WITH_CURL
+
+namespace {
+    size_t write_data(void *ptr, size_t size, size_t nmemb, FILE *stream) {
+        size_t written = fwrite(ptr, size, nmemb, stream);
+        return written;
+    }
+}
+
 std::unique_ptr<fmi2Fmu> fmi2Fmu::fromUrl(const std::string &fmuPath) {
 
     fmi4cpp::logger::debug("Loading FMU from URL: {}", fmuPath);
@@ -123,7 +120,7 @@ std::unique_ptr<fmi2Fmu> fmi2Fmu::fromUrl(const std::string &fmuPath) {
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);
         CURLcode res = curl_easy_perform(curl);
         if (res != CURLE_OK) {
-            std::string err = "Failed to download FMU from URL:" + fmuPath;
+            auto err = "Failed to download FMU from URL:" + fmuPath;
             fmi4cpp::logger::error(err);
             throw runtime_error(err);
         }

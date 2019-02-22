@@ -30,7 +30,7 @@ using namespace fmi4cpp;
 using namespace fmi4cpp::fmi2;
 
 fmi2ModelExchangeLibrary::fmi2ModelExchangeLibrary(const std::string &modelIdentifier,
-                                           const std::shared_ptr<FmuResource> &resource)
+                                                   const std::shared_ptr<FmuResource> &resource)
         : fmi2Library(modelIdentifier, resource) {
 
     fmi2EnterEventMode_ = loadFunction<fmi2EnterEventModeTYPE *>(handle_, "fmi2EnterEventMode");
@@ -82,9 +82,9 @@ bool fmi2ModelExchangeLibrary::getNominalsOfContinuousStates(const fmi2Component
 }
 
 bool fmi2ModelExchangeLibrary::completedIntegratorStep(const fmi2Component c,
-                                                   const fmi2Boolean noSetFMUStatePriorToCurrentPoint,
-                                                   fmi2Boolean &enterEventMode,
-                                                   fmi2Boolean &terminateSimulation) {
+                                                       const fmi2Boolean noSetFMUStatePriorToCurrentPoint,
+                                                       fmi2Boolean &enterEventMode,
+                                                       fmi2Boolean &terminateSimulation) {
     return updateStatusAndReturnTrueIfOK(
             fmi2CompletedIntegratorStep_(c, noSetFMUStatePriorToCurrentPoint, &enterEventMode, &terminateSimulation));
 }

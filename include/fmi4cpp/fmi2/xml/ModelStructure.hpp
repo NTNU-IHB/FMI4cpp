@@ -1,3 +1,9 @@
+#include <utility>
+
+#include <utility>
+
+#include <utility>
+
 /*
  * The MIT License
  *
@@ -31,45 +37,24 @@
 
 namespace fmi4cpp::fmi2 {
 
-    class Unknown {
+    struct Unknown {
 
-    private:
-
-        unsigned int index_;
-        std::optional<std::string> dependenciesKind_;
-        std::optional<std::vector<unsigned int >> dependencies_;
-
-    public:
-
-        Unknown(unsigned int index, const std::optional<std::string> &dependenciesKind,
-                const std::optional<std::vector<unsigned int>> &dependencies);
-
-        const size_t index();
-        const std::optional<std::string> dependenciesKind();
-        const std::optional<std::vector<unsigned int >> &dependencies() const;
+        unsigned int index;
+        std::optional<std::string> dependenciesKind;
+        std::optional<std::vector<unsigned int >> dependencies;
 
     };
 
-    class ModelStructure {
+    struct ModelStructure {
 
-    private:
+        const std::vector<Unknown> outputs;
+        const std::vector<Unknown> derivatives;
+        const std::vector<Unknown> initialUnknowns;
 
-        std::vector<Unknown> outputs_;
-        std::vector<Unknown> derivatives_;
-        std::vector<Unknown> initialUnknowns_;
-        
-    public:
-
-        ModelStructure() = default;
-
-        ModelStructure(const std::vector<Unknown> &outputs_, const std::vector<Unknown> &derivatives_,
-                       const std::vector<Unknown> &initialUnknowns_);
-
-        const std::vector<Unknown> &outputs() const;
-
-        const std::vector<Unknown> &derivatives() const;
-
-        const std::vector<Unknown> &initialUnknowns() const;
+        ModelStructure(std::vector<Unknown> outputs, std::vector<Unknown> derivatives,
+                       std::vector<Unknown> initialUnknowns) : outputs(std::move(outputs)),
+                                                               derivatives(std::move(derivatives)),
+                                                               initialUnknowns(std::move(initialUnknowns)) {}
 
     };
 

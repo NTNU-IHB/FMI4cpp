@@ -23,7 +23,6 @@
  */
 
 
-#include <string>
 #include <iostream>
 
 #include <fmi4cpp/fmi4cpp.hpp>

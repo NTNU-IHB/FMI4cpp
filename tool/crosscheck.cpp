@@ -85,7 +85,7 @@ namespace {
         vars.erase(vars.begin()); //remove "time"
 
         vector<ScalarVariable> variables;
-        for (auto var : vars) {
+        for (auto &var : vars) {
             replace(var.begin(), var.end(), '\"', ' ');
             boost::trim(var);
             variables.push_back(mv.getByName(var));
@@ -103,10 +103,9 @@ namespace {
                 break;
             }
 
-            vector<string> split = splitString(line, ',');
-
-            string token = split[0];
-            string value = split[1];
+            auto split = splitString(line, ',');
+            auto token = split[0];
+            auto value = split[1];
 
             if (token == "StartTime") {
                 opt.startTime = std::atof(value.c_str());
@@ -138,12 +137,12 @@ namespace fmi4cpp::xc {
             writeReadme(resultDir);
 
             try {
-                const string fmuFile = (fmuDir / fmuDir.filename()).string() + ".fmu";
-                const string optFile = (fmuDir / fmuDir.filename()).string() + "_ref.opt";
-                const string refFile = (fmuDir / fmuDir.filename()).string() + "_ref.csv";
-                const string inFile = (fmuDir / fmuDir.filename()).string() + "_in.csv";
+                const auto fmuFile = (fmuDir / fmuDir.filename()).string() + ".fmu";
+                const auto optFile = (fmuDir / fmuDir.filename()).string() + "_ref.opt";
+                const auto refFile = (fmuDir / fmuDir.filename()).string() + "_ref.csv";
+                const auto inFile = (fmuDir / fmuDir.filename()).string() + "_in.csv";
 
-                bool hasInput = fs::exists(inFile);
+                auto hasInput = fs::exists(inFile);
 
                 auto opt = parseDefaults(readFile(optFile));
                 opt.outputFolder = resultDir;
@@ -160,11 +159,12 @@ namespace fmi4cpp::xc {
                     }
 
                     auto fmu = make_shared<fmi2Fmu>(fmuFile);
-                    if (fmu->getModelDescription()->asCoSimulationModelDescription()->needsExecutionTool()) {
+                    if (fmu->getModelDescription()->asCoSimulationModelDescription()->needsExecutionTool) {
                         throw Rejection("FMU requires execution tool.");
                     }
 
-                    opt.variables = parseVariables(readLine(refFile), *fmu->getModelDescription()->modelVariables());
+                    ModelVariables mv = *fmu->getModelDescription()->modelVariables;
+                    opt.variables = parseVariables(readLine(refFile), mv);
 
                     fmu_driver driver(fmu);
                     driver.run(opt);

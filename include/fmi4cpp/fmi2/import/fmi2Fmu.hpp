@@ -47,7 +47,7 @@ class fmi2Fmu : public virtual FmuProvider<ModelDescription, fmi2CoSimulationFmu
 
         const std::string fmuName_;
         std::shared_ptr<FmuResource> resource_;
-        std::shared_ptr<ModelDescription> modelDescription_;
+        std::shared_ptr<const ModelDescription> modelDescription_;
 
     public:
         explicit fmi2Fmu(const std::string &fmuPath);
@@ -56,7 +56,7 @@ class fmi2Fmu : public virtual FmuProvider<ModelDescription, fmi2CoSimulationFmu
 
         const std::string getModelDescriptionXml() const;
 
-        std::shared_ptr<ModelDescription> getModelDescription() const override;
+        std::shared_ptr<const ModelDescription> getModelDescription() const override;
 
         bool supportsModelExchange() const override;
 

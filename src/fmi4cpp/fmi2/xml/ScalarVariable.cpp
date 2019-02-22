@@ -27,48 +27,6 @@
 
 using namespace fmi4cpp::fmi2;
 
-std::string ScalarVariableBase::name() const {
-    return name_;
-}
-
-std::string ScalarVariableBase::description() const {
-    return description_;
-}
-
-fmi2ValueReference ScalarVariableBase::valueReference() const {
-    return valueReference_;
-}
-
-Causality ScalarVariableBase::causality() const {
-    return causality_;
-}
-
-Variability ScalarVariableBase::variability() const {
-    return variability_;
-}
-
-Initial ScalarVariableBase::initial() const {
-    return initial_;
-}
-
-bool ScalarVariableBase::canHandleMultipleSetPerTimelnstant() const {
-    return canHandleMultipleSetPerTimelnstant_;
-}
-
-ScalarVariableBase::ScalarVariableBase(const std::string &name,
-                                       const std::string &description,
-                                       fmi2ValueReference valueReference,
-                                       bool canHandleMultipleSetPerTimelnstant,
-                                       Causality causality,
-                                       Variability variability,
-                                       Initial initial)
-        : name_(name),
-          description_(description),
-          valueReference_(valueReference),
-          canHandleMultipleSetPerTimelnstant_(canHandleMultipleSetPerTimelnstant),
-          causality_(causality),
-          variability_(variability),
-          initial_(initial) {}
 
 ScalarVariable::ScalarVariable(const ScalarVariableBase &base,
                                const IntegerAttribute &integer)
@@ -143,6 +101,6 @@ std::string ScalarVariable::typeName() const {
     } else if (enumeration_) {
         return ENUMERATION_TYPE;
     } else {
-        return "Unknown";
+        return UNKNOWN_TYPE;
     }
 }

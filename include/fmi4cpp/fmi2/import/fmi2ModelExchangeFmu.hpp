@@ -39,14 +39,14 @@ namespace fmi4cpp::fmi2 {
 
         std::shared_ptr<FmuResource> resource_;
         std::shared_ptr<fmi2ModelExchangeLibrary> lib_;
-        std::shared_ptr<ModelExchangeModelDescription> modelDescription_;
+        std::shared_ptr<const ModelExchangeModelDescription> modelDescription_;
 
     public:
 
         fmi2ModelExchangeFmu(const std::shared_ptr<FmuResource> &resource,
-                             const std::shared_ptr<ModelExchangeModelDescription> &md);
+                             const std::shared_ptr<const ModelExchangeModelDescription> &md);
 
-        std::shared_ptr<ModelExchangeModelDescription> getModelDescription() const override;
+        std::shared_ptr<const ModelExchangeModelDescription> getModelDescription() const override;
 
         std::unique_ptr<fmi2ModelExchangeInstance> newInstance(bool visible = false, bool loggingOn = false);
 

@@ -25,8 +25,8 @@
 #ifndef FMI4CPP_FMI2LIBRARY_HPP
 #define FMI4CPP_FMI2LIBRARY_HPP
 
-#include <string>
 #include <vector>
+#include <string>
 
 #include <cstdio>
 #include <cstdlib>
@@ -119,8 +119,8 @@ namespace fmi4cpp::fmi2 {
 
         bool setDebugLogging(fmi2Component c, bool loggingOn, std::vector<fmi2String> categories);
 
-        fmi2Component instantiate(std::string instanceName, fmi2Type type,
-                                  std::string guid, std::string resourceLocation,
+        fmi2Component instantiate(const std::string &instanceName, fmi2Type type,
+                                  const std::string &guid, const std::string &resourceLocation,
                                   bool visible = false, bool loggingOn = false);
 
         bool setupExperiment(fmi2Component c, double tolerance, double startTime, double stopTime);

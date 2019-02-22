@@ -36,15 +36,16 @@ namespace fmi4cpp {
     class FmuBase {
 
     public:
-        std::string guid() const {
-            return getModelDescription()->guid();
+
+        const std::string guid() const {
+            return getModelDescription()->guid;
         }
 
-        std::string modelName() const {
-            return getModelDescription()->modelName();
+        const std::string modelName() const {
+            return getModelDescription()->modelName;
         }
 
-        virtual std::shared_ptr <ModelDescription> getModelDescription() const = 0;
+        virtual std::shared_ptr<const ModelDescription> getModelDescription() const = 0;
 
     };
 
@@ -52,6 +53,7 @@ namespace fmi4cpp {
     class FmuProvider : public virtual FmuBase<ModelDescription> {
 
     public:
+
         virtual bool supportsCoSimulation() const = 0;
 
         virtual bool supportsModelExchange() const = 0;
@@ -67,7 +69,7 @@ namespace fmi4cpp {
 
     public:
 
-        virtual std::shared_ptr<CoSimulationModelDescription> getModelDescription() const = 0;
+        virtual std::shared_ptr<const CoSimulationModelDescription> getModelDescription() const = 0;
 
         virtual std::unique_ptr<CoSimulationSlave> newInstance(bool visible, bool loggingOn) = 0;
 
@@ -78,7 +80,7 @@ namespace fmi4cpp {
 
     public:
 
-        virtual std::shared_ptr<ModelExchangeModelDescription> getModelDescription() const override = 0;
+        virtual std::shared_ptr<const ModelExchangeModelDescription> getModelDescription() const override = 0;
 
         virtual std::unique_ptr<ModelExchangeInstance> newInstance(bool visible = false, bool loggingOn = false) = 0;
 

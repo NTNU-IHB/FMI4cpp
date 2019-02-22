@@ -1,3 +1,5 @@
+#include <utility>
+
 /*
  * The MIT License
  *
@@ -35,11 +37,6 @@ namespace fmi4cpp::fmi2 {
         std::optional<double> stopTime;
         std::optional<double> stepSize;
         std::optional<double> tolerance;
-
-        DefaultExperiment() = default;
-
-        DefaultExperiment(const std::optional<double> &startTime, const std::optional<double> &stopTime,
-                          const std::optional<double> &stepSize, const std::optional<double> &tolerance);
 
     };
 

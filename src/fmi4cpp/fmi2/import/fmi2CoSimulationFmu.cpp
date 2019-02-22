@@ -30,17 +30,17 @@ using namespace fmi4cpp;
 using namespace fmi4cpp::fmi2;
 
 fmi2CoSimulationFmu::fmi2CoSimulationFmu(const shared_ptr<FmuResource> &resource,
-                                         const shared_ptr<CoSimulationModelDescription> &md)
+                                         const shared_ptr<const CoSimulationModelDescription> &md)
         : resource_(resource), modelDescription_(md) {}
 
-shared_ptr<CoSimulationModelDescription> fmi2CoSimulationFmu::getModelDescription() const {
+shared_ptr<const CoSimulationModelDescription> fmi2CoSimulationFmu::getModelDescription() const {
     return modelDescription_;
 }
 
 unique_ptr<fmi2CoSimulationSlave> fmi2CoSimulationFmu::newInstance(const bool visible, const bool loggingOn) {
     shared_ptr<fmi2CoSimulationLibrary> lib = nullptr;
-    string modelIdentifier = modelDescription_->modelIdentifier();
-    if (modelDescription_->canBeInstantiatedOnlyOncePerProcess()) {
+    auto modelIdentifier = modelDescription_->modelIdentifier;
+    if (modelDescription_->canBeInstantiatedOnlyOncePerProcess) {
         lib = make_shared<fmi2CoSimulationLibrary>(modelIdentifier, resource_);
     } else {
         if (lib_ == nullptr) {
@@ -48,7 +48,7 @@ unique_ptr<fmi2CoSimulationSlave> fmi2CoSimulationFmu::newInstance(const bool vi
         }
         lib = lib_;
     }
-    fmi2Component c = lib->instantiate(modelIdentifier, fmi2CoSimulation, guid(),
+    auto c = lib->instantiate(modelIdentifier, fmi2CoSimulation, guid(),
                                        resource_->getResourcePath(), visible, loggingOn);
     return make_unique<fmi2CoSimulationSlave>(c, lib, modelDescription_);
 }

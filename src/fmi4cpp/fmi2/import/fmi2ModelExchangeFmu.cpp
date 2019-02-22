@@ -32,18 +32,18 @@ using namespace fmi4cpp::fmi2;
 using namespace fmi4cpp::solver;
 
 fmi2ModelExchangeFmu::fmi2ModelExchangeFmu(const shared_ptr<FmuResource> &resource,
-                                   const shared_ptr<ModelExchangeModelDescription> &md)
+                                   const shared_ptr<const ModelExchangeModelDescription> &md)
         : resource_(resource), modelDescription_(md) {}
 
 
-shared_ptr<ModelExchangeModelDescription> fmi2ModelExchangeFmu::getModelDescription() const {
+shared_ptr<const ModelExchangeModelDescription> fmi2ModelExchangeFmu::getModelDescription() const {
     return modelDescription_;
 }
 
 std::unique_ptr<fmi2ModelExchangeInstance> fmi2ModelExchangeFmu::newInstance(bool visible, bool loggingOn) {
     shared_ptr<fmi2ModelExchangeLibrary> lib = nullptr;
-    string modelIdentifier = modelDescription_->modelIdentifier();
-    if (modelDescription_->canBeInstantiatedOnlyOncePerProcess()) {
+    auto modelIdentifier = modelDescription_->modelIdentifier;
+    if (modelDescription_->canBeInstantiatedOnlyOncePerProcess) {
         lib = make_shared<fmi2ModelExchangeLibrary>(modelIdentifier, resource_);
     } else {
         if (lib_ == nullptr) {

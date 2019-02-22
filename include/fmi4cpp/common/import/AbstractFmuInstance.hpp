@@ -45,16 +45,16 @@ namespace fmi4cpp {
 
         fmi4cppComponent c_;
         const std::shared_ptr<FmiLibrary> library_;
-        const std::shared_ptr<ModelDescription> modelDescription_;
+        const std::shared_ptr<const ModelDescription> modelDescription_;
 
     public:
 
         AbstractFmuInstance(fmi4cppComponent c,
                             const std::shared_ptr<FmiLibrary> &library,
-                            const std::shared_ptr<ModelDescription> &modelDescription)
+                            const std::shared_ptr<const ModelDescription> &modelDescription)
                 : c_(c), library_(library), modelDescription_(modelDescription) {}
 
-        std::shared_ptr<ModelDescription> getModelDescription() const override {
+        std::shared_ptr<const ModelDescription> getModelDescription() const override {
             return modelDescription_;
         }
 

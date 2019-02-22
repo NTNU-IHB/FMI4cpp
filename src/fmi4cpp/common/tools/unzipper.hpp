@@ -36,7 +36,7 @@ namespace fs = std::experimental::filesystem;
 
 namespace {
 
-    bool extractContents(std::string zip_file, std::string tmp_path) {
+    bool extractContents(const std::string &zip_file, const std::string &tmp_path) {
 
         int *err = 0;
         zip *za = zip_open(zip_file.c_str(), 0, err);
@@ -45,7 +45,7 @@ namespace {
         }
 
         struct zip_file *zf;
-        struct zip_stat sb;
+        struct zip_stat sb{};
 
         const int bufferSize = 1000;
         char *contents = (char *) malloc(sizeof(char) * bufferSize);

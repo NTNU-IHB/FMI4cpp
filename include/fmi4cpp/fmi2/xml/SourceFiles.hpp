@@ -1,3 +1,5 @@
+#include <utility>
+
 /*
  * The MIT License
  *
@@ -33,8 +35,6 @@ namespace fmi4cpp::fmi2 {
     struct SourceFile {
 
         std::string name;
-
-        explicit SourceFile(const std::string &name) : name(name) {}
 
     };
 

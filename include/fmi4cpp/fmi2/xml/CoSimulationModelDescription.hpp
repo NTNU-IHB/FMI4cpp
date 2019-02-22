@@ -29,17 +29,11 @@
 
 namespace fmi4cpp::fmi2 {
 
-    class CoSimulationModelDescription : public SpecificModelDescription<CoSimulationAttributes> {
+    struct CoSimulationModelDescription : SpecificModelDescription<CoSimulationAttributes> {
 
-    public:
+        CoSimulationModelDescription(const ModelDescriptionBase &base, const CoSimulationAttributes &attributes)
+                : SpecificModelDescription(base, attributes){}
 
-        CoSimulationModelDescription(const ModelDescriptionBase &base, const CoSimulationAttributes &attributes);
-
-        bool canInterpolateInputs() const;
-        bool canRunAsynchronuously() const;
-        bool canHandleVariableCommunicationStepSize() const;
-
-        size_t maxOutputDerivativeOrder() const;
 
     };
 

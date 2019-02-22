@@ -1,3 +1,7 @@
+#include <utility>
+
+#include <utility>
+
 /*
  * The MIT License
  *
@@ -33,66 +37,36 @@ namespace fmi4cpp::fmi2 {
 
     struct FmuAttributes {
 
+        SourceFiles sourceFiles;
+        std::string modelIdentifier;
+
         bool canGetAndSetFMUstate;
         bool canSerializeFMUstate;
         bool needsExecutionTool;
         bool canNotUseMemoryManagementFunctions;
-        bool canBeInstantiatedOnlyOncePerProcess;
+        bool canBeInstantiatedOnlyOncePerProcess ;
         bool providesDirectionalDerivative;
-
-        SourceFiles sourceFiles;
-        std::string modelIdentifier;
-
-        FmuAttributes() = default;
-
-        FmuAttributes(const std::string &modelIdentifier, bool canGetAndSetFMUstate,
-                      bool canSerializeFMUstate, bool needsExecutionTool,
-                      bool canNotUseMemoryManagementFunctions, bool canBeInstantiatedOnlyOncePerProcess,
-                      bool providesDirectionalDerivative, const SourceFiles &sourceFiles)
-                : modelIdentifier(modelIdentifier),
-                  canGetAndSetFMUstate(canGetAndSetFMUstate),
-                  canSerializeFMUstate(canSerializeFMUstate),
-                  needsExecutionTool(needsExecutionTool),
-                  canNotUseMemoryManagementFunctions(canNotUseMemoryManagementFunctions),
-                  canBeInstantiatedOnlyOncePerProcess(canBeInstantiatedOnlyOncePerProcess),
-                  providesDirectionalDerivative(providesDirectionalDerivative),
-                  sourceFiles(sourceFiles) {};
 
     };
 
     struct CoSimulationAttributes : FmuAttributes {
 
-        bool canInterpolateInputs;
-        bool canRunAsynchronuously;
-        bool canHandleVariableCommunicationStepSize;
+        bool canInterpolateInputs = false;
+        bool canRunAsynchronuously = false;
+        bool canHandleVariableCommunicationStepSize = false;
 
-        unsigned int maxOutputDerivativeOrder;
-
-        CoSimulationAttributes() {}
+        unsigned int maxOutputDerivativeOrder{};
 
         explicit CoSimulationAttributes(const FmuAttributes &attributes) : FmuAttributes(attributes) {}
 
-        CoSimulationAttributes(const FmuAttributes &attributes, bool canInterpolateInputs,
-                               bool canRunAsynchronuously, bool canHandleVariableCommunicationStepSize,
-                               unsigned int maxOutputDerivativeOrder)
-                : FmuAttributes(attributes),
-                  canInterpolateInputs(canInterpolateInputs),
-                  canRunAsynchronuously(canRunAsynchronuously),
-                  canHandleVariableCommunicationStepSize(canHandleVariableCommunicationStepSize),
-                  maxOutputDerivativeOrder(maxOutputDerivativeOrder) {};
 
     };
 
     struct ModelExchangeAttributes : FmuAttributes {
 
-        bool completedIntegratorStepNotNeeded;
-
-        ModelExchangeAttributes() {}
+        bool completedIntegratorStepNotNeeded = false;
 
         explicit ModelExchangeAttributes(const FmuAttributes &attributes) : FmuAttributes(attributes) {}
-
-        ModelExchangeAttributes(const FmuAttributes &attributes, bool completedIntegratorStepNotNeeded)
-                : FmuAttributes(attributes), completedIntegratorStepNotNeeded(completedIntegratorStepNotNeeded) {};
 
     };
 

@@ -44,13 +44,13 @@ int main() {
     auto cs_fmu = fmu.asCoSimulationFmu();
     auto md = cs_fmu->getModelDescription();
 
-    auto var = md->modelVariables()->getByValueReference(47).asReal();
+    auto var = md->modelVariables->getByValueReference(47).asReal();
     logger::info("Name={}, start={}", var.name(), var.start().value_or(0));
 
     auto slave1 = cs_fmu->newInstance();
     auto slave2 = cs_fmu->newInstance();
 
-    logger::info("modelIdentifier={}", slave1->getModelDescription()->modelIdentifier());
+    logger::info("modelIdentifier={}", slave1->getModelDescription()->modelIdentifier);
 
     slave1->setupExperiment();
     slave1->enterInitializationMode();
@@ -61,8 +61,8 @@ int main() {
     slave2->exitInitializationMode();
 
     vector<fmi2Real> ref(2);
-    vector<fmi2ValueReference> vr = {md->getVariableByName("Temperature_Reference").valueReference(),
-                                     md->getVariableByName("Temperature_Room").valueReference()};
+    vector<fmi2ValueReference> vr = {md->getVariableByName("Temperature_Reference").valueReference,
+                                     md->getVariableByName("Temperature_Room").valueReference};
 
     double t = 0;
     while ((t = slave1->getSimulationTime()) <= stop) {

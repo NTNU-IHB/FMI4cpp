@@ -30,7 +30,7 @@ using namespace fmi4cpp;
 using namespace fmi4cpp::fmi2;
 
 fmi2CoSimulationLibrary::fmi2CoSimulationLibrary(const std::string &modelIdentifier,
-                                         const std::shared_ptr<FmuResource> &resource)
+                                                 const std::shared_ptr<FmuResource> &resource)
         : fmi2Library(modelIdentifier, resource) {
 
     fmi2SetRealInputDerivatives_ = loadFunction<fmi2SetRealInputDerivativesTYPE *>(handle_,
@@ -50,7 +50,8 @@ fmi2CoSimulationLibrary::fmi2CoSimulationLibrary(const std::string &modelIdentif
 }
 
 bool fmi2CoSimulationLibrary::doStep(const fmi2Component c, const fmi2Real currentCommunicationPoint,
-                                 const fmi2Real communicationStepSize, const bool noSetFMUStatePriorToCurrentPoint) {
+                                     const fmi2Real communicationStepSize,
+                                     const bool noSetFMUStatePriorToCurrentPoint) {
     return updateStatusAndReturnTrueIfOK(
             fmi2DoStep_(c, currentCommunicationPoint, communicationStepSize, noSetFMUStatePriorToCurrentPoint));
 }
@@ -60,16 +61,16 @@ bool fmi2CoSimulationLibrary::cancelStep(const fmi2Component c) {
 }
 
 bool fmi2CoSimulationLibrary::setRealInputDerivatives(const fmi2Component c,
-                                                  const std::vector<fmi2ValueReference> &vr,
-                                                  const std::vector<fmi2Integer> &order,
-                                                  const std::vector<fmi2Real> &value) {
+                                                      const std::vector<fmi2ValueReference> &vr,
+                                                      const std::vector<fmi2Integer> &order,
+                                                      const std::vector<fmi2Real> &value) {
     return fmi2SetRealInputDerivatives_(c, vr.data(), vr.size(), order.data(), value.data());
 }
 
 bool fmi2CoSimulationLibrary::getRealOutputDerivatives(const fmi2Component c,
-                                                   const std::vector<fmi2ValueReference> &vr,
-                                                   const std::vector<fmi2Integer> &order,
-                                                   std::vector<fmi2Real> &value) {
+                                                       const std::vector<fmi2ValueReference> &vr,
+                                                       const std::vector<fmi2Integer> &order,
+                                                       std::vector<fmi2Real> &value) {
     return updateStatusAndReturnTrueIfOK(
             fmi2GetRealOutputDerivatives_(c, vr.data(), vr.size(), order.data(), value.data()));
 }

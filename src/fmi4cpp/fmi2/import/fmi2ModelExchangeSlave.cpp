@@ -35,8 +35,8 @@ namespace {
 
     const double EPS = 1E-13;
 
-    std::shared_ptr<CoSimulationModelDescription> wrap(const ModelExchangeModelDescription &me) {
-        CoSimulationAttributes attributes(me.attributes());
+    std::shared_ptr<const CoSimulationModelDescription> wrap(const ModelExchangeModelDescription &me) {
+        CoSimulationAttributes attributes(me);
         attributes.canHandleVariableCommunicationStepSize = true;
         attributes.maxOutputDerivativeOrder = 0;
         return std::make_unique<CoSimulationModelDescription>(CoSimulationModelDescription(me, attributes));
@@ -53,7 +53,7 @@ fmi2ModelExchangeSlave::fmi2ModelExchangeSlave(
     csModelDescription_ = wrap(*instance_->getModelDescription());
 
     size_t numberOfContinuousStates = instance_->getModelDescription()->numberOfContinuousStates();
-    size_t numberOfEventIndicators = instance_->getModelDescription()->numberOfEventIndicators();
+    size_t numberOfEventIndicators = instance_->getModelDescription()->numberOfEventIndicators;
 
     x_ = std::vector<double>(numberOfContinuousStates);
 
@@ -62,7 +62,7 @@ fmi2ModelExchangeSlave::fmi2ModelExchangeSlave(
 
 }
 
-std::shared_ptr<CoSimulationModelDescription> fmi2ModelExchangeSlave::getModelDescription() const {
+std::shared_ptr<const CoSimulationModelDescription> fmi2ModelExchangeSlave::getModelDescription() const {
     return csModelDescription_;
 }
 
@@ -123,7 +123,7 @@ bool fmi2ModelExchangeSlave::doStep(const double stepSize) {
         instance_->setTime(time);
 
         bool stepEvent = false;
-        if (!instance_->getModelDescription()->completedIntegratorStepNotNeeded()) {
+        if (!instance_->getModelDescription()->completedIntegratorStepNotNeeded) {
             fmi2Boolean enterEventMode_ = fmi2False;
             fmi2Boolean terminateSimulation_ = fmi2False;;
             instance_->completedIntegratorStep(true, enterEventMode_, terminateSimulation_);

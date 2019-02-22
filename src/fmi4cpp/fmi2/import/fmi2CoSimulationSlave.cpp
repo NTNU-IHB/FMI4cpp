@@ -29,7 +29,7 @@ using namespace fmi4cpp::fmi2;
 
 fmi2CoSimulationSlave::fmi2CoSimulationSlave(const fmi2Component c,
                                      const std::shared_ptr<fmi2CoSimulationLibrary> &library,
-                                     const std::shared_ptr<CoSimulationModelDescription> &modelDescription)
+                                     const std::shared_ptr<const CoSimulationModelDescription> &modelDescription)
         : AbstractFmuInstance<fmi2CoSimulationLibrary, CoSimulationModelDescription>(c, library, modelDescription) {}
 
 fmi4cpp::Status fmi2CoSimulationSlave::getLastStatus() const {
@@ -48,7 +48,7 @@ bool fmi2CoSimulationSlave::cancelStep() {
     return library_->cancelStep(c_);
 }
 
-std::shared_ptr<CoSimulationModelDescription> fmi2CoSimulationSlave::getModelDescription() const {
+std::shared_ptr<const CoSimulationModelDescription> fmi2CoSimulationSlave::getModelDescription() const {
     return AbstractFmuInstance::getModelDescription();
 }
 

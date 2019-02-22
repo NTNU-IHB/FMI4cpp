@@ -34,11 +34,14 @@ namespace fmi4cpp::fmi2 {
     template<typename T, typename U>
     class TypedScalarVariable {
 
+    protected:
+
+        const U attribute_;
+
     private:
+
         const ScalarVariable variable_;
 
-    protected:
-        const U attribute_;
 
     public:
 
@@ -46,31 +49,31 @@ namespace fmi4cpp::fmi2 {
                 : variable_(variable), attribute_(attribute) {}
 
         std::string name() const {
-            return variable_.name();
+            return variable_.name;
         }
 
         std::string description() const {
-            return variable_.description();
+            return variable_.description;
         }
 
         fmi2ValueReference valueReference() const {
-            return variable_.valueReference();
+            return variable_.valueReference;
         }
 
         Causality causality() const {
-            return variable_.causality();
+            return variable_.causality;
         }
 
         Variability variability() const {
-            return variable_.variability();
+            return variable_.variability;
         }
 
         Initial initial() const {
-            return variable_.initial();
+            return variable_.initial;
         }
 
         bool canHandleMultipleSetPerTimelnstant() const {
-            return variable_.canHandleMultipleSetPerTimelnstant();
+            return variable_.canHandleMultipleSetPerTimelnstant;
         }
 
         std::optional<T> start() const {

@@ -1,3 +1,5 @@
+#include <utility>
+
 /*
  * The MIT License
  *
@@ -48,47 +50,26 @@ namespace fmi4cpp::fmi2 {
     const std::string STRING_TYPE = "String";
     const std::string BOOLEAN_TYPE = "Boolean";
     const std::string ENUMERATION_TYPE = "Enumeration";
+    const std::string UNKNOWN_TYPE = "Unknown";
 
-    class ScalarVariableBase {
+    struct ScalarVariableBase {
 
-    private:
-        std::string name_;
-        std::string description_;
+        std::string name;
+        std::string description;
 
-        fmi2ValueReference valueReference_;
+        Initial initial;
+        Causality causality;
+        Variability variability;
 
-        Causality causality_;
-        Variability variability_;
-        Initial initial_;
-
-        bool canHandleMultipleSetPerTimelnstant_;
-
-    public:
-
-        ScalarVariableBase(const std::string &name, const std::string &description,
-                           fmi2ValueReference valueReference, bool canHandleMultipleSetPerTimelnstant,
-                           Causality causality, Variability variability,
-                           Initial initial);
-
-        std::string name() const;
-
-        std::string description() const;
-
-        fmi2ValueReference valueReference() const;
-
-        Causality causality() const;
-
-        Variability variability() const;
-
-        Initial initial() const;
-
-        bool canHandleMultipleSetPerTimelnstant() const;
+        fmi2ValueReference valueReference;
+        bool canHandleMultipleSetPerTimelnstant;
 
     };
 
     class ScalarVariable : public ScalarVariableBase {
 
     private:
+
         std::optional<IntegerAttribute> integer_;
         std::optional<RealAttribute> real_;
         std::optional<StringAttribute> string_;
@@ -112,7 +93,6 @@ namespace fmi4cpp::fmi2 {
         ScalarVariable(const ScalarVariableBase &base,
                        const EnumerationAttribute &enumeration);
 
-        std::string typeName() const;
 
         bool isInteger() const;
 
@@ -123,6 +103,8 @@ namespace fmi4cpp::fmi2 {
         bool isBoolean() const;
 
         bool isEnumeration() const;
+
+        std::string typeName() const;
 
         const IntegerVariable asInteger() const;
 

@@ -34,7 +34,7 @@ ModelVariables::ModelVariables(const std::vector<ScalarVariable> &variables): va
 
 const ScalarVariable &ModelVariables::getByName(const std::string &name) const {
     for (auto &v : variables_) {
-        if (v.name() == name) {
+        if (v.name == name) {
             return v;
         }
     }
@@ -43,7 +43,7 @@ const ScalarVariable &ModelVariables::getByName(const std::string &name) const {
 
 const ScalarVariable &ModelVariables::getByValueReference(const fmi2ValueReference vr) const {
     for (const auto &var : variables_) {
-        if (var.valueReference() == vr) {
+        if (var.valueReference == vr) {
             return var;
         }
     }
@@ -52,7 +52,7 @@ const ScalarVariable &ModelVariables::getByValueReference(const fmi2ValueReferen
 
 void ModelVariables::getByValueReference(const fmi2ValueReference vr, std::vector<ScalarVariable> &store) const {
     for (const auto &var : variables_) {
-        if (var.valueReference() == vr) {
+        if (var.valueReference == vr) {
             store.push_back(var);
         }
     }
@@ -60,7 +60,7 @@ void ModelVariables::getByValueReference(const fmi2ValueReference vr, std::vecto
 
 void ModelVariables::getByCausality(const Causality causality, std::vector<ScalarVariable> &store) const {
     for (const auto &var : variables_) {
-        if (var.causality() == causality) {
+        if (var.causality == causality) {
             store.push_back(var);
         }
     }
@@ -73,20 +73,10 @@ size_t ModelVariables::size() const {
     return variables_[index];
 }
 
-std::vector<ScalarVariable>::iterator ModelVariables::begin() {
-    return variables_.begin();
-}
-std::vector<ScalarVariable>::iterator ModelVariables::end() {
-    return variables_.end();
-}
 
 std::vector<ScalarVariable>::const_iterator ModelVariables::begin() const{
     return variables_.begin();
 }
 std::vector<ScalarVariable>::const_iterator ModelVariables::end() const {
     return variables_.end();
-}
-
-const std::vector<ScalarVariable> ModelVariables::variables() const {
-    return variables_;
 }

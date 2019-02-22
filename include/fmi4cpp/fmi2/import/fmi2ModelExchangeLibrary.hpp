@@ -46,7 +46,8 @@ namespace fmi4cpp::fmi2 {
 
     public:
 
-        explicit fmi2ModelExchangeLibrary(const std::string &modelIdentifier, const std::shared_ptr<FmuResource> &resource);
+        explicit fmi2ModelExchangeLibrary(const std::string &modelIdentifier,
+                                          const std::shared_ptr<FmuResource> &resource);
 
         bool enterEventMode(fmi2Component c);
 
@@ -65,7 +66,7 @@ namespace fmi4cpp::fmi2 {
         bool getNominalsOfContinuousStates(fmi2Component c, std::vector<fmi2Real> &x_nominal);
 
         bool completedIntegratorStep(fmi2Component c, fmi2Boolean noSetFMUStatePriorToCurrentPoint,
-                                           fmi2Boolean &enterEventMode, fmi2Boolean &terminateSimulation);
+                                     fmi2Boolean &enterEventMode, fmi2Boolean &terminateSimulation);
 
         bool newDiscreteStates(fmi2Component c, fmi2EventInfo &eventInfo);
 

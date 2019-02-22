@@ -1,3 +1,5 @@
+#include <utility>
+
 /*
  * The MIT License
  *
@@ -37,13 +39,6 @@ namespace fmi4cpp::fmi2 {
         std::optional<T> start;
         std::optional<std::string> declaredType;
 
-        ScalarVariableAttribute() {}
-
-        explicit ScalarVariableAttribute(const std::optional<T> &start) : start(start) {}
-
-        ScalarVariableAttribute(const std::optional<T> &start, const std::optional<std::string> &declaredType)
-                : start(start), declaredType(declaredType) {}
-
     };
 
 
@@ -56,10 +51,6 @@ namespace fmi4cpp::fmi2 {
 
         explicit BoundedScalarVariableAttribute(const ScalarVariableAttribute<T> &attributes)
                 : ScalarVariableAttribute<T>(attributes) {}
-
-        BoundedScalarVariableAttribute(const ScalarVariableAttribute<T> &attributes, const std::optional<T> &min,
-                                       const std::optional<T> &max, const std::optional<std::string> &quantity)
-                : min(min), max(max), quantity(quantity) {}
 
     };
 

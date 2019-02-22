@@ -61,11 +61,11 @@ namespace fmi4cpp::fmi2 {
 
     Initial parseInitial(const std::string &str);
 
-    const std::string to_string(Causality causality);
+    std::string to_string(Causality causality);
 
-    const std::string to_string(Variability variability);
+    std::string to_string(Variability variability);
 
-    const std::string to_string(Initial initial);
+    std::string to_string(Initial initial);
 
 }
 

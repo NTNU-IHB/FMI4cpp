@@ -25,14 +25,14 @@
 #ifndef FMI4CPP_MODELDESCRIPTIONPARSER_HPP
 #define FMI4CPP_MODELDESCRIPTIONPARSER_HPP
 
-#include <string>
 #include <memory>
+#include <string>
 
 #include "ModelDescription.hpp"
 
 namespace fmi4cpp::fmi2 {
 
-    std::unique_ptr<ModelDescription> parseModelDescription(const std::string &fileName);
+    std::unique_ptr<const ModelDescription> parseModelDescription(const std::string &fileName);
 
 }
 

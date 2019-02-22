@@ -29,53 +29,11 @@
 
 namespace fmi4cpp::fmi2 {
 
-    template <typename T>
-    class SpecificModelDescription : public ModelDescriptionBase {
-
-    protected:
-
-        const T attributes_;
-
-    public:
+    template<typename T>
+    struct SpecificModelDescription : ModelDescriptionBase, T {
 
         SpecificModelDescription(const ModelDescriptionBase &base, const T &attributes)
-                : ModelDescriptionBase(base), attributes_(attributes) {}
-
-        const SourceFiles &sourceFiles() const {
-            return attributes_.sourceFiles;
-        }
-
-        std::string modelIdentifier() const {
-            return attributes_.modelIdentifier;
-        }
-
-        bool canGetAndSetFMUstate() const {
-            return attributes_.canGetAndSetFMUstate;
-        }
-
-        bool canSerializeFMUstate() const {
-            return attributes_.canSerializeFMUstate;
-        }
-
-        bool needsExecutionTool() const {
-            return attributes_.needsExecutionTool;
-        }
-
-        bool canNotUseMemoryManagementFunctions() const {
-            return attributes_.canNotUseMemoryManagementFunctions;
-        }
-
-        bool canBeInstantiatedOnlyOncePerProcess() const {
-            return attributes_.canBeInstantiatedOnlyOncePerProcess;
-        }
-
-        bool providesDirectionalDerivative() const {
-            return attributes_.providesDirectionalDerivative;
-        }
-
-        const T &attributes() const {
-            return attributes_;
-        }
+                : ModelDescriptionBase(base), T(attributes) {}
 
     };
 
