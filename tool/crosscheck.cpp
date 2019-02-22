@@ -159,7 +159,7 @@ namespace fmi4cpp::xc {
                     }
 
                     auto fmu = make_shared<fmi2Fmu>(fmuFile);
-                    if (fmu->getModelDescription()->asCoSimulationModelDescription()->needsExecutionTool()) {
+                    if (fmu->getModelDescription()->asCoSimulationModelDescription()->needsExecutionTool) {
                         throw Rejection("FMU requires execution tool.");
                     }
 

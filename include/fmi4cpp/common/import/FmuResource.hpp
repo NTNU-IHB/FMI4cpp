@@ -26,6 +26,7 @@
 #define FMI4CPP_FMURESOURCE_HPP
 
 #include <string>
+#include <string_view>
 #include <experimental/filesystem>
 
 namespace fs = std::experimental::filesystem;
@@ -45,7 +46,7 @@ namespace fmi4cpp {
 
         const std::string getModelDescriptionPath() const;
 
-        const std::string getAbsoluteLibraryPath(const std::string &modelIdentifier) const;
+        const std::string getAbsoluteLibraryPath(std::string_view modelIdentifier) const;
 
         ~FmuResource();
 

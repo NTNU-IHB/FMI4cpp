@@ -40,12 +40,12 @@ namespace fmi4cpp::fmi2 {
         SourceFiles sourceFiles;
         std::string modelIdentifier;
 
-        bool canGetAndSetFMUstate = false;
-        bool canSerializeFMUstate = false;
-        bool needsExecutionTool = false;
-        bool canNotUseMemoryManagementFunctions = false;
-        bool canBeInstantiatedOnlyOncePerProcess = false;
-        bool providesDirectionalDerivative = false;
+        bool canGetAndSetFMUstate;
+        bool canSerializeFMUstate;
+        bool needsExecutionTool;
+        bool canNotUseMemoryManagementFunctions;
+        bool canBeInstantiatedOnlyOncePerProcess ;
+        bool providesDirectionalDerivative;
 
     };
 

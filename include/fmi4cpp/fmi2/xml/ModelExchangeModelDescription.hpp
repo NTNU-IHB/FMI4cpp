@@ -29,13 +29,10 @@
 
 namespace fmi4cpp::fmi2 {
 
-    class ModelExchangeModelDescription: public SpecificModelDescription<ModelExchangeAttributes> {
+    struct ModelExchangeModelDescription : public SpecificModelDescription<ModelExchangeAttributes> {
 
-    public:
-
-        ModelExchangeModelDescription(const ModelDescriptionBase &base, const ModelExchangeAttributes &attributes);
-
-        bool completedIntegratorStepNotNeeded() const;
+        ModelExchangeModelDescription(const ModelDescriptionBase &base, const ModelExchangeAttributes &attributes)
+                : SpecificModelDescription(base, attributes) {}
 
     };
 

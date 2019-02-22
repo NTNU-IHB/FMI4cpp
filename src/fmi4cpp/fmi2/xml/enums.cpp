@@ -28,7 +28,7 @@ using fmi4cpp::fmi2::Causality;
 using fmi4cpp::fmi2::Variability;
 using fmi4cpp::fmi2::Initial;
 
-Causality fmi4cpp::fmi2::parseCausality(const std::string &str) {
+Causality fmi4cpp::fmi2::parseCausality(std::string_view str) {
     if (str == "calculatedParameter") {
         return Causality::calculatedParameter;
     } else if (str == "parameter") {
@@ -46,7 +46,7 @@ Causality fmi4cpp::fmi2::parseCausality(const std::string &str) {
     }
 }
 
-Variability fmi4cpp::fmi2::parseVariability(const std::string &str) {
+Variability fmi4cpp::fmi2::parseVariability(std::string_view str) {
     if (str == "constant") {
         return Variability::constant;
     } else if (str == "fixed") {
@@ -62,7 +62,7 @@ Variability fmi4cpp::fmi2::parseVariability(const std::string &str) {
     }
 }
 
-Initial fmi4cpp::fmi2::parseInitial(const std::string &str) {
+Initial fmi4cpp::fmi2::parseInitial(std::string_view str) {
     if (str == "exact") {
         return Initial::exact;
     } else if (str == "approx") {
@@ -75,7 +75,7 @@ Initial fmi4cpp::fmi2::parseInitial(const std::string &str) {
 
 }
 
-const std::string fmi4cpp::fmi2::to_string(Causality causality) {
+std::string_view fmi4cpp::fmi2::to_string(Causality causality) {
 
     switch (causality) {
         case Causality::calculatedParameter:
@@ -97,7 +97,7 @@ const std::string fmi4cpp::fmi2::to_string(Causality causality) {
 
 }
 
-const std::string fmi4cpp::fmi2::to_string(Variability variability) {
+std::string_view fmi4cpp::fmi2::to_string(Variability variability) {
 
     switch (variability) {
         case Variability::constant:
@@ -117,7 +117,7 @@ const std::string fmi4cpp::fmi2::to_string(Variability variability) {
 
 }
 
-const std::string fmi4cpp::fmi2::to_string(Initial initial) {
+std::string_view fmi4cpp::fmi2::to_string(Initial initial) {
     switch (initial) {
         case Initial::exact:
             return "exact";

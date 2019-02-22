@@ -27,6 +27,7 @@
 
 #include <vector>
 #include <memory>
+#include <string_view>
 
 #include <fmi4cpp/fmi2/xml/ScalarVariable.hpp>
 
@@ -46,9 +47,8 @@ namespace fmi4cpp::fmi2 {
 
         size_t size() const;
 
-
         const ScalarVariable &operator[](size_t index) const;
-        const ScalarVariable &getByName(const std::string &name) const;
+        const ScalarVariable &getByName(std::string_view name) const;
         const ScalarVariable &getByValueReference(fmi2ValueReference vr) const;
 
         void getByValueReference(fmi2ValueReference vr, std::vector<ScalarVariable> &store) const;

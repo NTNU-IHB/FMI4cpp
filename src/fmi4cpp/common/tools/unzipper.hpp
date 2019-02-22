@@ -36,10 +36,10 @@ namespace fs = std::experimental::filesystem;
 
 namespace {
 
-    bool extractContents(std::string zip_file, std::string tmp_path) {
+    bool extractContents(std::string_view zip_file, std::string_view tmp_path) {
 
         int *err = 0;
-        zip *za = zip_open(zip_file.c_str(), 0, err);
+        zip *za = zip_open(zip_file.data(), 0, err);
         if (za == nullptr) {
             return false;
         }
@@ -53,7 +53,7 @@ namespace {
         for (int i = 0; i < zip_get_num_entries(za, 0); i++) {
             if (zip_stat_index(za, i, 0, &sb) == 0) {
 
-                std::string newFile = tmp_path + "/" + sb.name;
+                std::string newFile = std::string(tmp_path) + "/" + sb.name;
 
                 if (sb.size == 0) {
                     fs::create_directories(newFile);

@@ -29,7 +29,7 @@
 using namespace fmi4cpp;
 using namespace fmi4cpp::fmi2;
 
-fmi2ModelExchangeLibrary::fmi2ModelExchangeLibrary(const std::string &modelIdentifier,
+fmi2ModelExchangeLibrary::fmi2ModelExchangeLibrary(std::string_view modelIdentifier,
                                            const std::shared_ptr<FmuResource> &resource)
         : fmi2Library(modelIdentifier, resource) {
 

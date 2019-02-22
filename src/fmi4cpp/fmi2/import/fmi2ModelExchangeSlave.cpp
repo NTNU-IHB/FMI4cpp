@@ -36,7 +36,7 @@ namespace {
     const double EPS = 1E-13;
 
     std::shared_ptr<const CoSimulationModelDescription> wrap(const ModelExchangeModelDescription &me) {
-        CoSimulationAttributes attributes(me.attributes());
+        CoSimulationAttributes attributes(me);
         attributes.canHandleVariableCommunicationStepSize = true;
         attributes.maxOutputDerivativeOrder = 0;
         return std::make_unique<CoSimulationModelDescription>(CoSimulationModelDescription(me, attributes));
@@ -123,7 +123,7 @@ bool fmi2ModelExchangeSlave::doStep(const double stepSize) {
         instance_->setTime(time);
 
         bool stepEvent = false;
-        if (!instance_->getModelDescription()->completedIntegratorStepNotNeeded()) {
+        if (!instance_->getModelDescription()->completedIntegratorStepNotNeeded) {
             fmi2Boolean enterEventMode_ = fmi2False;
             fmi2Boolean terminateSimulation_ = fmi2False;;
             instance_->completedIntegratorStep(true, enterEventMode_, terminateSimulation_);

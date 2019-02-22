@@ -33,11 +33,11 @@ size_t ModelDescriptionBase::numberOfContinuousStates() const {
     return modelStructure->derivatives.size();
 }
 
-const ScalarVariable &ModelDescriptionBase::getVariableByName(const std::string &name) const {
+const ScalarVariable &ModelDescriptionBase::getVariableByName(std::string_view name) const {
     return modelVariables->getByName(name);
 }
 
-fmi2ValueReference ModelDescriptionBase::getValueReference(const std::string &name) const {
+fmi2ValueReference ModelDescriptionBase::getValueReference(std::string_view name) const {
     return modelVariables->getByName(name).valueReference;
 }
 

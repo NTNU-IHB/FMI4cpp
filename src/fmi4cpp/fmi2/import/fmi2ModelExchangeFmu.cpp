@@ -42,8 +42,8 @@ shared_ptr<const ModelExchangeModelDescription> fmi2ModelExchangeFmu::getModelDe
 
 std::unique_ptr<fmi2ModelExchangeInstance> fmi2ModelExchangeFmu::newInstance(bool visible, bool loggingOn) {
     shared_ptr<fmi2ModelExchangeLibrary> lib = nullptr;
-    string modelIdentifier = modelDescription_->modelIdentifier();
-    if (modelDescription_->canBeInstantiatedOnlyOncePerProcess()) {
+    auto modelIdentifier = modelDescription_->modelIdentifier;
+    if (modelDescription_->canBeInstantiatedOnlyOncePerProcess) {
         lib = make_shared<fmi2ModelExchangeLibrary>(modelIdentifier, resource_);
     } else {
         if (lib_ == nullptr) {

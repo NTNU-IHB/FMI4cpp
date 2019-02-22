@@ -39,8 +39,8 @@ shared_ptr<const CoSimulationModelDescription> fmi2CoSimulationFmu::getModelDesc
 
 unique_ptr<fmi2CoSimulationSlave> fmi2CoSimulationFmu::newInstance(const bool visible, const bool loggingOn) {
     shared_ptr<fmi2CoSimulationLibrary> lib = nullptr;
-    auto modelIdentifier = modelDescription_->modelIdentifier();
-    if (modelDescription_->canBeInstantiatedOnlyOncePerProcess()) {
+    auto modelIdentifier = modelDescription_->modelIdentifier;
+    if (modelDescription_->canBeInstantiatedOnlyOncePerProcess) {
         lib = make_shared<fmi2CoSimulationLibrary>(modelIdentifier, resource_);
     } else {
         if (lib_ == nullptr) {
