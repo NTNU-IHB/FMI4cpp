@@ -27,7 +27,6 @@
 
 #include <vector>
 #include <string>
-#include <string_view>
 
 #include <cstdio>
 #include <cstdlib>
@@ -110,7 +109,7 @@ namespace fmi4cpp::fmi2 {
 
     public:
 
-        fmi2Library(std::string_view modelIdentifier, const std::shared_ptr<FmuResource> &resource);
+        fmi2Library(const std::string &modelIdentifier, const std::shared_ptr<FmuResource> &resource);
 
         fmi2Status getLastStatus() const;
 
@@ -120,8 +119,8 @@ namespace fmi4cpp::fmi2 {
 
         bool setDebugLogging(fmi2Component c, bool loggingOn, std::vector<fmi2String> categories);
 
-        fmi2Component instantiate(std::string_view instanceName, fmi2Type type,
-                                  std::string_view guid, std::string_view resourceLocation,
+        fmi2Component instantiate(const std::string &instanceName, fmi2Type type,
+                                  const std::string &guid, const std::string &resourceLocation,
                                   bool visible = false, bool loggingOn = false);
 
         bool setupExperiment(fmi2Component c, double tolerance, double startTime, double stopTime);

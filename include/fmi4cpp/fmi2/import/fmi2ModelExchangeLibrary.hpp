@@ -46,7 +46,7 @@ namespace fmi4cpp::fmi2 {
 
     public:
 
-        explicit fmi2ModelExchangeLibrary(std::string_view modelIdentifier,
+        explicit fmi2ModelExchangeLibrary(const std::string &modelIdentifier,
                                           const std::shared_ptr<FmuResource> &resource);
 
         bool enterEventMode(fmi2Component c);

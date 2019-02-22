@@ -55,17 +55,17 @@ namespace fmi4cpp::fmi2 {
         unknown
     };
 
-    Causality parseCausality(std::string_view str);
+    Causality parseCausality(const std::string &str);
 
-    Variability parseVariability(std::string_view str);
+    Variability parseVariability(const std::string &str);
 
-    Initial parseInitial(std::string_view str);
+    Initial parseInitial(const std::string &str);
 
-    std::string_view to_string(Causality causality);
+    std::string to_string(Causality causality);
 
-    std::string_view to_string(Variability variability);
+    std::string to_string(Variability variability);
 
-    std::string_view to_string(Initial initial);
+    std::string to_string(Initial initial);
 
 }
 

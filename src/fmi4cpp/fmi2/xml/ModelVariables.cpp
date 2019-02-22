@@ -32,13 +32,13 @@ ModelVariables::ModelVariables() {}
 
 ModelVariables::ModelVariables(const std::vector<ScalarVariable> &variables): variables_(variables) {}
 
-const ScalarVariable &ModelVariables::getByName(std::string_view name) const {
+const ScalarVariable &ModelVariables::getByName(const std::string &name) const {
     for (auto &v : variables_) {
         if (v.name == name) {
             return v;
         }
     }
-    throw std::runtime_error("No such variable with name '" + std::string(name) + "'!");
+    throw std::runtime_error("No such variable with name '" + name + "'!");
 }
 
 const ScalarVariable &ModelVariables::getByValueReference(const fmi2ValueReference vr) const {

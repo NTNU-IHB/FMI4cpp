@@ -27,7 +27,7 @@
 
 #include <memory>
 #include <optional>
-#include <string_view>
+#include <string>
 
 #include "ModelStructure.hpp"
 #include "ModelVariables.hpp"
@@ -59,9 +59,9 @@ namespace fmi4cpp::fmi2 {
         size_t numberOfEventIndicators;
         size_t numberOfContinuousStates() const;
 
-        unsigned int getValueReference(std::string_view name) const;
+        unsigned int getValueReference(const std::string &name) const;
 
-        const ScalarVariable &getVariableByName(std::string_view name) const;
+        const ScalarVariable &getVariableByName(const std::string &name) const;
 
     };
 

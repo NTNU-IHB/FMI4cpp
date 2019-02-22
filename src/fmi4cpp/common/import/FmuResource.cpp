@@ -39,8 +39,8 @@ const std::string FmuResource::getResourcePath() const {
     return "file:///" + path_.string() + "/resources/" + getOs() + "/" + getLibExt();
 }
 
-const std::string FmuResource::getAbsoluteLibraryPath(std::string_view modelIdentifier) const {
-    return path_.string() + "/binaries/" + getOs() + "/" + std::string(modelIdentifier) + getLibExt();
+const std::string FmuResource::getAbsoluteLibraryPath(const std::string &modelIdentifier) const {
+    return path_.string() + "/binaries/" + getOs() + "/" + modelIdentifier + getLibExt();
 }
 
 FmuResource::~FmuResource() {

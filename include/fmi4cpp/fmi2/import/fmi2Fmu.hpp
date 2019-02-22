@@ -27,7 +27,6 @@
 
 #include <memory>
 #include <string>
-#include <string_view>
 
 #include "fmi2CoSimulationFmu.hpp"
 #include "fmi2ModelExchangeFmu.hpp"
@@ -51,11 +50,11 @@ class fmi2Fmu : public virtual FmuProvider<ModelDescription, fmi2CoSimulationFmu
         std::shared_ptr<const ModelDescription> modelDescription_;
 
     public:
-        explicit fmi2Fmu(std::string_view fmuPath);
+        explicit fmi2Fmu(const std::string &fmuPath);
 
-        std::string_view getFmuName() const;
+        const std::string getFmuName() const;
 
-        std::string_view getModelDescriptionXml() const;
+        const std::string getModelDescriptionXml() const;
 
         std::shared_ptr<const ModelDescription> getModelDescription() const override;
 
@@ -68,7 +67,7 @@ class fmi2Fmu : public virtual FmuProvider<ModelDescription, fmi2CoSimulationFmu
         std::unique_ptr<fmi2ModelExchangeFmu> asModelExchangeFmu() const override;
 
 #ifdef FMI4CPP_WITH_CURL
-        static std::unique_ptr<fmi2Fmu> fromUrl(std::string_view url);
+        static std::unique_ptr<fmi2Fmu> fromUrl(const std::string &url);
 #endif
     };
 

@@ -35,7 +35,7 @@ const double stop = 12.0;
 const double step_size = 1E-5;
 const fmi2ValueReference vr = 2;
 
-string_view fmu_path = "../resources/fmus/2.0/cs/20sim/4.6.4.8004/"
+const string fmu_path = "../resources/fmus/2.0/cs/20sim/4.6.4.8004/"
                         "TorsionBar/TorsionBar.fmu";
 
 int main() {

@@ -73,7 +73,7 @@ namespace {
 }
 
 
-fmi2Library::fmi2Library(std::string_view modelIdentifier, const std::shared_ptr<FmuResource> &resource)
+fmi2Library::fmi2Library(const std::string &modelIdentifier, const std::shared_ptr<FmuResource> &resource)
         : resource_(resource) {
 
     const auto libName = resource->getAbsoluteLibraryPath(modelIdentifier);
@@ -141,11 +141,11 @@ fmi2String fmi2Library::getTypesPlatform() const {
     return fmi2GetTypesPlatform_();
 }
 
-fmi2Component fmi2Library::instantiate(std::string_view instanceName, const fmi2Type type,
-                                       std::string_view guid, std::string_view resourceLocation,
+fmi2Component fmi2Library::instantiate(const std::string &instanceName, const fmi2Type type,
+                                       const std::string &guid, const std::string &resourceLocation,
                                        bool visible, bool loggingOn) {
-    fmi2Component c = fmi2Instantiate_(instanceName.data(), type, guid.data(),
-                                       resourceLocation.data(), &callback, visible, loggingOn);
+    fmi2Component c = fmi2Instantiate_(instanceName.c_str(), type, guid.c_str(),
+                                       resourceLocation.c_str(), &callback, visible, loggingOn);
 
     if (c == nullptr) {
         const std::string msg = "Fatal: fmi2Instantiate returned nullptr, unable to instantiate FMU instance!";

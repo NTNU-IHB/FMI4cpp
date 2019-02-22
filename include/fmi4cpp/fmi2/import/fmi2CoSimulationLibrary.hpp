@@ -47,7 +47,7 @@ namespace fmi4cpp::fmi2 {
 
     public:
 
-        fmi2CoSimulationLibrary(std::string_view modelIdentifier, const std::shared_ptr<FmuResource> &resource);
+        fmi2CoSimulationLibrary(const std::string &modelIdentifier, const std::shared_ptr<FmuResource> &resource);
 
         bool doStep(fmi2Component c, fmi2Real currentCommunicationPoint,
                     fmi2Real communicationStepSize, bool noSetFMUStatePriorToCurrentPoint);

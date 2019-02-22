@@ -37,11 +37,11 @@ namespace fmi4cpp {
 
     public:
 
-        std::string_view guid() const {
+        const std::string guid() const {
             return getModelDescription()->guid;
         }
 
-        std::string_view modelName() const {
+        const std::string modelName() const {
             return getModelDescription()->modelName;
         }
 
