@@ -57,6 +57,8 @@ namespace fmi4cpp::fmi2 {
 
         unsigned int maxOutputDerivativeOrder{};
 
+        CoSimulationAttributes() = default;
+
         explicit CoSimulationAttributes(const FmuAttributes &attributes) : FmuAttributes(attributes) {}
 
 
@@ -65,6 +67,8 @@ namespace fmi4cpp::fmi2 {
     struct ModelExchangeAttributes : FmuAttributes {
 
         bool completedIntegratorStepNotNeeded = false;
+
+        ModelExchangeAttributes() = default;
 
         explicit ModelExchangeAttributes(const FmuAttributes &attributes) : FmuAttributes(attributes) {}
 
