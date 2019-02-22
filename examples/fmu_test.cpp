@@ -50,7 +50,7 @@ int main() {
     auto slave1 = cs_fmu->newInstance();
     auto slave2 = cs_fmu->newInstance();
 
-    logger::info("modelIdentifier={}", slave1->getModelDescription()->modelIdentifier.data());
+    logger::info("modelIdentifier={}", slave1->getModelDescription()->modelIdentifier);
 
     slave1->setupExperiment();
     slave1->enterInitializationMode();

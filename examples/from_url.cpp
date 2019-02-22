@@ -34,6 +34,6 @@ int main() {
 
     const std::string url = "folk.ntnu.no/laht/files/ControlledTemperature.fmu";
     auto fmu = fmi2Fmu::fromUrl(url);
-    std::cout << "guid=" << fmu->guid().data() << std::endl;
+    std::cout << "guid=" << fmu->guid() << std::endl;
 
 }

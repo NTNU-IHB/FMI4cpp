@@ -104,7 +104,7 @@ void fmu_driver::run(driver_options options) {
 
 void fmu_driver::dumpOutput(const string &data, const string &outputFolder) {
 
-    const auto fmuName = fs::path(fmu_->getFmuName().data()).stem().string();
+    const auto fmuName = fs::path(fmu_->getFmuName()).stem().string();
     const auto outputFile = fs::path(outputFolder + "/" + fmuName + "_out.csv");
     fs::create_directories(outputFile.parent_path());
 

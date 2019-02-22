@@ -252,7 +252,7 @@ namespace {
 std::unique_ptr<const ModelDescription> fmi4cpp::fmi2::parseModelDescription(const std::string &fileName) {
 
     ptree tree;
-    read_xml(fileName.data(), tree);
+    read_xml(fileName, tree);
     ptree root = tree.get_child("fmiModelDescription");
 
     ModelDescriptionBase base;
