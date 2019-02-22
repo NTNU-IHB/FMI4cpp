@@ -132,13 +132,13 @@ int main() {
     auto me_fmu = fmu.asModelExchangeFmu();
     
     auto cs_md = fmu.getModelDescription(); //smart pointer to a CoSimulationModelDescription instance
-    cout << "modelIdentifier=" << cs_fmu->getModelDescription()->modelIdentifier() << endl;
+    cout << "modelIdentifier=" << cs_fmu->getModelDescription()->modelIdentifier << endl;
     
     auto me_md = fmu.getModelDescription(); //smart pointer to a ModelExchangeModelDescription instance
-    cout << "modelIdentifier=" << me_fmu->getModelDescription()->modelIdentifier() << endl;
+    cout << "modelIdentifier=" << me_fmu->getModelDescription()->modelIdentifier << endl;
     
     auto var = cs_md->getVariableByName("my_var").asReal();
-    cout << "Name=" << var.name() <<  ", start=" << var.start().value_or(0) << endl;
+    cout << "Name=" << var.name <<  ", start=" << var.start().value_or(0) << endl;
               
     auto slave = cs_fmu->newInstance();
     
@@ -163,7 +163,7 @@ int main() {
             cerr << "Error! doStep() returned with status: " << to_string(slave->getLastStatus()) << endl;
             break;
         }
-        cout << "t=" << t << ", " << var.name() << "=" << value << endl;
+        cout << "t=" << t << ", " << var.name << "=" << value << endl;
      
     }
     
