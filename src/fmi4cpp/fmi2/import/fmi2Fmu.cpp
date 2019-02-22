@@ -44,7 +44,7 @@ namespace fs = std::experimental::filesystem;
 
 fmi2Fmu::fmi2Fmu(string_view fmuPath): fmuName_(fs::path(fmuPath).stem().string()) {
 
-    fmi4cpp::logger::debug("Loading FMU '{}'", fmuPath);
+    fmi4cpp::logger::debug("Loading FMU '{}'", fmuPath.data());
 
     const string fmuName = fs::path(fmuPath).stem().string();
     fs::path tmpPath(fs::temp_directory_path() /= fs::path("fmi4cpp_" + fmuName + "_" + generate_simple_id(8)));
@@ -109,7 +109,7 @@ namespace {
 
 std::unique_ptr<fmi2Fmu> fmi2Fmu::fromUrl(std::string_view fmuPath) {
 
-    fmi4cpp::logger::debug("Loading FMU from URL: {}", fmuPath);
+    fmi4cpp::logger::debug("Loading FMU from URL: {}", fmuPath.data());
 
     auto fmuName = fs::path(fmuPath).filename();
     fs::path tmp(fs::temp_directory_path() /= fmuName);
