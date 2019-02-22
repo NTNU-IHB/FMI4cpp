@@ -42,12 +42,11 @@ using namespace fmi4cpp::fmi2;
 
 namespace fs = std::experimental::filesystem;
 
-fmi2Fmu::fmi2Fmu(string_view fmuPath): fmuName_(fs::path(fmuPath).stem().string()) {
+fmi2Fmu::fmi2Fmu(string_view fmuPath): fmuName_(fs::path(fmuPath.data()).stem().string()) {
 
     fmi4cpp::logger::debug("Loading FMU '{}'", fmuPath.data());
 
-    const string fmuName = fs::path(fmuPath).stem().string();
-    fs::path tmpPath(fs::temp_directory_path() /= fs::path("fmi4cpp_" + fmuName + "_" + generate_simple_id(8)));
+    fs::path tmpPath(fs::temp_directory_path() /= fs::path("fmi4cpp_" + fmuName_ + "_" + generate_simple_id(8)));
 
     if (!create_directories(tmpPath)) {
         auto err = "Failed to create temporary directory '" + tmpPath.string() + "' !";
