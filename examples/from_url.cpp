@@ -23,8 +23,9 @@
  */
 
 
-#include <string>
+
 #include <iostream>
+#include <string_view>
 
 #include <fmi4cpp/fmi4cpp.hpp>
 
@@ -33,8 +34,8 @@ using namespace fmi4cpp::fmi2;
 
 int main() {
 
-    const std::string url = "folk.ntnu.no/laht/files/ControlledTemperature.fmu";
+    std::string_view url = "folk.ntnu.no/laht/files/ControlledTemperature.fmu";
     auto fmu = fmi2Fmu::fromUrl(url);
-    std::cout << "guid=" << fmu->guid() << std::endl;
+    std::cout << "guid=" << fmu->guid().data() << std::endl;
 
 }
