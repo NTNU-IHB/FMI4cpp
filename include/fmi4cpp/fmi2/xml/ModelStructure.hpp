@@ -40,8 +40,8 @@ namespace fmi4cpp::fmi2 {
     struct Unknown {
 
         unsigned int index;
-        std::optional<std::string> dependenciesKind;
         std::optional<std::vector<unsigned int >> dependencies;
+        std::optional<std::vector<std::string>> dependenciesKind;
 
     };
 
