@@ -22,6 +22,8 @@
  * THE SOFTWARE.
  */
 
+
+#include <boost/algorithm/string.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 
@@ -72,11 +74,14 @@ namespace {
         }
     }
 
+    void parseUnknownDependenciesKind(const std::string &str, std::vector<std::string> &store) {
+        boost::split(store, str, [](char c) { return c == ' '; });
+    }
+
     const Unknown parseUnknown(const ptree &node) {
 
         Unknown unknown;
         unknown.index = node.get<unsigned int>("<xmlattr>.index");
-        unknown.dependenciesKind = convert(node.get_optional<std::string>("<xmlattr>.dependenciesKind"));
 
         auto opt_dependencies = node.get_optional<std::string>("<xmlattr>.dependencies");
         if (opt_dependencies) {
@@ -84,6 +89,14 @@ namespace {
             parseUnknownDependencies(*opt_dependencies, dependencies);
             unknown.dependencies = dependencies;
         }
+
+        auto opt_dependenciesKind = node.get_optional<std::string>("<xmlattr>.dependenciesKind");
+        if (opt_dependenciesKind) {
+            std::vector<std::string> dependenciesKind;
+            parseUnknownDependenciesKind(*opt_dependenciesKind, dependenciesKind);
+            unknown.dependenciesKind = dependenciesKind;
+        }
+
         return unknown;
     }
 

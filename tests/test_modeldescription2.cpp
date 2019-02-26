@@ -51,6 +51,6 @@ BOOST_AUTO_TEST_CASE(FmuExportCrossCompile_test1) {
 
     BOOST_CHECK_EQUAL(true, derivatives[0].dependencies.has_value());
     BOOST_CHECK_EQUAL(2, derivatives[0].dependencies.value()[0]);
-    BOOST_CHECK_EQUAL("dependent", derivatives[0].dependenciesKind.value());
+    BOOST_CHECK_EQUAL("dependent", derivatives[0].dependenciesKind.value()[0]);
 
 }
