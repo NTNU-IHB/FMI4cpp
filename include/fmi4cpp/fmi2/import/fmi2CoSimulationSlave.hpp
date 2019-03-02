@@ -30,6 +30,7 @@
 #include "fmi2CoSimulationLibrary.hpp"
 
 #include "fmi4cpp/common/import/FmuSlave.hpp"
+#include "fmi4cpp/common/import/FmuResource.hpp"
 #include "fmi4cpp/common/import/AbstractFmuInstance.hpp"
 
 #include "fmi4cpp/fmi2/xml/ModelDescription.hpp"

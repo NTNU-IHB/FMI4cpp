@@ -29,6 +29,7 @@
 #include <vector>
 
 #include "fmi2ModelExchangeLibrary.hpp"
+#include "fmi4cpp/common/import/FmuResource.hpp"
 #include "fmi4cpp/common/import/AbstractFmuInstance.hpp"
 #include "fmi4cpp/fmi2/xml/ModelExchangeModelDescription.hpp"
 

@@ -31,6 +31,7 @@
 #include "fmi2ModelExchangeInstance.hpp"
 
 #include "fmi4cpp/common/import/FmuSlave.hpp"
+#include "fmi4cpp/common/import/FmuResource.hpp"
 #include "fmi4cpp/common/solver/ModelExchangeSolver.hpp"
 
 #include "fmi4cpp/fmi2/xml/CoSimulationModelDescription.hpp"

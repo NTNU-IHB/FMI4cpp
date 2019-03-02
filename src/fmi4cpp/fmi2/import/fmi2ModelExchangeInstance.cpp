@@ -28,7 +28,7 @@
 using namespace fmi4cpp::fmi2;
 
 fmi2ModelExchangeInstance::fmi2ModelExchangeInstance(const fmi2Component c,
-                                             const std::shared_ptr<FmuResource> &resource,
+                                             const std::shared_ptr<fmi4cpp::FmuResource> &resource,
                                              const std::shared_ptr<fmi2ModelExchangeLibrary> &library,
                                              const std::shared_ptr<const ModelExchangeModelDescription> &modelDescription)
         : AbstractFmuInstance<fmi2ModelExchangeLibrary, ModelExchangeModelDescription>(c, resource, library, modelDescription) {}

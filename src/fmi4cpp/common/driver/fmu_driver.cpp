@@ -38,7 +38,7 @@ namespace {
 
     const char *CSV_SEPARATOR = ",";
 
-    void addHeader(vector<ScalarVariable> &variables, std::string &data) {
+    void addHeader(const vector<ScalarVariable> &variables, std::string &data) {
 
         data += "\"Time\", ";
 
@@ -51,7 +51,7 @@ namespace {
 
     }
 
-    void addRow(FmuSlave<CoSimulationModelDescription> &slave, vector<ScalarVariable> &variables, string &data) {
+    void addRow(FmuSlave<CoSimulationModelDescription> &slave, const vector<ScalarVariable> &variables, string &data) {
 
         data += "\n" + to_string(slave.getSimulationTime()) + CSV_SEPARATOR;
         for (unsigned int i = 0; i < variables.size(); i++) {
