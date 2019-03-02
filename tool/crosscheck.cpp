@@ -125,7 +125,7 @@ namespace fmi4cpp::xc {
 
     public:
 
-        void run(const fs::path &fmuDir, const fs::path &resultDir) {
+        bool run(const fs::path &fmuDir, const fs::path &resultDir) {
 
             fmi4cpp::logger::info("Cross-checking FMU '{}'!", fmuDir.string());
 
@@ -153,8 +153,6 @@ namespace fmi4cpp::xc {
                         throw Failure("Don't know how to handle variable step solver (stepsize=0.0).");
                     } else if (hasInput) {
                         throw Failure("Unable to handle input files yet.");
-                    } else if (fmuDir.string().find("MapleSim") != std::string::npos) {
-                        throw Rejection("asd");
                     }
 
                     opt.variables = parseVariables(readLine(refFile));
@@ -164,6 +162,8 @@ namespace fmi4cpp::xc {
 
                     pass(resultDir);
                     fmi4cpp::logger::info("Cross-checking FMU '{}' passed!", fmuDir.string());
+
+                    return true;
 
                 } catch (Rejection &ex) {
                     fmi4cpp::logger::warn("Cross-checking FMU '{}' rejected! {}", fmuDir.string(), ex.what());
@@ -179,6 +179,8 @@ namespace fmi4cpp::xc {
                                        fmuDir.string(), ex.what());
                 fail(resultDir, "An unexpected program error occurred");
             }
+
+            return false;
 
         }
 
@@ -231,6 +233,7 @@ int main(int argc, char **argv) {
         fs::remove_all(csResults);
     }
 
+    unsigned int passed = 0;
     fmi4cpp::xc::CrossChecker xc;
     for (const auto &vendor : fs::directory_iterator(csFmus)) {
 
@@ -238,11 +241,15 @@ int main(int argc, char **argv) {
             for (const auto &fmuDir : fs::directory_iterator(version)) {
                 fs::path resultDir =
                         csResults / vendor.path().filename() / version.path().filename() / fmuDir.path().filename();
-                xc.run(fmuDir, resultDir);
+                if (xc.run(fmuDir, resultDir)) {
+                    ++passed;
+                }
             }
         }
 
     }
+
+    cout << std::to_string(passed) << " FMUs passed the cross-check" << endl;
 
     return 0;
 

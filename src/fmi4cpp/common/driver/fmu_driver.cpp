@@ -131,9 +131,9 @@ void fmu_driver::simulate(std::unique_ptr<FmuSlave<CoSimulationModelDescription>
     slave->enterInitializationMode();
     slave->exitInitializationMode();
 
-
     string data;
     vector<ScalarVariable> variables = options_.transformVariables(slave->getModelDescription());
+
     addHeader(variables, data);
 
     addRow(*slave, variables, data);

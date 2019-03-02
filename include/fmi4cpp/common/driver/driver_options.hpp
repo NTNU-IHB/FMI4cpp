@@ -47,7 +47,7 @@ namespace fmi4cpp::driver {
 
         std::vector<fmi2::ScalarVariable> transformVariables(std::shared_ptr<const fmi2::ModelDescriptionBase> md) const {
             std::vector<fmi2::ScalarVariable> result;
-            std::transform(variables.begin(), variables.end(), result.begin(), [md](std::string name) -> fmi2::ScalarVariable {
+            std::transform(variables.begin(), variables.end(), std::back_inserter(result), [md](std::string name) -> fmi2::ScalarVariable {
                return md->getVariableByName(name);
             });
             return result;
