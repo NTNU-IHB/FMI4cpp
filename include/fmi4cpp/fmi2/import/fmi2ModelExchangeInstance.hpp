@@ -41,6 +41,7 @@ namespace fmi4cpp::fmi2 {
         fmi2EventInfo eventInfo_;
 
         fmi2ModelExchangeInstance(fmi2Component c,
+                              const std::shared_ptr<FmuResource> &resource,
                               const std::shared_ptr<fmi2ModelExchangeLibrary> &library,
                               const std::shared_ptr<const ModelExchangeModelDescription> &modelDescription);
 

@@ -43,7 +43,15 @@ namespace fmi4cpp::driver {
         bool failOnLargeFileSize = false;
 
         fs::path outputFolder = fs::current_path();
-        std::vector<fmi4cpp::fmi2::ScalarVariable> variables;
+        std::vector<std::string> variables;
+
+        std::vector<fmi2::ScalarVariable> transformVariables(std::shared_ptr<const fmi2::ModelDescriptionBase> md) const {
+            std::vector<fmi2::ScalarVariable> result;
+            std::transform(variables.begin(), variables.end(), result.begin(), [md](std::string name) -> fmi2::ScalarVariable {
+               return md->getVariableByName(name);
+            });
+            return result;
+        }
 
     };
 

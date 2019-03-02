@@ -98,7 +98,6 @@ int main(int argc, char** argv) {
     }
 
     const string fmuPath = vm["fmu"].as<string>();
-    auto fmu = make_shared<fmi2Fmu>(fmuPath);
 
     if (!vm.count("variables")) {
         cerr << "Missing variables to print.. Please try again." << endl;
@@ -107,10 +106,7 @@ int main(int argc, char** argv) {
 
     driver_options options;
 
-    auto variables = vm["variables"].as<vector<string>>();
-    for (const auto v : variables) {
-        options.variables.push_back(fmu->getModelDescription()->getVariableByName(v));
-    }
+    options.variables = vm["variables"].as<vector<string>>();
 
     if (vm.count(START)) {
         options.startTime = vm[START].as<double>();
@@ -130,8 +126,8 @@ int main(int argc, char** argv) {
         options.modelExchange = true;
     }
 
-    fmu_driver driver(fmu);
-    driver.run(options);
+    fmu_driver driver(fmuPath, options);
+    driver.run();
 
     return 0;
 

@@ -40,6 +40,7 @@ namespace fmi4cpp {
 
         bool terminated_ = false;
         bool instanceFreed_ = false;
+        std::shared_ptr<FmuResource> resource_;
 
     protected:
 
@@ -50,9 +51,10 @@ namespace fmi4cpp {
     public:
 
         AbstractFmuInstance(fmi4cppComponent c,
+                            const std::shared_ptr<FmuResource> &resource,
                             const std::shared_ptr<FmiLibrary> &library,
                             const std::shared_ptr<const ModelDescription> &modelDescription)
-                : c_(c), library_(library), modelDescription_(modelDescription) {}
+                : c_(c), resource_(resource), library_(library), modelDescription_(modelDescription) {}
 
         std::shared_ptr<const ModelDescription> getModelDescription() const override {
             return modelDescription_;

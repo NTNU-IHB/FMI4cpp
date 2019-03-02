@@ -79,18 +79,15 @@ namespace {
         return lines;
     }
 
-    vector<ScalarVariable> parseVariables(string txt, ModelVariables &mv) {
+    vector<std::string> parseVariables(string txt) {
         vector<string> vars;
         boost::split(vars, txt, [](char c) { return c == ','; });
         vars.erase(vars.begin()); //remove "time"
-
-        vector<ScalarVariable> variables;
         for (auto &var : vars) {
             replace(var.begin(), var.end(), '\"', ' ');
             boost::trim(var);
-            variables.push_back(mv.getByName(var));
         }
-        return variables;
+        return vars;
     }
 
     driver_options parseDefaults(string txt) {
@@ -156,18 +153,14 @@ namespace fmi4cpp::xc {
                         throw Failure("Don't know how to handle variable step solver (stepsize=0.0).");
                     } else if (hasInput) {
                         throw Failure("Unable to handle input files yet.");
+                    } else if (fmuDir.string().find("MapleSim") != std::string::npos) {
+                        throw Rejection("asd");
                     }
 
-                    auto fmu = make_shared<fmi2Fmu>(fmuFile);
-                    if (fmu->getModelDescription()->asCoSimulationModelDescription()->needsExecutionTool) {
-                        throw Rejection("FMU requires execution tool.");
-                    }
+                    opt.variables = parseVariables(readLine(refFile));
 
-                    ModelVariables mv = *fmu->getModelDescription()->modelVariables;
-                    opt.variables = parseVariables(readLine(refFile), mv);
-
-                    fmu_driver driver(fmu);
-                    driver.run(opt);
+                    fmu_driver driver(fmuFile, opt);
+                    driver.run();
 
                     pass(resultDir);
                     fmi4cpp::logger::info("Cross-checking FMU '{}' passed!", fmuDir.string());
@@ -182,7 +175,7 @@ namespace fmi4cpp::xc {
 
 
             } catch (exception &ex) {
-                fmi4cpp::logger::error("Cross-checking FMU '{}' failed. An unexpected program error occurred: ",
+                fmi4cpp::logger::error("Cross-checking FMU '{}' failed. An unexpected program error occurred: {}",
                                        fmuDir.string(), ex.what());
                 fail(resultDir, "An unexpected program error occurred");
             }

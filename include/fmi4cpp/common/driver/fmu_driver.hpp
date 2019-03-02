@@ -40,18 +40,18 @@ namespace fmi4cpp::driver {
 
     public:
 
-        explicit fmu_driver(std::shared_ptr<fmi2::fmi2Fmu> fmu);
+        fmu_driver(const std::string &fmuPath, const driver_options &options);
 
-        void run(driver_options options);
+        void run();
 
     private:
 
-        const std::shared_ptr<fmi2::fmi2Fmu> fmu_;
+        const std::string &fmuPath_;
+        const driver_options &options_;
 
         void dumpOutput(const std::string &data, const std::string &outputFolder);
 
-        void simulate(std::unique_ptr<FmuSlave<fmi2::CoSimulationModelDescription>> slave,
-                      driver_options &options);
+        void simulate(std::unique_ptr<FmuSlave<fmi2::CoSimulationModelDescription>> slave);
 
     };
 

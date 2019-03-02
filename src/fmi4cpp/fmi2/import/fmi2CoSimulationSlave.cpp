@@ -28,9 +28,10 @@
 using namespace fmi4cpp::fmi2;
 
 fmi2CoSimulationSlave::fmi2CoSimulationSlave(const fmi2Component c,
+                                     const std::shared_ptr<FmuResource> &resource,
                                      const std::shared_ptr<fmi2CoSimulationLibrary> &library,
                                      const std::shared_ptr<const CoSimulationModelDescription> &modelDescription)
-        : AbstractFmuInstance<fmi2CoSimulationLibrary, CoSimulationModelDescription>(c, library, modelDescription) {}
+        : AbstractFmuInstance<fmi2CoSimulationLibrary, CoSimulationModelDescription>(c, resource, library, modelDescription) {}
 
 fmi4cpp::Status fmi2CoSimulationSlave::getLastStatus() const {
     return convert(library_->getLastStatus());
