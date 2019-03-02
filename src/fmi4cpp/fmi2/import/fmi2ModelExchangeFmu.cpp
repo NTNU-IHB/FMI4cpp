@@ -53,11 +53,11 @@ std::unique_ptr<fmi2ModelExchangeInstance> fmi2ModelExchangeFmu::newInstance(boo
     }
     fmi2Component c = lib->instantiate(modelIdentifier, fmi2ModelExchange, guid(),
                                        resource_->getResourcePath(), visible, loggingOn);
-    return make_unique<fmi2ModelExchangeInstance>(c, lib, modelDescription_);
+    return make_unique<fmi2ModelExchangeInstance>(c, resource_, lib, modelDescription_);
 }
 
 std::unique_ptr<fmi2ModelExchangeSlave>
 fmi2ModelExchangeFmu::newInstance(std::unique_ptr<ModelExchangeSolver> &solver, bool visible, bool loggingOn) {
     unique_ptr<fmi2ModelExchangeInstance> instance = newInstance(visible, loggingOn);
-    return make_unique<fmi2ModelExchangeSlave>(instance, solver);
+    return make_unique<fmi2ModelExchangeSlave>(resource_, instance, solver);
 }

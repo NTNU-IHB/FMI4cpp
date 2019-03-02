@@ -29,6 +29,7 @@
 #include <vector>
 
 #include "fmi2ModelExchangeLibrary.hpp"
+#include "fmi4cpp/common/import/FmuResource.hpp"
 #include "fmi4cpp/common/import/AbstractFmuInstance.hpp"
 #include "fmi4cpp/fmi2/xml/ModelExchangeModelDescription.hpp"
 
@@ -41,6 +42,7 @@ namespace fmi4cpp::fmi2 {
         fmi2EventInfo eventInfo_;
 
         fmi2ModelExchangeInstance(fmi2Component c,
+                              const std::shared_ptr<FmuResource> &resource,
                               const std::shared_ptr<fmi2ModelExchangeLibrary> &library,
                               const std::shared_ptr<const ModelExchangeModelDescription> &modelDescription);
 

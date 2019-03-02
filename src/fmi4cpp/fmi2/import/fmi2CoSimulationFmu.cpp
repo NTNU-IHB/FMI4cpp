@@ -50,6 +50,6 @@ unique_ptr<fmi2CoSimulationSlave> fmi2CoSimulationFmu::newInstance(const bool vi
     }
     auto c = lib->instantiate(modelIdentifier, fmi2CoSimulation, guid(),
                                        resource_->getResourcePath(), visible, loggingOn);
-    return make_unique<fmi2CoSimulationSlave>(c, lib, modelDescription_);
+    return make_unique<fmi2CoSimulationSlave>(c, resource_, lib, modelDescription_);
 }
 

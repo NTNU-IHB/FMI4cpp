@@ -42,11 +42,12 @@ using namespace fmi4cpp::fmi2;
 
 namespace fs = std::experimental::filesystem;
 
-fmi2Fmu::fmi2Fmu(const string &fmuPath): fmuName_(fs::path(fmuPath).stem().string()) {
+fmi2Fmu::fmi2Fmu(const string &fmuPath) {
 
     fmi4cpp::logger::debug("Loading FMU '{}'", fmuPath);
 
-    fs::path tmpPath(fs::temp_directory_path() /= fs::path("fmi4cpp_" + fmuName_ + "_" + generate_simple_id(8)));
+    const std::string fmuName = fs::path(fmuPath).stem().string();
+    fs::path tmpPath(fs::temp_directory_path() /= fs::path("fmi4cpp_" + fmuName + "_" + generate_simple_id(8)));
 
     if (!create_directories(tmpPath)) {
         auto err = "Failed to create temporary directory '" + tmpPath.string() + "' !";
@@ -65,9 +66,6 @@ fmi2Fmu::fmi2Fmu(const string &fmuPath): fmuName_(fs::path(fmuPath).stem().strin
     resource_ = make_shared<FmuResource>(tmpPath);
     modelDescription_ = std::move(parseModelDescription(resource_->getModelDescriptionPath()));
 
-}
- const std::string fmi2Fmu::getFmuName() const {
-    return fmuName_;
 }
 
 const std:: string fmi2Fmu::getModelDescriptionXml() const {

@@ -39,15 +39,16 @@ namespace {
         CoSimulationAttributes attributes(me);
         attributes.canHandleVariableCommunicationStepSize = true;
         attributes.maxOutputDerivativeOrder = 0;
-        return std::make_unique<CoSimulationModelDescription>(CoSimulationModelDescription(me, attributes));
+        return std::make_shared<CoSimulationModelDescription>(CoSimulationModelDescription(me, attributes));
     }
 
 }
 
 fmi2ModelExchangeSlave::fmi2ModelExchangeSlave(
+        std::shared_ptr<fmi4cpp::FmuResource> &resource,
         std::unique_ptr<fmi2ModelExchangeInstance> &instance,
         std::unique_ptr<ModelExchangeSolver> &solver)
-        : instance_(std::move(instance)), solver_(std::move(solver)) {
+        : resource_(std::move(resource)), instance_(std::move(instance)), solver_(std::move(solver)) {
 
     sys_.instance_ = instance_;
     csModelDescription_ = wrap(*instance_->getModelDescription());

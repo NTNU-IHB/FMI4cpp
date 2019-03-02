@@ -25,6 +25,7 @@
 #ifndef FMI4CPP_DRIVEROPTIONS_HPP
 #define FMI4CPP_DRIVEROPTIONS_HPP
 
+#include <algorithm>
 #include <experimental/filesystem>
 
 #include <fmi4cpp/fmi2/xml/ScalarVariable.hpp>
@@ -42,8 +43,18 @@ namespace fmi4cpp::driver {
         bool modelExchange = false;
         bool failOnLargeFileSize = false;
 
+        std::vector<std::string> variables;
         fs::path outputFolder = fs::current_path();
-        std::vector<fmi4cpp::fmi2::ScalarVariable> variables;
+
+        std::vector<fmi2::ScalarVariable>
+        transformVariables(std::shared_ptr<const fmi2::ModelDescriptionBase> md) const {
+            std::vector<fmi2::ScalarVariable> result;
+            std::transform(variables.begin(), variables.end(), std::back_inserter(result),
+                           [md](std::string name) -> fmi2::ScalarVariable {
+                               return md->getVariableByName(name);
+                           });
+            return result;
+        }
 
     };
 

@@ -79,18 +79,15 @@ namespace {
         return lines;
     }
 
-    vector<ScalarVariable> parseVariables(string txt, ModelVariables &mv) {
+    vector<std::string> parseVariables(string txt) {
         vector<string> vars;
         boost::split(vars, txt, [](char c) { return c == ','; });
         vars.erase(vars.begin()); //remove "time"
-
-        vector<ScalarVariable> variables;
         for (auto &var : vars) {
             replace(var.begin(), var.end(), '\"', ' ');
             boost::trim(var);
-            variables.push_back(mv.getByName(var));
         }
-        return variables;
+        return vars;
     }
 
     driver_options parseDefaults(string txt) {
@@ -128,7 +125,7 @@ namespace fmi4cpp::xc {
 
     public:
 
-        void run(const fs::path &fmuDir, const fs::path &resultDir) {
+        bool run(const fs::path &fmuDir, const fs::path &resultDir) {
 
             fmi4cpp::logger::info("Cross-checking FMU '{}'!", fmuDir.string());
 
@@ -158,19 +155,15 @@ namespace fmi4cpp::xc {
                         throw Failure("Unable to handle input files yet.");
                     }
 
-                    auto fmu = make_shared<fmi2Fmu>(fmuFile);
-                    if (fmu->getModelDescription()->asCoSimulationModelDescription()->needsExecutionTool) {
-                        throw Rejection("FMU requires execution tool.");
-                    }
+                    opt.variables = parseVariables(readLine(refFile));
 
-                    ModelVariables mv = *fmu->getModelDescription()->modelVariables;
-                    opt.variables = parseVariables(readLine(refFile), mv);
-
-                    fmu_driver driver(fmu);
-                    driver.run(opt);
+                    fmu_driver driver(fmuFile, opt);
+                    driver.run();
 
                     pass(resultDir);
                     fmi4cpp::logger::info("Cross-checking FMU '{}' passed!", fmuDir.string());
+
+                    return true;
 
                 } catch (Rejection &ex) {
                     fmi4cpp::logger::warn("Cross-checking FMU '{}' rejected! {}", fmuDir.string(), ex.what());
@@ -182,10 +175,12 @@ namespace fmi4cpp::xc {
 
 
             } catch (exception &ex) {
-                fmi4cpp::logger::error("Cross-checking FMU '{}' failed. An unexpected program error occurred: ",
+                fmi4cpp::logger::error("Cross-checking FMU '{}' failed. An unexpected program error occurred: {}",
                                        fmuDir.string(), ex.what());
                 fail(resultDir, "An unexpected program error occurred");
             }
+
+            return false;
 
         }
 
@@ -238,6 +233,7 @@ int main(int argc, char **argv) {
         fs::remove_all(csResults);
     }
 
+    unsigned int passed = 0;
     fmi4cpp::xc::CrossChecker xc;
     for (const auto &vendor : fs::directory_iterator(csFmus)) {
 
@@ -245,11 +241,15 @@ int main(int argc, char **argv) {
             for (const auto &fmuDir : fs::directory_iterator(version)) {
                 fs::path resultDir =
                         csResults / vendor.path().filename() / version.path().filename() / fmuDir.path().filename();
-                xc.run(fmuDir, resultDir);
+                if (xc.run(fmuDir, resultDir)) {
+                    ++passed;
+                }
             }
         }
 
     }
+
+    cout << std::to_string(passed) << " FMUs passed the cross-check" << endl;
 
     return 0;
 

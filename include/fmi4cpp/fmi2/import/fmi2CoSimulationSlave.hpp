@@ -30,6 +30,7 @@
 #include "fmi2CoSimulationLibrary.hpp"
 
 #include "fmi4cpp/common/import/FmuSlave.hpp"
+#include "fmi4cpp/common/import/FmuResource.hpp"
 #include "fmi4cpp/common/import/AbstractFmuInstance.hpp"
 
 #include "fmi4cpp/fmi2/xml/ModelDescription.hpp"
@@ -39,13 +40,14 @@
 namespace fmi4cpp::fmi2 {
 
     class fmi2CoSimulationSlave : public virtual FmuSlave<CoSimulationModelDescription>,
-                              public AbstractFmuInstance<fmi2CoSimulationLibrary, CoSimulationModelDescription> {
+                                  public AbstractFmuInstance<fmi2CoSimulationLibrary, CoSimulationModelDescription> {
 
     public:
 
         fmi2CoSimulationSlave(fmi2Component c,
-                          const std::shared_ptr<fmi2CoSimulationLibrary> &library,
-                          const std::shared_ptr<const CoSimulationModelDescription> &modelDescription);
+                              const std::shared_ptr<FmuResource> &resource,
+                              const std::shared_ptr<fmi2CoSimulationLibrary> &library,
+                              const std::shared_ptr<const CoSimulationModelDescription> &modelDescription);
 
         bool doStep(double stepSize) override;
 
@@ -82,15 +84,15 @@ namespace fmi4cpp::fmi2 {
 
         virtual bool readBoolean(fmi2ValueReference vr, fmi2Boolean &ref);
 
-        virtual bool readBoolean(const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Boolean > &ref);
+        virtual bool readBoolean(const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Boolean> &ref);
 
         virtual bool writeInteger(fmi2ValueReference vr, fmi2Integer value);
 
-        virtual bool writeInteger(const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2Integer > &values);
+        virtual bool writeInteger(const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2Integer> &values);
 
         virtual bool writeReal(fmi2ValueReference vr, fmi2Real value);
 
-        virtual bool writeReal(const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2Real > &values);
+        virtual bool writeReal(const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2Real> &values);
 
         virtual bool writeString(fmi2ValueReference vr, fmi2String value);
 
@@ -98,7 +100,7 @@ namespace fmi4cpp::fmi2 {
 
         virtual bool writeBoolean(fmi2ValueReference vr, fmi2Boolean value);
 
-        virtual bool writeBoolean(const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2Boolean > &values);
+        virtual bool writeBoolean(const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2Boolean> &values);
 
         virtual bool getFMUstate(fmi2FMUstate &state);
 
@@ -106,13 +108,14 @@ namespace fmi4cpp::fmi2 {
 
         virtual bool freeFMUstate(fmi2FMUstate &state);
 
-        virtual bool serializeFMUstate(const fmi2FMUstate &state, std::vector<fmi2Byte > &serializedState);
+        virtual bool serializeFMUstate(const fmi2FMUstate &state, std::vector<fmi2Byte> &serializedState);
 
-        virtual bool deSerializeFMUstate(fmi2FMUstate &state, const std::vector<fmi2Byte > &serializedState);
+        virtual bool deSerializeFMUstate(fmi2FMUstate &state, const std::vector<fmi2Byte> &serializedState);
 
         virtual bool getDirectionalDerivative(const std::vector<fmi2ValueReference> &vUnknownRef,
                                               const std::vector<fmi2ValueReference> &vKnownRef,
-                                              const std::vector<fmi2Real > &dvKnownRef, std::vector<fmi2Real> &dvUnknownRef);
+                                              const std::vector<fmi2Real> &dvKnownRef,
+                                              std::vector<fmi2Real> &dvUnknownRef);
 
     };
 

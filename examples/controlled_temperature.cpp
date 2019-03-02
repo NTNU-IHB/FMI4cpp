@@ -36,20 +36,8 @@ const double stop = 10.0;
 const double step_size = 1E-4;
 const fmi2ValueReference vr = 46;
 
-int main() {
+void run(unique_ptr<fmi2CoSimulationSlave> &slave) {
 
-    const string fmu_path = "../resources/fmus/2.0/cs/20sim/4.6.4.8004/"
-                            "ControlledTemperature/ControlledTemperature.fmu";
-
-    auto fmu = fmi2Fmu(fmu_path).asCoSimulationFmu();
-
-    for (const auto &v : *fmu->getModelDescription()->modelVariables) {
-        if (v.causality == Causality::output) {
-            logger::info("Name={}, description={}", v.name, v.description);
-        }
-    }
-
-    auto slave = fmu->newInstance();
     slave->setupExperiment();
     slave->enterInitializationMode();
     slave->exitInitializationMode();
@@ -73,6 +61,15 @@ int main() {
     logger::info("Time elapsed={}s", elapsed);
 
     slave->terminate();
+}
+
+int main() {
+
+    const string fmu_path = "../resources/fmus/2.0/cs/20sim/4.6.4.8004/"
+                            "ControlledTemperature/ControlledTemperature.fmu";
+
+    auto fmu = fmi2Fmu(fmu_path).asCoSimulationFmu()->newInstance();
+    run(fmu);
     
     return 0;
 

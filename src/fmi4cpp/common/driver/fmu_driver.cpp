@@ -38,7 +38,7 @@ namespace {
 
     const char *CSV_SEPARATOR = ",";
 
-    void addHeader(vector<ScalarVariable> &variables, std::string &data) {
+    void addHeader(const vector<ScalarVariable> &variables, std::string &data) {
 
         data += "\"Time\", ";
 
@@ -51,7 +51,7 @@ namespace {
 
     }
 
-    void addRow(FmuSlave<CoSimulationModelDescription> &slave, vector<ScalarVariable> &variables, string &data) {
+    void addRow(FmuSlave<CoSimulationModelDescription> &slave, const vector<ScalarVariable> &variables, string &data) {
 
         data += "\n" + to_string(slave.getSimulationTime()) + CSV_SEPARATOR;
         for (unsigned int i = 0; i < variables.size(); i++) {
@@ -84,27 +84,33 @@ namespace {
 
 }
 
-fmu_driver::fmu_driver(const std::shared_ptr<fmi2Fmu> fmu) : fmu_(fmu){}
+fmu_driver::fmu_driver(const std::string &fmuPath, const driver_options &options) : fmuPath_(fmuPath), options_(options){}
 
-void fmu_driver::run(driver_options options) {
+void fmu_driver::run() {
 
-    if (options.modelExchange) {
+    fmi2::fmi2Fmu fmu(fmuPath_);
+
+    if (fmu.getModelDescription()->asCoSimulationModelDescription()->needsExecutionTool) {
+        throw Rejection("FMU requires execution tool.");
+    }
+
+    if (options_.modelExchange) {
 #ifdef FMI4CPP_WITH_ODEINT
         auto solver = solver::make_solver<solver::EulerSolver>(1E-3);
-        simulate(fmu_->asModelExchangeFmu()->newInstance(solver), options);
+        simulate(fmu.asModelExchangeFmu()->newInstance(solver));
 #else
         const char *msg = "Model Exchange mode selected, but driver has been built without odeint support!";
         throw Failure(msg);
 #endif
     } else {
-        simulate(fmu_->asCoSimulationFmu()->newInstance(), options);
+        simulate(fmu.asCoSimulationFmu()->newInstance());
     }
 
 }
 
 void fmu_driver::dumpOutput(const string &data, const string &outputFolder) {
 
-    const auto fmuName = fs::path(fmu_->getFmuName()).stem().string();
+    const auto fmuName = fs::path(fmuPath_).stem().string();
     const auto outputFile = fs::path(outputFolder + "/" + fmuName + "_out.csv");
     fs::create_directories(outputFile.parent_path());
 
@@ -115,20 +121,22 @@ void fmu_driver::dumpOutput(const string &data, const string &outputFolder) {
 
 }
 
-void fmu_driver::simulate(std::unique_ptr<FmuSlave<CoSimulationModelDescription>> slave, driver_options &options) {
+void fmu_driver::simulate(std::unique_ptr<FmuSlave<CoSimulationModelDescription>> slave) {
 
-    auto startTime = options.startTime;
-    auto stopTime = options.stopTime;
-    auto stepSize = options.stepSize;
+    auto startTime = options_.startTime;
+    auto stopTime = options_.stopTime;
+    auto stepSize = options_.stepSize;
 
     slave->setupExperiment(startTime);
     slave->enterInitializationMode();
     slave->exitInitializationMode();
 
-    string data = "";
-    addHeader(options.variables, data);
+    string data;
+    vector<ScalarVariable> variables = options_.transformVariables(slave->getModelDescription());
 
-    addRow(*slave, options.variables, data);
+    addHeader(variables, data);
+
+    addRow(*slave, variables, data);
     while (slave->getSimulationTime() <= stopTime) {
 
         if (!slave->doStep(stepSize)) {
@@ -136,13 +144,13 @@ void fmu_driver::simulate(std::unique_ptr<FmuSlave<CoSimulationModelDescription>
             throw Failure("Simulation terminated prematurely.");
         }
 
-        addRow(*slave, options.variables, data);
+        addRow(*slave, variables, data);
 
     }
 
     slave->terminate();
 
-    if (options.failOnLargeFileSize) {
+    if (options_.failOnLargeFileSize) {
         const size_t size = data.size();
         if (size >= 1e6) {
             double mbSize = ((double) size) / 1e6;
@@ -150,6 +158,6 @@ void fmu_driver::simulate(std::unique_ptr<FmuSlave<CoSimulationModelDescription>
         }
     }
 
-    dumpOutput(data, options.outputFolder.string());
+    dumpOutput(data, options_.outputFolder.string());
 
 }
