@@ -52,7 +52,7 @@ if (FMI4CPP_BUILD_TESTS)
     list(APPEND BOOST_COMPONENTS unit_test_framework)
 endif ()
 
-find_package(Boost 1.58 COMPONENTS ${BOOST_COMPONENTS} REQUIRED)
+find_package(Boost 1.65 COMPONENTS ${BOOST_COMPONENTS} REQUIRED)
 
 if (FMI4CPP_USING_VCPKG)
     if (UNIX)
