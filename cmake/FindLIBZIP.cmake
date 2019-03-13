@@ -14,6 +14,9 @@
 #
 # @author Lars Ivar Hatledal
 
+find_package(ZLIB REQUIRED)
+find_package(BZip2 REQUIRED)
+
 find_path(LIBZIP_INCLUDE_DIR NAMES zip.h)
 mark_as_advanced(LIBZIP_INCLUDE_DIR)
 
@@ -32,12 +35,20 @@ if (LIBZIP_FOUND)
         set(LIBZIP_LIBRARIES ${LIBZIP_LIBRARY})
     endif()
 
-    if (NOT TARGET LIBZIP::LIBZIP)
-        add_library(LIBZIP::LIBZIP UNKNOWN IMPORTED)
-        set_target_properties(LIBZIP::LIBZIP PROPERTIES
-                INTERFACE_INCLUDE_DIRECTORIES "${LIBZIP_INCLUDE_DIR}")
-        set_property(TARGET LIBZIP::LIBZIP APPEND PROPERTY
-                IMPORTED_LOCATION "${LIBZIP_LIBRARY}")
+    if (NOT TARGET  LIBZIP::LIBZIP)
+        add_library( LIBZIP::LIBZIP UNKNOWN IMPORTED)
+        set_property(TARGET  LIBZIP::LIBZIP
+                APPEND
+                PROPERTY INTERFACE_INCLUDE_DIRECTORIES "${LIBZIP_INCLUDE_DIR}")
+        set_property(TARGET  LIBZIP::LIBZIP
+                APPEND
+                PROPERTY IMPORTED_LOCATION "${LIBZIP_LIBRARY}")
+        set_property(TARGET  LIBZIP::LIBZIP
+                APPEND
+                PROPERTY INTERFACE_LINK_LIBRARIES
+                ZLIB::ZLIB
+                BZip2::BZip2)
+
     endif()
 
 endif()
