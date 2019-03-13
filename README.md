@@ -59,8 +59,6 @@ On Windows you might want to specify the target architecture (defaults to x86) b
 
 Then tell CMake about your vcpkg installation by passing <br> ```-DCMAKE_TOOLCHAIN_FILE=<path/to/vcpkg>/scripts/buildsystems/vcpkg.cmake``` to it.
 
-When using vcpkg, set `-DFMI4CPP_USING_VCPKG=ON`
-
 ##### conan
 
 Install [conan](https://conan.io/) and run `conan install`:

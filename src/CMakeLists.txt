@@ -35,7 +35,6 @@ target_include_directories(${FMI4CPP_LIB}
     INTERFACE
         ${Boost_INCLUDE_DIRS}
     PRIVATE
-        ${LIBZIP_INCLUDE_DIRS}
         ${CURRENT_CMAKE_SOURCE_DIR}/../src
 )
 
@@ -46,13 +45,9 @@ target_link_libraries(${FMI4CPP_LIB}
 )
 
 if (FMI4CPP_WITH_CURL)
-    target_include_directories(${FMI4CPP_LIB}
-        PRIVATE
-            ${CURL_INCLUDE_DIRS}
-    )
     target_link_libraries(${FMI4CPP_LIB}
         PRIVATE
-            ${CURL_LIBRARIES}
+            CURL::CURL
     )
 endif()
 
@@ -61,12 +56,6 @@ if (UNIX)
         PRIVATE
             dl stdc++fs pthread
     )
-    if (FMI4CPP_USING_VCPKG)
-        target_link_libraries(${FMI4CPP_LIB}
-            PRIVATE
-                ZLIB::ZLIB BZip2::BZip2
-            )
-    endif()
 endif()
 
 # Make sure that also downstream libraries that use fmi4cpp compile as C++17
