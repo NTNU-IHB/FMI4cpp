@@ -26,14 +26,14 @@ jobs:
           cmakeArgs: 'cmake .. -DCMAKE_TOOLCHAIN_FILE=../../../vcpkg/scripts/buildsystems/vcpkg.cmake -DFMI4CPP_WITH_ODEINT=ON -DFMI4CPP_BUILD_TESTS=ON -A x64'
 
       - task: CMake@1
-          inputs:
-            workingDirectory: '$(system.defaultWorkingDirectory)/cmake-build-release'
-            cmakeArgs: 'cmake --build .'
+        inputs:
+          workingDirectory: '$(system.defaultWorkingDirectory)/cmake-build-release'
+          cmakeArgs: 'cmake --build .'
 
       - task: CMake@1
-          inputs:
-            workingDirectory: '$(system.defaultWorkingDirectory)/cmake-build-release'
-            cmakeArgs: 'ctest -C Release'
+        inputs:
+          workingDirectory: '$(system.defaultWorkingDirectory)/cmake-build-release'
+          cmakeArgs: 'ctest -C Release'
 
 
   - job: conan
@@ -67,11 +67,11 @@ jobs:
           cmakeArgs: 'cmake .. -DFMI4CPP_USING_CONAN=ON -DFMI4CPP_BUILD_TESTS=ON -A x64'
 
       - task: CMake@1
-          inputs:
-            workingDirectory: '$(system.defaultWorkingDirectory)/cmake-build-release'
-            cmakeArgs: 'cmake --build .'
+        inputs:
+          workingDirectory: '$(system.defaultWorkingDirectory)/cmake-build-release'
+          cmakeArgs: 'cmake --build .'
 
       - task: CMake@1
-          inputs:
-            workingDirectory: '$(system.defaultWorkingDirectory)/cmake-build-release'
-            cmakeArgs: 'ctest -C Release'
+        inputs:
+          workingDirectory: '$(system.defaultWorkingDirectory)/cmake-build-release'
+          cmakeArgs: 'ctest -C Release'
