@@ -3,7 +3,7 @@ trigger:
 
 jobs:
   - job: vcpkg
-    timeoutInMinutes: 30
+    timeoutInMinutes: 60
 
     pool:
       vmImage: 'vs2017-win2016'
@@ -37,7 +37,7 @@ jobs:
 
 
   - job: conan
-    timeoutInMinutes: 30
+    timeoutInMinutes: 45
 
     pool:
       vmImage: 'vs2017-win2016'
