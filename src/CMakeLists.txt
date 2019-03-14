@@ -58,6 +58,7 @@ if (UNIX)
     )
 endif()
 
+target_compile_definitions(${FMI4CPP_LIB} PUBLIC "BOOST_ALL_DYN_LINK=1" "BOOST_ALL_NO_LIB=1" "BOOST_CONFIG_SUPPRESS_OUTDATED_MESSAGE=1")
 # Make sure that also downstream libraries that use fmi4cpp compile as C++17
 target_compile_features(${FMI4CPP_LIB} PUBLIC cxx_std_17)
 
