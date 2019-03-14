@@ -6,6 +6,10 @@ option(FMI4CPP_USING_CONAN "Build using conan" OFF)
 option(FMI4CPP_WITH_CURL "Build with curl. Allows URL paths to FMUs" OFF)
 option(FMI4CPP_WITH_ODEINT "Build with odeint solvers. Allows ME models to be wrapped as CS ones" OFF)
 
+if(FMI4CPP_USING_CONAN)
+    set(CMAKE_TOOLCHAIN_FILE "")
+endif()
+
 cmake_minimum_required(VERSION 3.10)
 project(FMI4cpp
         VERSION 0.6.0)
@@ -15,7 +19,6 @@ set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 if(FMI4CPP_USING_CONAN)
-    set(CMAKE_TOOLCHAIN_FILE "")
     if(EXISTS ${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
         include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
         conan_basic_setup()
@@ -63,9 +66,6 @@ if (FMI4CPP_BUILD_TESTS OR FMI4CPP_BUILD_EXAMPLES)
 endif()
 
 if (FMI4CPP_BUILD_TESTS)
-    if (NOT FMI4CPP_USING_VCPKG)
-        add_definitions(-DBOOST_TEST_DYN_LINK)
-    endif()
     add_subdirectory(tests)
 endif ()
 
