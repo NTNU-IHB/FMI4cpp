@@ -32,7 +32,7 @@ jobs:
 
       - task: CMake@1
         inputs:
-          workingDirectory: '$(system.defaultWorkingDirectory)/cmake-build-release'
+          workingDirectory: '$(system.defaultWorkingDirectory)/cmake-build-release/tests'
           cmakeArgs: 'ctest -C Release'
 
 
@@ -66,5 +66,5 @@ jobs:
 
       - task: CMake@1
         inputs:
-          workingDirectory: '$(system.defaultWorkingDirectory)/cmake-build-release'
+          workingDirectory: '$(system.defaultWorkingDirectory)/cmake-build-release/tests'
           cmakeArgs: 'ctest -C Release'
