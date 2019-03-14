@@ -30,10 +30,10 @@ jobs:
           workingDirectory: '$(system.defaultWorkingDirectory)/cmake-build-release'
           cmakeArgs: 'cmake --build .'
 
-      - task: CMake@1
+      - task: Bash@3
         inputs:
           workingDirectory: '$(system.defaultWorkingDirectory)/cmake-build-release/tests'
-          cmakeArgs: 'ctest -C Release'
+          script: 'ctest -C Release'
 
 
   - job: conan
@@ -64,7 +64,7 @@ jobs:
           workingDirectory: '$(system.defaultWorkingDirectory)/cmake-build-release'
           cmakeArgs: 'cmake --build .'
 
-      - task: CMake@1
+      - task: Bash@3
         inputs:
           workingDirectory: '$(system.defaultWorkingDirectory)/cmake-build-release/tests'
-          cmakeArgs: 'ctest -C Release'
+          script: 'ctest -C Release'
