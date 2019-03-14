@@ -2,10 +2,6 @@
 include_directories(${FMI4cpp_SOURCE_DIR}/src)
 link_libraries(FMI4cpp::fmi4cpp)
 
-if (UNIX AND FMI4CPP_USING_VCPKG AND FMI4CPP_WITH_CURL)
-    link_libraries(${CURL_LIBRARIES} OpenSSL::Crypto OpenSSL::SSL)
-endif ()
-
 add_executable(fmu_test fmu_test.cpp)
 add_executable(torsionbar torsionbar.cpp)
 add_executable(multiple_fmus multiple_fmus.cpp)

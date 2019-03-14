@@ -2,10 +2,6 @@
 include_directories(../src ${Boost_INCLUDE_DIRS})
 link_libraries(FMI4cpp::fmi4cpp ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY})
 
-if (UNIX AND FMI4CPP_USING_VCPKG AND FMI4CPP_WITH_CURL)
-    link_libraries(${CURL_LIBRARIES} OpenSSL::Crypto OpenSSL::SSL)
-endif ()
-
 enable_testing()
 
 add_executable(test_controlled_temperature test_controlled_temperature.cpp)
