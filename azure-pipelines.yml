@@ -34,7 +34,7 @@ jobs:
 
       - task: CMake@1
         inputs:
-          workingDirectory: '$(system.defaultWorkingDirectory)/cpp/FMU-proxy/cmake-build-release'
+          workingDirectory: '$(system.defaultWorkingDirectory)/cmake-build-release'
           cmakeArgs: '--build . --target all'
 
 
@@ -60,12 +60,12 @@ jobs:
             pip install conan --upgrade
             conan remote add bincrafters "https://api.bintray.com/conan/bincrafters/public-conan"
             conan install . -s build_type=Release --install-folder=cmake-build-release
-          workingDirectory: '$(system.defaultWorkingDirectory)/cpp/FMU-proxy'
+          workingDirectory: '$(system.defaultWorkingDirectory)'
           targetType: inline
 
       - task: CMake@1
         inputs:
-          workingDirectory: '$(system.defaultWorkingDirectory)/cpp/FMU-proxy/cmake-build-release'
+          workingDirectory: '$(system.defaultWorkingDirectory)/cmake-build-release'
           cmakeArgs: 'cmake -G "Visual Studio 15 2017 Win64" .. -DFMI4CPP_USING_CONAN=ON'
 
       - task: VSBuild@1
