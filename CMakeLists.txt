@@ -6,9 +6,6 @@ option(FMI4CPP_USING_CONAN "Build using conan" OFF)
 option(FMI4CPP_WITH_CURL "Build with curl. Allows URL paths to FMUs" OFF)
 option(FMI4CPP_WITH_ODEINT "Build with odeint solvers. Allows ME models to be wrapped as CS ones" OFF)
 
-if(FMI4CPP_USING_CONAN)
-    set(CMAKE_TOOLCHAIN_FILE "")
-endif()
 
 cmake_minimum_required(VERSION 3.10)
 project(FMI4cpp
