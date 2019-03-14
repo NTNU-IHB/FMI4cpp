@@ -17,13 +17,13 @@ jobs:
             cd vcpkg
             ./bootstrap-vcpkg.bat
             ./vcpkg install curl libzip[core] spdlog boost-program-options boost-ublas boost-odeint boost-test --triplet x64-windows
-          workingDirectory: '$(system.defaultWorkingDirectory)'
+          workingDirectory: '$(system.defaultWorkingDirectory)/build'
           targetType: inline
 
       - task: CMake@1
         inputs:
           workingDirectory: '$(system.defaultWorkingDirectory)/build'
-          cmakeArgs: '.. -DCMAKE_TOOLCHAIN_FILE=../vcpkg/scripts/buildsystems/vcpkg.cmake -DFMI4CPP_WITH_ODEINT=ON -DFMI4CPP_BUILD_TESTS=ON -A x64'
+          cmakeArgs: '.. -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake -DFMI4CPP_WITH_ODEINT=ON -DFMI4CPP_BUILD_TESTS=ON -A x64'
 
       - task: CMake@1
         inputs:
