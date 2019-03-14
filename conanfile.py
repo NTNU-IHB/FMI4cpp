@@ -27,6 +27,10 @@ class FMI4cppConan(ConanFile):
         "libzip:shared=True"
     )
 
+    def imports(self):
+        self.copy("*.dll", dst="bin", keep_path=False)
+        self.copy("*.pdb", dst="bin", keep_path=False)
+
     def configure(self):
         if self.options.curl:
             self.options["libcurl"].shared=True
@@ -41,7 +45,6 @@ class FMI4cppConan(ConanFile):
         cmake.definitions["FMI4CPP_WITH_ODEINT"] = "ON"
         cmake.definitions["FMI4CPP_USING_CONAN"] = "ON"
         cmake.definitions["FMI4CPP_BUILD_TOOL"] = "OFF"
-        cmake.definitions["FMI4CPP_USING_VCPKG"] = "OFF"
         cmake.definitions["FMI4CPP_BUILD_TESTS"] = "OFF"
         cmake.definitions["FMI4CPP_BUILD_EXAMPLES"] = "OFF"
         cmake.configure()
