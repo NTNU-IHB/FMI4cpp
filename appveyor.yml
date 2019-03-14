@@ -12,7 +12,7 @@ install:
   - cd c:\tools\vcpkg
   - git pull
   - .\bootstrap-vcpkg.bat
-  - .\vcpkg install boost-property-tree boost-ublas boost-odeint boost-program-options libzip[core] spdlog curl --triplet x64-windows
+  - .\vcpkg install boost-property-tree boost-ublas boost-odeint boost-program-options boost-test libzip[core] spdlog curl --triplet x64-windows
   - cd %APPVEYOR_BUILD_FOLDER%
 
 before_build:
