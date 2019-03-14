@@ -6,8 +6,7 @@
 
 
 [![CircleCI](https://circleci.com/gh/NTNU-IHB/FMI4cpp/tree/master.svg?style=svg)](https://circleci.com/gh/NTNU-IHB/FMI4cpp/tree/master)
-[![Build status](https://ci.appveyor.com/api/projects/status/7hrmwc7q6ake6jsd/branch/master?svg=true)](https://ci.appveyor.com/project/markaren/fmi4cpp/branch/master)
-
+[![Build Status](https://dev.azure.com/laht/laht/_apis/build/status/NTNU-IHB.FMI4cpp?branchName=master)](https://dev.azure.com/laht/laht/_build/latest?definitionId=3&branchName=master)
 FMI4cpp is a cross-platform [FMI](https://fmi-standard.org/) 2.0 implementation written in modern C++.
 
 Influenced by it's spiritual brother [FMI4j](https://github.com/NTNU-IHB/FMI4j), it aims to be
