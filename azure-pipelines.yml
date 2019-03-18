@@ -48,7 +48,6 @@ jobs:
       - task: Bash@3
         inputs:
           script: |
-            python -m pip install
             pip install conan --upgrade
             conan remote add bincrafters "https://api.bintray.com/conan/bincrafters/public-conan"
             conan install . -s build_type=Debug --install-folder=build -o curl=True
