@@ -9,7 +9,7 @@ option(FMI4CPP_WITH_ODEINT "Build with odeint solvers. Allows ME models to be wr
 
 cmake_minimum_required(VERSION 3.10)
 project(FMI4cpp
-        VERSION 0.6.0)
+        VERSION 0.6.1)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
