@@ -14,11 +14,12 @@ Install [vcpkg](https://github.com/Microsoft/vcpkg) and run:
 
 #### conan
 
-Clone this repository and run:
+Clone https://github.com/markaren/FMI4cpp-conan and run:
 
 ```bash
 conan create . FMI4cpp/testing
 ```
 
+----
 
 Additionally, you can use it as a submodule in your own CMake project.
