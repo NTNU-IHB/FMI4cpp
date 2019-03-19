@@ -135,6 +135,7 @@ configure_package_config_file(${CMAKE_CURRENT_LIST_DIR}/../cmake/${PROJECT_NAME}
 #Install the config, configversion and custom find modules
 install(FILES
         ${CMAKE_CURRENT_LIST_DIR}/../cmake/FindLIBZIP.cmake
+        ${CMAKE_CURRENT_LIST_DIR}/../cmake/FindCURL_.cmake
         ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
         ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
     DESTINATION
@@ -146,7 +147,9 @@ install(FILES
 configure_file(${CMAKE_CURRENT_LIST_DIR}/../cmake/FindLIBZIP.cmake
     ${CMAKE_CURRENT_BINARY_DIR}/FindLIBZIP.cmake
     COPYONLY)
-
+configure_file(${CMAKE_CURRENT_LIST_DIR}/../cmake/FindCURL_.cmake
+        ${CMAKE_CURRENT_BINARY_DIR}/FindCURL_.cmake
+        COPYONLY)
 
 export(EXPORT ${FMI4CPP_LIB}-targets
     FILE
