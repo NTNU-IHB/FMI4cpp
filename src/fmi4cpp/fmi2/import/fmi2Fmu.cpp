@@ -95,7 +95,7 @@ unique_ptr<fmi2ModelExchangeFmu> fmi2Fmu::asModelExchangeFmu() const {
     return make_unique<fmi2ModelExchangeFmu>(resource_, me);
 }
 
-#ifdef FMI4CPP_WITH_CURL
+
 
 namespace {
     size_t write_data(void *ptr, size_t size, size_t nmemb, FILE *stream) {
@@ -105,6 +105,8 @@ namespace {
 }
 
 std::unique_ptr<fmi2Fmu> fmi2Fmu::fromUrl(const std::string &fmuPath) {
+
+#ifdef FMI4CPP_WITH_CURL
 
     fmi4cpp::logger::debug("Loading FMU from URL: {}", fmuPath);
 
@@ -131,5 +133,10 @@ std::unique_ptr<fmi2Fmu> fmi2Fmu::fromUrl(const std::string &fmuPath) {
     fs::remove(tmp); //delete downloaded FMU, it has been extracted by now.
     return fmu;
 
-}
+#else
+
+    throw runtime_error("fmi2Fmu::fromUrl not enabled! To enable compile with FMI4CPP_WITH_CURL=ON");
+
 #endif
+
+}

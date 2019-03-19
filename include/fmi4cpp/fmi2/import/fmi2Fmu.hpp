@@ -63,9 +63,8 @@ class fmi2Fmu : public virtual FmuProvider<ModelDescription, fmi2CoSimulationFmu
 
         std::unique_ptr<fmi2ModelExchangeFmu> asModelExchangeFmu() const override;
 
-#ifdef FMI4CPP_WITH_CURL
         static std::unique_ptr<fmi2Fmu> fromUrl(const std::string &url);
-#endif
+
     };
 
 }
