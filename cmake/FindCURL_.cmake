@@ -2,6 +2,10 @@
 find_package(OpenSSL COMPONENTS Crypto SSL)
 find_package(CURL REQUIRED)
 
+include(FindPackageHandleStandardArgs)
+FIND_PACKAGE_HANDLE_STANDARD_ARGS(CURL_
+        REQUIRED_VARS CURL_INCLUDE_DIR CURL_LIBRARY)
+
 if (NOT TARGET CURL::CURL)
     add_library(CURL::CURL UNKNOWN IMPORTED)
     set_property(TARGET CURL::CURL
