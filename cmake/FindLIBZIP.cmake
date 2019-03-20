@@ -16,6 +16,7 @@
 
 find_package(ZLIB REQUIRED)
 find_package(BZip2)
+find_package(OpenSSL COMPONENTS Crypto SSL)
 
 find_path(LIBZIP_INCLUDE_DIR NAMES zip.h)
 mark_as_advanced(LIBZIP_INCLUDE_DIR)
@@ -47,6 +48,9 @@ if (LIBZIP_FOUND)
         set(INTERFACE_LINK_LIBRARIES ZLIB::ZLIB)
         if (BZip2_FOUND)
             list(APPEND INTERFACE_LINK_LIBRARIES BZip2::BZip2)
+        endif()
+         if (OpenSSL_FOUND)
+            list(APPEND INTERFACE_LINK_LIBRARIES OpenSSL::SSL OpenSSL::Crypto)
         endif()
         set_property(TARGET  LIBZIP::LIBZIP
                 APPEND
