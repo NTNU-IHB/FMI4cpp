@@ -7,8 +7,9 @@ find_dependency(Boost 1.65 REQUIRED)
 
 find_dependency(LIBZIP REQUIRED)
 find_dependency(spdlog CONFIG REQUIRED)
-find_dependency(CURL_)
-
+if (FMI4CPP_WITH_CURL)
+    find_dependency(CURL_ REQUIRED)
+endif()
 list(REMOVE_AT CMAKE_MODULE_PATH -1)
 
 if(NOT TARGET FMI4cpp::FMI4cpp)
