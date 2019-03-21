@@ -40,7 +40,7 @@ using namespace boost::numeric::odeint;
 namespace fmi4cpp::solver {
 
     template <class T>
-    class OdeintModelExchangeSolver: public me_solver {
+    class odeint_solver: public me_solver {
 
     protected:
 
@@ -49,7 +49,7 @@ namespace fmi4cpp::solver {
     };
 
     template <class T>
-    class ConstantStepSizeOdeintSolver: public OdeintModelExchangeSolver<T> {
+    class constant_step_size_odeint_solver: public odeint_solver<T> {
 
     protected:
 
@@ -57,7 +57,7 @@ namespace fmi4cpp::solver {
 
     public:
 
-        explicit ConstantStepSizeOdeintSolver(double stepSize): stepSize_(stepSize) {}
+        explicit constant_step_size_odeint_solver(double stepSize): stepSize_(stepSize) {}
 
         double integrate(fmu_wrapper &wrapper, state_type &x, double tStart, double tStop) override {
             size_t n = integrate_const(this->solver_, wrapper, x, tStart, tStop, stepSize_);
@@ -66,11 +66,11 @@ namespace fmi4cpp::solver {
 
     };
 
-    typedef ConstantStepSizeOdeintSolver<euler<state_type>> EulerSolver;
-    typedef ConstantStepSizeOdeintSolver<implicit_euler<state_type>> ImplicitEulerSolver;
+    typedef constant_step_size_odeint_solver<euler<state_type>> euler_solver;
+    typedef constant_step_size_odeint_solver<implicit_euler<state_type>> implicit_euler_solver;
 
-    typedef ConstantStepSizeOdeintSolver<runge_kutta4<state_type>> RK4Solver;
-    typedef ConstantStepSizeOdeintSolver<runge_kutta4_classic<state_type>> RK4ClassicSolver;
+    typedef constant_step_size_odeint_solver<runge_kutta4<state_type>> rk4_solver;
+    typedef constant_step_size_odeint_solver<runge_kutta4_classic<state_type>> rk4_classic_solver;
 
 }
 

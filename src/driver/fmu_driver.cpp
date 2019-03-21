@@ -96,7 +96,7 @@ void fmu_driver::run() {
 
     if (options_.modelExchange) {
 #ifdef FMI4CPP_WITH_ODEINT
-        auto solver = solver::make_solver<solver::EulerSolver>(1E-3);
+        auto solver = solver::make_solver<solver::euler_solver>(1E-3);
         simulate(fmu.as_me_fmu()->newInstance(solver));
 #else
         const char *msg = "Model Exchange mode selected, but driver has been built without odeint support!";

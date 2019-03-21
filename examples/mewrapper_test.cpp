@@ -45,7 +45,7 @@ int main() {
 
     auto fmu = fmi2::fmu(fmuPath).as_me_fmu();
 
-    auto solver = make_solver<RK4ClassicSolver>(microStep);
+    auto solver = make_solver<rk4_classic_solver>(microStep);
     auto slave = fmu->newInstance(solver);
 
     slave->setup_experiment();

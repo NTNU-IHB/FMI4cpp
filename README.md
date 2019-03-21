@@ -51,8 +51,8 @@ int main() {
     auto cs_fmu = fmu.as_cs_model_description();
     auto me_fmu = fmu.as_me_model_description();
     
-    auto cs_md = fmu.getModelDescription(); //smart pointer to a CoSimulationModelDescription instance
-    cout << "modelIdentifier=" << cs_fmu->getModelDescription()->modelIdentifier << endl;
+    auto cs_md = fmu.get_model_description(); //smart pointer to a CoSimulationModelDescription instance
+    cout << "modelIdentifier=" << cs_fmu->get_model_description()->modelIdentifier << endl;
     
     auto me_md = fmu.get_model_description(); //smart pointer to a ModelExchangeModelDescription instance
     cout << "modelIdentifier=" << me_fmu->get_model_description()->modelIdentifier << endl;
@@ -60,10 +60,10 @@ int main() {
     auto var = cs_md->getVariableByName("my_var").asReal();
     cout << "Name=" << var.name <<  ", start=" << var.start().value_or(0) << endl;
               
-    auto slave = cs_fmu->newInstance();
+    auto slave = cs_fmu->new_instance();
     
     // or (with -DFMI4CPP_WITH_ODEINT=ON)
-    // auto solver = make_solver<RK4ClassicSolver>(1E-3);
+    // auto solver = make_solver<rk4_classic_solver>(1E-3);
     // auto slave = me_fmu->newInstance(solver);
          
     slave->setup_experiment();

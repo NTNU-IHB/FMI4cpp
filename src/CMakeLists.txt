@@ -125,13 +125,13 @@ if(FMI4CPP_WITH_CURL)
 endif()
 
 target_include_directories(fmi4cpp
-PUBLIC
-    $<INSTALL_INTERFACE:include>
-    $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
-INTERFACE
-    ${BOOST_INCLUDE_DIRS}
-PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}
+    PUBLIC
+        $<INSTALL_INTERFACE:include>
+        $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
+    INTERFACE
+        ${Boost_INCLUDE_DIRS}
+    PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}
 )
 target_link_libraries(fmi4cpp
     PRIVATE

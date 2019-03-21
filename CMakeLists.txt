@@ -37,8 +37,8 @@ endif ()
 
 # Prepare for export and installation.
 set(FMI4CPP_HEADER_INSTALL_DIR "include")
-set(FMI4CPP_CMAKE_INSTALL_DIR "share/${PROJECT_NAME}")
-set(FMI4CPP_DOC_INSTALL_DIR   "share/doc/${PROJECT_NAME}")
+set(FMI4CPP_CMAKE_INSTALL_DIR  "share/${PROJECT_NAME}")
+set(FMI4CPP_DOC_INSTALL_DIR    "share/doc/${PROJECT_NAME}")
 
 set(FMI4CPP_INSTALL_DESTINATIONS
         ARCHIVE DESTINATION "lib"
@@ -50,3 +50,7 @@ set(FMI4CPP_EXPORT_TARGET "${PROJECT_NAME}-targets")
 include(dependencies)
 include(targets)
 include(export)
+
+if (FMI4CPP_BUILD_TESTS OR FMI4CPP_BUILD_EXAMPLES)
+    file(COPY resources DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+endif()
