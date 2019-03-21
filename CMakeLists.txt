@@ -37,13 +37,9 @@ endif ()
 
 # Prepare for export and installation.
 set(FMI4CPP_HEADER_INSTALL_DIR "include")
-if(WIN32)
-    set(FMI4CPP_CMAKE_INSTALL_DIR "cmake")
-    set(FMI4CPP_DOC_INSTALL_DIR   "doc")
-else()
-    set(FMI4CPP_CMAKE_INSTALL_DIR "share/${PROJECT_NAME}/cmake")
-    set(FMI4CPP_DOC_INSTALL_DIR   "share/doc/${PROJECT_NAME}")
-endif()
+set(FMI4CPP_CMAKE_INSTALL_DIR "share/${PROJECT_NAME}")
+set(FMI4CPP_DOC_INSTALL_DIR   "share/doc/${PROJECT_NAME}")
+
 set(FMI4CPP_INSTALL_DESTINATIONS
         ARCHIVE DESTINATION "lib"
         LIBRARY DESTINATION "lib"
