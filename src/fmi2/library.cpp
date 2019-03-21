@@ -82,8 +82,9 @@ fmi2Library::fmi2Library(const std::string &modelIdentifier, const std::shared_p
     handle_ = load_library(libName);
 
     if (!handle_) {
-        FMI4CPP_ERROR("Unable to load dynamic library '" + libName + "':" + getLastError());
-        throw std::runtime_error("Unable to load dynamic library '" + libName + "'!");
+        const auto err = "Unable to load dynamic library '" + libName + "'! " + getLastError();
+        FMI4CPP_ERROR(err);
+        throw std::runtime_error(err);
     }
 
     fmi2GetVersion_ = load_function<fmi2GetVersionTYPE *>(handle_, "fmi2GetVersion");

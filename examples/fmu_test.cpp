@@ -42,7 +42,7 @@ int main() {
     auto cs_fmu = fmu.as_cs_fmu();
     auto md = cs_fmu->model_description();
 
-    auto var = md->modelVariables->getByValueReference(47).asReal();
+    auto var = md->modelVariables->getByValueReference(47).as_real();
     cout << "Name=" << var.name() << ", start=" << var.start().value_or(0) << endl;
 
     auto slave1 = cs_fmu->new_instance();

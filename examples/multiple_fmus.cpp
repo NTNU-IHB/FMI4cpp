@@ -58,7 +58,7 @@ int main() {
     slave2->step(1E-4);
 
     double ref;
-    auto var = md1->getVariableByName("MotorDiskRev").asReal();
+    auto var = md1->getVariableByName("MotorDiskRev").as_real();
     assert(var.valueReference() == 105);
     var.read(*slave1, ref);
     cout << "MotorDiskRev=" << ref << endl;

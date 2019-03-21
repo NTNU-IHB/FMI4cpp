@@ -1,6 +1,6 @@
 
-include_directories(${FMI4cpp_SOURCE_DIR}/src/fmi4cpp/tools)
-link_libraries(fmi4cpp::fmi4cpp ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY})
+include_directories(${BOOST_INCLUDE_DIRS})
+link_libraries(fmi4cpp ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY})
 
 
 enable_testing()

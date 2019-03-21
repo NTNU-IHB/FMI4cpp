@@ -37,19 +37,19 @@ Refer to [BUILDING.md](BUILDING.md)
 #include <fmi4cpp/fmi4cpp.hpp>
 
 using namespace std;
-using namespace fmi4cpp::fmi2;
+using namespace fmi4cpp;
 
 const double stop = ...;
 const double stepSize = ...;
 
 int main() {
 
-    fmi2Fmu fmu("path/to/fmu.fmu");
+    fmi2::fmu fmu("path/to/fmu.fmu");
     // or (with -DFMI4CPP_WITH_CURL=ON)
-    // auto fmu = fmi2Fmu::fromUrl("http://somewebsite.org/somefmu.fmu")
+    // auto fmu = fmi2::fmu::fromUrl("http://somewebsite.org/somefmu.fmu")
     
-    auto cs_fmu = fmu.asCoSimulationFmu();
-    auto me_fmu = fmu.asModelExchangeFmu();
+    auto cs_fmu = fmu.as_cs_model_description();
+    auto me_fmu = fmu.as_me_model_description();
     
     auto cs_md = fmu.getModelDescription(); //smart pointer to a CoSimulationModelDescription instance
     cout << "modelIdentifier=" << cs_fmu->getModelDescription()->modelIdentifier << endl;
@@ -74,7 +74,7 @@ int main() {
     double value;
     while ( (t = slave->getSimulationTime()) <= stop) {
 
-        if (!slave->doStep(stepSize)) {
+        if (!slave->step(stepSize)) {
             cerr << "Error! doStep() returned with status: " << to_string(slave->getLastStatus()) << endl;
             break;
         }

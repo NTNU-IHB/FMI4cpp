@@ -50,47 +50,47 @@ scalar_variable::scalar_variable(const scalar_variable_base &base,
         : scalar_variable_base(base), enumeration_(enumeration) {}
 
 
-bool scalar_variable::isInteger() const {
+bool scalar_variable::is_integer() const {
     return integer_.has_value();
 }
 
-bool scalar_variable::isReal() const {
+bool scalar_variable::is_real() const {
     return real_.has_value();
 }
 
-bool scalar_variable::isString() const {
+bool scalar_variable::is_string() const {
     return string_.has_value();
 }
 
-bool scalar_variable::isBoolean() const {
+bool scalar_variable::is_boolean() const {
     return boolean_.has_value();
 }
 
-bool scalar_variable::isEnumeration() const {
+bool scalar_variable::is_enumeration() const {
     return enumeration_.has_value();
 }
 
-const integer_variable scalar_variable::asInteger() const {
+const integer_variable scalar_variable::as_integer() const {
     return integer_variable(*this, *integer_);
 }
 
-const real_variable scalar_variable::asReal() const {
+const real_variable scalar_variable::as_real() const {
     return real_variable(*this, *real_);
 }
 
-const string_variable scalar_variable::asString() const {
+const string_variable scalar_variable::as_string() const {
     return string_variable(*this, *string_);
 }
 
-const boolean_variable scalar_variable::asBoolean() const {
+const boolean_variable scalar_variable::as_boolean() const {
     return boolean_variable(*this, *boolean_);
 }
 
-const enumeration_variable scalar_variable::asEnumeration() const {
+const enumeration_variable scalar_variable::as_enumeration() const {
     return enumeration_variable(*this, *enumeration_);
 }
 
-std::string scalar_variable::typeName() const {
+std::string scalar_variable::type_name() const {
     if (integer_) {
         return INTEGER_TYPE;
     } else if (real_) {

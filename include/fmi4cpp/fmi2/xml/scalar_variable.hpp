@@ -156,27 +156,27 @@ namespace fmi4cpp::fmi2 {
                        const enumeration_attribute &enumeration);
 
 
-        bool isInteger() const;
+        bool is_integer() const;
 
-        bool isReal() const;
+        bool is_real() const;
 
-        bool isString() const;
+        bool is_string() const;
 
-        bool isBoolean() const;
+        bool is_boolean() const;
 
-        bool isEnumeration() const;
+        bool is_enumeration() const;
 
-        std::string typeName() const;
+        std::string type_name() const;
 
-        const integer_variable asInteger() const;
+        const integer_variable as_integer() const;
 
-        const real_variable asReal() const;
+        const real_variable as_real() const;
 
-        const string_variable asString() const;
+        const string_variable as_string() const;
 
-        const boolean_variable asBoolean() const;
+        const boolean_variable as_boolean() const;
 
-        const enumeration_variable asEnumeration() const;
+        const enumeration_variable as_enumeration() const;
 
     };
 

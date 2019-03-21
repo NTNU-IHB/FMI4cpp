@@ -57,19 +57,19 @@ namespace {
         for (unsigned int i = 0; i < variables.size(); i++) {
             auto var = variables[i];
 
-            if (var.isInteger()) {
+            if (var.is_integer()) {
                 int ref = 0;
                 slave.readInteger(var.valueReference, ref);
                 data += to_string(ref);
-            } else if (var.isReal()) {
+            } else if (var.is_real()) {
                 double ref = 0;
                 slave.readReal(var.valueReference, ref);
                 data += to_string(ref);
-            } else if (var.isString()) {
+            } else if (var.is_string()) {
                 const char *ref;
                 slave.readString(var.valueReference, ref);
                 data += ref;
-            } else if (var.isBoolean()) {
+            } else if (var.is_boolean()) {
                 int ref = 0;
                 slave.readBoolean(var.valueReference, ref);
                 data += to_string(ref);

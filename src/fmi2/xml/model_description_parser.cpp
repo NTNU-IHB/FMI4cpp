@@ -296,7 +296,7 @@ std::unique_ptr<const model_description> fmi4cpp::fmi2::parse_model_description(
             base.defaultExperiment = parseDefaultExperiment(v.second);
         } else if (v.first == "ModelVariables") {
             base.modelVariables = std::move(parse_model_variables(v.second));
-        } else if (v.first == "model_structure") {
+        } else if (v.first == "ModelStructure") {
             base.modelStructure = std::move(parse_model_structure(v.second));
         }
 

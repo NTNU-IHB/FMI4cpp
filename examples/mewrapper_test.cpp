@@ -38,8 +38,8 @@ const double stop = 1.0;
 const double microStep = 1E-3;
 const double macroStep = 1.0/10;
 
-const string fmuPath = "../resources/fmus/2.0/me/OpenModelica/v1.11.0/"
-                       "FmuExportCrossCompile/FmuExportCrossCompile.fmu";
+const string fmuPath = "../resources/fmus/2.0/me/Test-FMUs/0.0.1/"
+                       "BouncingBall/BouncingBall.fmu";
 
 int main() {
 
@@ -54,7 +54,7 @@ int main() {
 
     double t = 0;
     double ref = 0;
-    auto hVar = slave->model_description()->getVariableByName("h").asReal();
+    auto hVar = slave->model_description()->getVariableByName("h").as_real();
 
     while ( ( t = slave->getSimulationTime()) <= stop) {
 

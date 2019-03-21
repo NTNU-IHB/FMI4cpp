@@ -55,12 +55,6 @@ set(publicHeaders
 
 )
 
-if (FMI4CPP_WITH_ODEINT)
-    list(APPEND publicHeaders
-        solver/odeint_solver.hpp
-    )
-endif()
-
 set(privateHeaders
 
     logger.hpp
@@ -118,6 +112,9 @@ target_compile_features(fmi4cpp PUBLIC "cxx_std_17")
 target_compile_definitions(fmi4cpp PRIVATE $<$<CONFIG:Debug>:FMI4CPP_LOG_LEVEL_DEBUG>)
 
 if(FMI4CPP_WITH_ODEINT)
+    list(APPEND publicHeaders
+        solver/odeint_solver.hpp
+    )
     target_compile_definitions(fmi4cpp PUBLIC FMI4CPP_WITH_ODEINT)
 endif()
 
@@ -129,7 +126,6 @@ target_include_directories(fmi4cpp
 PUBLIC
     $<INSTALL_INTERFACE:include>
     $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
-INTERFACE
     ${Boost_INCLUDE_DIRS}
 PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}

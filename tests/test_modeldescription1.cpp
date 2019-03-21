@@ -29,7 +29,6 @@
 #include <boost/test/unit_test.hpp>
 
 #include <fmi4cpp/fmi2/fmi2.hpp>
-#include <os_util.hpp>
 
 #include <experimental/filesystem>
 
@@ -60,7 +59,7 @@ BOOST_AUTO_TEST_CASE(ControlledTemperature_test1) {
     BOOST_CHECK_EQUAL(120, md->modelVariables->size());
     BOOST_CHECK_EQUAL(120, md_cs->modelVariables->size());
 
-    const fmi2::real_variable& heatCapacity1 = md->getVariableByName("HeatCapacity1.T0").asReal();
+    const fmi2::real_variable& heatCapacity1 = md->getVariableByName("HeatCapacity1.T0").as_real();
     BOOST_CHECK_EQUAL(1, heatCapacity1.valueReference());
     BOOST_CHECK_EQUAL(false, heatCapacity1.min().has_value());
     BOOST_CHECK_EQUAL(false, heatCapacity1.max().has_value());

@@ -29,7 +29,6 @@
 #include <boost/test/unit_test.hpp>
 
 #include <fmi4cpp/fmi2/fmi2.hpp>
-#include <os_util.hpp>
 
 using namespace std;
 using namespace fmi4cpp::fmi2;
