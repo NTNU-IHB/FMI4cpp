@@ -25,3 +25,12 @@ write_basic_package_version_file(
         VERSION "${PROJECT_VERSION}"
         COMPATIBILITY "SameMajorVersion")
 install(FILES "${versionFile}" DESTINATION "${FMI4CPP_CMAKE_INSTALL_DIR}")
+
+
+# Install custom find modules
+install(FILES
+        ${CMAKE_SOURCE_DIR}/cmake/FindLIBZIP.cmake
+        ${CMAKE_SOURCE_DIR}/cmake/FindCURL_.cmake
+    DESTINATION
+        ${FMI4CPP_CMAKE_INSTALL_DIR}
+)
