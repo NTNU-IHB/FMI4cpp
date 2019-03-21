@@ -127,7 +127,7 @@ namespace fmi4cpp::xc {
 
         bool run(const fs::path &fmuDir, const fs::path &resultDir) {
 
-            fmi4cpp::logger::info("Cross-checking FMU '{}'!", fmuDir.string());
+            FMI4CPP_INFO("Cross-checking FMU '" << fmuDir.string() << "'");
 
             fs::create_directories(resultDir);
 
@@ -161,22 +161,22 @@ namespace fmi4cpp::xc {
                     driver.run();
 
                     pass(resultDir);
-                    fmi4cpp::logger::info("Cross-checking FMU '{}' passed!", fmuDir.string());
+                    FMI4CPP_INFO("Cross-checking FMU '" << fmuDir.string() << "' passed!");
 
                     return true;
 
                 } catch (rejection &ex) {
-                    fmi4cpp::logger::warn("Cross-checking FMU '{}' rejected! {}", fmuDir.string(), ex.what());
+                    FMI4CPP_WARN("Cross-checking FMU '" << fmuDir.string() << "' rejected! " << ex.what());
                     reject(resultDir, ex.what());
                 } catch (Failure &ex) {
-                    fmi4cpp::logger::error("Cross-checking FMU '{}' failed! {}", fmuDir.string(), ex.what());
+                    FMI4CPP_ERROR("Cross-checking FMU '" << fmuDir.string() << "' failed! " << ex.what());
                     fail(resultDir, ex.what());
                 }
 
 
             } catch (exception &ex) {
-                fmi4cpp::logger::error("Cross-checking FMU '{}' failed. An unexpected program error occurred: {}",
-                                       fmuDir.string(), ex.what());
+                FMI4CPP_ERROR("Cross-checking FMU '" << fmuDir.string() <<
+                                                     "' failed. An unexpected program error occurred: " << ex.what());
                 fail(resultDir, "An unexpected program error occurred");
             }
 
@@ -217,7 +217,7 @@ namespace fmi4cpp::xc {
 
 int main(int argc, char **argv) {
 
-    if (! argv[1]) {
+    if (!argv[1]) {
         cerr << "Path to XC directory missing!" << endl;
         return 1;
     }

@@ -24,13 +24,10 @@
 
 
 #include <fmi4cpp/fmi4cpp.hpp>
-#include <fmi4cpp/logger.hpp>
-#include <fmi4cpp/tools/time_util.hpp>
+#include <time_util.hpp>
 
 using namespace std;
 using namespace fmi4cpp;
-
-namespace logger = fmi4cpp::logger;
 
 const double stop = 10.0;
 const double step_size = 1E-4;
@@ -47,18 +44,18 @@ void run(unique_ptr<fmi2::cs_slave> &slave) {
         double ref;
         while ((slave->getSimulationTime()) <= (stop - step_size)) {
             if (!slave->step(step_size)) {
-                logger::error("Error! doStep returned with status: {}", to_string(slave->last_status()));
+                cerr << "Error! doStep returned with status: " << to_string(slave->last_status()) << endl;
                 break;
             }
             if (!slave->readReal(vr, ref)) {
-                logger::error("Error! readReal returned with status: {}", to_string(slave->last_status()));
+                cerr << "Error! readReal returned with status: " << to_string(slave->last_status()) << endl;
                 break;
             }
         }
 
     });
 
-    logger::info("Time elapsed={}s", elapsed);
+    cout << "Time elapsed=" << elapsed << "s" << endl;
 
     slave->terminate();
 }

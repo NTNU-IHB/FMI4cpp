@@ -70,24 +70,24 @@ bool scalar_variable::isEnumeration() const {
     return enumeration_.has_value();
 }
 
-const IntegerVariable scalar_variable::asInteger() const {
-    return IntegerVariable(*this, *integer_);
+const integer_variable scalar_variable::asInteger() const {
+    return integer_variable(*this, *integer_);
 }
 
-const RealVariable scalar_variable::asReal() const {
-    return RealVariable(*this, *real_);
+const real_variable scalar_variable::asReal() const {
+    return real_variable(*this, *real_);
 }
 
-const StringVariable scalar_variable::asString() const {
-    return StringVariable(*this, *string_);
+const string_variable scalar_variable::asString() const {
+    return string_variable(*this, *string_);
 }
 
-const BooleanVariable scalar_variable::asBoolean() const {
-    return BooleanVariable(*this, *boolean_);
+const boolean_variable scalar_variable::asBoolean() const {
+    return boolean_variable(*this, *boolean_);
 }
 
-const EnumerationVariable scalar_variable::asEnumeration() const {
-    return EnumerationVariable(*this, *enumeration_);
+const enumeration_variable scalar_variable::asEnumeration() const {
+    return enumeration_variable(*this, *enumeration_);
 }
 
 std::string scalar_variable::typeName() const {
@@ -107,95 +107,95 @@ std::string scalar_variable::typeName() const {
 }
 
 
-IntegerVariable::IntegerVariable(const scalar_variable &variable, const integer_attribute &attribute)
-        : BoundedScalarVariable(variable, attribute) {}
+integer_variable::integer_variable(const scalar_variable &variable, const integer_attribute &attribute)
+        : bounded_scalar_variable(variable, attribute) {}
 
-bool IntegerVariable::read(fmu_reader &reader, int &ref) {
+bool integer_variable::read(fmu_reader &reader, int &ref) {
     return reader.readInteger(valueReference(), ref);
 }
 
-bool IntegerVariable::write(fmu_writer &writer, int value) {
+bool integer_variable::write(fmu_writer &writer, int value) {
     return writer.writeInteger(valueReference(), value);
 }
 
-RealVariable::RealVariable(const scalar_variable &variable, const real_attribute &attribute)
-        : BoundedScalarVariable(variable, attribute) {}
+real_variable::real_variable(const scalar_variable &variable, const real_attribute &attribute)
+        : bounded_scalar_variable(variable, attribute) {}
 
-std::optional<std::string> RealVariable::displayUnit() const {
+std::optional<std::string> real_variable::displayUnit() const {
     return attribute_.displayUnit;
 }
 
-std::optional<std::string> RealVariable::unit() const {
+std::optional<std::string> real_variable::unit() const {
     return attribute_.unit;
 }
 
-std::optional<size_t> RealVariable::derivative() const {
+std::optional<size_t> real_variable::derivative() const {
     return attribute_.derivative;
 }
 
-std::optional<double> RealVariable::nominal() const {
+std::optional<double> real_variable::nominal() const {
     return attribute_.nominal;
 }
 
-bool RealVariable::relativeQuantity() const {
+bool real_variable::relativeQuantity() const {
     return attribute_.relativeQuantity;
 }
 
-bool RealVariable::unbounded() const {
+bool real_variable::unbounded() const {
     return attribute_.unbounded;
 }
 
-bool RealVariable::reinit() const {
+bool real_variable::reinit() const {
     return attribute_.reinit;
 }
 
-bool RealVariable::read(fmu_reader &reader, double &ref) {
+bool real_variable::read(fmu_reader &reader, double &ref) {
     return reader.readReal(valueReference(), ref);
 }
 
-bool RealVariable::write(fmu_writer &writer, double value) {
+bool real_variable::write(fmu_writer &writer, double value) {
     return writer.writeReal(valueReference(), value);
 }
 
 
-StringVariable::StringVariable(const scalar_variable &variable, const string_attribute &attribute) : typed_scalar_variable(
+string_variable::string_variable(const scalar_variable &variable, const string_attribute &attribute) : typed_scalar_variable(
         variable, attribute) {}
 
-bool StringVariable::read(fmu_reader &reader, std::string &ref) {
+bool string_variable::read(fmu_reader &reader, std::string &ref) {
     fmi2String str;
     auto status = reader.readString(valueReference(), str);
     ref = str;
     return status;
 }
 
-bool StringVariable::write(fmu_writer &writer, std::string value) {
+bool string_variable::write(fmu_writer &writer, std::string value) {
     return writer.writeString(valueReference(), value.c_str());
 }
 
 
-BooleanVariable::BooleanVariable(const scalar_variable &variable, const boolean_attribute &attribute)
+boolean_variable::boolean_variable(const scalar_variable &variable, const boolean_attribute &attribute)
         : typed_scalar_variable(variable, attribute) {}
 
-bool BooleanVariable::read(fmu_reader &reader, bool &ref) {
+bool boolean_variable::read(fmu_reader &reader, bool &ref) {
     fmi2Boolean _ref;
     auto status = reader.readBoolean(valueReference(), _ref);
     ref = _ref != 0;
     return status;
 }
 
-bool BooleanVariable::write(fmu_writer &writer, bool value) {
+bool boolean_variable::write(fmu_writer &writer, bool value) {
     return writer.writeBoolean(valueReference(), value);
 }
 
 
-EnumerationVariable::EnumerationVariable(const scalar_variable &variable, const enumeration_attribute &attribute)
+enumeration_variable::enumeration_variable(const scalar_variable &variable, const enumeration_attribute &attribute)
         : typed_scalar_variable(variable, attribute) {}
 
-bool EnumerationVariable::read(fmu_reader &reader, int &ref) {
+bool enumeration_variable::read(fmu_reader &reader, int &ref) {
     return reader.readInteger(valueReference(), ref);
 }
 
-bool EnumerationVariable::write(fmu_writer &writer, int value) {
+bool enumeration_variable::write(fmu_writer &writer, int value) {
     return writer.writeInteger(valueReference(), value);
 }
 

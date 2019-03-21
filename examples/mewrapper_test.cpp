@@ -23,13 +23,12 @@
  */
 
 
-
+#include <iostream>
 #include <string>
 #include <memory>
 #include <vector>
 
 #include <fmi4cpp/fmi4cpp.hpp>
-#include <fmi4cpp/logger.hpp>
 
 using namespace std;
 using namespace fmi4cpp;
@@ -60,16 +59,16 @@ int main() {
     while ( ( t = slave->getSimulationTime()) <= stop) {
 
         if (!slave->step(macroStep)) {
-            fmi4cpp::logger::error("Error! doStep returned with status: {}", to_string(slave->last_status()));
+            cerr << "Error! doStep returned with status: " << to_string(slave->last_status()) << endl;
             break;
         }
 
         if (!hVar.read(*slave, ref)) {
-            fmi4cpp::logger::error("Error! readReal returned with status: {}", to_string(slave->last_status()));
+            cerr << "Error! readReal returned with status: " << to_string(slave->last_status()) << endl;
             break;
         }
 
-        fmi4cpp::logger::info("t={}, h={}",  t, ref);
+        cout << "t=" << t << ", h=" << ref << endl;
     }
 
     slave->terminate();

@@ -25,91 +25,65 @@
 #ifndef FMI4CPP_LOGGER_HPP
 #define FMI4CPP_LOGGER_HPP
 
-#include <spdlog/spdlog.h>
-#include <spdlog/sinks/stdout_sinks.h>
+
+#include <iostream>
+#include <string>
 
 namespace {
 
-    inline std::shared_ptr<spdlog::logger> getOrCreateLogger() {
 
-        std::shared_ptr<spdlog::logger> console;
-        console = spdlog::get("console");
+    enum fmi4cpp_log_level {
 
-        if (console == nullptr) {
-            console = spdlog::stdout_logger_mt("console");
-        }
+        Off = 0,
+        Trace = 1,
+        Info = 2,
+        Debug = 3,
+        Warn = 4,
+        Error = 5
 
-#ifdef FMI4CPP_LOG_LEVEL_OFF
-        console->set_level(spdlog::level::off);
-#elif FMI4CPP_LOG_LEVEL_INFO
-         console->set_level(spdlog::level::info);
-#elif FMI4CPP_LOG_LEVEL_DEBUG
-        console->set_level(spdlog::level::debug);
-#elif FMI4CPP_LOG_LEVEL_TRACE
-        console->set_level(spdlog::level::trace);
-#elif FMI4CPP_LOG_LEVEL_DEFAULT
-        console->set_level(spdlog::level::info);
-#endif
-
-        return console;
     };
 
-    const auto console = getOrCreateLogger();
+#ifdef FMI4CPP_LOG_LEVEL_OFF
+    fmi4cpp_log_level current_log_level = Off;
+#elif FMI4CPP_LOG_LEVEL_TRACE
+    fmi4cpp_log_level current_log_level = Trace;
+#elif FMI4CPP_LOG_LEVEL_INFO
+    fmi4cpp_log_level current_log_level = Info;
+#elif FMI4CPP_LOG_LEVEL_DEBUG
+    fmi4cpp_log_level current_log_level = Debug;
+#elif FMI4CPP_LOG_LEVEL_WARN
+    fmi4cpp_log_level current_log_level = Warn;
+#elif FMI4CPP_LOG_LEVEL_ERROR
+    fmi4cpp_log_level current_log_level = Error;
+#elif FMI4CPP_LOG_LEVEL_DEFAULT
+    fmi4cpp_log_level current_log_level = Info;
+#endif
+
+
+#define FMI4CPP_TRACE( msg ) _FMI4CPP_LOG_ (msg, 1)
+#define FMI4CPP_INFO( msg ) _FMI4CPP_LOG_(msg, 2)
+#define FMI4CPP_DEBUG( msg ) _FMI4CPP_LOG_(msg, 3)
+#define FMI4CPP_WARN( msg ) _FMI4CPP_LOG_ (msg, 4)
+#define FMI4CPP_ERROR( msg ) _FMI4CPP_LOG_ (msg, 5)
+
+
+#define _FMI4CPP_LOG_( msg, level ) {\
+    if (current_log_level != Off) {\
+        if (level <= current_log_level) {\
+            __FMI4CPP_LOG__( msg, level );\
+        }\
+    }\
+}
+
+#define __FMI4CPP_LOG__( msg, level) {\
+    if ( level > Warn) {\
+        std::cerr << __FILE__ << ":" << __LINE__ << ": " << msg << std::endl;\
+    } else {\
+        std::cout << __FILE__ << ":" << __LINE__ << ": " << msg << std::endl;\
+    }\
+}
 
 }
 
-namespace fmi4cpp::logger {
-
-    template<typename T>
-    inline void info(const T &msg) {
-        console->info(msg);
-    }
-
-    template<typename... Args>
-    inline void info(const char* msg, const Args &... args) {
-        console->info(msg, args...);
-    }
-
-    template<typename T>
-    inline void warn(const T &msg) {
-        console->warn(msg);
-    }
-
-    template<typename... Args>
-    inline void warn(const char* msg, const Args &... args) {
-        console->warn(msg, args...);
-    }
-
-    template<typename T>
-    inline void error(const T &msg) {
-        console->error(msg);
-    }
-
-    template<typename... Args>
-    inline void error(const char* msg, const Args &... args) {
-        console->error(msg, args...);
-    }
-
-    template<typename T>
-    inline void debug(const T &msg) {
-        console->debug(msg);
-    }
-
-    template<typename... Args>
-    inline void debug(const char* msg, const Args &... args) {
-        console->debug(msg, args...);
-    }
-
-    template<typename T>
-    inline void trace(const T &msg) {
-        console->trace(msg);
-    }
-
-    template<typename... Args>
-    inline void trace(const char* msg, const Args &... args) {
-        console->trace(msg, args...);
-    }
-
-}
 
 #endif //FMI4CPP_LOGGER_HPP

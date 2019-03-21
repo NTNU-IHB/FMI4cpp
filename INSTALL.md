@@ -14,7 +14,7 @@ Install [vcpkg](https://github.com/Microsoft/vcpkg) and run:
 
 #### conan
 
-Clone https://github.com/markaren/FMI4cpp-conan and run:
+To get the conan recipe for FMI4cpp, clone https://github.com/markaren/FMI4cpp-conan and run:
 
 ```bash
 conan create . FMI4cpp/testing

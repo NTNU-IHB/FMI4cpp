@@ -29,10 +29,10 @@
 #include <boost/test/unit_test.hpp>
 
 #include <fmi4cpp/fmi2/fmi2.hpp>
-#include <fmi4cpp/tools/os_util.hpp>
+#include <os_util.hpp>
 
 using namespace std;
-using namespace fmi4cpp::fmi2;
+using namespace fmi4cpp;
 
 const double stop = 10.0;
 const double step_size = 1E-4;
@@ -43,11 +43,11 @@ BOOST_AUTO_TEST_CASE(ControlledTemperature_test1) {
     const string fmu_path = "../resources/fmus/2.0/cs/20sim/4.6.4.8004/"
                             "ControlledTemperature/ControlledTemperature.fmu";
 
-    auto fmu = fmu(fmu_path).asCoSimulationFmu();
+    auto fmu = fmi2::fmu(fmu_path).as_cs_fmu();
 
     size_t numOutputs = 0;
     for (const auto &v : *fmu->model_description()->modelVariables) {
-        if (v.causality == causality::output) {
+        if (v.causality == fmi2::causality::output) {
             numOutputs++;
         }
     }
@@ -60,7 +60,7 @@ BOOST_AUTO_TEST_CASE(ControlledTemperature_test1) {
     
     double ref;
     while ((slave->getSimulationTime()) <= (stop - step_size)) {
-        BOOST_CHECK(slave->doStep(step_size));
+        BOOST_CHECK(slave->step(step_size));
         BOOST_CHECK(slave->readReal(vr, ref));
     }
 

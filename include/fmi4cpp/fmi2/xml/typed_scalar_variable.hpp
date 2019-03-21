@@ -95,10 +95,10 @@ namespace fmi4cpp::fmi2 {
     };
 
     template<typename T, typename U>
-    class BoundedScalarVariable : public typed_scalar_variable<T, U> {
+    class bounded_scalar_variable : public typed_scalar_variable<T, U> {
 
     public:
-        BoundedScalarVariable(const scalar_variable &variable, const U &attribute)
+        bounded_scalar_variable(const scalar_variable &variable, const U &attribute)
                 : typed_scalar_variable<T, U>(variable, attribute) {}
 
         std::optional<T> min() const {
@@ -115,10 +115,10 @@ namespace fmi4cpp::fmi2 {
 
     };
 
-    class IntegerVariable : public BoundedScalarVariable<int, integer_attribute> {
+    class integer_variable : public bounded_scalar_variable<int, integer_attribute> {
 
     public:
-        IntegerVariable(const scalar_variable &variable, const integer_attribute &attribute);
+        integer_variable(const scalar_variable &variable, const integer_attribute &attribute);
 
         bool read(fmu_reader &reader, int &ref) override;
 
@@ -126,11 +126,11 @@ namespace fmi4cpp::fmi2 {
 
     };
 
-    class RealVariable : public BoundedScalarVariable<double, real_attribute> {
+    class real_variable : public bounded_scalar_variable<double, real_attribute> {
 
     public:
 
-        RealVariable(const scalar_variable &variable, const real_attribute &attribute);
+        real_variable(const scalar_variable &variable, const real_attribute &attribute);
 
         bool reinit() const;
 
@@ -153,10 +153,10 @@ namespace fmi4cpp::fmi2 {
     };
 
 
-    class StringVariable : public typed_scalar_variable<std::string, string_attribute> {
+    class string_variable : public typed_scalar_variable<std::string, string_attribute> {
 
     public:
-        StringVariable(const scalar_variable &variable, const string_attribute &attribute);
+        string_variable(const scalar_variable &variable, const string_attribute &attribute);
 
         bool read(fmu_reader &reader, std::string &ref) override;
 
@@ -164,10 +164,10 @@ namespace fmi4cpp::fmi2 {
 
     };
 
-    class BooleanVariable : public typed_scalar_variable<bool, boolean_attribute> {
+    class boolean_variable : public typed_scalar_variable<bool, boolean_attribute> {
 
     public:
-        BooleanVariable(const scalar_variable &variable, const boolean_attribute &attribute);
+        boolean_variable(const scalar_variable &variable, const boolean_attribute &attribute);
 
         bool read(fmu_reader &reader, bool &ref) override;
 
@@ -175,10 +175,10 @@ namespace fmi4cpp::fmi2 {
 
     };
 
-    class EnumerationVariable : public typed_scalar_variable<int, enumeration_attribute> {
+    class enumeration_variable : public typed_scalar_variable<int, enumeration_attribute> {
 
     public:
-        EnumerationVariable(const scalar_variable &variable, const enumeration_attribute &attribute);
+        enumeration_variable(const scalar_variable &variable, const enumeration_attribute &attribute);
 
         bool read(fmu_reader &reader, int &ref) override;
 

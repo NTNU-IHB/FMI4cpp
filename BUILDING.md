@@ -7,7 +7,7 @@ For building FMI4cpp, you are free to use either `vcpkg`, `conan` or `apt-get` f
 Install [vcpkg](https://github.com/Microsoft/vcpkg) and run:
 
 ```bash
-./vcpkg install boost-property-tree libzip[core] spdlog
+./vcpkg install boost-property-tree libzip[core]
 ``` 
 
 On Windows you might want to specify the target architecture (defaults to x86) by appending:
@@ -34,7 +34,7 @@ When using conan, set `FMI4CPP_USING_CONAN=ON`.
 ##### apt-get
 
 ```bash
-Linux:~/$ sudo apt-get install libzip-dev libboost-dev libspdlog-dev
+Linux:~/$ sudo apt-get install libzip-dev libboost-dev
 ``` 
 
 

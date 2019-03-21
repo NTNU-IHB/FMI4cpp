@@ -34,15 +34,15 @@
 
 namespace fmi4cpp::fmi2 {
 
-    class IntegerVariable;
+    class integer_variable;
 
-    class RealVariable;
+    class real_variable;
 
-    class StringVariable;
+    class string_variable;
 
-    class BooleanVariable;
+    class boolean_variable;
 
-    class EnumerationVariable;
+    class enumeration_variable;
 
     const std::string INTEGER_TYPE = "Integer";
     const std::string REAL_TYPE = "Real";
@@ -168,15 +168,15 @@ namespace fmi4cpp::fmi2 {
 
         std::string typeName() const;
 
-        const IntegerVariable asInteger() const;
+        const integer_variable asInteger() const;
 
-        const RealVariable asReal() const;
+        const real_variable asReal() const;
 
-        const StringVariable asString() const;
+        const string_variable asString() const;
 
-        const BooleanVariable asBoolean() const;
+        const boolean_variable asBoolean() const;
 
-        const EnumerationVariable asEnumeration() const;
+        const enumeration_variable asEnumeration() const;
 
     };
 

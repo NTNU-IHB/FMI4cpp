@@ -1,6 +1,5 @@
 
-include_directories(${FMI4cpp_SOURCE_DIR}/include)
-link_libraries(fmi4cpp)
+link_libraries(fmi4cpp::fmi4cpp)
 
 add_executable(fmu_driver fmu_driver.cpp)
 target_link_libraries(fmu_driver PRIVATE Boost::program_options)

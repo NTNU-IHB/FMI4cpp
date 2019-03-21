@@ -31,7 +31,7 @@
 #include <boost/program_options.hpp>
 
 #include <fmi4cpp/fmi2/fmi2.hpp>
-#include <fmi4cpp/common/driver/fmu_driver.hpp>
+#include <fmi4cpp/driver/fmu_driver.hpp>
 
 using namespace std;
 

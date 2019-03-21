@@ -26,7 +26,6 @@
 #include <string>
 
 #include <fmi4cpp/fmi4cpp.hpp>
-#include <fmi4cpp/logger.hpp>
 
 using namespace std;
 using namespace fmi4cpp;
@@ -62,12 +61,12 @@ int main() {
     auto var = md1->getVariableByName("MotorDiskRev").asReal();
     assert(var.valueReference() == 105);
     var.read(*slave1, ref);
-    fmi4cpp::logger::info("MotorDiskRev={}", ref);
+    cout << "MotorDiskRev=" << ref << endl;
 
     auto vr = md2->getValueReference("Temperature_Room");
     assert(vr == 47);
     slave2->readReal(vr, ref);
-    fmi4cpp::logger::info("Temperature_Room={}", ref);
+    cout << "Temperature_Room=" << ref << endl;
 
     slave1->terminate();
     slave2->terminate();

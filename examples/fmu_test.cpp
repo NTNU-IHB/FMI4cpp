@@ -23,14 +23,12 @@
  */
 
 #include <string>
+#include <iostream>
 
 #include <fmi4cpp/fmi4cpp.hpp>
-#include <fmi4cpp/logger.hpp>
 
 using namespace std;
 using namespace fmi4cpp;
-
-namespace logger = fmi4cpp::logger;
 
 const double stop = 0.01;
 const double stepSize = 1E-3;
@@ -45,12 +43,12 @@ int main() {
     auto md = cs_fmu->model_description();
 
     auto var = md->modelVariables->getByValueReference(47).asReal();
-    logger::info("Name={}, start={}", var.name(), var.start().value_or(0));
+    cout << "Name=" << var.name() << ", start=" << var.start().value_or(0) << endl;
 
     auto slave1 = cs_fmu->new_instance();
     auto slave2 = cs_fmu->new_instance();
 
-    logger::info("modelIdentifier={}", slave1->model_description()->modelIdentifier);
+    cout << "modelIdentifier=" << slave1->model_description()->modelIdentifier << endl;
 
     slave1->setupExperiment();
     slave1->enterInitializationMode();
@@ -69,12 +67,12 @@ int main() {
 
         if (!slave1->step(stepSize)) { break; }
         if (!slave1->readReal(vr, ref)) { break; }
-        logger::info("t={}, Temperature_Reference={}, Temperature_Room={}", t, ref[0], ref[1]);
+        cout << "t=" << t << ", Temperature_Reference=" << ref[0] << ", Temperature_Room=" << ref[1] << endl;
 
     }
 
-    logger::info("FMU '{}' terminated with success: {}", fmu.model_name(), (slave1->terminate() == 1 ? "true" : "false"));
-    logger::info("FMU '{}' terminated with success: {}", fmu.model_name(), (slave2->terminate() == 1 ? "true" : "false"));
+    cout << "FMU '" << fmu.model_name() << "' terminated with success: " << (slave1->terminate() == 1 ? "true" : "false") << endl;
+    cout << "FMU '" << fmu.model_name() << "' terminated with success: " << (slave2->terminate() == 1 ? "true" : "false") << endl;
 
     return 0;
 

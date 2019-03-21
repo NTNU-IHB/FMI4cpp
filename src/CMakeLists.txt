@@ -100,16 +100,17 @@ set(sources
 )
 
 set(publicHeadersFull)
-foreach(h IN LISTS publicHeaders)
-    list(APPEND publicHeadersFull "${publicHeaderDir}/${h}")
+foreach(header IN LISTS publicHeaders)
+    list(APPEND publicHeadersFull "${publicHeaderDir}/${header}")
 endforeach()
 set(privateHeadersFull)
-foreach(h IN LISTS privateHeaders)
-    list(APPEND privateHeadersFull "${privateHeaderDir}/${h}")
+foreach(header IN LISTS privateHeaders)
+    list(APPEND privateHeadersFull "${privateHeaderDir}/${header}")
 endforeach()
 set(allSources ${publicHeadersFull} ${privateHeadersFull} ${sources})
 
 add_library(fmi4cpp ${allSources})
+add_library(fmi4cpp::fmi4cpp ALIAS fmi4cpp)
 target_compile_definitions(fmi4cpp PUBLIC "BOOST_ALL_DYN_LINK=1" "BOOST_ALL_NO_LIB=1" "BOOST_CONFIG_SUPPRESS_OUTDATED_MESSAGE=1")
 target_compile_features(fmi4cpp PUBLIC "cxx_std_17")
 
@@ -126,13 +127,15 @@ endif()
 
 target_include_directories(fmi4cpp
 PUBLIC
-    "$<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>"
+    $<INSTALL_INTERFACE:include>
+    $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
+INTERFACE
+    ${Boost_INCLUDE_DIRS}
 PRIVATE
-    "${CMAKE_CURRENT_SOURCE_DIR}"
+    ${CMAKE_CURRENT_SOURCE_DIR}
 )
 target_link_libraries(fmi4cpp
     PRIVATE
-        spdlog::spdlog
         libzip::libzip
 )
 
@@ -149,6 +152,19 @@ if (UNIX)
             dl stdc++fs pthread
     )
 endif()
+
+
+if (FMI4CPP_LOG_LEVEL STREQUAL "OFF")
+    target_compile_definitions(fmi4cpp PUBLIC FMI4CPP_LOG_LEVEL_OFF)
+elseif (FMI4CPP_LOG_LEVEL STREQUAL "INFO")
+    target_compile_definitions(fmi4cpp PUBLIC FMI4CPP_LOG_LEVEL_INFO)
+elseif (FMI4CPP_LOG_LEVEL STREQUAL "DEBUG")
+    target_compile_definitions(fmi4cpp PUBLIC FMI4CPP_LOG_LEVEL_DEBUG)
+elseif (FMI4CPP_LOG_LEVEL STREQUAL "TRACE")
+    target_compile_definitions(fmi4cpp PUBLIC FMI4CPP_LOG_LEVEL_TRACE)
+else ()
+    target_compile_definitions(fmi4cpp PUBLIC FMI4CPP_LOG_LEVEL_DEFAULT)
+endif ()
 
 install(
     TARGETS fmi4cpp

@@ -49,9 +49,9 @@ fmu_resource::~fmu_resource() {
     fs::remove_all(path_, success);
 
     if (!success) {
-        fmi4cpp::logger::debug("Deleted temporal folder '{}'", path_.string());
+        FMI4CPP_DEBUG("Deleted temporal folder '" + path_.string() + "'");
     } else {
-        fmi4cpp::logger::debug("Unable to delete temporal folder '{}'", path_.string());
+        FMI4CPP_DEBUG("Unable to delete temporal folder '" + path_.string() + "'");
     }
 
 }

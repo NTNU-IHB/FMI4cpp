@@ -94,7 +94,7 @@ bool me_slave::exitInitializationMode() {
 bool me_slave::step(const double stepSize) {
 
     if (stepSize <= 0) {
-        fmi4cpp::logger::error("Error: stepSize <= 0");
+        FMI4CPP_ERROR("Error: stepSize <= 0");
         return false;
     }
 

@@ -44,22 +44,22 @@ namespace fs = std::experimental::filesystem;
 
 fmu::fmu(const string &fmuPath) {
 
-    fmi4cpp::logger::debug("Loading FMU '{}'", fmuPath);
+    FMI4CPP_DEBUG("Loading FMU '" <<  fmuPath << "'");
 
     const std::string fmuName = fs::path(fmuPath).stem().string();
     fs::path tmpPath(fs::temp_directory_path() /= fs::path("fmi4cpp_" + fmuName + "_" + generate_simple_id(8)));
 
     if (!create_directories(tmpPath)) {
         auto err = "Failed to create temporary directory '" + tmpPath.string() + "' !";
-        fmi4cpp::logger::error(err);
+        FMI4CPP_ERROR(err);
         throw runtime_error(err);
     }
 
-    fmi4cpp::logger::info("Created temporary directory '{}'", tmpPath.string());
+    FMI4CPP_DEBUG("Created temporary directory '" << tmpPath.string());
 
     if (!unzip(fmuPath, tmpPath.string())) {
         auto err = "Failed to extract FMU '" + fmuPath + "'!";
-        fmi4cpp::logger::error(err);
+        FMI4CPP_ERROR(err);
         throw runtime_error(err);
     }
 
@@ -108,7 +108,7 @@ std::unique_ptr<fmu> fmu::from_url(const std::string &fmuPath) {
 
 #ifdef FMI4CPP_WITH_CURL
 
-    fmi4cpp::logger::debug("Loading FMU from URL: {}", fmuPath);
+    FMI4CPP_DEBUG("Loading FMU from URL: " << fmuPath);
 
     auto fmuName = fs::path(fmuPath).filename();
     fs::path tmp(fs::temp_directory_path() /= fmuName);
@@ -121,7 +121,7 @@ std::unique_ptr<fmu> fmu::from_url(const std::string &fmuPath) {
         CURLcode res = curl_easy_perform(curl);
         if (res != CURLE_OK) {
             auto err = "Failed to download FMU from URL:" + fmuPath;
-            fmi4cpp::logger::error(err);
+            FMI4CPP_ERROR(err);
             throw runtime_error(err);
         }
         /* always cleanup */

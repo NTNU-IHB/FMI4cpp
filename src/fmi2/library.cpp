@@ -34,8 +34,6 @@
 using namespace fmi4cpp;
 using namespace fmi4cpp::fmi2;
 
-namespace logger = fmi4cpp::logger;
-
 namespace {
 
     const std::string to_string(fmi2Status status) {
@@ -62,8 +60,8 @@ namespace {
     void logger(void *fmi2ComponentEnvironment,
                 fmi2String instance_name, fmi2Status status, fmi2String category, fmi2String message, ...) {
 
-        fmi4cpp::logger::info("[FMI callback logger] status={}, instanceName={}, category={}, message={}",
-                              to_string(status), instance_name, category, message);
+        FMI4CPP_INFO("[FMI callback logger] status=" + to_string(status) + ", instanceName=" + instance_name +
+                      ", category=" + category + ", message=" + message);
 
     }
 
@@ -79,12 +77,12 @@ fmi2Library::fmi2Library(const std::string &modelIdentifier, const std::shared_p
 
     const auto libName = resource->absolute_library_path(modelIdentifier);
 
-    logger::debug("Loading shared library '{}'", fs::path(libName).stem().string() + getLibExt());
+    FMI4CPP_DEBUG("Loading shared library '" + fs::path(libName).stem().string() + getLibExt() + "'");
 
     handle_ = load_library(libName);
 
     if (!handle_) {
-        logger::error("Unable to load dynamic library '{}': {}", libName, getLastError());
+        FMI4CPP_ERROR("Unable to load dynamic library '" + libName + "':" + getLastError());
         throw std::runtime_error("Unable to load dynamic library '" + libName + "'!");
     }
 
@@ -97,7 +95,8 @@ fmi2Library::fmi2Library(const std::string &modelIdentifier, const std::shared_p
     fmi2SetupExperiment_ = load_function<fmi2SetupExperimentTYPE *>(handle_, "fmi2SetupExperiment");
     fmi2EnterInitializationMode_ = load_function<fmi2EnterInitializationModeTYPE *>(handle_,
                                                                                     "fmi2EnterInitializationMode");
-    fmi2ExitInitializationMode_ = load_function<fmi2ExitInitializationModeTYPE *>(handle_, "fmi2ExitInitializationMode");
+    fmi2ExitInitializationMode_ = load_function<fmi2ExitInitializationModeTYPE *>(handle_,
+                                                                                  "fmi2ExitInitializationMode");
 
     fmi2Reset_ = load_function<fmi2ResetTYPE *>(handle_, "fmi2Reset");
     fmi2Terminate_ = load_function<fmi2TerminateTYPE *>(handle_, "fmi2Terminate");
@@ -150,7 +149,7 @@ fmi2Component fmi2Library::instantiate(const std::string &instanceName, const fm
 
     if (c == nullptr) {
         const std::string msg = "Fatal: fmi2Instantiate returned nullptr, unable to instantiate FMU instance!";
-        logger::error(msg);
+        FMI4CPP_ERROR(msg);
         throw std::runtime_error(msg);
     }
 
@@ -328,7 +327,7 @@ fmi2Library::~fmi2Library() {
 #endif
 
         if (!success) {
-            logger::error(getLastError());
+            FMI4CPP_ERROR(getLastError());
         }
 
         handle_ = nullptr;
