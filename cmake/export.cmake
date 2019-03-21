@@ -1,36 +1,22 @@
 
-install(
-        EXPORT "${FMI4CPP_EXPORT_TARGET}"
-        DESTINATION "${FMI4CPP_CMAKE_INSTALL_DIR}"
-        NAMESPACE "${PROJECT_NAME}::"
-)
+set(FMI4CPP_HEADER_INSTALL_DIR "include")
+set(FMI4CPP_CMAKE_INSTALL_DIR  "share/${PROJECT_NAME}")
+set(FMI4CPP_DOC_INSTALL_DIR    "share/doc/${PROJECT_NAME}")
 
-include(CMakePackageConfigHelpers)
+set(FMI4CPP_INSTALL_DESTINATIONS
+        ARCHIVE DESTINATION "lib"
+        LIBRARY DESTINATION "lib"
+        RUNTIME DESTINATION "bin"
+        INCLUDES DESTINATION "${FMI4CPP_HEADER_INSTALL_DIR}")
+set(FMI4CPP_EXPORT_TARGET "${PROJECT_NAME}-targets")
 
-# Generate and install package-config file.
-set(configFile "${CMAKE_BINARY_DIR}/${PROJECT_NAME}-config.cmake")
-set(targetsFile "${FMI4CPP_CMAKE_INSTALL_DIR}/${FMI4CPP_EXPORT_TARGET}.cmake")
-configure_package_config_file(
-        "${CMAKE_SOURCE_DIR}/cmake/project-config.cmake.in"
-        "${configFile}"
-        INSTALL_DESTINATION "${FMI4CPP_CMAKE_INSTALL_DIR}"
-        PATH_VARS targetsFile
-)
-install(FILES "${configFile}" DESTINATION "${FMI4CPP_CMAKE_INSTALL_DIR}")
+# Add uninstall logic (see https://gitlab.kitware.com/cmake/community/wikis/FAQ#can-i-do-make-uninstall-with-cmake)
+if (NOT TARGET uninstall)
+    configure_file(
+            "${CMAKE_CURRENT_SOURCE_DIR}/cmake/cmake_uninstall.cmake.in"
+            "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
+            IMMEDIATE @ONLY)
 
-# Generate and install package-version file
-set(versionFile "${CMAKE_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake")
-write_basic_package_version_file(
-        "${versionFile}"
-        VERSION "${PROJECT_VERSION}"
-        COMPATIBILITY "SameMajorVersion")
-install(FILES "${versionFile}" DESTINATION "${FMI4CPP_CMAKE_INSTALL_DIR}")
-
-
-# Install custom find modules
-install(FILES
-        ${CMAKE_SOURCE_DIR}/cmake/FindLIBZIP.cmake
-        ${CMAKE_SOURCE_DIR}/cmake/FindCURL_.cmake
-    DESTINATION
-        ${FMI4CPP_CMAKE_INSTALL_DIR}
-)
+    add_custom_target(uninstall
+            COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)
+endif()
