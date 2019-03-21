@@ -7,6 +7,10 @@ option(FMI4CPP_WITH_CURL "Build with curl. Allows URL paths to FMUs" OFF)
 option(FMI4CPP_WITH_ODEINT "Build with odeint solvers. Allows ME models to be wrapped as CS ones" OFF)
 
 
+set(FMI4CPP_LOG_LEVEL "DEFAULT" CACHE STRING "FMI4cpp logging level")
+set(FMI4CPP_LOG_LEVEL_VALUES "DEFAULT;OFF;INFO;DEBUG;TRACE" CACHE STRING "List of possible log levels")
+set_property(CACHE FMI4CPP_LOG_LEVEL PROPERTY STRINGS ${FMI4CPP_LOG_LEVEL_VALUES})
+
 cmake_minimum_required(VERSION 3.10)
 project(FMI4cpp
         VERSION 0.6.1)
@@ -23,10 +27,6 @@ if(FMI4CPP_USING_CONAN)
         message(FATAL_ERROR "The file conanbuildinfo.cmake doesn't exist, you have to run conan install first!")
     endif()
 endif()
-
-set(FMI4CPP_LOG_LEVEL "DEFAULT" CACHE STRING "FMI4cpp logging level")
-set(FMI4CPP_LOG_LEVEL_VALUES "DEFAULT;OFF;INFO;DEBUG;TRACE" CACHE STRING "List of possible log levels")
-set_property(CACHE FMI4CPP_LOG_LEVEL PROPERTY STRINGS ${FMI4CPP_LOG_LEVEL_VALUES})
 
 if (MSVC)
     set(CMAKE_DEBUG_POSTFIX "d")
@@ -54,31 +54,4 @@ set(FMI4CPP_EXPORT_TARGET "${PROJECT_NAME}-targets")
 
 include(dependencies)
 include(targets)
-
-
-install(
-        EXPORT "${FMI4CPP_EXPORT_TARGET}"
-        DESTINATION "${FMI4CPP_CMAKE_INSTALL_DIR}"
-        NAMESPACE "${PROJECT_NAME}::"
-)
-
-include(CMakePackageConfigHelpers)
-
-# Generate and install package-config file.
-set(configFile "${CMAKE_BINARY_DIR}/${PROJECT_NAME}-config.cmake")
-set(targetsFile "${FMI4CPP_CMAKE_INSTALL_DIR}/${FMI4CPP_EXPORT_TARGET}.cmake")
-configure_package_config_file(
-        "${CMAKE_SOURCE_DIR}/cmake/project-config.cmake.in"
-        "${configFile}"
-        INSTALL_DESTINATION "${FMI4CPP_CMAKE_INSTALL_DIR}"
-        PATH_VARS targetsFile
-)
-install(FILES "${configFile}" DESTINATION "${FMI4CPP_CMAKE_INSTALL_DIR}")
-
-# Generate and install package-version file
-set(versionFile "${CMAKE_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake")
-write_basic_package_version_file(
-        "${versionFile}"
-        VERSION "${PROJECT_VERSION}"
-        COMPATIBILITY "SameMajorVersion")
-install(FILES "${versionFile}" DESTINATION "${FMI4CPP_CMAKE_INSTALL_DIR}")
+include(export)

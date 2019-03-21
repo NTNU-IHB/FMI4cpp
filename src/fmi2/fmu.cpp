@@ -55,9 +55,9 @@ fmu::fmu(const string &fmuPath) {
         throw runtime_error(err);
     }
 
-    fmi4cpp::logger::debug("Created temporary directory '{}'", tmpPath.string());
+    fmi4cpp::logger::info("Created temporary directory '{}'", tmpPath.string());
 
-    if (!extractContents(fmuPath, tmpPath.string())) {
+    if (!unzip(fmuPath, tmpPath.string())) {
         auto err = "Failed to extract FMU '" + fmuPath + "'!";
         fmi4cpp::logger::error(err);
         throw runtime_error(err);
@@ -129,7 +129,7 @@ std::unique_ptr<fmu> fmu::from_url(const std::string &fmuPath) {
         fclose(fp);
     }
 
-    auto fmu = std::make_unique<fmi2Fmu>(tmp.string());
+    auto fmu = std::make_unique<fmi2::fmu>(tmp.string());
     fs::remove(tmp); //delete downloaded FMU, it has been extracted by now.
     return fmu;
 

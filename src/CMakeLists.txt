@@ -117,7 +117,11 @@ target_compile_features(fmi4cpp PUBLIC "cxx_std_17")
 target_compile_definitions(fmi4cpp PRIVATE $<$<CONFIG:Debug>:FMI4CPP_LOG_LEVEL_DEBUG>)
 
 if(FMI4CPP_WITH_ODEINT)
-    target_compile_definitions(fmi4cpp INTERFACE FMI4CPP_WITH_ODEINT)
+    target_compile_definitions(fmi4cpp PUBLIC FMI4CPP_WITH_ODEINT)
+endif()
+
+if(FMI4CPP_WITH_CURL)
+    target_compile_definitions(fmi4cpp PUBLIC FMI4CPP_WITH_CURL)
 endif()
 
 target_include_directories(fmi4cpp

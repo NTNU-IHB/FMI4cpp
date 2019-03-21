@@ -35,8 +35,6 @@ using namespace std;
 using namespace fmi4cpp;
 using namespace fmi4cpp::solver;
 
-namespace logger = fmi4cpp::logger;
-
 const double stop = 1.0;
 const double microStep = 1E-3;
 const double macroStep = 1.0/10;
@@ -57,21 +55,21 @@ int main() {
 
     double t = 0;
     double ref = 0;
-    auto hVar = slave->getModelDescription()->getVariableByName("h").asReal();
+    auto hVar = slave->model_description()->getVariableByName("h").asReal();
 
     while ( ( t = slave->getSimulationTime()) <= stop) {
 
-        if (!slave->doStep(macroStep)) {
-            logger::error("Error! doStep returned with status: {}", to_string(slave->getLastStatus()));
+        if (!slave->step(macroStep)) {
+            fmi4cpp::logger::error("Error! doStep returned with status: {}", to_string(slave->last_status()));
             break;
         }
 
         if (!hVar.read(*slave, ref)) {
-            logger::error("Error! readReal returned with status: {}", to_string(slave->getLastStatus()));
+            fmi4cpp::logger::error("Error! readReal returned with status: {}", to_string(slave->last_status()));
             break;
         }
 
-        logger::info("t={}, h={}",  t, ref);
+        fmi4cpp::logger::info("t={}, h={}",  t, ref);
     }
 
     slave->terminate();
