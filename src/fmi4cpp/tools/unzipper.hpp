@@ -36,7 +36,7 @@ namespace fs = std::experimental::filesystem;
 
 namespace {
 
-    bool extractContents(const std::string &zip_file, const std::string &tmp_path) {
+    bool unzip(const std::string &zip_file, const std::string &tmp_path) {
 
         int *err = 0;
         zip *za = zip_open(zip_file.c_str(), 0, err);
