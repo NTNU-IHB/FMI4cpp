@@ -22,6 +22,8 @@
  * THE SOFTWARE.
  */
 
+#include <iostream>
+
 #include <fmi4cpp/fmi4cpp.hpp>
 #include <time_util.hpp>
 
@@ -40,19 +42,19 @@ int main() {
     fmi2::fmu fmu(fmu_path);
 
     const auto slave = fmu.as_cs_fmu()->new_instance();
-    slave->setupExperiment();
-    slave->enterInitializationMode();
-    slave->exitInitializationMode();
+    slave->setup_experiment();
+    slave->enter_initialization_mode();
+    slave->exit_initialization_mode();
 
     auto elapsed = measure_time_sec([&slave]{
         double ref;
-        while ((slave->getSimulationTime()) <= (stop - step_size)) {
+        while ((slave->get_simulation_time()) <= (stop - step_size)) {
             if (!slave->step(step_size)) {
                 cerr << "Error! step returned with status: " << to_string(slave->last_status()) << endl;
                 break;
             }
-            if (!slave->readReal(vr, ref)) {
-                cerr << "Error! readReal returned with status: " << to_string(slave->last_status()) << endl;
+            if (!slave->read_real(vr, ref)) {
+                cerr << "Error! read_real returned with status: " << to_string(slave->last_status()) << endl;
                 break;
             }
         }

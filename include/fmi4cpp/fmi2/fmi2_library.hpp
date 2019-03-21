@@ -56,7 +56,7 @@ typedef void *function_ptr;
 
 namespace fmi4cpp::fmi2 {
 
-    class fmi2Library {
+    class fmi2_library {
 
     private:
 
@@ -105,89 +105,89 @@ namespace fmi4cpp::fmi2 {
 
         fmi2Status lastStatus_;
 
-        bool updateStatusAndReturnTrueIfOK(fmi2Status status);
+        bool update_status_and_return_true_if_ok(fmi2Status status);
 
     public:
 
-        fmi2Library(const std::string &modelIdentifier, const std::shared_ptr<fmu_resource> &resource);
+        fmi2_library(const std::string &modelIdentifier, const std::shared_ptr<fmu_resource> &resource);
 
-        fmi2Status getLastStatus() const;
+        fmi2Status last_status() const;
 
-        fmi2String getVersion() const;
+        fmi2String get_version() const;
 
-        fmi2String getTypesPlatform() const;
+        fmi2String get_types_platform() const;
 
-        bool setDebugLogging(fmi2Component c, bool loggingOn, std::vector<fmi2String> categories);
+        bool set_debug_logging(fmi2Component c, bool loggingOn, std::vector<fmi2String> categories);
 
         fmi2Component instantiate(const std::string &instanceName, fmi2Type type,
                                   const std::string &guid, const std::string &resourceLocation,
                                   bool visible = false, bool loggingOn = false);
 
-        bool setupExperiment(fmi2Component c, double tolerance, double startTime, double stopTime);
+        bool setup_experiment(fmi2Component c, double tolerance, double startTime, double stopTime);
 
-        bool enterInitializationMode(fmi2Component c);
+        bool enter_initialization_mode(fmi2Component c);
 
-        bool exitInitializationMode(fmi2Component c);
+        bool exit_initialization_mode(fmi2Component c);
 
         bool reset(fmi2Component c);
 
         bool terminate(fmi2Component c);
 
-        bool readInteger(fmi2Component c, fmi2ValueReference vr, fmi2Integer &ref);
+        bool read_integer(fmi2Component c, fmi2ValueReference vr, fmi2Integer &ref);
 
-        bool readInteger(fmi2Component c, const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Integer> &ref);
+        bool read_integer(fmi2Component c, const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Integer> &ref);
 
-        bool readReal(fmi2Component c, fmi2ValueReference vr, fmi2Real &ref);
+        bool read_real(fmi2Component c, fmi2ValueReference vr, fmi2Real &ref);
 
-        bool readReal(fmi2Component c, const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Real> &ref);
+        bool read_real(fmi2Component c, const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Real> &ref);
 
-        bool readString(fmi2Component c, fmi2ValueReference vr, fmi2String &ref);
+        bool read_string(fmi2Component c, fmi2ValueReference vr, fmi2String &ref);
 
-        bool readString(fmi2Component c, const std::vector<fmi2ValueReference> &vr, std::vector<fmi2String> &ref);
+        bool read_string(fmi2Component c, const std::vector<fmi2ValueReference> &vr, std::vector<fmi2String> &ref);
 
-        bool readBoolean(fmi2Component c, fmi2ValueReference vr, fmi2Boolean &ref);
+        bool read_boolean(fmi2Component c, fmi2ValueReference vr, fmi2Boolean &ref);
 
-        bool readBoolean(fmi2Component c, const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Boolean> &ref);
+        bool read_boolean(fmi2Component c, const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Boolean> &ref);
 
-        bool writeInteger(fmi2Component c, fmi2ValueReference vr, const fmi2Integer &value);
+        bool write_integer(fmi2Component c, fmi2ValueReference vr, const fmi2Integer &value);
 
-        bool writeInteger(fmi2Component c, const std::vector<fmi2ValueReference> &vr,
-                          const std::vector<fmi2Integer> &values);
+        bool write_integer(fmi2Component c, const std::vector<fmi2ValueReference> &vr,
+                           const std::vector<fmi2Integer> &values);
 
-        bool writeReal(fmi2Component c, fmi2ValueReference vr, const fmi2Real &value);
+        bool write_real(fmi2Component c, fmi2ValueReference vr, const fmi2Real &value);
 
-        bool writeReal(fmi2Component c, const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2Real> &values);
+        bool write_real(fmi2Component c, const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2Real> &values);
 
-        bool writeString(fmi2Component c, fmi2ValueReference vr, fmi2String &value);
+        bool write_string(fmi2Component c, fmi2ValueReference vr, fmi2String &value);
 
-        bool writeString(fmi2Component c, const std::vector<fmi2ValueReference> &vr,
-                         const std::vector<fmi2String> &values);
+        bool write_string(fmi2Component c, const std::vector<fmi2ValueReference> &vr,
+                          const std::vector<fmi2String> &values);
 
-        bool writeBoolean(fmi2Component c, fmi2ValueReference vr, const fmi2Boolean &value);
+        bool write_boolean(fmi2Component c, fmi2ValueReference vr, const fmi2Boolean &value);
 
-        bool writeBoolean(fmi2Component c, const std::vector<fmi2ValueReference> &vr,
-                          const std::vector<fmi2Boolean> &values);
+        bool write_boolean(fmi2Component c, const std::vector<fmi2ValueReference> &vr,
+                           const std::vector<fmi2Boolean> &values);
 
-        bool getFMUstate(fmi2Component c, fmi2FMUstate &state);
+        bool get_fmu_state(fmi2Component c, fmi2FMUstate &state);
 
-        bool setFMUstate(fmi2Component c, fmi2FMUstate state);
+        bool set_fmu_state(fmi2Component c, fmi2FMUstate state);
 
-        bool freeFMUstate(fmi2Component c, fmi2FMUstate &state);
+        bool free_fmu_state(fmi2Component c, fmi2FMUstate &state);
 
-        bool getSerializedFMUstateSize(fmi2Component c, fmi2FMUstate state, size_t &size);
+        bool get_serialized_fmu_state_size(fmi2Component c, fmi2FMUstate state, size_t &size);
 
-        bool serializeFMUstate(fmi2Component c, const fmi2FMUstate &state, std::vector<fmi2Byte> &serializedState);
+        bool serialize_fmu_state(fmi2Component c, const fmi2FMUstate &state, std::vector<fmi2Byte> &serializedState);
 
-        bool deSerializeFMUstate(fmi2Component c, fmi2FMUstate &state, const std::vector<fmi2Byte> &serializedState);
+        bool de_serialize_fmu_state(fmi2Component c, fmi2FMUstate &state, const std::vector<fmi2Byte> &serializedState);
 
-        bool getDirectionalDerivative(fmi2Component c,
-                                      const std::vector<fmi2ValueReference> &vUnknownRef,
-                                      const std::vector<fmi2ValueReference> &vKnownRef,
-                                      const std::vector<fmi2Real> &dvKnownRef, std::vector<fmi2Real> &dvUnknownRef);
+        bool get_directional_derivative(fmi2Component c,
+                                        const std::vector<fmi2ValueReference> &vUnknownRef,
+                                        const std::vector<fmi2ValueReference> &vKnownRef,
+                                        const std::vector<fmi2Real> &dvKnownRef, std::vector<fmi2Real> &dvUnknownRef);
 
-        void freeInstance(fmi2Component c);
+        void free_instance(fmi2Component c);
 
-        ~fmi2Library();
+        ~fmi2_library();
 
     };
 

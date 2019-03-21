@@ -13,7 +13,7 @@ set(publicHeaders
     fmu_resource.hpp
     fmu_instance.hpp
     fmu_instance_base.hpp
-    fmu_variable_accessor.hpp
+    variable_accessor.hpp
 
     driver/driver_options.hpp
     driver/error_types.hpp
@@ -23,6 +23,7 @@ set(publicHeaders
 
     fmi2/fmi2.hpp
     fmi2/fmu.hpp
+    fmi2/fmi2_library.hpp
 
     fmi2/fmi2Functions.h
     fmi2/fmi2FunctionTypes.h
@@ -73,9 +74,10 @@ set(sources
     fmu_resource.cpp
 
     fmi2/fmu.cpp
+    fmi2/fmi2_library.cpp
+
     fmi2/cs_fmu.cpp
     fmi2/me_fmu.cpp
-    fmi2/library.cpp
     fmi2/cs_library.cpp
     fmi2/cs_slave.cpp
     fmi2/me_library.cpp

@@ -53,7 +53,7 @@ namespace fmi4cpp::fmi2 {
 
         const std::string model_description_xml() const;
 
-        std::shared_ptr<const fmi4cpp::fmi2::model_description> model_description() const override;
+        std::shared_ptr<const fmi4cpp::fmi2::model_description> get_model_description() const override;
 
         bool supports_me() const override;
 

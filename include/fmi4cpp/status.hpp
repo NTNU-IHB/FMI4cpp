@@ -29,7 +29,7 @@
 
 namespace fmi4cpp {
 
-    enum class Status {
+    enum class status {
         OK,
         Warning,
         Discard,
@@ -39,19 +39,19 @@ namespace fmi4cpp {
         Unknown
     };
 
-    const inline std::string to_string(fmi4cpp::Status status) {
+    const inline std::string to_string(fmi4cpp::status status) {
         switch (status) {
-            case fmi4cpp::Status::OK:
+            case fmi4cpp::status::OK:
                 return "OK";
-            case fmi4cpp::Status::Warning:
+            case fmi4cpp::status::Warning:
                 return "Warning";
-            case fmi4cpp::Status::Discard:
+            case fmi4cpp::status::Discard:
                 return "Discard";
-            case fmi4cpp::Status::Error:
+            case fmi4cpp::status::Error:
                 return "Error";
-            case fmi4cpp::Status::Fatal:
+            case fmi4cpp::status::Fatal:
                 return "Fatal";
-            case fmi4cpp::Status::Pending:
+            case fmi4cpp::status::Pending:
                 return "Pending";
             default:
                 return "Unknown";

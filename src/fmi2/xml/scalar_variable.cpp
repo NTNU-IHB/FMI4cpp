@@ -111,18 +111,18 @@ integer_variable::integer_variable(const scalar_variable &variable, const intege
         : bounded_scalar_variable(variable, attribute) {}
 
 bool integer_variable::read(fmu_reader &reader, int &ref) {
-    return reader.readInteger(valueReference(), ref);
+    return reader.read_integer(valueReference(), ref);
 }
 
 bool integer_variable::write(fmu_writer &writer, int value) {
-    return writer.writeInteger(valueReference(), value);
+    return writer.write_integer(valueReference(), value);
 }
 
 real_variable::real_variable(const scalar_variable &variable, const real_attribute &attribute)
         : bounded_scalar_variable(variable, attribute) {}
 
 std::optional<std::string> real_variable::displayUnit() const {
-    return attribute_.displayUnit;
+    return attribute_.display_unit;
 }
 
 std::optional<std::string> real_variable::unit() const {
@@ -150,11 +150,11 @@ bool real_variable::reinit() const {
 }
 
 bool real_variable::read(fmu_reader &reader, double &ref) {
-    return reader.readReal(valueReference(), ref);
+    return reader.read_real(valueReference(), ref);
 }
 
 bool real_variable::write(fmu_writer &writer, double value) {
-    return writer.writeReal(valueReference(), value);
+    return writer.write_real(valueReference(), value);
 }
 
 
@@ -163,13 +163,13 @@ string_variable::string_variable(const scalar_variable &variable, const string_a
 
 bool string_variable::read(fmu_reader &reader, std::string &ref) {
     fmi2String str;
-    auto status = reader.readString(valueReference(), str);
+    auto status = reader.read_string(valueReference(), str);
     ref = str;
     return status;
 }
 
 bool string_variable::write(fmu_writer &writer, std::string value) {
-    return writer.writeString(valueReference(), value.c_str());
+    return writer.write_string(valueReference(), value.c_str());
 }
 
 
@@ -178,13 +178,13 @@ boolean_variable::boolean_variable(const scalar_variable &variable, const boolea
 
 bool boolean_variable::read(fmu_reader &reader, bool &ref) {
     fmi2Boolean _ref;
-    auto status = reader.readBoolean(valueReference(), _ref);
+    auto status = reader.read_boolean(valueReference(), _ref);
     ref = _ref != 0;
     return status;
 }
 
 bool boolean_variable::write(fmu_writer &writer, bool value) {
-    return writer.writeBoolean(valueReference(), value);
+    return writer.write_boolean(valueReference(), value);
 }
 
 
@@ -192,11 +192,11 @@ enumeration_variable::enumeration_variable(const scalar_variable &variable, cons
         : typed_scalar_variable(variable, attribute) {}
 
 bool enumeration_variable::read(fmu_reader &reader, int &ref) {
-    return reader.readInteger(valueReference(), ref);
+    return reader.read_integer(valueReference(), ref);
 }
 
 bool enumeration_variable::write(fmu_writer &writer, int value) {
-    return writer.writeInteger(valueReference(), value);
+    return writer.write_integer(valueReference(), value);
 }
 
 

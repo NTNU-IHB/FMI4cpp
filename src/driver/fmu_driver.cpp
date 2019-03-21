@@ -53,25 +53,25 @@ namespace {
 
     void add_row(fmu_slave<cs_model_description> &slave, const vector<scalar_variable> &variables, string &data) {
 
-        data += "\n" + to_string(slave.getSimulationTime()) + CSV_SEPARATOR;
+        data += "\n" + to_string(slave.get_simulation_time()) + CSV_SEPARATOR;
         for (unsigned int i = 0; i < variables.size(); i++) {
             auto var = variables[i];
 
             if (var.is_integer()) {
                 int ref = 0;
-                slave.readInteger(var.valueReference, ref);
+                slave.read_integer(var.valueReference, ref);
                 data += to_string(ref);
             } else if (var.is_real()) {
                 double ref = 0;
-                slave.readReal(var.valueReference, ref);
+                slave.read_real(var.valueReference, ref);
                 data += to_string(ref);
             } else if (var.is_string()) {
                 const char *ref;
-                slave.readString(var.valueReference, ref);
+                slave.read_string(var.valueReference, ref);
                 data += ref;
             } else if (var.is_boolean()) {
                 int ref = 0;
-                slave.readBoolean(var.valueReference, ref);
+                slave.read_boolean(var.valueReference, ref);
                 data += to_string(ref);
             }
 
@@ -90,7 +90,7 @@ void fmu_driver::run() {
 
     fmi2::fmu fmu(fmuPath_);
 
-    if (fmu.model_description()->as_cs_model_description()->needsExecutionTool) {
+    if (fmu.get_model_description()->as_cs_model_description()->needsExecutionTool) {
         throw rejection("FMU requires execution tool.");
     }
 
@@ -100,7 +100,7 @@ void fmu_driver::run() {
         simulate(fmu.as_me_fmu()->newInstance(solver));
 #else
         const char *msg = "Model Exchange mode selected, but driver has been built without odeint support!";
-        throw Failure(msg);
+        throw failure(msg);
 #endif
     } else {
         simulate(fmu.as_cs_fmu()->new_instance());
@@ -127,21 +127,21 @@ void fmu_driver::simulate(std::unique_ptr<fmu_slave<cs_model_description>> slave
     auto stopTime = options_.stopTime;
     auto stepSize = options_.stepSize;
 
-    slave->setupExperiment(startTime);
-    slave->enterInitializationMode();
-    slave->exitInitializationMode();
+    slave->setup_experiment(startTime);
+    slave->enter_initialization_mode();
+    slave->exit_initialization_mode();
 
     string data;
-    vector<scalar_variable> variables = options_.transformVariables(slave->model_description());
+    vector<scalar_variable> variables = options_.transformVariables(slave->get_model_description());
 
     add_header(variables, data);
 
     add_row(*slave, variables, data);
-    while (slave->getSimulationTime() <= stopTime) {
+    while (slave->get_simulation_time() <= stopTime) {
 
         if (!slave->step(stepSize)) {
             slave->terminate();
-            throw Failure("Simulation terminated prematurely.");
+            throw failure("Simulation terminated prematurely.");
         }
 
         add_row(*slave, variables, data);

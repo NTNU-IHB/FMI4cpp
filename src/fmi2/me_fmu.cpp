@@ -36,7 +36,7 @@ me_fmu::me_fmu(const shared_ptr<fmu_resource> &resource,
         : resource_(resource), modelDescription_(md) {}
 
 
-shared_ptr<const me_model_description> me_fmu::model_description() const {
+shared_ptr<const me_model_description> me_fmu::get_model_description() const {
     return modelDescription_;
 }
 

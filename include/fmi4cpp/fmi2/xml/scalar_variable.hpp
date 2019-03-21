@@ -70,7 +70,7 @@ namespace fmi4cpp::fmi2 {
     struct scalar_variable_attribute {
 
         std::optional<T> start;
-        std::optional<std::string> declaredType;
+        std::optional<std::string> declared_type;
 
     };
 
@@ -103,7 +103,7 @@ namespace fmi4cpp::fmi2 {
         std::optional<unsigned int> derivative;
 
         std::optional<std::string> unit;
-        std::optional<std::string> displayUnit;
+        std::optional<std::string> display_unit;
 
         explicit real_attribute(const bounded_scalar_variable_attribute<double> &attributes);
 

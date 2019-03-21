@@ -44,9 +44,9 @@ namespace fmi4cpp::solver {
         std::shared_ptr<fmi2::me_instance> instance_;
 
         void operator()(const state_type &x, state_type &dx, const double t) {
-            instance_->setTime(t);
-            instance_->setContinuousStates(x);
-            instance_->getDerivatives(dx);
+            instance_->set_time(t);
+            instance_->set_continuous_states(x);
+            instance_->get_derivatives(dx);
         }
 
     };
@@ -76,72 +76,73 @@ namespace fmi4cpp::fmi2 {
         me_slave(std::shared_ptr<fmu_resource> &resource, std::unique_ptr<me_instance> &instance,
                            std::unique_ptr<fmi4cpp::solver::me_solver> &solver);
 
-        const double getSimulationTime() const override;
+        const double get_simulation_time() const override;
+//
+        fmi4cpp::status last_status() const override;
 
-        fmi4cpp::Status last_status() const override;
-
-        std::shared_ptr<const cs_model_description> model_description() const override;
+        std::shared_ptr<const cs_model_description> get_model_description() const override;
 
         bool step(double stepSize) override;
 
         bool cancel_step() override;
 
-        bool setupExperiment(double startTime = 0, double stopTime = 0, double tolerance = 0) override;
+        bool setup_experiment(double startTime = 0, double stopTime = 0, double tolerance = 0) override;
 
-        bool enterInitializationMode() override;
+        bool enter_initialization_mode() override;
 
-        bool exitInitializationMode() override;
+        bool exit_initialization_mode() override;
 
         bool reset() override;
 
         bool terminate() override;
 
-        bool getFMUstate(fmi2FMUstate &state) override;
+        bool read_integer(fmi2ValueReference vr, fmi2Integer &ref) override;
 
-        bool setFMUstate(fmi2FMUstate state) override;
+        bool read_integer(const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Integer> &ref) override;
 
-        bool freeFMUstate(fmi2FMUstate &state) override;
+        bool read_real(fmi2ValueReference vr, fmi2Real &ref) override;
 
-        bool serializeFMUstate(const fmi2FMUstate &state, std::vector<fmi2Byte> &serializedState) override;
+        bool read_real(const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Real> &ref) override;
 
-        bool deSerializeFMUstate(fmi2FMUstate &state, const std::vector<fmi2Byte> &serializedState) override;
+        bool read_string(fmi2ValueReference vr, fmi2String &ref) override;
 
-        bool getDirectionalDerivative(const std::vector<fmi2ValueReference> &vUnknownRef,
-                                            const std::vector<fmi2ValueReference> &vKnownRef,
-                                            const std::vector<fmi2Real> &dvKnownRef,
-                                            std::vector<fmi2Real> &dvUnknownRef) override;
+        bool read_string(const std::vector<fmi2ValueReference> &vr, std::vector<fmi2String> &ref) override;
 
-        bool readInteger(fmi2ValueReference vr, fmi2Integer &ref) override;
+        bool read_boolean(fmi2ValueReference vr, fmi2Boolean &ref) override;
 
-        bool readInteger(const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Integer> &ref) override;
+        bool read_boolean(const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Boolean> &ref) override;
 
-        bool readReal(fmi2ValueReference vr, fmi2Real &ref) override;
+        bool write_integer(fmi2ValueReference vr, fmi2Integer value) override;
 
-        bool readReal(const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Real> &ref) override;
+        bool write_integer(const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2Integer> &values) override;
 
-        bool readString(fmi2ValueReference vr, fmi2String &ref) override;
+        bool write_real(fmi2ValueReference vr, fmi2Real value) override;
 
-        bool readString(const std::vector<fmi2ValueReference> &vr, std::vector<fmi2String> &ref) override;
+        bool write_real(const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2Real> &values) override;
 
-        bool readBoolean(fmi2ValueReference vr, fmi2Boolean &ref) override;
+        bool write_string(fmi2ValueReference vr, fmi2String value) override;
 
-        bool readBoolean(const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Boolean> &ref) override;
+        bool write_string(const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2String> &values) override;
 
-        bool writeInteger(fmi2ValueReference vr, fmi2Integer value) override;
+        bool write_boolean(fmi2ValueReference vr, fmi2Boolean value) override;
 
-        bool writeInteger(const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2Integer> &values) override;
+        bool write_boolean(const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2Boolean> &values) override;
 
-        bool writeReal(fmi2ValueReference vr, fmi2Real value) override;
 
-        bool writeReal(const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2Real> &values) override;
+        bool get_fmu_state(fmi2FMUstate &state) override;
 
-        bool writeString(fmi2ValueReference vr, fmi2String value) override;
+        bool set_fmu_state(fmi2FMUstate state) override;
 
-        bool writeString(const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2String> &values) override;
+        bool free_fmu_state(fmi2FMUstate &state) override;
 
-        bool writeBoolean(fmi2ValueReference vr, fmi2Boolean value) override;
+        bool serialize_fmu_state(const fmi2FMUstate &state, std::vector<fmi2Byte> &serializedState) override;
 
-        bool writeBoolean(const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2Boolean> &values) override;
+        bool de_serialize_fmu_state(fmi2FMUstate &state, const std::vector<fmi2Byte> &serializedState) override;
+
+        bool get_directional_derivative(const std::vector<fmi2ValueReference> &vUnknownRef,
+                                        const std::vector<fmi2ValueReference> &vKnownRef,
+                                        const std::vector<fmi2Real> &dvKnownRef,
+                                        std::vector<fmi2Real> &dvUnknownRef) override;
 
     };
 

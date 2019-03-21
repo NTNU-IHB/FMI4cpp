@@ -30,7 +30,7 @@ using namespace fmi4cpp::fmi2;
 
 cs_library::cs_library(const std::string &modelIdentifier,
                                                  const std::shared_ptr<fmu_resource> &resource)
-        : fmi2Library(modelIdentifier, resource) {
+        : fmi2_library(modelIdentifier, resource) {
 
     fmi2SetRealInputDerivatives_ = load_function<fmi2SetRealInputDerivativesTYPE *>(handle_,
                                                                                     "fmi2SetRealInputDerivatives");
@@ -48,48 +48,48 @@ cs_library::cs_library(const std::string &modelIdentifier,
 
 }
 
-bool cs_library::doStep(const fmi2Component c, const fmi2Real currentCommunicationPoint,
-                                     const fmi2Real communicationStepSize,
-                                     const bool noSetFMUStatePriorToCurrentPoint) {
-    return updateStatusAndReturnTrueIfOK(
+bool cs_library::step(const fmi2Component c, const fmi2Real currentCommunicationPoint,
+                      const fmi2Real communicationStepSize,
+                      const bool noSetFMUStatePriorToCurrentPoint) {
+    return update_status_and_return_true_if_ok(
             fmi2DoStep_(c, currentCommunicationPoint, communicationStepSize, noSetFMUStatePriorToCurrentPoint));
 }
 
-bool cs_library::cancelStep(const fmi2Component c) {
-    return updateStatusAndReturnTrueIfOK(fmi2CancelStep_(c));
+bool cs_library::cancel_step(fmi2Component c) {
+    return update_status_and_return_true_if_ok(fmi2CancelStep_(c));
 }
 
-bool cs_library::setRealInputDerivatives(const fmi2Component c,
-                                                      const std::vector<fmi2ValueReference> &vr,
-                                                      const std::vector<fmi2Integer> &order,
-                                                      const std::vector<fmi2Real> &value) {
+bool cs_library::set_real_input_derivatives(const fmi2Component c,
+                                            const std::vector<fmi2ValueReference> &vr,
+                                            const std::vector<fmi2Integer> &order,
+                                            const std::vector<fmi2Real> &value) {
     return fmi2SetRealInputDerivatives_(c, vr.data(), vr.size(), order.data(), value.data());
 }
 
-bool cs_library::getRealOutputDerivatives(const fmi2Component c,
-                                                       const std::vector<fmi2ValueReference> &vr,
-                                                       const std::vector<fmi2Integer> &order,
-                                                       std::vector<fmi2Real> &value) {
-    return updateStatusAndReturnTrueIfOK(
+bool cs_library::get_real_output_derivatives(const fmi2Component c,
+                                             const std::vector<fmi2ValueReference> &vr,
+                                             const std::vector<fmi2Integer> &order,
+                                             std::vector<fmi2Real> &value) {
+    return update_status_and_return_true_if_ok(
             fmi2GetRealOutputDerivatives_(c, vr.data(), vr.size(), order.data(), value.data()));
 }
 
-bool cs_library::getStatus(const fmi2Component c, const fmi2StatusKind s, fmi2Status &value) {
-    return updateStatusAndReturnTrueIfOK(fmi2GetStatus_(c, s, &value));
+bool cs_library::get_status(const fmi2Component c, const fmi2StatusKind s, fmi2Status &value) {
+    return update_status_and_return_true_if_ok(fmi2GetStatus_(c, s, &value));
 }
 
-bool cs_library::getRealStatus(const fmi2Component c, const fmi2StatusKind s, fmi2Real &value) {
-    return updateStatusAndReturnTrueIfOK(fmi2GetRealStatus_(c, s, &value));
+bool cs_library::get_real_status(const fmi2Component c, const fmi2StatusKind s, fmi2Real &value) {
+    return update_status_and_return_true_if_ok(fmi2GetRealStatus_(c, s, &value));
 }
 
-bool cs_library::getIntegerStatus(const fmi2Component c, const fmi2StatusKind s, fmi2Integer &value) {
-    return updateStatusAndReturnTrueIfOK(fmi2GetIntegerStatus_(c, s, &value));
+bool cs_library::get_integer_status(const fmi2Component c, const fmi2StatusKind s, fmi2Integer &value) {
+    return update_status_and_return_true_if_ok(fmi2GetIntegerStatus_(c, s, &value));
 }
 
-bool cs_library::getBooleanStatus(const fmi2Component c, const fmi2StatusKind s, fmi2Boolean &value) {
-    return updateStatusAndReturnTrueIfOK(fmi2GetBooleanStatus_(c, s, &value));
+bool cs_library::get_boolean_status(const fmi2Component c, const fmi2StatusKind s, fmi2Boolean &value) {
+    return update_status_and_return_true_if_ok(fmi2GetBooleanStatus_(c, s, &value));
 }
 
-bool cs_library::getStringStatus(const fmi2Component c, const fmi2StatusKind s, fmi2String &value) {
-    return updateStatusAndReturnTrueIfOK(fmi2GetStringStatus_(c, s, &value));
+bool cs_library::get_string_status(const fmi2Component c, const fmi2StatusKind s, fmi2String &value) {
+    return update_status_and_return_true_if_ok(fmi2GetStringStatus_(c, s, &value));
 }

@@ -22,8 +22,8 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMI4CPP_FMI2COSIMULATIONSLAVE_HPP
-#define FMI4CPP_FMI2COSIMULATIONSLAVE_HPP
+#ifndef FMI4CPP_FMI2_CS_SLAVE_HPP
+#define FMI4CPP_FMI2_CS_SLAVE_HPP
 
 #include <memory>
 
@@ -54,72 +54,73 @@ namespace fmi4cpp::fmi2 {
         bool cancel_step() override;
 
 
-        virtual std::shared_ptr<const cs_model_description> model_description() const;
+        virtual std::shared_ptr<const cs_model_description> get_model_description() const;
 
-        virtual Status last_status() const;
+        virtual status last_status() const;
 
 
-        virtual bool setupExperiment(double start = 0, double stop = 0, double tolerance = 0);
+        virtual bool setup_experiment(double start = 0, double stop = 0, double tolerance = 0);
 
-        virtual bool enterInitializationMode();
+        virtual bool enter_initialization_mode();
 
-        virtual bool exitInitializationMode();
+        virtual bool exit_initialization_mode();
 
         virtual bool reset();
 
         virtual bool terminate();
 
 
-        virtual bool readInteger(fmi2ValueReference vr, fmi2Integer &ref);
+        virtual bool read_integer(fmi2ValueReference vr, fmi2Integer &ref);
 
-        virtual bool readInteger(const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Integer> &ref);
+        virtual bool read_integer(const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Integer> &ref);
 
-        virtual bool readReal(fmi2ValueReference vr, fmi2Real &ref);
+        virtual bool read_real(fmi2ValueReference vr, fmi2Real &ref);
 
-        virtual bool readReal(const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Real> &ref);
+        virtual bool read_real(const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Real> &ref);
 
-        virtual bool readString(fmi2ValueReference vr, fmi2String &ref);
+        virtual bool read_string(fmi2ValueReference vr, fmi2String &ref);
 
-        virtual bool readString(const std::vector<fmi2ValueReference> &vr, std::vector<fmi2String> &ref);
+        virtual bool read_string(const std::vector<fmi2ValueReference> &vr, std::vector<fmi2String> &ref);
 
-        virtual bool readBoolean(fmi2ValueReference vr, fmi2Boolean &ref);
+        virtual bool read_boolean(fmi2ValueReference vr, fmi2Boolean &ref);
 
-        virtual bool readBoolean(const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Boolean> &ref);
+        virtual bool read_boolean(const std::vector<fmi2ValueReference> &vr, std::vector<fmi2Boolean> &ref);
 
-        virtual bool writeInteger(fmi2ValueReference vr, fmi2Integer value);
+        virtual bool write_integer(fmi2ValueReference vr, fmi2Integer value);
 
-        virtual bool writeInteger(const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2Integer> &values);
+        virtual bool write_integer(const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2Integer> &values);
 
-        virtual bool writeReal(fmi2ValueReference vr, fmi2Real value);
+        virtual bool write_real(fmi2ValueReference vr, fmi2Real value);
 
-        virtual bool writeReal(const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2Real> &values);
+        virtual bool write_real(const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2Real> &values);
 
-        virtual bool writeString(fmi2ValueReference vr, fmi2String value);
+        virtual bool write_string(fmi2ValueReference vr, fmi2String value);
 
-        virtual bool writeString(const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2String> &values);
+        virtual bool write_string(const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2String> &values);
 
-        virtual bool writeBoolean(fmi2ValueReference vr, fmi2Boolean value);
+        virtual bool write_boolean(fmi2ValueReference vr, fmi2Boolean value);
 
-        virtual bool writeBoolean(const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2Boolean> &values);
+        virtual bool write_boolean(const std::vector<fmi2ValueReference> &vr, const std::vector<fmi2Boolean> &values);
 
-        virtual bool getFMUstate(fmi2FMUstate &state);
 
-        virtual bool setFMUstate(fmi2FMUstate state);
+        bool get_fmu_state(fmi2FMUstate &state) override;
 
-        virtual bool freeFMUstate(fmi2FMUstate &state);
+        bool set_fmu_state(fmi2FMUstate state) override;
 
-        virtual bool serializeFMUstate(const fmi2FMUstate &state, std::vector<fmi2Byte> &serializedState);
+        bool free_fmu_state(fmi2FMUstate &state) override;
 
-        virtual bool deSerializeFMUstate(fmi2FMUstate &state, const std::vector<fmi2Byte> &serializedState);
+        bool serialize_fmu_state(const fmi2FMUstate &state, std::vector<fmi2Byte> &serializedState) override;
 
-        virtual bool getDirectionalDerivative(const std::vector<fmi2ValueReference> &vUnknownRef,
-                                              const std::vector<fmi2ValueReference> &vKnownRef,
-                                              const std::vector<fmi2Real> &dvKnownRef,
-                                              std::vector<fmi2Real> &dvUnknownRef);
+        bool de_serialize_fmu_state(fmi2FMUstate &state, const std::vector<fmi2Byte> &serializedState) override;
+
+        bool get_directional_derivative(const std::vector<fmi2ValueReference> &vUnknownRef,
+                                        const std::vector<fmi2ValueReference> &vKnownRef,
+                                        const std::vector<fmi2Real> &dvKnownRef,
+                                        std::vector<fmi2Real> &dvUnknownRef) override;
 
     };
 
 }
 
 
-#endif //FMI4CPP_FMI2COSIMULATIONSLAVE_HPP
+#endif //FMI4CPP_FMI2_CS_SLAVE_HPP

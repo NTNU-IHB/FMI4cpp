@@ -25,11 +25,11 @@
 #ifndef FMI4CPP_FMI2COSIMULATIONLIBRARY_HPP
 #define FMI4CPP_FMI2COSIMULATIONLIBRARY_HPP
 
-#include <fmi4cpp/fmi2/library.hpp>
+#include <fmi4cpp/fmi2/fmi2_library.hpp>
 
 namespace fmi4cpp::fmi2 {
 
-    class cs_library : public fmi2Library {
+    class cs_library : public fmi2_library {
 
     private:
 
@@ -49,28 +49,28 @@ namespace fmi4cpp::fmi2 {
 
         cs_library(const std::string &modelIdentifier, const std::shared_ptr<fmu_resource> &resource);
 
-        bool doStep(fmi2Component c, fmi2Real currentCommunicationPoint,
-                    fmi2Real communicationStepSize, bool noSetFMUStatePriorToCurrentPoint);
+        bool step(fmi2Component c, const fmi2Real currentCommunicationPoint,
+                  fmi2Real communicationStepSize, bool noSetFMUStatePriorToCurrentPoint);
 
-        bool cancelStep(fmi2Component c);
+        bool cancel_step(fmi2Component c);
 
-        bool setRealInputDerivatives(fmi2Component c, const std::vector<fmi2ValueReference> &vr,
-                                     const std::vector<fmi2Integer> &order,
-                                     const std::vector<fmi2Real> &value);
+        bool set_real_input_derivatives(fmi2Component const c, const std::vector<fmi2ValueReference> &vr,
+                                        const std::vector<fmi2Integer> &order,
+                                        const std::vector<fmi2Real> &value);
 
-        bool getRealOutputDerivatives(fmi2Component c, const std::vector<fmi2ValueReference> &vr,
-                                      const std::vector<fmi2Integer> &order,
-                                      std::vector<fmi2Real> &value);
+        bool get_real_output_derivatives(fmi2Component const c, const std::vector<fmi2ValueReference> &vr,
+                                         const std::vector<fmi2Integer> &order,
+                                         std::vector<fmi2Real> &value);
 
-        bool getStatus(fmi2Component c, fmi2StatusKind s, fmi2Status &value);
+        bool get_status(fmi2Component const c, const fmi2StatusKind s, fmi2Status &value);
 
-        bool getRealStatus(fmi2Component c, fmi2StatusKind s, fmi2Real &value);
+        bool get_real_status(fmi2Component const c, const fmi2StatusKind s, fmi2Real &value);
 
-        bool getIntegerStatus(fmi2Component c, fmi2StatusKind s, fmi2Integer &value);
+        bool get_integer_status(fmi2Component const c, const fmi2StatusKind s, fmi2Integer &value);
 
-        bool getBooleanStatus(fmi2Component c, fmi2StatusKind s, fmi2Boolean &value);
+        bool get_boolean_status(fmi2Component const c, const fmi2StatusKind s, fmi2Boolean &value);
 
-        bool getStringStatus(fmi2Component c, fmi2StatusKind s, fmi2String &value);
+        bool get_string_status(fmi2Component const c, const fmi2StatusKind s, fmi2String &value);
 
     };
 

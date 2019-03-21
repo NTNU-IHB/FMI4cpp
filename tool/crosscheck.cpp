@@ -150,9 +150,9 @@ namespace fmi4cpp::xc {
                     if (opt.startTime >= opt.stopTime) {
                         throw rejection("Invalid start and/or stop time (startTime >= stopTime).");
                     } else if (opt.stepSize == 0.0) {
-                        throw Failure("Don't know how to handle variable step solver (stepsize=0.0).");
+                        throw failure("Don't know how to handle variable step solver (stepsize=0.0).");
                     } else if (hasInput) {
-                        throw Failure("Unable to handle input files yet.");
+                        throw failure("Unable to handle input files yet.");
                     }
 
                     opt.variables = parseVariables(readLine(refFile));
@@ -168,7 +168,7 @@ namespace fmi4cpp::xc {
                 } catch (rejection &ex) {
                     FMI4CPP_WARN("Cross-checking FMU '" << fmuDir.string() << "' rejected! " << ex.what());
                     reject(resultDir, ex.what());
-                } catch (Failure &ex) {
+                } catch (failure &ex) {
                     FMI4CPP_ERROR("Cross-checking FMU '" << fmuDir.string() << "' failed! " << ex.what());
                     fail(resultDir, ex.what());
                 }

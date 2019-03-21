@@ -45,7 +45,7 @@ BOOST_AUTO_TEST_CASE(ControlledTemperature_test1) {
     auto fmu = fmi2::fmu(fmu_path).as_cs_fmu();
 
     size_t numOutputs = 0;
-    for (const auto &v : *fmu->model_description()->modelVariables) {
+    for (const auto &v : *fmu->get_model_description()->modelVariables) {
         if (v.causality == fmi2::causality::output) {
             numOutputs++;
         }
@@ -53,14 +53,14 @@ BOOST_AUTO_TEST_CASE(ControlledTemperature_test1) {
     BOOST_CHECK_EQUAL(2, numOutputs);
 
     auto slave = fmu->new_instance();
-    BOOST_CHECK(slave->setupExperiment());
-    BOOST_CHECK(slave->enterInitializationMode());
-    BOOST_CHECK(slave->exitInitializationMode());
+    BOOST_CHECK(slave->setup_experiment());
+    BOOST_CHECK(slave->enter_initialization_mode());
+    BOOST_CHECK(slave->exit_initialization_mode());
     
     double ref;
-    while ((slave->getSimulationTime()) <= (stop - step_size)) {
+    while ((slave->get_simulation_time()) <= (stop - step_size)) {
         BOOST_CHECK(slave->step(step_size));
-        BOOST_CHECK(slave->readReal(vr, ref));
+        BOOST_CHECK(slave->read_real(vr, ref));
     }
 
     BOOST_CHECK(slave->terminate());

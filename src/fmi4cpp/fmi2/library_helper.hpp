@@ -25,7 +25,7 @@
 #ifndef FMI4CPP_LIBRARYHELPER_HPP
 #define FMI4CPP_LIBRARYHELPER_HPP
 
-#include <fmi4cpp/fmi2/library.hpp>
+#include <fmi4cpp/fmi2/fmi2_library.hpp>
 
 namespace {
 

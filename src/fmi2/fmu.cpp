@@ -73,7 +73,7 @@ const std:: string fmu::model_description_xml() const {
     return string((istreambuf_iterator<char>(stream)), istreambuf_iterator<char>());
 }
 
-shared_ptr<const model_description> fmu::model_description() const {
+shared_ptr<const model_description> fmu::get_model_description() const {
     return modelDescription_;
 }
 

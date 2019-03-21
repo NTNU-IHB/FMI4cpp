@@ -38,14 +38,14 @@ namespace fmi4cpp {
     public:
 
         const std::string guid() const {
-            return model_description()->guid;
+            return get_model_description()->guid;
         }
 
         const std::string model_name() const {
-            return model_description()->modelName;
+            return get_model_description()->modelName;
         }
 
-        virtual std::shared_ptr<const ModelDescription> model_description() const = 0;
+        virtual std::shared_ptr<const ModelDescription> get_model_description() const = 0;
 
     };
 
@@ -69,7 +69,7 @@ namespace fmi4cpp {
 
     public:
 
-        virtual std::shared_ptr<const cs_model_description> model_description() const = 0;
+        virtual std::shared_ptr<const cs_model_description> get_model_description() const = 0;
 
         virtual std::unique_ptr<cs_slave> new_instance(bool visible, bool loggingOn) = 0;
 
@@ -80,7 +80,7 @@ namespace fmi4cpp {
 
     public:
 
-        virtual std::shared_ptr<const me_model_description> model_description() const override = 0;
+        virtual std::shared_ptr<const me_model_description> get_model_description() const override = 0;
 
         virtual std::unique_ptr<me_instance> new_instance(bool visible = false, bool loggingOn = false) = 0;
 

@@ -6,7 +6,7 @@
 
 
 [![CircleCI](https://circleci.com/gh/NTNU-IHB/FMI4cpp/tree/master.svg?style=svg)](https://circleci.com/gh/NTNU-IHB/FMI4cpp/tree/master)
-[![Build Status](https://dev.azure.com/laht/laht/_apis/build/status/NTNU-IHB.FMI4cpp?branchName=master)](https://dev.azure.com/laht/laht/_build/latest?definitionId=3&branchName=master)
+[![Build status](https://dev.azure.com/laht/laht/_apis/build/status/NTNU-IHB.FMI4cpp?branchName=master)](https://dev.azure.com/laht/laht/_build/latest?definitionId=3&branchName=master)
 
 FMI4cpp is a cross-platform [FMI](https://fmi-standard.org/) 2.0 implementation written in modern C++.
 
@@ -54,8 +54,8 @@ int main() {
     auto cs_md = fmu.getModelDescription(); //smart pointer to a CoSimulationModelDescription instance
     cout << "modelIdentifier=" << cs_fmu->getModelDescription()->modelIdentifier << endl;
     
-    auto me_md = fmu.getModelDescription(); //smart pointer to a ModelExchangeModelDescription instance
-    cout << "modelIdentifier=" << me_fmu->getModelDescription()->modelIdentifier << endl;
+    auto me_md = fmu.get_model_description(); //smart pointer to a ModelExchangeModelDescription instance
+    cout << "modelIdentifier=" << me_fmu->get_model_description()->modelIdentifier << endl;
     
     auto var = cs_md->getVariableByName("my_var").asReal();
     cout << "Name=" << var.name <<  ", start=" << var.start().value_or(0) << endl;
@@ -66,21 +66,21 @@ int main() {
     // auto solver = make_solver<RK4ClassicSolver>(1E-3);
     // auto slave = me_fmu->newInstance(solver);
          
-    slave->setupExperiment();
-    slave->enterInitializationMode();
-    slave->exitInitializationMode();
+    slave->setup_experiment();
+    slave->enter_initialization_mode();
+    slave->exit_initialization_mode();
     
     double t;
     double value;
-    while ( (t = slave->getSimulationTime()) <= stop) {
+    while ( (t = slave->get_simulation_time()) <= stop) {
 
         if (!slave->step(stepSize)) {
-            cerr << "Error! doStep() returned with status: " << to_string(slave->getLastStatus()) << endl;
+            cerr << "Error! step() returned with status: " << to_string(slave->last_status()) << endl;
             break;
         }
         
         if (!var.read(*slave, value)) {
-            cerr << "Error! doStep() returned with status: " << to_string(slave->getLastStatus()) << endl;
+            cerr << "Error! step() returned with status: " << to_string(slave->last_status()) << endl;
             break;
         }
         cout << "t=" << t << ", " << var.name << "=" << value << endl;

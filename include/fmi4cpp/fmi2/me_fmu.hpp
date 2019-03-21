@@ -46,7 +46,7 @@ namespace fmi4cpp::fmi2 {
         me_fmu(const std::shared_ptr<fmu_resource> &resource,
                              const std::shared_ptr<const me_model_description> &md);
 
-        std::shared_ptr<const me_model_description> model_description() const override;
+        std::shared_ptr<const me_model_description> get_model_description() const override;
 
         std::unique_ptr<me_instance> new_instance(bool visible = false, bool loggingOn = false);
 

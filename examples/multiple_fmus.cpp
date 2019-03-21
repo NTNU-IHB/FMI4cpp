@@ -43,17 +43,17 @@ int main() {
     fmi2::fmu fmu2(fmu_path2);
     
     const auto slave1 = fmu1.as_cs_fmu()->new_instance();
-    const auto md1 = slave1->model_description();
+    const auto md1 = slave1->get_model_description();
 
-    slave1->setupExperiment();
-    slave1->enterInitializationMode();
-    slave1->exitInitializationMode();
+    slave1->setup_experiment();
+    slave1->enter_initialization_mode();
+    slave1->exit_initialization_mode();
 
     const auto slave2 = fmu2.as_cs_fmu()->new_instance();
-    const auto md2 = slave2->model_description();
-    slave2->setupExperiment();
-    slave2->enterInitializationMode();
-    slave2->exitInitializationMode();
+    const auto md2 = slave2->get_model_description();
+    slave2->setup_experiment();
+    slave2->enter_initialization_mode();
+    slave2->exit_initialization_mode();
 
     slave1->step(1E-5);
     slave2->step(1E-4);
@@ -66,7 +66,7 @@ int main() {
 
     auto vr = md2->getValueReference("Temperature_Room");
     assert(vr == 47);
-    slave2->readReal(vr, ref);
+    slave2->read_real(vr, ref);
     cout << "Temperature_Room=" << ref << endl;
 
     slave1->terminate();

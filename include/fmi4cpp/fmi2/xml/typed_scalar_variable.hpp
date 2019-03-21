@@ -25,7 +25,7 @@
 #ifndef FMI4CPP_TYPEDSCALARVARIABLE_HPP
 #define FMI4CPP_TYPEDSCALARVARIABLE_HPP
 
-#include <fmi4cpp/fmu_variable_accessor.hpp>
+#include <fmi4cpp/variable_accessor.hpp>
 #include <fmi4cpp/fmi2/xml/scalar_variable.hpp>
 
 

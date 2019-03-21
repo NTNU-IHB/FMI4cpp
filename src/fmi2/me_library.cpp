@@ -32,7 +32,7 @@ using namespace fmi4cpp::fmi2;
 
 me_library::me_library(const std::string &modelIdentifier,
                                                    const std::shared_ptr<fmu_resource> &resource)
-        : fmi2Library(modelIdentifier, resource) {
+        : fmi2_library(modelIdentifier, resource) {
 
     fmi2EnterEventMode_ = load_function<fmi2EnterEventModeTYPE *>(handle_, "fmi2EnterEventMode");
     fmi2EnterContinuousTimeMode_ = load_function<fmi2EnterContinuousTimeModeTYPE *>(
@@ -50,46 +50,48 @@ me_library::me_library(const std::string &modelIdentifier,
 
 }
 
-bool me_library::enterEventMode(const fmi2Component c) {
-    return updateStatusAndReturnTrueIfOK(fmi2EnterEventMode_(c));
+bool me_library::enter_event_mode(fmi2Component c) {
+    return update_status_and_return_true_if_ok(fmi2EnterEventMode_(c));
 }
 
-bool me_library::enterContinuousTimeMode(const fmi2Component c) {
-    return updateStatusAndReturnTrueIfOK(fmi2EnterContinuousTimeMode_(c));
+bool me_library::enter_continuous_time_mode(fmi2Component c) {
+    return update_status_and_return_true_if_ok(fmi2EnterContinuousTimeMode_(c));
 }
 
-bool me_library::setTime(const fmi2Component c, const double time) {
-    return updateStatusAndReturnTrueIfOK(fmi2SetTime_(c, time));
+bool me_library::set_time(fmi2Component c, double time) {
+    return update_status_and_return_true_if_ok(fmi2SetTime_(c, time));
 }
 
-bool me_library::setContinuousStates(const fmi2Component c, const std::vector<fmi2Real> &x) {
-    return updateStatusAndReturnTrueIfOK(fmi2SetContinuousStates_(c, x.data(), x.size()));
+bool me_library::set_continuous_states(fmi2Component c, const std::vector<fmi2Real> &x) {
+    return update_status_and_return_true_if_ok(fmi2SetContinuousStates_(c, x.data(), x.size()));
 }
 
-bool me_library::getDerivatives(const fmi2Component c, std::vector<fmi2Real> &derivatives) {
-    return updateStatusAndReturnTrueIfOK(fmi2GetDerivatives_(c, derivatives.data(), derivatives.size()));
+bool me_library::get_derivatives(fmi2Component c, std::vector<fmi2Real> &derivatives) {
+    return update_status_and_return_true_if_ok(fmi2GetDerivatives_(c, derivatives.data(), derivatives.size()));
 }
 
-bool me_library::getEventIndicators(const fmi2Component c, std::vector<fmi2Real> &eventIndicators) {
-    return updateStatusAndReturnTrueIfOK(fmi2GetEventIndicators_(c, eventIndicators.data(), eventIndicators.size()));
+bool me_library::get_event_indicators(fmi2Component c, std::vector<fmi2Real> &eventIndicators) {
+    return update_status_and_return_true_if_ok(
+            fmi2GetEventIndicators_(c, eventIndicators.data(), eventIndicators.size()));
 }
 
-bool me_library::getContinuousStates(const fmi2Component c, std::vector<fmi2Real> &x) {
-    return updateStatusAndReturnTrueIfOK(fmi2GetContinuousStates_(c, x.data(), x.size()));
+bool me_library::get_continuous_states(fmi2Component c, std::vector<fmi2Real> &x) {
+    return update_status_and_return_true_if_ok(fmi2GetContinuousStates_(c, x.data(), x.size()));
 }
 
-bool me_library::getNominalsOfContinuousStates(const fmi2Component c, std::vector<fmi2Real> &x_nominal) {
-    return updateStatusAndReturnTrueIfOK(fmi2GetNominalsOfContinuousStates_(c, x_nominal.data(), x_nominal.size()));
+bool me_library::get_nominals_of_continuous_states(fmi2Component c, std::vector<fmi2Real> &x_nominal) {
+    return update_status_and_return_true_if_ok(
+            fmi2GetNominalsOfContinuousStates_(c, x_nominal.data(), x_nominal.size()));
 }
 
-bool me_library::completedIntegratorStep(const fmi2Component c,
-                                                       const fmi2Boolean noSetFMUStatePriorToCurrentPoint,
-                                                       fmi2Boolean &enterEventMode,
-                                                       fmi2Boolean &terminateSimulation) {
-    return updateStatusAndReturnTrueIfOK(
+bool me_library::completed_integrator_step(fmi2Component c,
+                                           fmi2Boolean noSetFMUStatePriorToCurrentPoint,
+                                           fmi2Boolean &enterEventMode,
+                                           fmi2Boolean &terminateSimulation) {
+    return update_status_and_return_true_if_ok(
             fmi2CompletedIntegratorStep_(c, noSetFMUStatePriorToCurrentPoint, &enterEventMode, &terminateSimulation));
 }
 
-bool me_library::newDiscreteStates(const fmi2Component c, fmi2EventInfo &eventInfo) {
-    return updateStatusAndReturnTrueIfOK(fmi2NewDiscreteStates_(c, &eventInfo));
+bool me_library::new_discrete_states(fmi2Component c, fmi2EventInfo &eventInfo) {
+    return update_status_and_return_true_if_ok(fmi2NewDiscreteStates_(c, &eventInfo));
 }

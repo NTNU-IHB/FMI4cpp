@@ -50,10 +50,10 @@ me_slave::me_slave(
         : resource_(std::move(resource)), instance_(std::move(instance)), solver_(std::move(solver)) {
 
     sys_.instance_ = instance_;
-    csModelDescription_ = wrap(*instance_->model_description());
+    csModelDescription_ = wrap(*instance_->get_model_description());
 
-    size_t numberOfContinuousStates = instance_->model_description()->numberOfContinuousStates();
-    size_t numberOfEventIndicators = instance_->model_description()->numberOfEventIndicators;
+    size_t numberOfContinuousStates = instance_->get_model_description()->numberOfContinuousStates();
+    size_t numberOfEventIndicators = instance_->get_model_description()->numberOfEventIndicators;
 
     x_ = std::vector<double>(numberOfContinuousStates);
 
@@ -62,30 +62,30 @@ me_slave::me_slave(
 
 }
 
-std::shared_ptr<const cs_model_description> me_slave::model_description() const {
+std::shared_ptr<const cs_model_description> me_slave::get_model_description() const {
     return csModelDescription_;
 }
 
-bool me_slave::setupExperiment(double startTime, double stopTime, double tolerance) {
-    return instance_->setupExperiment(startTime, stopTime, tolerance);
+bool me_slave::setup_experiment(double startTime, double stopTime, double tolerance) {
+    return instance_->setup_experiment(startTime, stopTime, tolerance);
 }
 
-bool me_slave::enterInitializationMode() {
-    return instance_->enterInitializationMode();
+bool me_slave::enter_initialization_mode() {
+    return instance_->enter_initialization_mode();
 }
 
-bool me_slave::exitInitializationMode() {
-    auto status = instance_->exitInitializationMode();
+bool me_slave::exit_initialization_mode() {
+    auto status = instance_->exit_initialization_mode();
 
     instance_->eventInfo_.newDiscreteStatesNeeded = fmi2True;
     instance_->eventInfo_.terminateSimulation = fmi2False;
 
     while (instance_->eventInfo_.newDiscreteStatesNeeded != fmi2False &&
            instance_->eventInfo_.terminateSimulation == fmi2False) {
-        instance_->newDiscreteStates();
+        instance_->new_discrete_states();
     }
 
-    instance_->enterContinuousTimeMode();
+    instance_->enter_continuous_time_mode();
 
     return status;
 }
@@ -98,7 +98,7 @@ bool me_slave::step(const double stepSize) {
         return false;
     }
 
-    double time = getSimulationTime();
+    double time = get_simulation_time();
     double stopTime = (time + stepSize);
 
     while (time < stopTime) {
@@ -119,14 +119,14 @@ bool me_slave::step(const double stepSize) {
         } else {
             time = tNext;
         }
-        
-        instance_->setTime(time);
+
+        instance_->set_time(time);
 
         bool stepEvent = false;
-        if (!instance_->model_description()->completedIntegratorStepNotNeeded) {
+        if (!instance_->get_model_description()->completedIntegratorStepNotNeeded) {
             fmi2Boolean enterEventMode_ = fmi2False;
             fmi2Boolean terminateSimulation_ = fmi2False;;
-            instance_->completedIntegratorStep(true, enterEventMode_, terminateSimulation_);
+            instance_->completed_integrator_step(true, enterEventMode_, terminateSimulation_);
             if (terminateSimulation_) {
                 terminate();
             }
@@ -134,17 +134,17 @@ bool me_slave::step(const double stepSize) {
         }
 
         if (timeEvent || stateEvent || stepEvent) {
-            instance_->enterEventMode();
+            instance_->enter_event_mode();
 
             instance_->eventInfo_.newDiscreteStatesNeeded = fmi2True;
             instance_->eventInfo_.terminateSimulation = fmi2False;
 
             while (instance_->eventInfo_.newDiscreteStatesNeeded != fmi2False &&
                    instance_->eventInfo_.terminateSimulation == fmi2False) {
-                instance_->newDiscreteStates();
+                instance_->new_discrete_states();
             }
 
-            instance_->enterContinuousTimeMode();
+            instance_->enter_continuous_time_mode();
 
         }
 
@@ -155,12 +155,12 @@ bool me_slave::step(const double stepSize) {
 
 std::pair<double, bool> me_slave::solve(double t, double tNext) {
 
-    instance_->getContinuousStates(x_);
+    instance_->get_continuous_states(x_);
 
     double integratedTime = solver_->integrate(sys_, x_, t, tNext);
 
     pz_ = z_;
-    instance_->getEventIndicators(z_);
+    instance_->get_event_indicators(z_);
     bool stateEvent = false;
     for (unsigned int i = 0; i < pz_.size(); i++) {
         if ((pz_[i] * z_[i]) < 0) {
@@ -173,8 +173,8 @@ std::pair<double, bool> me_slave::solve(double t, double tNext) {
 
 }
 
-const double me_slave::getSimulationTime() const {
-    return instance_->getSimulationTime();
+const double me_slave::get_simulation_time() const {
+    return instance_->get_simulation_time();
 }
 
 bool me_slave::cancel_step() {
@@ -190,107 +190,107 @@ bool me_slave::terminate() {
 }
 
 
-bool me_slave::getFMUstate(fmi2FMUstate &state) {
-    return instance_->getFMUstate(state);
+bool me_slave::get_fmu_state(fmi2FMUstate &state) {
+    return instance_->get_fmu_state(state);
 }
 
-bool me_slave::setFMUstate(fmi2FMUstate state) {
-    return instance_->setFMUstate(state);
+bool me_slave::set_fmu_state(fmi2FMUstate state) {
+    return instance_->set_fmu_state(state);
 }
 
-bool me_slave::freeFMUstate(fmi2FMUstate &state) {
-    return instance_->freeFMUstate(state);
+bool me_slave::free_fmu_state(fmi2FMUstate &state) {
+    return instance_->free_fmu_state(state);
 }
 
-bool me_slave::serializeFMUstate(const fmi2FMUstate &state,
+bool me_slave::serialize_fmu_state(const fmi2FMUstate &state,
                                                  std::vector<fmi2Byte> &serializedState) {
-    return instance_->serializeFMUstate(state, serializedState);
+    return instance_->serialize_fmu_state(state, serializedState);
 }
 
-bool me_slave::deSerializeFMUstate(fmi2FMUstate &state,
+bool me_slave::de_serialize_fmu_state(fmi2FMUstate &state,
                                                    const std::vector<fmi2Byte> &serializedState) {
-    return instance_->deSerializeFMUstate(state, serializedState);
+    return instance_->de_serialize_fmu_state(state, serializedState);
 }
 
-bool me_slave::getDirectionalDerivative(const std::vector<fmi2ValueReference> &vUnknownRef,
+bool me_slave::get_directional_derivative(const std::vector<fmi2ValueReference> &vUnknownRef,
                                              const std::vector<fmi2ValueReference> &vKnownRef,
                                              const std::vector<fmi2Real> &dvKnownRef,
                                              std::vector<fmi2Real> &dvUnknownRef) {
-    return instance_->getDirectionalDerivative(vUnknownRef, vKnownRef, dvKnownRef, dvUnknownRef);
+    return instance_->get_directional_derivative(vUnknownRef, vKnownRef, dvKnownRef, dvUnknownRef);
 }
 
-bool me_slave::readInteger(fmi2ValueReference vr, fmi2Integer &ref) {
-    return instance_->readInteger(vr, ref);
+bool me_slave::read_integer(fmi2ValueReference vr, fmi2Integer &ref) {
+    return instance_->read_integer(vr, ref);
 }
 
-bool me_slave::readInteger(const std::vector<fmi2ValueReference> &vr,
+bool me_slave::read_integer(const std::vector<fmi2ValueReference> &vr,
                                            std::vector<fmi2Integer> &ref) {
-    return instance_->readInteger(vr, ref);
+    return instance_->read_integer(vr, ref);
 }
 
-bool me_slave::readReal(fmi2ValueReference vr, fmi2Real &ref) {
-    return instance_->readReal(vr, ref);
+bool me_slave::read_real(fmi2ValueReference vr, fmi2Real &ref) {
+    return instance_->read_real(vr, ref);
 }
 
-bool me_slave::readReal(const std::vector<fmi2ValueReference> &vr,
+bool me_slave::read_real(const std::vector<fmi2ValueReference> &vr,
                                         std::vector<fmi2Real> &ref) {
-    return instance_->readReal(vr, ref);
+    return instance_->read_real(vr, ref);
 }
 
-bool me_slave::readString(fmi2ValueReference vr, fmi2String &ref) {
-    return instance_->readString(vr, ref);
+bool me_slave::read_string(fmi2ValueReference vr, fmi2String &ref) {
+    return instance_->read_string(vr, ref);
 }
 
-bool me_slave::readString(const std::vector<fmi2ValueReference> &vr,
+bool me_slave::read_string(const std::vector<fmi2ValueReference> &vr,
                                           std::vector<fmi2String> &ref) {
-    return instance_->readString(vr, ref);
+    return instance_->read_string(vr, ref);
 }
 
-bool me_slave::readBoolean(fmi2ValueReference vr, fmi2Boolean &ref) {
-    return instance_->readBoolean(vr, ref);
+bool me_slave::read_boolean(fmi2ValueReference vr, fmi2Boolean &ref) {
+    return instance_->read_boolean(vr, ref);
 }
 
-bool me_slave::readBoolean(const std::vector<fmi2ValueReference> &vr,
+bool me_slave::read_boolean(const std::vector<fmi2ValueReference> &vr,
                                            std::vector<fmi2Boolean> &ref) {
-    return instance_->readBoolean(vr, ref);
+    return instance_->read_boolean(vr, ref);
 }
 
-bool me_slave::writeInteger(fmi2ValueReference vr, fmi2Integer value) {
-    return instance_->writeInteger(vr, value);
+bool me_slave::write_integer(fmi2ValueReference vr, fmi2Integer value) {
+    return instance_->write_integer(vr, value);
 }
 
-bool me_slave::writeInteger(const std::vector<fmi2ValueReference> &vr,
+bool me_slave::write_integer(const std::vector<fmi2ValueReference> &vr,
                                             const std::vector<fmi2Integer> &values) {
-    return instance_->writeInteger(vr, values);
+    return instance_->write_integer(vr, values);
 }
 
-bool me_slave::writeReal(fmi2ValueReference vr, fmi2Real value) {
-    return instance_->writeReal(vr, value);
+bool me_slave::write_real(fmi2ValueReference vr, fmi2Real value) {
+    return instance_->write_real(vr, value);
 }
 
-bool me_slave::writeReal(const std::vector<fmi2ValueReference> &vr,
+bool me_slave::write_real(const std::vector<fmi2ValueReference> &vr,
                                          const std::vector<fmi2Real> &values) {
-    return instance_->writeReal(vr, values);
+    return instance_->write_real(vr, values);
 }
 
-bool me_slave::writeString(fmi2ValueReference vr, fmi2String value) {
-    return instance_->writeString(vr, value);
+bool me_slave::write_string(fmi2ValueReference vr, fmi2String value) {
+    return instance_->write_string(vr, value);
 }
 
-bool me_slave::writeString(const std::vector<fmi2ValueReference> &vr,
+bool me_slave::write_string(const std::vector<fmi2ValueReference> &vr,
                                            const std::vector<fmi2String> &values) {
-    return instance_->writeString(vr, values);
+    return instance_->write_string(vr, values);
 }
 
-bool me_slave::writeBoolean(fmi2ValueReference vr, fmi2Boolean value) {
-    return instance_->writeBoolean(vr, value);
+bool me_slave::write_boolean(fmi2ValueReference vr, fmi2Boolean value) {
+    return instance_->write_boolean(vr, value);
 }
 
-bool me_slave::writeBoolean(const std::vector<fmi2ValueReference> &vr,
+bool me_slave::write_boolean(const std::vector<fmi2ValueReference> &vr,
                                             const std::vector<fmi2Boolean> &values) {
-    return instance_->writeBoolean(vr, values);
+    return instance_->write_boolean(vr, values);
 }
 
-fmi4cpp::Status me_slave::last_status() const {
+fmi4cpp::status me_slave::last_status() const {
     return instance_->last_status();
 }

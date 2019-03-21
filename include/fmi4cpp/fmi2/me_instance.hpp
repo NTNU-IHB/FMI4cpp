@@ -48,28 +48,28 @@ namespace fmi4cpp::fmi2 {
                               const std::shared_ptr<const me_model_description> &modelDescription);
 
 
-        bool enterEventMode();
+        bool enter_event_mode();
 
-        bool enterContinuousTimeMode();
+        bool enter_continuous_time_mode();
 
-        bool setTime(double time);
+        bool set_time(double time);
 
-        bool setContinuousStates(const std::vector<fmi2Real> &x);
+        bool set_continuous_states(const std::vector<fmi2Real> &x);
 
-        bool getDerivatives(std::vector<fmi2Real> &derivatives);
+        bool get_derivatives(std::vector<fmi2Real> &derivatives);
 
-        bool getEventIndicators(std::vector<fmi2Real> &eventIndicators);
+        bool get_event_indicators(std::vector<fmi2Real> &eventIndicators);
 
-        bool getContinuousStates(std::vector<fmi2Real> &x);
+        bool get_continuous_states(std::vector<fmi2Real> &x);
 
-        bool getNominalsOfContinuousStates(std::vector<fmi2Real> &x_nominal);
+        bool get_nominals_of_continuous_states(std::vector<fmi2Real> &x_nominal);
 
-        bool completedIntegratorStep(fmi2Boolean noSetFMUStatePriorToCurrentPoint,
-                                     fmi2Boolean &enterEventMode, fmi2Boolean &terminateSimulation);
+        bool completed_integrator_step(fmi2Boolean noSetFMUStatePriorToCurrentPoint,
+                                       fmi2Boolean &enterEventMode, fmi2Boolean &terminateSimulation);
 
-        bool newDiscreteStates();
+        bool new_discrete_states();
 
-        fmi4cpp::Status last_status() const override;
+        fmi4cpp::status last_status() const override;
 
     };
 

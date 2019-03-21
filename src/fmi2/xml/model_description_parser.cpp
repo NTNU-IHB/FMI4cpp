@@ -37,7 +37,7 @@ using namespace fmi4cpp::fmi2;
 
 namespace {
 
-    const std::string DEFAULT_VARIABLE_NAMING_CONVENTION = "flat";
+    const char* DEFAULT_VARIABLE_NAMING_CONVENTION = "flat";
 
     const default_experiment parseDefaultExperiment(const ptree &node) {
         default_experiment ex;
@@ -176,7 +176,7 @@ namespace {
     scalar_variable_attribute<T> parse_scalar_variable_attributes(const ptree &node) {
         scalar_variable_attribute<T> attributes;
         attributes.start = convert(node.get_optional<T>("<xmlattr>.start"));
-        attributes.declaredType = convert(node.get_optional<std::string>("<xmlattr>.declaredType"));
+        attributes.declared_type = convert(node.get_optional<std::string>("<xmlattr>.declaredType"));
         return attributes;
     }
 

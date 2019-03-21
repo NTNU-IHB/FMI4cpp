@@ -30,12 +30,12 @@
 
 #include <fmi4cpp/types.hpp>
 #include <fmi4cpp/status.hpp>
-#include <fmi4cpp/fmu_variable_accessor.hpp>
+#include <fmi4cpp/variable_accessor.hpp>
 
 namespace fmi4cpp {
     
     template <typename ModelDescription>
-    class fmu_instance: public fmu_variable_accessor {
+    class fmu_instance: public variable_accessor {
 
     protected:
 
@@ -43,32 +43,32 @@ namespace fmi4cpp {
 
     public:
 
-        virtual const double getSimulationTime() const {
+        virtual const double get_simulation_time() const {
             return simulationTime_;
         }
 
-        virtual fmi4cpp::Status last_status() const = 0;
+        virtual fmi4cpp::status last_status() const = 0;
 
-        virtual std::shared_ptr<const ModelDescription> model_description() const = 0;
+        virtual std::shared_ptr<const ModelDescription> get_model_description() const = 0;
 
-        virtual bool setupExperiment(double startTime = 0.0, double stopTime = 0.0, double tolerance = 0.0) = 0;
+        virtual bool setup_experiment(double startTime = 0.0, double stopTime = 0.0, double tolerance = 0.0) = 0;
 
-        virtual bool enterInitializationMode() = 0;
+        virtual bool enter_initialization_mode() = 0;
 
-        virtual bool exitInitializationMode() = 0;
+        virtual bool exit_initialization_mode() = 0;
 
         virtual bool reset() = 0;
 
         virtual bool terminate() = 0;
 
-        virtual bool getFMUstate(fmi4cppFMUstate &state) = 0;
-        virtual bool setFMUstate(fmi4cppFMUstate state) = 0;
-        virtual bool freeFMUstate(fmi4cppFMUstate &state) = 0;
+        virtual bool get_fmu_state(fmi4cppFMUstate &state) = 0;
+        virtual bool set_fmu_state(fmi4cppFMUstate state) = 0;
+        virtual bool free_fmu_state(fmi4cppFMUstate &state) = 0;
 
-        virtual bool serializeFMUstate(const fmi4cppFMUstate &state, std::vector<fmi4cppByte> &serializedState) = 0;
-        virtual bool deSerializeFMUstate(fmi4cppFMUstate &state, const std::vector<fmi4cppByte> &serializedState) = 0;
+        virtual bool serialize_fmu_state(const fmi4cppFMUstate &state, std::vector<fmi4cppByte> &serializedState) = 0;
+        virtual bool de_serialize_fmu_state(fmi4cppFMUstate &state, const std::vector<fmi4cppByte> &serializedState) = 0;
 
-        virtual bool getDirectionalDerivative(
+        virtual bool get_directional_derivative(
                 const std::vector<fmi4cppValueReference> &vUnknownRef,
                 const std::vector<fmi4cppValueReference> &vKnownRef,
                 const std::vector<fmi4cppReal> &dvKnownRef,

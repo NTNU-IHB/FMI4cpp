@@ -48,23 +48,23 @@ int main() {
     auto solver = make_solver<RK4ClassicSolver>(microStep);
     auto slave = fmu->newInstance(solver);
 
-    slave->setupExperiment();
-    slave->enterInitializationMode();
-    slave->exitInitializationMode();
+    slave->setup_experiment();
+    slave->enter_initialization_mode();
+    slave->exit_initialization_mode();
 
     double t = 0;
     double ref = 0;
-    auto hVar = slave->model_description()->getVariableByName("h").as_real();
+    auto hVar = slave->get_model_description()->getVariableByName("h").as_real();
 
-    while ( ( t = slave->getSimulationTime()) <= stop) {
+    while ( ( t = slave->get_simulation_time()) <= stop) {
 
         if (!slave->step(macroStep)) {
-            cerr << "Error! doStep returned with status: " << to_string(slave->last_status()) << endl;
+            cerr << "Error! step returned with status: " << to_string(slave->last_status()) << endl;
             break;
         }
 
         if (!hVar.read(*slave, ref)) {
-            cerr << "Error! readReal returned with status: " << to_string(slave->last_status()) << endl;
+            cerr << "Error! read_real returned with status: " << to_string(slave->last_status()) << endl;
             break;
         }
 

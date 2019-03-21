@@ -37,10 +37,10 @@ namespace fmi4cpp::driver {
 
     };
 
-    class Failure: public std::runtime_error {
+    class failure: public std::runtime_error {
 
     public:
-        explicit Failure(const std::string &msg): std::runtime_error(msg.c_str()) {};
+        explicit failure(const std::string &msg): std::runtime_error(msg.c_str()) {};
 
     };
 }

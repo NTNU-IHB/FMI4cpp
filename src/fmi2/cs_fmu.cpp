@@ -33,7 +33,7 @@ cs_fmu::cs_fmu(const shared_ptr<fmu_resource> &resource,
                                          const shared_ptr<const cs_model_description> &md)
         : resource_(resource), modelDescription_(md) {}
 
-shared_ptr<const cs_model_description> cs_fmu::model_description() const {
+shared_ptr<const cs_model_description> cs_fmu::get_model_description() const {
     return modelDescription_;
 }
 

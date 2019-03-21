@@ -30,23 +30,23 @@
 
 namespace fmi4cpp::fmi2 {
 
-    inline Status convert(fmi2Status status) {
+    inline status convert(fmi2Status status) {
 
         switch (status) {
             case fmi2OK:
-                return Status::OK;
+                return status::OK;
             case fmi2Warning:
-                return Status::Warning;
+                return status::Warning;
             case fmi2Discard:
-                return Status::Discard;
+                return status::Discard;
             case fmi2Error:
-                return Status::Error;
+                return status::Error;
             case fmi2Fatal:
-                return Status::Fatal;
+                return status::Fatal;
             case fmi2Pending:
-                return Status::Pending;
+                return status::Pending;
             default:
-                return Status::Unknown;
+                return status::Unknown;
         }
 
     }
