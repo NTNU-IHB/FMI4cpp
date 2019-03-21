@@ -25,17 +25,17 @@
 #ifndef FMI4CPP_FMI2_HPP
 #define FMI4CPP_FMI2_HPP
 
-#include "xml/enums.hpp"
-#include "xml/ModelDescription.hpp"
-#include "xml/ModelDescriptionParser.hpp"
-#include "xml/TypedScalarVariable.hpp"
+#include <fmi4cpp/fmi2/xml/enums.hpp>
+#include <fmi4cpp/fmi2/xml/model_description.hpp>
+#include <fmi4cpp/fmi2/xml/model_description_parser.hpp>
+#include <fmi4cpp/fmi2/xml/typed_scalar_variable.hpp>
 
-#include "import/fmi2Fmu.hpp"
-#include "import/fmi2CoSimulationFmu.hpp"
-#include "import/fmi2ModelExchangeFmu.hpp"
+#include <fmi4cpp/fmi2/fmu.hpp>
+#include <fmi4cpp/fmi2/cs_fmu.hpp>
+#include <fmi4cpp/fmi2/me_fmu.hpp>
 
-#include "import/fmi2CoSimulationSlave.hpp"
-#include "import/fmi2ModelExchangeSlave.hpp"
+#include <fmi4cpp/fmi2/cs_slave.hpp>
+#include <fmi4cpp/fmi2/me_slave.hpp>
 
 
 #endif //FMI4CPP_FMI2_HPP

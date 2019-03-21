@@ -26,10 +26,10 @@
 #include <string>
 
 #include <fmi4cpp/fmi4cpp.hpp>
-#include <fmi4cpp/common/logger.hpp>
+#include <fmi4cpp/logger.hpp>
 
 using namespace std;
-using namespace fmi4cpp::fmi2;
+using namespace fmi4cpp;
 
 const string fmu_path1 = "../resources/fmus/2.0/cs/20sim/4.6.4.8004/"
                          "TorsionBar/TorsionBar.fmu";
@@ -39,24 +39,24 @@ const string fmu_path2 = "../resources/fmus/2.0/cs/20sim/4.6.4.8004/"
 
 int main() {
     
-    fmi2Fmu fmu1(fmu_path1);
-    fmi2Fmu fmu2(fmu_path2);
+    fmi2::fmu fmu1(fmu_path1);
+    fmi2::fmu fmu2(fmu_path2);
     
-    const auto slave1 = fmu1.asCoSimulationFmu()->newInstance();
-    const auto md1 = slave1->getModelDescription();
+    const auto slave1 = fmu1.as_cs_fmu()->new_instance();
+    const auto md1 = slave1->model_description();
 
     slave1->setupExperiment();
     slave1->enterInitializationMode();
     slave1->exitInitializationMode();
 
-    const auto slave2 = fmu2.asCoSimulationFmu()->newInstance();
-    const auto md2 = slave2->getModelDescription();
+    const auto slave2 = fmu2.as_cs_fmu()->new_instance();
+    const auto md2 = slave2->model_description();
     slave2->setupExperiment();
     slave2->enterInitializationMode();
     slave2->exitInitializationMode();
 
-    slave1->doStep(1E-5);
-    slave2->doStep(1E-4);
+    slave1->step(1E-5);
+    slave2->step(1E-4);
 
     double ref;
     auto var = md1->getVariableByName("MotorDiskRev").asReal();

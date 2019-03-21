@@ -24,11 +24,11 @@
 
 
 #include <fmi4cpp/fmi4cpp.hpp>
-#include <fmi4cpp/common/logger.hpp>
-#include <fmi4cpp/common/tools/time_util.hpp>
+#include <fmi4cpp/logger.hpp>
+#include <fmi4cpp/tools/time_util.hpp>
 
 using namespace std;
-using namespace fmi4cpp::fmi2;
+using namespace fmi4cpp;
 
 namespace logger = fmi4cpp::logger;
 
@@ -36,7 +36,7 @@ const double stop = 10.0;
 const double step_size = 1E-4;
 const fmi2ValueReference vr = 46;
 
-void run(unique_ptr<fmi2CoSimulationSlave> &slave) {
+void run(unique_ptr<fmi2::cs_slave> &slave) {
 
     slave->setupExperiment();
     slave->enterInitializationMode();
@@ -46,12 +46,12 @@ void run(unique_ptr<fmi2CoSimulationSlave> &slave) {
 
         double ref;
         while ((slave->getSimulationTime()) <= (stop - step_size)) {
-            if (!slave->doStep(step_size)) {
-                logger::error("Error! doStep returned with status: {}", to_string(slave->getLastStatus()));
+            if (!slave->step(step_size)) {
+                logger::error("Error! doStep returned with status: {}", to_string(slave->last_status()));
                 break;
             }
             if (!slave->readReal(vr, ref)) {
-                logger::error("Error! readReal returned with status: {}", to_string(slave->getLastStatus()));
+                logger::error("Error! readReal returned with status: {}", to_string(slave->last_status()));
                 break;
             }
         }
@@ -68,7 +68,7 @@ int main() {
     const string fmu_path = "../resources/fmus/2.0/cs/20sim/4.6.4.8004/"
                             "ControlledTemperature/ControlledTemperature.fmu";
 
-    auto fmu = fmi2Fmu(fmu_path).asCoSimulationFmu()->newInstance();
+    auto fmu = fmi2::fmu(fmu_path).as_cs_fmu()->new_instance();
     run(fmu);
     
     return 0;

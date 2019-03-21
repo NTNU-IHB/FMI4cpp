@@ -1,6 +1,6 @@
 
 include_directories(${FMI4cpp_SOURCE_DIR}/src)
-link_libraries(FMI4cpp::fmi4cpp)
+link_libraries(fmi4cpp)
 
 add_executable(fmu_test fmu_test.cpp)
 add_executable(torsionbar torsionbar.cpp)

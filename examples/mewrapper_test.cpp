@@ -29,10 +29,10 @@
 #include <vector>
 
 #include <fmi4cpp/fmi4cpp.hpp>
-#include <fmi4cpp/common/logger.hpp>
+#include <fmi4cpp/logger.hpp>
 
 using namespace std;
-using namespace fmi4cpp::fmi2;
+using namespace fmi4cpp;
 using namespace fmi4cpp::solver;
 
 namespace logger = fmi4cpp::logger;
@@ -46,7 +46,7 @@ const string fmuPath = "../resources/fmus/2.0/me/OpenModelica/v1.11.0/"
 
 int main() {
 
-    auto fmu = fmi2Fmu(fmuPath).asModelExchangeFmu();
+    auto fmu = fmi2::fmu(fmuPath).as_me_fmu();
 
     auto solver = make_solver<RK4ClassicSolver>(microStep);
     auto slave = fmu->newInstance(solver);

@@ -33,9 +33,9 @@
 #include <experimental/filesystem>
 #include <boost/algorithm/string.hpp>
 
-#include <fmi4cpp/common/logger.hpp>
-#include <fmi4cpp/common/tools/os_util.hpp>
-#include <fmi4cpp/common/driver/fmu_driver.hpp>
+#include <fmi4cpp/logger.hpp>
+#include <fmi4cpp/tools/os_util.hpp>
+#include <fmi4cpp/driver/fmu_driver.hpp>
 
 using namespace std;
 
@@ -148,7 +148,7 @@ namespace fmi4cpp::xc {
                 try {
 
                     if (opt.startTime >= opt.stopTime) {
-                        throw Rejection("Invalid start and/or stop time (startTime >= stopTime).");
+                        throw rejection("Invalid start and/or stop time (startTime >= stopTime).");
                     } else if (opt.stepSize == 0.0) {
                         throw Failure("Don't know how to handle variable step solver (stepsize=0.0).");
                     } else if (hasInput) {
@@ -165,7 +165,7 @@ namespace fmi4cpp::xc {
 
                     return true;
 
-                } catch (Rejection &ex) {
+                } catch (rejection &ex) {
                     fmi4cpp::logger::warn("Cross-checking FMU '{}' rejected! {}", fmuDir.string(), ex.what());
                     reject(resultDir, ex.what());
                 } catch (Failure &ex) {

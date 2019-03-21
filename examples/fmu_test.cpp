@@ -25,10 +25,10 @@
 #include <string>
 
 #include <fmi4cpp/fmi4cpp.hpp>
-#include <fmi4cpp/common/logger.hpp>
+#include <fmi4cpp/logger.hpp>
 
 using namespace std;
-using namespace fmi4cpp::fmi2;
+using namespace fmi4cpp;
 
 namespace logger = fmi4cpp::logger;
 
@@ -40,17 +40,17 @@ const string fmuPath = "../resources/fmus/2.0/cs/20sim/4.6.4.8004/"
 
 int main() {
 
-    fmi2Fmu fmu(fmuPath);
-    auto cs_fmu = fmu.asCoSimulationFmu();
-    auto md = cs_fmu->getModelDescription();
+    fmi2::fmu fmu(fmuPath);
+    auto cs_fmu = fmu.as_cs_fmu();
+    auto md = cs_fmu->model_description();
 
     auto var = md->modelVariables->getByValueReference(47).asReal();
     logger::info("Name={}, start={}", var.name(), var.start().value_or(0));
 
-    auto slave1 = cs_fmu->newInstance();
-    auto slave2 = cs_fmu->newInstance();
+    auto slave1 = cs_fmu->new_instance();
+    auto slave2 = cs_fmu->new_instance();
 
-    logger::info("modelIdentifier={}", slave1->getModelDescription()->modelIdentifier);
+    logger::info("modelIdentifier={}", slave1->model_description()->modelIdentifier);
 
     slave1->setupExperiment();
     slave1->enterInitializationMode();
@@ -67,14 +67,14 @@ int main() {
     double t = 0;
     while ((t = slave1->getSimulationTime()) <= stop) {
 
-        if (!slave1->doStep(stepSize)) { break; }
+        if (!slave1->step(stepSize)) { break; }
         if (!slave1->readReal(vr, ref)) { break; }
         logger::info("t={}, Temperature_Reference={}, Temperature_Room={}", t, ref[0], ref[1]);
 
     }
 
-    logger::info("FMU '{}' terminated with success: {}", fmu.modelName(), (slave1->terminate() == 1 ? "true" : "false"));
-    logger::info("FMU '{}' terminated with success: {}", fmu.modelName(), (slave2->terminate() == 1 ? "true" : "false"));
+    logger::info("FMU '{}' terminated with success: {}", fmu.model_name(), (slave1->terminate() == 1 ? "true" : "false"));
+    logger::info("FMU '{}' terminated with success: {}", fmu.model_name(), (slave2->terminate() == 1 ? "true" : "false"));
 
     return 0;
 
