@@ -1,8 +1,13 @@
 @PACKAGE_INIT@
 include ("@PACKAGE_targetsFile@")
 
+get_filename_component(FMI4CPP_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+include(CMakeFindDependencyMacro)
+
+list(APPEND CMAKE_MODULE_PATH ${FMI4CPP_CMAKE_DIR})
 find_dependency(LIBZIP REQUIRED)
 
 if (FMI4CPP_WITH_CURL)
     find_dependency(CURL_ REQUIRED)
 endif()
+list(REMOVE_AT CMAKE_MODULE_PATH -1)
