@@ -33,7 +33,8 @@ namespace {
 
     enum fmi4cpp_log_level {
 
-        All = 1,
+        All = 0,
+        Trace = 1,
         Debug = 2,
         Info = 3,
         Warn = 4,
@@ -45,6 +46,8 @@ namespace {
 
     #if FMI4CPP_LOG_LEVEL_ALL
         fmi4cpp_log_level current_log_level = All;
+    #elif FMI4CPP_LOG_LEVEL_TRACE
+        fmi4cpp_log_level current_log_level = Trace;
     #elif FMI4CPP_LOG_LEVEL_DEBUG
         fmi4cpp_log_level current_log_level = Debug;
     #elif FMI4CPP_LOG_LEVEL_INFO
@@ -57,6 +60,7 @@ namespace {
         fmi4cpp_log_level current_log_level = Info;
     #endif
 
+#define FMI4CPP_TRACE( msg ) _FMI4CPP_LOG_(msg, Trace)
 #define FMI4CPP_DEBUG( msg ) _FMI4CPP_LOG_(msg, Debug)
 #define FMI4CPP_INFO( msg ) _FMI4CPP_LOG_(msg, Info)
 #define FMI4CPP_WARN( msg ) _FMI4CPP_LOG_ (msg, Warn)
