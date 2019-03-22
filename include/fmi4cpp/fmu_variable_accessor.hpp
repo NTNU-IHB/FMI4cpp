@@ -69,7 +69,7 @@ namespace fmi4cpp {
                                    const std::vector<fmi4cppBoolean> &values) = 0;
     };
     
-    class variable_accessor: public fmu_reader, public fmu_writer {};
+    class fmu_variable_accessor: public fmu_reader, public fmu_writer {};
     
 }
 

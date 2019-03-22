@@ -41,7 +41,7 @@ namespace fmi4cpp::fmi2 {
 
         unsigned int index;
         std::optional<std::vector<unsigned int >> dependencies;
-        std::optional<std::vector<std::string>> dependenciesKind;
+        std::optional<std::vector<std::string>> dependencies_kind;
 
     };
 

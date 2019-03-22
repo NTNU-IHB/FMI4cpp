@@ -43,7 +43,7 @@ const scalar_variable &model_variables::getByName(const std::string &name) const
 
 const scalar_variable &model_variables::getByValueReference(const fmi2ValueReference vr) const {
     for (const auto &var : variables_) {
-        if (var.valueReference == vr) {
+        if (var.value_reference == vr) {
             return var;
         }
     }
@@ -52,7 +52,7 @@ const scalar_variable &model_variables::getByValueReference(const fmi2ValueRefer
 
 void model_variables::getByValueReference(const fmi2ValueReference vr, std::vector<scalar_variable> &store) const {
     for (const auto &var : variables_) {
-        if (var.valueReference == vr) {
+        if (var.value_reference == vr) {
             store.push_back(var);
         }
     }

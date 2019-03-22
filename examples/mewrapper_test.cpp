@@ -46,7 +46,7 @@ int main() {
     auto fmu = fmi2::fmu(fmuPath).as_me_fmu();
 
     auto solver = make_solver<rk4_classic_solver>(microStep);
-    auto slave = fmu->newInstance(solver);
+    auto slave = fmu->new_instance(solver);
 
     slave->setup_experiment();
     slave->enter_initialization_mode();
@@ -54,7 +54,7 @@ int main() {
 
     double t = 0;
     double ref = 0;
-    auto hVar = slave->get_model_description()->getVariableByName("h").as_real();
+    auto hVar = slave->get_model_description()->get_variable_by_name("h").as_real();
 
     while ( ( t = slave->get_simulation_time()) <= stop) {
 

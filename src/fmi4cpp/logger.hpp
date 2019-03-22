@@ -31,47 +31,40 @@
 
 namespace {
 
-
     enum fmi4cpp_log_level {
 
-        Off = 0,
-        Trace = 1,
-        Info = 2,
-        Debug = 3,
+        All = 1,
+        Debug = 2,
+        Info = 3,
         Warn = 4,
         Error = 5
 
     };
 
-#ifdef FMI4CPP_LOG_LEVEL_OFF
-    fmi4cpp_log_level current_log_level = Off;
-#elif FMI4CPP_LOG_LEVEL_TRACE
-    fmi4cpp_log_level current_log_level = Trace;
-#elif FMI4CPP_LOG_LEVEL_INFO
-    fmi4cpp_log_level current_log_level = Info;
-#elif FMI4CPP_LOG_LEVEL_DEBUG
-    fmi4cpp_log_level current_log_level = Debug;
-#elif FMI4CPP_LOG_LEVEL_WARN
-    fmi4cpp_log_level current_log_level = Warn;
-#elif FMI4CPP_LOG_LEVEL_ERROR
-    fmi4cpp_log_level current_log_level = Error;
-#elif FMI4CPP_LOG_LEVEL_DEFAULT
-    fmi4cpp_log_level current_log_level = Info;
-#endif
+#ifndef FMI4CPP_LOG_LEVEL_OFF
 
+    #if FMI4CPP_LOG_LEVEL_ALL
+        fmi4cpp_log_level current_log_level = All;
+    #elif FMI4CPP_LOG_LEVEL_DEBUG
+        fmi4cpp_log_level current_log_level = Debug;
+    #elif FMI4CPP_LOG_LEVEL_INFO
+        fmi4cpp_log_level current_log_level = Info;
+    #elif FMI4CPP_LOG_LEVEL_WARN
+        fmi4cpp_log_level current_log_level = Warn;
+    #elif FMI4CPP_LOG_LEVEL_ERROR
+        fmi4cpp_log_level current_log_level = Error;
+    #elif FMI4CPP_LOG_LEVEL_DEFAULT
+        fmi4cpp_log_level current_log_level = Info;
+    #endif
 
-#define FMI4CPP_TRACE( msg ) _FMI4CPP_LOG_ (msg, 1)
-#define FMI4CPP_INFO( msg ) _FMI4CPP_LOG_(msg, 2)
-#define FMI4CPP_DEBUG( msg ) _FMI4CPP_LOG_(msg, 3)
-#define FMI4CPP_WARN( msg ) _FMI4CPP_LOG_ (msg, 4)
-#define FMI4CPP_ERROR( msg ) _FMI4CPP_LOG_ (msg, 5)
-
+#define FMI4CPP_DEBUG( msg ) _FMI4CPP_LOG_(msg, Debug)
+#define FMI4CPP_INFO( msg ) _FMI4CPP_LOG_(msg, Info)
+#define FMI4CPP_WARN( msg ) _FMI4CPP_LOG_ (msg, Warn)
+#define FMI4CPP_ERROR( msg ) _FMI4CPP_LOG_ (msg, Error)
 
 #define _FMI4CPP_LOG_( msg, level ) {\
-    if (current_log_level != Off) {\
-        if (level <= current_log_level) {\
-            __FMI4CPP_LOG__( msg, level );\
-        }\
+    if (level >= current_log_level) {\
+        __FMI4CPP_LOG__( msg, level );\
     }\
 }
 
@@ -82,6 +75,17 @@ namespace {
         std::cout << __FILE__ << ":" << __LINE__ << ": " << msg << std::endl;\
     }\
 }
+
+
+#else
+
+#define FMI4CPP_DEBUG( msg )
+#define FMI4CPP_INFO( msg )
+#define FMI4CPP_WARN( msg )
+#define FMI4CPP_ERROR( msg )
+
+#endif
+
 
 }
 

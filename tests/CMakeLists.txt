@@ -1,7 +1,5 @@
 
-include_directories(${BOOST_INCLUDE_DIRS})
 link_libraries(fmi4cpp::fmi4cpp libzip::libzip ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY})
-
 
 enable_testing()
 

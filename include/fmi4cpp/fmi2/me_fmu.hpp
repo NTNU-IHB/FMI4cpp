@@ -51,7 +51,7 @@ namespace fmi4cpp::fmi2 {
         std::unique_ptr<me_instance> new_instance(bool visible = false, bool loggingOn = false);
 
         std::unique_ptr<me_slave>
-        newInstance(std::unique_ptr<fmi4cpp::solver::me_solver> &solver, bool visible = false, bool loggingOn = false);
+        new_instance(std::unique_ptr<fmi4cpp::solver::me_solver> &solver, bool visible = false, bool loggingOn = false);
 
     };
 

@@ -30,12 +30,12 @@
 
 #include <fmi4cpp/types.hpp>
 #include <fmi4cpp/status.hpp>
-#include <fmi4cpp/variable_accessor.hpp>
+#include <fmi4cpp/fmu_variable_accessor.hpp>
 
 namespace fmi4cpp {
     
     template <typename ModelDescription>
-    class fmu_instance: public variable_accessor {
+    class fmu_instance: public fmu_variable_accessor {
 
     protected:
 

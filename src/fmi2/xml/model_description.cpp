@@ -29,16 +29,16 @@
 
 using namespace fmi4cpp::fmi2;
 
-size_t model_description_base::numberOfContinuousStates() const {
-    return modelStructure->derivatives.size();
+size_t model_description_base::number_of_continuous_states() const {
+    return model_structure->derivatives.size();
 }
 
-const scalar_variable &model_description_base::getVariableByName(const std::string &name) const {
-    return modelVariables->getByName(name);
+const scalar_variable &model_description_base::get_variable_by_name(const std::string &name) const {
+    return model_variables->getByName(name);
 }
 
-fmi2ValueReference model_description_base::getValueReference(const std::string &name) const {
-    return modelVariables->getByName(name).valueReference;
+fmi2ValueReference model_description_base::get_value_reference(const std::string &name) const {
+    return model_variables->getByName(name).value_reference;
 }
 
 model_description::model_description(const model_description_base &base,
@@ -54,7 +54,7 @@ bool model_description::supports_me() const {
     return modelExchange_.has_value();
 }
 
-std::unique_ptr<const cs_model_description> model_description::as_cs_model_description() const {
+std::unique_ptr<const cs_model_description> model_description::as_cs_description() const {
     if (!supports_cs()) {
         throw std::runtime_error("CoSimulation not supported!");
     }

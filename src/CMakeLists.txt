@@ -13,7 +13,7 @@ set(publicHeaders
     fmu_resource.hpp
     fmu_instance.hpp
     fmu_instance_base.hpp
-    variable_accessor.hpp
+    fmu_variable_accessor.hpp
 
     driver/driver_options.hpp
     driver/error_types.hpp
@@ -155,12 +155,16 @@ endif()
 
 if (FMI4CPP_LOG_LEVEL STREQUAL "OFF")
     target_compile_definitions(fmi4cpp PUBLIC FMI4CPP_LOG_LEVEL_OFF)
-elseif (FMI4CPP_LOG_LEVEL STREQUAL "INFO")
-    target_compile_definitions(fmi4cpp PUBLIC FMI4CPP_LOG_LEVEL_INFO)
+elseif (FMI4CPP_LOG_LEVEL STREQUAL "ALL")
+    target_compile_definitions(fmi4cpp PUBLIC FMI4CPP_LOG_LEVEL_ALL)
 elseif (FMI4CPP_LOG_LEVEL STREQUAL "DEBUG")
     target_compile_definitions(fmi4cpp PUBLIC FMI4CPP_LOG_LEVEL_DEBUG)
-elseif (FMI4CPP_LOG_LEVEL STREQUAL "TRACE")
-    target_compile_definitions(fmi4cpp PUBLIC FMI4CPP_LOG_LEVEL_TRACE)
+elseif (FMI4CPP_LOG_LEVEL STREQUAL "INFO")
+    target_compile_definitions(fmi4cpp PUBLIC FMI4CPP_LOG_LEVEL_INFO)
+elseif (FMI4CPP_LOG_LEVEL STREQUAL "WARN")
+    target_compile_definitions(fmi4cpp PUBLIC FMI4CPP_LOG_LEVEL_WARN)
+elseif (FMI4CPP_LOG_LEVEL STREQUAL "ERROR")
+    target_compile_definitions(fmi4cpp PUBLIC FMI4CPP_LOG_LEVEL_ERROR)
 else ()
     target_compile_definitions(fmi4cpp PUBLIC FMI4CPP_LOG_LEVEL_DEFAULT)
 endif ()

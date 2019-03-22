@@ -45,7 +45,7 @@ BOOST_AUTO_TEST_CASE(ControlledTemperature_test1) {
     auto fmu = fmi2::fmu(fmu_path).as_cs_fmu();
 
     size_t numOutputs = 0;
-    for (const auto &v : *fmu->get_model_description()->modelVariables) {
+    for (const auto &v : *fmu->get_model_description()->model_variables) {
         if (v.causality == fmi2::causality::output) {
             numOutputs++;
         }

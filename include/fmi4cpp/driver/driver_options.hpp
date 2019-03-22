@@ -51,7 +51,7 @@ namespace fmi4cpp::driver {
             std::vector<fmi2::scalar_variable> result;
             std::transform(variables.begin(), variables.end(), std::back_inserter(result),
                            [md](std::string name) -> fmi2::scalar_variable {
-                               return md->getVariableByName(name);
+                               return md->get_variable_by_name(name);
                            });
             return result;
         }

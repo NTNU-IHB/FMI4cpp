@@ -25,7 +25,7 @@
 #ifndef FMI4CPP_TYPEDSCALARVARIABLE_HPP
 #define FMI4CPP_TYPEDSCALARVARIABLE_HPP
 
-#include <fmi4cpp/variable_accessor.hpp>
+#include <fmi4cpp/fmu_variable_accessor.hpp>
 #include <fmi4cpp/fmi2/xml/scalar_variable.hpp>
 
 
@@ -57,7 +57,7 @@ namespace fmi4cpp::fmi2 {
         }
 
         fmi2ValueReference valueReference() const {
-            return variable_.valueReference;
+            return variable_.value_reference;
         }
 
         fmi2::causality causality() const {
@@ -73,7 +73,7 @@ namespace fmi4cpp::fmi2 {
         }
 
         bool canHandleMultipleSetPerTimelnstant() const {
-            return variable_.canHandleMultipleSetPerTimelnstant;
+            return variable_.can_handle_multiple_set_per_time_instant;
         }
 
         std::optional<T> start() const {

@@ -39,7 +39,7 @@ namespace {
 
     const char* DEFAULT_VARIABLE_NAMING_CONVENTION = "flat";
 
-    const default_experiment parseDefaultExperiment(const ptree &node) {
+    const default_experiment parse_default_experiment(const ptree &node) {
         default_experiment ex;
         ex.startTime = convert(node.get_optional<double>("<xmlattr>.startTime"));
         ex.stopTime = convert(node.get_optional<double>("<xmlattr>.stopTime"));
@@ -48,22 +48,22 @@ namespace {
         return ex;
     }
 
-    const source_file parseFile(const ptree &node) {
+    const source_file parse_file(const ptree &node) {
         source_file file;
         file.name = node.get<std::string>("<xmlattr>.name");
         return file;
     }
 
-    void parseSourceFiles(const ptree &node, source_files &files) {
+    void parse_source_files(const ptree &node, source_files &files) {
         for (const ptree::value_type &v : node) {
             if (v.first == "File") {
-                auto file = parseFile(v.second);
+                auto file = parse_file(v.second);
                 files.push_back(file);
             }
         }
     }
 
-    void parseUnknownDependencies(const std::string &str, std::vector<unsigned int> &store) {
+    void parse_unknown_dependencies(const std::string &str, std::vector<unsigned int> &store) {
         unsigned int i;
         std::stringstream ss(str);
         while (ss >> i) {
@@ -74,36 +74,36 @@ namespace {
         }
     }
 
-    void parseUnknownDependenciesKind(const std::string &str, std::vector<std::string> &store) {
+    void parse_unknown_dependencies_kind(const std::string &str, std::vector<std::string> &store) {
         boost::split(store, str, [](char c) { return c == ' '; });
     }
 
-    const unknown parseUnknown(const ptree &node) {
+    const unknown parse_unknown(const ptree &node) {
 
         unknown unknown;
         unknown.index = node.get<unsigned int>("<xmlattr>.index");
 
-        auto opt_dependencies = node.get_optional<std::string>("<xmlattr>.dependencies");
-        if (opt_dependencies) {
+        auto optDependencies = node.get_optional<std::string>("<xmlattr>.dependencies");
+        if (optDependencies) {
             std::vector<unsigned int> dependencies;
-            parseUnknownDependencies(*opt_dependencies, dependencies);
+            parse_unknown_dependencies(*optDependencies, dependencies);
             unknown.dependencies = dependencies;
         }
 
-        auto opt_dependenciesKind = node.get_optional<std::string>("<xmlattr>.dependenciesKind");
-        if (opt_dependenciesKind) {
+        auto optDependenciesKind = node.get_optional<std::string>("<xmlattr>.dependenciesKind");
+        if (optDependenciesKind) {
             std::vector<std::string> dependenciesKind;
-            parseUnknownDependenciesKind(*opt_dependenciesKind, dependenciesKind);
-            unknown.dependenciesKind = dependenciesKind;
+            parse_unknown_dependencies_kind(*optDependenciesKind, dependenciesKind);
+            unknown.dependencies_kind = dependenciesKind;
         }
 
         return unknown;
     }
 
-    void loadUnknowns(const ptree &node, std::vector<unknown> &vector) {
+    void load_unknowns(const ptree &node, std::vector<unknown> &vector) {
         for (const ptree::value_type &v : node) {
             if (v.first == "Unknown") {
-                auto unknown = parseUnknown(v.second);
+                auto unknown = parse_unknown(v.second);
                 vector.push_back(unknown);
             }
         }
@@ -113,19 +113,19 @@ namespace {
 
         std::vector<unknown> outputs;
         std::vector<unknown> derivatives;
-        std::vector<unknown> initialUnknowns;
+        std::vector<unknown> initial_unknowns;
 
         for (const ptree::value_type &v : node) {
             if (v.first == "Outputs") {
-                loadUnknowns(v.second, outputs);
+                load_unknowns(v.second, outputs);
             } else if (v.first == "Derivatives") {
-                loadUnknowns(v.second, derivatives);
+                load_unknowns(v.second, derivatives);
             } else if (v.first == "InitialUnknowns") {
-                loadUnknowns(v.second, initialUnknowns);
+                load_unknowns(v.second, initial_unknowns);
             }
         }
 
-        return std::make_unique<const model_structure>(outputs, derivatives, initialUnknowns);
+        return std::make_unique<const model_structure>(outputs, derivatives, initial_unknowns);
 
     }
 
@@ -133,19 +133,19 @@ namespace {
 
         fmu_attributes attributes;
 
-        attributes.modelIdentifier = node.get<std::string>("<xmlattr>.modelIdentifier");
-        attributes.needsExecutionTool = node.get<bool>("xmlattr>.needsExecutionTool", false);
-        attributes.canGetAndSetFMUstate = node.get<bool>("xmlattr>.canGetAndSetFMUstate", false);
-        attributes.canSerializeFMUstate = node.get<bool>("xmlattr>.canSerializeFMUstate", false);
-        attributes.providesDirectionalDerivative = node.get<bool>("xmlattr>.providesDirectionalDerivative", false);
-        attributes.canNotUseMemoryManagementFunctions = node.get<bool>("xmlattr>.canNotUseMemoryManagementFunctions",
+        attributes.model_identifier = node.get<std::string>("<xmlattr>.modelIdentifier");
+        attributes.needs_execution_tool = node.get<bool>("xmlattr>.needsExecutionTool", false);
+        attributes.can_get_and_set_fmu_state = node.get<bool>("xmlattr>.canGetAndSetFMUstate", false);
+        attributes.can_serialize_fmu_state = node.get<bool>("xmlattr>.canSerializeFMUstate", false);
+        attributes.provides_directional_derivative = node.get<bool>("xmlattr>.providesDirectionalDerivative", false);
+        attributes.can_not_use_memory_management_functions = node.get<bool>("xmlattr>.canNotUseMemoryManagementFunctions",
                                                                        false);
-        attributes.canBeInstantiatedOnlyOncePerProcess = node.get<bool>("xmlattr>.canBeInstantiatedOnlyOncePerProcess",
+        attributes.can_be_instantiated_only_once_per_process = node.get<bool>("xmlattr>.canBeInstantiatedOnlyOncePerProcess",
                                                                         false);
 
         for (const ptree::value_type &v : node) {
             if (v.first == "SourceFiles") {
-                parseSourceFiles(v.second, attributes.sourceFiles);
+                parse_source_files(v.second, attributes.sourceFiles);
             }
         }
 
@@ -156,10 +156,10 @@ namespace {
     const cs_attributes parse_cs_attributes(const ptree &node) {
 
         cs_attributes attributes(parse_fmu_attributes(node));
-        attributes.maxOutputDerivativeOrder = node.get<unsigned int>("<xmlattr>.maxOutputDerivativeOrder", 0);
-        attributes.canInterpolateInputs = node.get<bool>("<xmlattr>.canInterpolateInputs", false);
-        attributes.canRunAsynchronuously = node.get<bool>("<xmlattr>.canRunAsynchronuously", false);
-        attributes.canHandleVariableCommunicationStepSize = node.get<bool>(
+        attributes.max_output_derivative_order = node.get<unsigned int>("<xmlattr>.maxOutputDerivativeOrder", 0);
+        attributes.can_interpolate_inputs = node.get<bool>("<xmlattr>.canInterpolateInputs", false);
+        attributes.can_run_asynchronuously = node.get<bool>("<xmlattr>.canRunAsynchronuously", false);
+        attributes.can_handle_variable_communication_step_size = node.get<bool>(
                 "<xmlattr>.canHandleVariableCommunicationStepSize", false);
         return attributes;
 
@@ -167,7 +167,7 @@ namespace {
 
     const me_attributes parse_me_attributes(const ptree &node) {
         me_attributes attributes(parse_fmu_attributes(node));
-        attributes.completedIntegratorStepNotNeeded = node.get<bool>(
+        attributes.completed_integrator_step_not_needed = node.get<bool>(
                 "<xmlattr>.completedIntegratorStepNotNeeded", false);
         return attributes;
     }
@@ -200,7 +200,7 @@ namespace {
         attributes.derivative = convert(node.get_optional<unsigned int>("<xmlattr>.derivative"));
         attributes.reinit = node.get<bool>("<xmlattr>.reinit", false);
         attributes.unbounded = node.get<bool>("<xmlattr>.unbounded", false);
-        attributes.relativeQuantity = node.get<bool>("<xmlattr>.relativeQuantity", false);
+        attributes.relative_quantity = node.get<bool>("<xmlattr>.relativeQuantity", false);
         return attributes;
     }
 
@@ -223,8 +223,8 @@ namespace {
 
         base.name = node.get<std::string>("<xmlattr>.name");
         base.description = node.get<std::string>("<xmlattr>.description", "");
-        base.valueReference = node.get<fmi2ValueReference>("<xmlattr>.valueReference");
-        base.canHandleMultipleSetPerTimelnstant = node.get<bool>("<xmlattr>.canHandleMultipleSetPerTimelnstant", false);
+        base.value_reference = node.get<fmi2ValueReference>("<xmlattr>.valueReference");
+        base.can_handle_multiple_set_per_time_instant = node.get<bool>("<xmlattr>.canHandleMultipleSetPerTimelnstant", false);
 
         base.causality = parse_causality(node.get<std::string>("<xmlattr>.causality", ""));
         base.variability = parse_variability(node.get<std::string>("<xmlattr>.variability", ""));
@@ -270,17 +270,17 @@ std::unique_ptr<const model_description> fmi4cpp::fmi2::parse_model_description(
     model_description_base base;
 
     base.guid = root.get<std::string>("<xmlattr>.guid");
-    base.fmiVersion = root.get<std::string>("<xmlattr>.fmiVersion");
-    base.modelName = root.get<std::string>("<xmlattr>.modelName");
+    base.fmi_version = root.get<std::string>("<xmlattr>.fmiVersion");
+    base.model_name = root.get<std::string>("<xmlattr>.modelName");
     base.description = root.get<std::string>("<xmlattr>.description", "");
     base.author = root.get<std::string>("<xmlattr>.author", "");
     base.version = root.get<std::string>("<xmlattr>.version", "");
     base.license = root.get<std::string>("<xmlattr>.license", "");
     base.copyright = root.get<std::string>("<xmlattr>.copyright", "");
-    base.generationTool = root.get<std::string>("<xmlattr>.generationTool", "");
-    base.generationDateAndTime = root.get<std::string>("<xmlattr>.generationDateAndTime", "");
-    base.numberOfEventIndicators = root.get<size_t>("<xmlattr>.numberOfEventIndicators", 0);
-    base.variableNamingConvention = root.get<std::string>("<xmlattr>.variableNamingConvention",
+    base.generation_tool = root.get<std::string>("<xmlattr>.generationTool", "");
+    base.generation_date_and_time = root.get<std::string>("<xmlattr>.generationDateAndTime", "");
+    base.number_of_event_indicators = root.get<size_t>("<xmlattr>.numberOfEventIndicators", 0);
+    base.variable_naming_convention = root.get<std::string>("<xmlattr>.variableNamingConvention",
                                                           DEFAULT_VARIABLE_NAMING_CONVENTION);
 
     std::optional<cs_attributes> coSimulation;
@@ -293,11 +293,11 @@ std::unique_ptr<const model_description> fmi4cpp::fmi2::parse_model_description(
         } else if (v.first == "ModelExchange") {
             modelExchange = parse_me_attributes(v.second);
         } else if (v.first == "DefaultExperiment") {
-            base.defaultExperiment = parseDefaultExperiment(v.second);
+            base.default_experiment = parse_default_experiment(v.second);
         } else if (v.first == "ModelVariables") {
-            base.modelVariables = std::move(parse_model_variables(v.second));
+            base.model_variables = std::move(parse_model_variables(v.second));
         } else if (v.first == "ModelStructure") {
-            base.modelStructure = std::move(parse_model_structure(v.second));
+            base.model_structure = std::move(parse_model_structure(v.second));
         }
 
     }

@@ -39,29 +39,29 @@ namespace fmi4cpp::fmi2 {
     struct model_description_base {
 
         std::string guid;
-        std::string modelName;
-        std::string fmiVersion;
+        std::string model_name;
+        std::string fmi_version;
 
         std::optional<std::string> author;
         std::optional<std::string> version;
         std::optional<std::string> license;
         std::optional<std::string> copyright;
         std::optional<std::string> description;
-        std::optional<std::string> generationTool;
-        std::optional<std::string> generationDateAndTime;
-        std::optional<std::string> variableNamingConvention;
+        std::optional<std::string> generation_tool;
+        std::optional<std::string> generation_date_and_time;
+        std::optional<std::string> variable_naming_convention;
 
-        std::shared_ptr<const model_variables> modelVariables;
-        std::shared_ptr<const model_structure> modelStructure;
+        std::shared_ptr<const fmi2::model_variables> model_variables;
+        std::shared_ptr<const fmi2::model_structure> model_structure;
 
-        std::optional<default_experiment> defaultExperiment;
+        std::optional<fmi2::default_experiment> default_experiment;
 
-        size_t numberOfEventIndicators;
-        size_t numberOfContinuousStates() const;
+        size_t number_of_event_indicators;
+        size_t number_of_continuous_states() const;
 
-        unsigned int getValueReference(const std::string &name) const;
+        unsigned int get_value_reference(const std::string &name) const;
 
-        const scalar_variable &getVariableByName(const std::string &name) const;
+        const scalar_variable &get_variable_by_name(const std::string &name) const;
 
     };
 
@@ -84,7 +84,7 @@ namespace fmi4cpp::fmi2 {
 
         bool supports_me() const;
 
-        std::unique_ptr<const cs_model_description> as_cs_model_description() const;
+        std::unique_ptr<const cs_model_description> as_cs_description() const;
 
         std::unique_ptr<const me_model_description> as_me_description() const;
 

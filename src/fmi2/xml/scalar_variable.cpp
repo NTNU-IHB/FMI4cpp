@@ -138,7 +138,7 @@ std::optional<double> real_variable::nominal() const {
 }
 
 bool real_variable::relativeQuantity() const {
-    return attribute_.relativeQuantity;
+    return attribute_.relative_quantity;
 }
 
 bool real_variable::unbounded() const {

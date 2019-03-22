@@ -42,7 +42,7 @@ namespace fmi4cpp {
         }
 
         const std::string model_name() const {
-            return get_model_description()->modelName;
+            return get_model_description()->model_name;
         }
 
         virtual std::shared_ptr<const ModelDescription> get_model_description() const = 0;
@@ -85,7 +85,7 @@ namespace fmi4cpp {
         virtual std::unique_ptr<me_instance> new_instance(bool visible = false, bool loggingOn = false) = 0;
 
         virtual std::unique_ptr<me_slave>
-        newInstance(std::unique_ptr<fmi4cpp::solver::me_solver> &solver, bool visible = false, bool loggingOn = false) = 0;
+        new_instance(std::unique_ptr<fmi4cpp::solver::me_solver> &solver, bool visible = false, bool loggingOn = false) = 0;
 
     };
 

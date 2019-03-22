@@ -59,19 +59,19 @@ namespace {
 
             if (var.is_integer()) {
                 int ref = 0;
-                slave.read_integer(var.valueReference, ref);
+                slave.read_integer(var.value_reference, ref);
                 data += to_string(ref);
             } else if (var.is_real()) {
                 double ref = 0;
-                slave.read_real(var.valueReference, ref);
+                slave.read_real(var.value_reference, ref);
                 data += to_string(ref);
             } else if (var.is_string()) {
                 const char *ref;
-                slave.read_string(var.valueReference, ref);
+                slave.read_string(var.value_reference, ref);
                 data += ref;
             } else if (var.is_boolean()) {
                 int ref = 0;
-                slave.read_boolean(var.valueReference, ref);
+                slave.read_boolean(var.value_reference, ref);
                 data += to_string(ref);
             }
 
@@ -90,14 +90,14 @@ void fmu_driver::run() {
 
     fmi2::fmu fmu(fmuPath_);
 
-    if (fmu.get_model_description()->as_cs_model_description()->needsExecutionTool) {
+    if (fmu.get_model_description()->as_cs_description()->needs_execution_tool) {
         throw rejection("FMU requires execution tool.");
     }
 
     if (options_.modelExchange) {
 #ifdef FMI4CPP_WITH_ODEINT
         auto solver = solver::make_solver<solver::euler_solver>(1E-3);
-        simulate(fmu.as_me_fmu()->newInstance(solver));
+        simulate(fmu.as_me_fmu()->new_instance(solver));
 #else
         const char *msg = "Model Exchange mode selected, but driver has been built without odeint support!";
         throw failure(msg);

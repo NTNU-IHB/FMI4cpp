@@ -38,24 +38,24 @@ namespace fmi4cpp::fmi2 {
     struct fmu_attributes {
 
         source_files sourceFiles;
-        std::string modelIdentifier;
+        std::string model_identifier;
 
-        bool canGetAndSetFMUstate;
-        bool canSerializeFMUstate;
-        bool needsExecutionTool;
-        bool canNotUseMemoryManagementFunctions;
-        bool canBeInstantiatedOnlyOncePerProcess ;
-        bool providesDirectionalDerivative;
+        bool can_get_and_set_fmu_state;
+        bool can_serialize_fmu_state;
+        bool needs_execution_tool;
+        bool can_not_use_memory_management_functions;
+        bool can_be_instantiated_only_once_per_process ;
+        bool provides_directional_derivative;
 
     };
 
     struct cs_attributes : fmu_attributes {
 
-        bool canInterpolateInputs = false;
-        bool canRunAsynchronuously = false;
-        bool canHandleVariableCommunicationStepSize = false;
+        bool can_interpolate_inputs = false;
+        bool can_run_asynchronuously = false;
+        bool can_handle_variable_communication_step_size = false;
 
-        unsigned int maxOutputDerivativeOrder{};
+        unsigned int max_output_derivative_order{};
 
         cs_attributes() = default;
 
@@ -66,7 +66,7 @@ namespace fmi4cpp::fmi2 {
 
     struct me_attributes : fmu_attributes {
 
-        bool completedIntegratorStepNotNeeded = false;
+        bool completed_integrator_step_not_needed = false;
 
         me_attributes() = default;
 

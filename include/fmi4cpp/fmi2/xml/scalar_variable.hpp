@@ -60,8 +60,8 @@ namespace fmi4cpp::fmi2 {
         fmi2::causality causality;
         fmi2::variability variability;
 
-        fmi2ValueReference valueReference;
-        bool canHandleMultipleSetPerTimelnstant;
+        fmi2ValueReference value_reference;
+        bool can_handle_multiple_set_per_time_instant;
 
     };
 
@@ -97,7 +97,7 @@ namespace fmi4cpp::fmi2 {
 
         bool reinit;
         bool unbounded;
-        bool relativeQuantity;
+        bool relative_quantity;
 
         std::optional<double> nominal;
         std::optional<unsigned int> derivative;

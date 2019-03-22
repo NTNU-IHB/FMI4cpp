@@ -86,7 +86,7 @@ bool fmu::supports_cs() const {
 }
 
 unique_ptr<cs_fmu> fmu::as_cs_fmu() const {
-    shared_ptr<const cs_model_description> cs = std::move(modelDescription_->as_cs_model_description());
+    shared_ptr<const cs_model_description> cs = std::move(modelDescription_->as_cs_description());
     return make_unique<cs_fmu>(resource_, cs);
 }
 

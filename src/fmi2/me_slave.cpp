@@ -36,8 +36,8 @@ namespace {
 
     std::shared_ptr<const cs_model_description> wrap(const me_model_description &me) {
         cs_attributes attributes(me);
-        attributes.canHandleVariableCommunicationStepSize = true;
-        attributes.maxOutputDerivativeOrder = 0;
+        attributes.can_handle_variable_communication_step_size = true;
+        attributes.max_output_derivative_order = 0;
         return std::make_shared<cs_model_description>(cs_model_description(me, attributes));
     }
 
@@ -52,8 +52,8 @@ me_slave::me_slave(
     sys_.instance_ = instance_;
     csModelDescription_ = wrap(*instance_->get_model_description());
 
-    size_t numberOfContinuousStates = instance_->get_model_description()->numberOfContinuousStates();
-    size_t numberOfEventIndicators = instance_->get_model_description()->numberOfEventIndicators;
+    size_t numberOfContinuousStates = instance_->get_model_description()->number_of_continuous_states();
+    size_t numberOfEventIndicators = instance_->get_model_description()->number_of_event_indicators;
 
     x_ = std::vector<double>(numberOfContinuousStates);
 
@@ -123,7 +123,7 @@ bool me_slave::step(const double stepSize) {
         instance_->set_time(time);
 
         bool stepEvent = false;
-        if (!instance_->get_model_description()->completedIntegratorStepNotNeeded) {
+        if (!instance_->get_model_description()->completed_integrator_step_not_needed) {
             fmi2Boolean enterEventMode_ = fmi2False;
             fmi2Boolean terminateSimulation_ = fmi2False;;
             instance_->completed_integrator_step(true, enterEventMode_, terminateSimulation_);

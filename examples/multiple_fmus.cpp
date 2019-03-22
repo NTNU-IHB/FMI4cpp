@@ -59,12 +59,12 @@ int main() {
     slave2->step(1E-4);
 
     double ref;
-    auto var = md1->getVariableByName("MotorDiskRev").as_real();
+    auto var = md1->get_variable_by_name("MotorDiskRev").as_real();
     assert(var.valueReference() == 105);
     var.read(*slave1, ref);
     cout << "MotorDiskRev=" << ref << endl;
 
-    auto vr = md2->getValueReference("Temperature_Room");
+    auto vr = md2->get_value_reference("Temperature_Room");
     assert(vr == 47);
     slave2->read_real(vr, ref);
     cout << "Temperature_Room=" << ref << endl;
