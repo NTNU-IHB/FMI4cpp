@@ -36,7 +36,7 @@ const std::string fmu_resource::model_description_path() const {
 }
 
 const std::string fmu_resource::resource_path() const {
-    return "file:///" + path_.string() + "/resources/" + getOs() + "/" + getLibExt();
+    return "file:///" + path_.string() + "/resources/";
 }
 
 const std::string fmu_resource::absolute_library_path(const std::string &modelIdentifier) const {
