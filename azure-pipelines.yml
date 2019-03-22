@@ -23,7 +23,7 @@ jobs:
       - task: CMake@1
         inputs:
           workingDirectory: '$(system.defaultWorkingDirectory)/build'
-          cmakeArgs: '.. -DCMAKE_TOOLCHAIN_FILE=../../vcpkg/scripts/buildsystems/vcpkg.cmake -DFMI4CPP_WITH_ODEINT=ON -DFMI4CPP_WITH_CURL=ON -DFMI4CPP_BUILD_TESTS=ON -A x64'
+          cmakeArgs: '.. -DCMAKE_TOOLCHAIN_FILE=$(system.defaultWorkingDirectory)/../vcpkg/scripts/buildsystems/vcpkg.cmake -DFMI4CPP_WITH_ODEINT=ON -DFMI4CPP_WITH_CURL=ON -DFMI4CPP_BUILD_TESTS=ON -A x64'
 
       - task: CMake@1
         inputs:
