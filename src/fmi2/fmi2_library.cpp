@@ -167,6 +167,7 @@ bool fmi2_library::setup_experiment(fmi2Component c, double tolerance, double st
 
     bool stopDefined = (stopTime > startTime);
     bool toleranceDefined = (tolerance > 0);
+    FMI4CPP_DEBUG("Calling fmi2SetupExperiment with toleranceDefined=" << toleranceDefined << ", tolerance=" << tolerance << ", startTime=" << startTime << ", stopTimeDefined=" << stopDefined << ", stop=" << stopTime)
     return update_status_and_return_true_if_ok(
             fmi2SetupExperiment_(c, toleranceDefined, tolerance, startTime, stopDefined, stopTime));
 }
