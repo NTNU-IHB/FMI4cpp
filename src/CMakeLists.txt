@@ -1,5 +1,5 @@
 
-set(publicHeaderDir ${CMAKE_SOURCE_DIR}/include/fmi4cpp)
+set(publicHeaderDir ${CMAKE_CURRENT_SOURCE_DIR}/../include/fmi4cpp)
 set(privateHeaderDir "${CMAKE_CURRENT_SOURCE_DIR}/fmi4cpp")
 
 set(publicHeaders
@@ -127,7 +127,7 @@ endif()
 target_include_directories(fmi4cpp
     PUBLIC
         $<INSTALL_INTERFACE:include>
-        $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>
     INTERFACE
         ${Boost_INCLUDE_DIRS}
     PRIVATE

@@ -68,7 +68,7 @@ fmu::fmu(const string &fmuPath) {
 
 }
 
-const std:: string fmu::model_description_xml() const {
+const std:: string fmu::get_model_description_xml() const {
     ifstream stream(resource_->model_description_path());
     return string((istreambuf_iterator<char>(stream)), istreambuf_iterator<char>());
 }
