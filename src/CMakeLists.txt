@@ -125,28 +125,25 @@ target_include_directories(fmi4cpp
     PUBLIC
         $<INSTALL_INTERFACE:include>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>
-    INTERFACE
         ${Boost_INCLUDE_DIRS}
     PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}
 )
-target_link_libraries(fmi4cpp
-    PRIVATE
-        libzip::libzip
-)
+
+if (FMI4CPP_WITH_ODEINT)
+    target_include_directories(fmi4cpp PUBLIC ${Boost_INCLUDE_DIRS})
+else ()
+    target_include_directories(fmi4cpp PRIVATE ${Boost_INCLUDE_DIRS})
+endif ()
+
+target_link_libraries(fmi4cpp PRIVATE libzip::libzip)
 
 if (FMI4CPP_WITH_CURL)
-    target_link_libraries(fmi4cpp
-        PRIVATE
-            curl::curl
-    )
+    target_link_libraries(fmi4cpp PRIVATE curl::curl)
 endif()
 
 if (UNIX)
-    target_link_libraries(fmi4cpp
-        PRIVATE
-            dl stdc++fs pthread
-    )
+    target_link_libraries(fmi4cpp PRIVATE dl stdc++fs pthread)
 endif()
 
 if (FMI4CPP_LOG_LEVEL STREQUAL "OFF")
@@ -166,7 +163,6 @@ elseif (FMI4CPP_LOG_LEVEL STREQUAL "FATAL")
 else ()
     target_compile_definitions(fmi4cpp PRIVATE $<$<CONFIG:Debug>:MLOG_LEVEL_DEBUG>)
 endif ()
-
 
 install(
     TARGETS fmi4cpp
