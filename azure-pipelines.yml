@@ -14,7 +14,7 @@ jobs:
         inputs:
           script: |
             git pull
-            ./vcpkg install curl libzip[core] boost-program-options boost-ublas boost-odeint boost-test --triplet x64-windows
+            ./vcpkg install curl libzip[core] --triplet x64-windows
           workingDirectory: 'C:/vcpkg'
           targetType: inline
 
