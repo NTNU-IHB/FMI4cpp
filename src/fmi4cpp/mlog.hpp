@@ -54,7 +54,7 @@ namespace {
             case Warn: return "Warn";
             case Error: return "Error";
             case Fatal: return "Fatal";
-
+            default: return nullptr;
         }
     }
 
