@@ -23,7 +23,7 @@
  */
 
 
-#include <fmi4cpp/logger.hpp>
+#include <fmi4cpp/mlog.hpp>
 #include <fmi4cpp/tools/os_util.hpp>
 #include <fmi4cpp/fmu_resource.hpp>
 
@@ -49,9 +49,9 @@ fmu_resource::~fmu_resource() {
     fs::remove_all(path_, success);
 
     if (!success) {
-        FMI4CPP_DEBUG("Deleted temporal folder '" + path_.string() + "'");
+        MLOG_DEBUG("Deleted temporal folder '" + path_.string() + "'");
     } else {
-        FMI4CPP_DEBUG("Unable to delete temporal folder '" + path_.string() + "'");
+        MLOG_DEBUG("Unable to delete temporal folder '" + path_.string() + "'");
     }
 
 }

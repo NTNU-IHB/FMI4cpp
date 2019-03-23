@@ -24,7 +24,7 @@
 
 #include <utility>
 
-#include <fmi4cpp/logger.hpp>
+#include <fmi4cpp/mlog.hpp>
 #include <fmi4cpp/fmi2/me_slave.hpp>
 
 using namespace fmi4cpp::fmi2;
@@ -94,7 +94,7 @@ bool me_slave::exit_initialization_mode() {
 bool me_slave::step(const double stepSize) {
 
     if (stepSize <= 0) {
-        FMI4CPP_ERROR("Error: stepSize <= 0");
+        MLOG_ERROR("Error: stepSize <= 0");
         return false;
     }
 

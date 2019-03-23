@@ -58,7 +58,7 @@ set(publicHeaders
 
 set(privateHeaders
 
-    logger.hpp
+    mlog.hpp
 
     fmi2/status_converter.hpp
     fmi2/library_helper.hpp
@@ -110,9 +110,6 @@ add_library(fmi4cpp::fmi4cpp ALIAS fmi4cpp)
 target_compile_definitions(fmi4cpp PUBLIC "BOOST_ALL_DYN_LINK=1" "BOOST_ALL_NO_LIB=1" "BOOST_CONFIG_SUPPRESS_OUTDATED_MESSAGE=1")
 target_compile_features(fmi4cpp PUBLIC "cxx_std_17")
 
-# Enable fmi4cpp debug messages for debug configurations
-target_compile_definitions(fmi4cpp PRIVATE $<$<CONFIG:Debug>:FMI4CPP_LOG_LEVEL_DEBUG>)
-
 if(FMI4CPP_WITH_ODEINT)
     list(APPEND publicHeaders
         solver/odeint_solver.hpp
@@ -121,7 +118,7 @@ if(FMI4CPP_WITH_ODEINT)
 endif()
 
 if(FMI4CPP_WITH_CURL)
-    target_compile_definitions(fmi4cpp PUBLIC FMI4CPP_WITH_CURL)
+    target_compile_definitions(fmi4cpp PRIVATE FMI4CPP_WITH_CURL)
 endif()
 
 target_include_directories(fmi4cpp
@@ -152,24 +149,24 @@ if (UNIX)
     )
 endif()
 
-
 if (FMI4CPP_LOG_LEVEL STREQUAL "OFF")
-    target_compile_definitions(fmi4cpp PUBLIC FMI4CPP_LOG_LEVEL_OFF)
-elseif (FMI4CPP_LOG_LEVEL STREQUAL "ALL")
-    target_compile_definitions(fmi4cpp PUBLIC FMI4CPP_LOG_LEVEL_ALL)
-elseif (FMI4CPP_LOG_LEVEL STREQUAL "ALL")
-    target_compile_definitions(fmi4cpp PUBLIC FMI4CPP_LOG_LEVEL_TRACE)
+    target_compile_definitions(fmi4cpp PRIVATE MLOG_LEVEL_OFF)
+elseif (FMI4CPP_LOG_LEVEL STREQUAL "TRACE")
+    target_compile_definitions(fmi4cpp PRIVATE MLOG_LEVEL_TRACE)
 elseif (FMI4CPP_LOG_LEVEL STREQUAL "DEBUG")
-    target_compile_definitions(fmi4cpp PUBLIC FMI4CPP_LOG_LEVEL_DEBUG)
+    target_compile_definitions(fmi4cpp PRIVATE MLOG_LEVEL_DEBUG)
 elseif (FMI4CPP_LOG_LEVEL STREQUAL "INFO")
-    target_compile_definitions(fmi4cpp PUBLIC FMI4CPP_LOG_LEVEL_INFO)
+    target_compile_definitions(fmi4cpp PRIVATE MLOG_LEVEL_INFO)
 elseif (FMI4CPP_LOG_LEVEL STREQUAL "WARN")
-    target_compile_definitions(fmi4cpp PUBLIC FMI4CPP_LOG_LEVEL_WARN)
+    target_compile_definitions(fmi4cpp PRIVATE MLOG_LEVEL_WARN)
 elseif (FMI4CPP_LOG_LEVEL STREQUAL "ERROR")
-    target_compile_definitions(fmi4cpp PUBLIC FMI4CPP_LOG_LEVEL_ERROR)
+    target_compile_definitions(fmi4cpp PRIVATE MLOG_LEVEL_ERROR)
+elseif (FMI4CPP_LOG_LEVEL STREQUAL "FATAL")
+    target_compile_definitions(fmi4cpp PRIVATE MLOG_LEVEL_FATAL)
 else ()
-    target_compile_definitions(fmi4cpp PUBLIC FMI4CPP_LOG_LEVEL_DEFAULT)
+    target_compile_definitions(fmi4cpp PRIVATE $<$<CONFIG:Debug>:MLOG_LEVEL_DEBUG>)
 endif ()
+
 
 install(
     TARGETS fmi4cpp

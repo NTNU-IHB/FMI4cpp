@@ -32,7 +32,7 @@
 #include <fmi4cpp/fmi2/fmu.hpp>
 #include <fmi4cpp/fmi2/xml/model_description_parser.hpp>
 
-#include <fmi4cpp/logger.hpp>
+#include <fmi4cpp/mlog.hpp>
 #include <fmi4cpp/tools/unzipper.hpp>
 #include <fmi4cpp/tools/os_util.hpp>
 #include <fmi4cpp/tools/simple_id.hpp>
@@ -44,22 +44,22 @@ namespace fs = std::experimental::filesystem;
 
 fmu::fmu(const string &fmuPath) {
 
-    FMI4CPP_DEBUG("Loading FMU '" <<  fmuPath << "'");
+    MLOG_DEBUG("Loading FMU '" <<  fmuPath << "'");
 
     const std::string fmuName = fs::path(fmuPath).stem().string();
     fs::path tmpPath(fs::temp_directory_path() /= fs::path("fmi4cpp_" + fmuName + "_" + generate_simple_id(8)));
 
     if (!create_directories(tmpPath)) {
-        auto err = "Failed to create temporary directory '" + tmpPath.string() + "' !";
-        FMI4CPP_ERROR(err);
+        const auto err = "Failed to create temporary directory '" + tmpPath.string() + "' !";
+        MLOG_FATAL(err);
         throw runtime_error(err);
     }
 
-    FMI4CPP_DEBUG("Created temporary directory '" << tmpPath.string());
+    MLOG_DEBUG("Created temporary directory '" << tmpPath.string());
 
     if (!unzip(fmuPath, tmpPath.string())) {
-        auto err = "Failed to extract FMU '" + fmuPath + "'!";
-        FMI4CPP_ERROR(err);
+        const auto err = "Failed to extract FMU '" + fmuPath + "'!";
+        MLOG_FATAL(err);
         throw runtime_error(err);
     }
 
@@ -108,7 +108,7 @@ std::unique_ptr<fmu> fmu::from_url(const std::string &fmuPath) {
 
 #ifdef FMI4CPP_WITH_CURL
 
-    FMI4CPP_DEBUG("Loading FMU from URL: " << fmuPath);
+    MLOG_DEBUG("Loading FMU from URL: " << fmuPath);
 
     auto fmuName = fs::path(fmuPath).filename();
     fs::path tmp(fs::temp_directory_path() /= fmuName);
@@ -120,8 +120,8 @@ std::unique_ptr<fmu> fmu::from_url(const std::string &fmuPath) {
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);
         CURLcode res = curl_easy_perform(curl);
         if (res != CURLE_OK) {
-            auto err = "Failed to download FMU from URL:" + fmuPath;
-            FMI4CPP_ERROR(err);
+            const auto err = "Failed to download FMU from URL:" + fmuPath;
+            MLOG_FATAL(err);
             throw runtime_error(err);
         }
         /* always cleanup */

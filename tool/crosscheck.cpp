@@ -33,7 +33,7 @@
 #include <experimental/filesystem>
 #include <boost/algorithm/string.hpp>
 
-#include <fmi4cpp/logger.hpp>
+#include <fmi4cpp/mlog.hpp>
 #include <fmi4cpp/tools/os_util.hpp>
 #include <fmi4cpp/driver/fmu_driver.hpp>
 
@@ -127,7 +127,7 @@ namespace fmi4cpp::xc {
 
         bool run(const fs::path &fmuDir, const fs::path &resultDir) {
 
-            FMI4CPP_INFO("Cross-checking FMU '" << fmuDir.string() << "'");
+            MLOG_INFO("Cross-checking FMU '" << fmuDir.string() << "'");
 
             fs::create_directories(resultDir);
 
@@ -161,21 +161,21 @@ namespace fmi4cpp::xc {
                     driver.run();
 
                     pass(resultDir);
-                    FMI4CPP_INFO("Cross-checking FMU '" << fmuDir.string() << "' passed!");
+                    MLOG_INFO("Cross-checking FMU '" << fmuDir.string() << "' passed!");
 
                     return true;
 
                 } catch (rejection &ex) {
-                    FMI4CPP_WARN("Cross-checking FMU '" << fmuDir.string() << "' rejected! " << ex.what());
+                    MLOG_WARN("Cross-checking FMU '" << fmuDir.string() << "' rejected! " << ex.what());
                     reject(resultDir, ex.what());
                 } catch (failure &ex) {
-                    FMI4CPP_ERROR("Cross-checking FMU '" << fmuDir.string() << "' failed! " << ex.what());
+                    MLOG_ERROR("Cross-checking FMU '" << fmuDir.string() << "' failed! " << ex.what());
                     fail(resultDir, ex.what());
                 }
 
 
             } catch (exception &ex) {
-                FMI4CPP_ERROR("Cross-checking FMU '" << fmuDir.string() <<
+                MLOG_ERROR("Cross-checking FMU '" << fmuDir.string() <<
                                                      "' failed. An unexpected program error occurred: " << ex.what());
                 fail(resultDir, "An unexpected program error occurred");
             }
@@ -218,8 +218,8 @@ namespace fmi4cpp::xc {
 int main(int argc, char **argv) {
 
     if (!argv[1]) {
-        cerr << "Path to XC directory missing!" << endl;
-        return 1;
+        MLOG_FATAL("Path to XC directory missing!");
+        return -1;
     }
 
     const string VERSION = "0.5.0";
@@ -249,7 +249,7 @@ int main(int argc, char **argv) {
 
     }
 
-    cout << std::to_string(passed) << " FMUs passed the cross-check" << endl;
+    MLOG_INFO(std::to_string(passed) << " FMUs passed the cross-check" );
 
     return 0;
 

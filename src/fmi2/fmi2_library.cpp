@@ -27,7 +27,7 @@
 #include <fmi4cpp/fmi2/fmi2_library.hpp>
 #include <fmi4cpp/fmi2/library_helper.hpp>
 
-#include <fmi4cpp/logger.hpp>
+#include <fmi4cpp/mlog.hpp>
 #include <fmi4cpp/tools/os_util.hpp>
 
 
@@ -60,7 +60,7 @@ namespace {
     void logger(void *fmi2ComponentEnvironment,
                 fmi2String instance_name, fmi2Status status, fmi2String category, fmi2String message, ...) {
 
-        FMI4CPP_INFO("[FMI callback logger] status=" + to_string(status) + ", instanceName=" + instance_name +
+        MLOG_INFO("[FMI callback logger] status=" + to_string(status) + ", instanceName=" + instance_name +
                       ", category=" + category + ", message=" + message);
 
     }
@@ -77,13 +77,13 @@ fmi2_library::fmi2_library(const std::string &modelIdentifier, const std::shared
 
     const auto libName = resource->absolute_library_path(modelIdentifier);
 
-    FMI4CPP_DEBUG("Loading shared library '" + fs::path(libName).stem().string() + getLibExt() + "'");
+    MLOG_DEBUG("Loading shared library '" + fs::path(libName).stem().string() + getLibExt() + "'");
 
     handle_ = load_library(libName);
 
     if (!handle_) {
         const auto err = "Unable to load dynamic library '" + libName + "'! " + getLastError();
-        FMI4CPP_ERROR(err);
+        MLOG_ERROR(err);
         throw std::runtime_error(err);
     }
 
@@ -150,7 +150,7 @@ fmi2Component fmi2_library::instantiate(const std::string &instanceName, const f
 
     if (c == nullptr) {
         const std::string msg = "Fatal: fmi2Instantiate returned nullptr, unable to instantiate FMU instance!";
-        FMI4CPP_ERROR(msg);
+        MLOG_ERROR(msg);
         throw std::runtime_error(msg);
     }
 
@@ -167,7 +167,7 @@ bool fmi2_library::setup_experiment(fmi2Component c, double tolerance, double st
 
     bool stopDefined = (stopTime > startTime);
     bool toleranceDefined = (tolerance > 0);
-    FMI4CPP_DEBUG("Calling fmi2SetupExperiment with toleranceDefined=" << toleranceDefined << ", tolerance=" << tolerance << ", startTime=" << startTime << ", stopTimeDefined=" << stopDefined << ", stop=" << stopTime)
+    MLOG_DEBUG("Calling fmi2SetupExperiment with toleranceDefined=" << toleranceDefined << ", tolerance=" << tolerance << ", startTime=" << startTime << ", stopTimeDefined=" << stopDefined << ", stop=" << stopTime)
     return update_status_and_return_true_if_ok(
             fmi2SetupExperiment_(c, toleranceDefined, tolerance, startTime, stopDefined, stopTime));
 }
@@ -329,7 +329,7 @@ fmi2_library::~fmi2_library() {
 #endif
 
         if (!success) {
-            FMI4CPP_ERROR(getLastError());
+            MLOG_ERROR(getLastError());
         }
 
         handle_ = nullptr;
