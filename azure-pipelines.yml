@@ -13,17 +13,15 @@ jobs:
       - task: Bash@3
         inputs:
           script: |
-            git clone https://github.com/Microsoft/vcpkg.git
-            cd vcpkg
-            ./bootstrap-vcpkg.bat
-            ./vcpkg install curl libzip[core] boost-program-options boost-ublas boost-odeint boost-test --triplet x64-windows --vcpkg-root .
-          workingDirectory: '$(system.defaultWorkingDirectory)/..'
+            git pull
+            ./vcpkg install curl libzip[core] boost-program-options boost-ublas boost-odeint boost-test --triplet x64-windows
+          workingDirectory: '$VCPKG_INSTALLATION_ROOT'
           targetType: inline
 
       - task: CMake@1
         inputs:
           workingDirectory: '$(system.defaultWorkingDirectory)/build'
-          cmakeArgs: '.. -DCMAKE_TOOLCHAIN_FILE=$(system.defaultWorkingDirectory)/../vcpkg/scripts/buildsystems/vcpkg.cmake -DFMI4CPP_WITH_ODEINT=ON -DFMI4CPP_WITH_CURL=ON -DFMI4CPP_BUILD_TESTS=ON -A x64'
+          cmakeArgs: '.. -DCMAKE_TOOLCHAIN_FILE=$VCPKG_INSTALLATION_ROOT/vcpkg/scripts/buildsystems/vcpkg.cmake -DFMI4CPP_WITH_ODEINT=ON -DFMI4CPP_WITH_CURL=ON -DFMI4CPP_BUILD_TESTS=ON -A x64'
 
       - task: CMake@1
         inputs:
