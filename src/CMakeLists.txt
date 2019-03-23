@@ -107,13 +107,11 @@ set(allSources ${publicHeadersFull} ${privateHeadersFull} ${sources})
 
 add_library(fmi4cpp ${allSources})
 add_library(fmi4cpp::fmi4cpp ALIAS fmi4cpp)
-target_compile_definitions(fmi4cpp PUBLIC "BOOST_ALL_DYN_LINK=1" "BOOST_ALL_NO_LIB=1" "BOOST_CONFIG_SUPPRESS_OUTDATED_MESSAGE=1")
+target_compile_definitions(fmi4cpp PUBLIC "BOOST_CONFIG_SUPPRESS_OUTDATED_MESSAGE=1")
 target_compile_features(fmi4cpp PUBLIC "cxx_std_17")
 
 if(FMI4CPP_WITH_ODEINT)
-    list(APPEND publicHeaders
-        solver/odeint_solver.hpp
-    )
+    list(APPEND publicHeaders solver/odeint_solver.hpp)
     target_compile_definitions(fmi4cpp PUBLIC FMI4CPP_WITH_ODEINT)
 endif()
 
@@ -146,24 +144,6 @@ if (UNIX)
     target_link_libraries(fmi4cpp PRIVATE dl stdc++fs pthread)
 endif()
 
-if (FMI4CPP_LOG_LEVEL STREQUAL "OFF")
-    target_compile_definitions(fmi4cpp PRIVATE MLOG_LEVEL_OFF)
-elseif (FMI4CPP_LOG_LEVEL STREQUAL "TRACE")
-    target_compile_definitions(fmi4cpp PRIVATE MLOG_LEVEL_TRACE)
-elseif (FMI4CPP_LOG_LEVEL STREQUAL "DEBUG")
-    target_compile_definitions(fmi4cpp PRIVATE MLOG_LEVEL_DEBUG)
-elseif (FMI4CPP_LOG_LEVEL STREQUAL "INFO")
-    target_compile_definitions(fmi4cpp PRIVATE MLOG_LEVEL_INFO)
-elseif (FMI4CPP_LOG_LEVEL STREQUAL "WARN")
-    target_compile_definitions(fmi4cpp PRIVATE MLOG_LEVEL_WARN)
-elseif (FMI4CPP_LOG_LEVEL STREQUAL "ERROR")
-    target_compile_definitions(fmi4cpp PRIVATE MLOG_LEVEL_ERROR)
-elseif (FMI4CPP_LOG_LEVEL STREQUAL "FATAL")
-    target_compile_definitions(fmi4cpp PRIVATE MLOG_LEVEL_FATAL)
-else ()
-    target_compile_definitions(fmi4cpp PRIVATE $<$<CONFIG:Debug>:MLOG_LEVEL_DEBUG>)
-endif ()
-
 install(
     TARGETS fmi4cpp
     EXPORT "${FMI4CPP_EXPORT_TARGET}"
@@ -173,3 +153,5 @@ install(
     DIRECTORY "${publicHeaderDir}"
     DESTINATION "${FMI4CPP_HEADER_INSTALL_DIR}"
 )
+
+include(set-log-level)
