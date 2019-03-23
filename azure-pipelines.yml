@@ -14,14 +14,14 @@ jobs:
         inputs:
           script: |
             git pull
-            ./vcpkg install curl libzip[core] --triplet x64-windows
+            ./vcpkg install libzip[core] --triplet x64-windows
           workingDirectory: 'C:/vcpkg'
           targetType: inline
 
       - task: CMake@1
         inputs:
           workingDirectory: '$(system.defaultWorkingDirectory)/build'
-          cmakeArgs: '.. -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/vcpkg/scripts/buildsystems/vcpkg.cmake -DFMI4CPP_WITH_ODEINT=ON -DFMI4CPP_WITH_CURL=ON -DFMI4CPP_BUILD_TESTS=ON -A x64'
+          cmakeArgs: '.. -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake -DFMI4CPP_WITH_ODEINT=ON -DFMI4CPP_WITH_CURL=OFF -DFMI4CPP_BUILD_TESTS=ON -A x64'
 
       - task: CMake@1
         inputs:
