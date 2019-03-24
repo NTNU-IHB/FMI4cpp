@@ -23,55 +23,52 @@
  */
 
 
-
+#include <iostream>
 #include <string>
 #include <memory>
 #include <vector>
 
 #include <fmi4cpp/fmi4cpp.hpp>
-#include <fmi4cpp/common/logger.hpp>
 
 using namespace std;
-using namespace fmi4cpp::fmi2;
+using namespace fmi4cpp;
 using namespace fmi4cpp::solver;
-
-namespace logger = fmi4cpp::logger;
 
 const double stop = 1.0;
 const double microStep = 1E-3;
 const double macroStep = 1.0/10;
 
-const string fmuPath = "../resources/fmus/2.0/me/OpenModelica/v1.11.0/"
-                       "FmuExportCrossCompile/FmuExportCrossCompile.fmu";
+const string fmuPath = "../resources/fmus/2.0/me/Test-FMUs/0.0.1/"
+                       "BouncingBall/BouncingBall.fmu";
 
 int main() {
 
-    auto fmu = fmi2Fmu(fmuPath).asModelExchangeFmu();
+    auto fmu = fmi2::fmu(fmuPath).as_me_fmu();
 
-    auto solver = make_solver<RK4ClassicSolver>(microStep);
-    auto slave = fmu->newInstance(solver);
+    auto solver = make_solver<rk4_classic_solver>(microStep);
+    auto slave = fmu->new_instance(solver);
 
-    slave->setupExperiment();
-    slave->enterInitializationMode();
-    slave->exitInitializationMode();
+    slave->setup_experiment();
+    slave->enter_initialization_mode();
+    slave->exit_initialization_mode();
 
     double t = 0;
     double ref = 0;
-    auto hVar = slave->getModelDescription()->getVariableByName("h").asReal();
+    auto hVar = slave->get_model_description()->get_variable_by_name("h").as_real();
 
-    while ( ( t = slave->getSimulationTime()) <= stop) {
+    while ( ( t = slave->get_simulation_time()) <= stop) {
 
-        if (!slave->doStep(macroStep)) {
-            logger::error("Error! doStep returned with status: {}", to_string(slave->getLastStatus()));
+        if (!slave->step(macroStep)) {
+            cerr << "Error! step returned with status: " << to_string(slave->last_status()) << endl;
             break;
         }
 
         if (!hVar.read(*slave, ref)) {
-            logger::error("Error! readReal returned with status: {}", to_string(slave->getLastStatus()));
+            cerr << "Error! read_real returned with status: " << to_string(slave->last_status()) << endl;
             break;
         }
 
-        logger::info("t={}, h={}",  t, ref);
+        cout << "t=" << t << ", h=" << ref << endl;
     }
 
     slave->terminate();

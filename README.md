@@ -6,7 +6,7 @@
 
 
 [![CircleCI](https://circleci.com/gh/NTNU-IHB/FMI4cpp/tree/master.svg?style=svg)](https://circleci.com/gh/NTNU-IHB/FMI4cpp/tree/master)
-[![Build Status](https://dev.azure.com/laht/laht/_apis/build/status/NTNU-IHB.FMI4cpp?branchName=master)](https://dev.azure.com/laht/laht/_build/latest?definitionId=3&branchName=master)
+[![Build status](https://dev.azure.com/laht/laht/_apis/build/status/NTNU-IHB.FMI4cpp?branchName=master)](https://dev.azure.com/laht/laht/_build/latest?definitionId=3&branchName=master)
 
 FMI4cpp is a cross-platform [FMI](https://fmi-standard.org/) 2.0 implementation written in modern C++.
 
@@ -37,50 +37,50 @@ Refer to [BUILDING.md](BUILDING.md)
 #include <fmi4cpp/fmi4cpp.hpp>
 
 using namespace std;
-using namespace fmi4cpp::fmi2;
+using namespace fmi4cpp;
 
 const double stop = ...;
 const double stepSize = ...;
 
 int main() {
 
-    fmi2Fmu fmu("path/to/fmu.fmu");
+    fmi2::fmu fmu("path/to/fmu.fmu");
     // or (with -DFMI4CPP_WITH_CURL=ON)
-    // auto fmu = fmi2Fmu::fromUrl("http://somewebsite.org/somefmu.fmu")
+    // auto fmu = fmi2::fmu::fromUrl("http://somewebsite.org/somefmu.fmu")
     
-    auto cs_fmu = fmu.asCoSimulationFmu();
-    auto me_fmu = fmu.asModelExchangeFmu();
+    auto cs_fmu = fmu.as_cs_description();
+    auto me_fmu = fmu.as_me_description();
     
-    auto cs_md = fmu.getModelDescription(); //smart pointer to a CoSimulationModelDescription instance
-    cout << "modelIdentifier=" << cs_fmu->getModelDescription()->modelIdentifier << endl;
+    auto cs_md = fmu.get_model_description(); //smart pointer to a CoSimulationModelDescription instance
+    cout << "model_identifier=" << cs_fmu->get_model_description()->model_identifier << endl;
     
-    auto me_md = fmu.getModelDescription(); //smart pointer to a ModelExchangeModelDescription instance
-    cout << "modelIdentifier=" << me_fmu->getModelDescription()->modelIdentifier << endl;
+    auto me_md = fmu.get_model_description(); //smart pointer to a ModelExchangeModelDescription instance
+    cout << "model_identifier=" << me_fmu->get_model_description()->model_identifier << endl;
     
-    auto var = cs_md->getVariableByName("my_var").asReal();
+    auto var = cs_md->get_variable_by_name("my_var").asReal();
     cout << "Name=" << var.name <<  ", start=" << var.start().value_or(0) << endl;
               
-    auto slave = cs_fmu->newInstance();
+    auto slave = cs_fmu->new_instance();
     
     // or (with -DFMI4CPP_WITH_ODEINT=ON)
-    // auto solver = make_solver<RK4ClassicSolver>(1E-3);
-    // auto slave = me_fmu->newInstance(solver);
+    // auto solver = make_solver<rk4_classic_solver>(1E-3);
+    // auto slave = me_fmu->new_instance(solver);
          
-    slave->setupExperiment();
-    slave->enterInitializationMode();
-    slave->exitInitializationMode();
+    slave->setup_experiment();
+    slave->enter_initialization_mode();
+    slave->exit_initialization_mode();
     
     double t;
     double value;
-    while ( (t = slave->getSimulationTime()) <= stop) {
+    while ( (t = slave->get_simulation_time()) <= stop) {
 
-        if (!slave->doStep(stepSize)) {
-            cerr << "Error! doStep() returned with status: " << to_string(slave->getLastStatus()) << endl;
+        if (!slave->step(stepSize)) {
+            cerr << "Error! step() returned with status: " << to_string(slave->last_status()) << endl;
             break;
         }
         
         if (!var.read(*slave, value)) {
-            cerr << "Error! doStep() returned with status: " << to_string(slave->getLastStatus()) << endl;
+            cerr << "Error! step() returned with status: " << to_string(slave->last_status()) << endl;
             break;
         }
         cout << "t=" << t << ", " << var.name << "=" << value << endl;

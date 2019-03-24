@@ -22,14 +22,13 @@
  * THE SOFTWARE.
  */
 
+#include <iostream>
+
 #include <fmi4cpp/fmi4cpp.hpp>
-#include <fmi4cpp/common/logger.hpp>
-#include <fmi4cpp/common/tools/time_util.hpp>
+#include <time_util.hpp>
 
 using namespace std;
-using namespace fmi4cpp::fmi2;
-
-namespace logger = fmi4cpp::logger;
+using namespace fmi4cpp;
 
 const double stop = 12.0;
 const double step_size = 1E-5;
@@ -40,28 +39,28 @@ const string fmu_path = "../resources/fmus/2.0/cs/20sim/4.6.4.8004/"
 
 int main() {
 
-    fmi2Fmu fmu(fmu_path);
+    fmi2::fmu fmu(fmu_path);
 
-    const auto slave = fmu.asCoSimulationFmu()->newInstance();
-    slave->setupExperiment();
-    slave->enterInitializationMode();
-    slave->exitInitializationMode();
+    const auto slave = fmu.as_cs_fmu()->new_instance();
+    slave->setup_experiment();
+    slave->enter_initialization_mode();
+    slave->exit_initialization_mode();
 
     auto elapsed = measure_time_sec([&slave]{
         double ref;
-        while ((slave->getSimulationTime()) <= (stop - step_size)) {
-            if (!slave->doStep(step_size)) {
-                logger::error("Error! doStep returned with status: {}", to_string(slave->getLastStatus()));
+        while ((slave->get_simulation_time()) <= (stop - step_size)) {
+            if (!slave->step(step_size)) {
+                cerr << "Error! step returned with status: " << to_string(slave->last_status()) << endl;
                 break;
             }
-            if (!slave->readReal(vr, ref)) {
-                logger::error("Error! readReal returned with status: {}", to_string(slave->getLastStatus()));
+            if (!slave->read_real(vr, ref)) {
+                cerr << "Error! read_real returned with status: " << to_string(slave->last_status()) << endl;
                 break;
             }
         }
     });
 
-    logger::info("Time elapsed={}s", elapsed);
+    cout << "Time elapsed=" << elapsed << "s" << endl;
 
     slave->terminate();
 

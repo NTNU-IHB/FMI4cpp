@@ -28,12 +28,12 @@
 #include <fmi4cpp/fmi4cpp.hpp>
 
 using namespace std;
-using namespace fmi4cpp::fmi2;
+using namespace fmi4cpp;
 
 int main() {
 
     const std::string url = "folk.ntnu.no/laht/files/ControlledTemperature.fmu";
-    auto fmu = fmi2Fmu::fromUrl(url);
+    auto fmu = fmi2::fmu::from_url(url);
     std::cout << "guid=" << fmu->guid() << std::endl;
 
 }

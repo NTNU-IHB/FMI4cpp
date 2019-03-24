@@ -10,12 +10,13 @@
 #
 # and the following imported targets
 #
-#   LIBZIP::LIBZIP
+#   libzip::libzip
 #
 # @author Lars Ivar Hatledal
 
 find_package(ZLIB REQUIRED)
 find_package(BZip2)
+find_package(OpenSSL COMPONENTS Crypto SSL)
 
 find_path(LIBZIP_INCLUDE_DIR NAMES zip.h)
 mark_as_advanced(LIBZIP_INCLUDE_DIR)
@@ -35,12 +36,12 @@ if (LIBZIP_FOUND)
         set(LIBZIP_LIBRARIES ${LIBZIP_LIBRARY})
     endif()
 
-    if (NOT TARGET LIBZIP::LIBZIP)
-        add_library( LIBZIP::LIBZIP UNKNOWN IMPORTED)
-        set_property(TARGET  LIBZIP::LIBZIP
+    if (NOT TARGET libzip::libzip)
+        add_library( libzip::libzip UNKNOWN IMPORTED)
+        set_property(TARGET  libzip::libzip
                 APPEND
                 PROPERTY INTERFACE_INCLUDE_DIRECTORIES "${LIBZIP_INCLUDE_DIR}")
-        set_property(TARGET  LIBZIP::LIBZIP
+        set_property(TARGET  libzip::libzip
                 APPEND
                 PROPERTY IMPORTED_LOCATION "${LIBZIP_LIBRARY}")
 
@@ -48,7 +49,10 @@ if (LIBZIP_FOUND)
         if (BZip2_FOUND)
             list(APPEND INTERFACE_LINK_LIBRARIES BZip2::BZip2)
         endif()
-        set_property(TARGET  LIBZIP::LIBZIP
+         if (OpenSSL_FOUND)
+            list(APPEND INTERFACE_LINK_LIBRARIES OpenSSL::SSL OpenSSL::Crypto)
+        endif()
+        set_property(TARGET  libzip::libzip
                 APPEND
                 PROPERTY INTERFACE_LINK_LIBRARIES
                 ${INTERFACE_LINK_LIBRARIES})

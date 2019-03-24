@@ -33,9 +33,9 @@
 #include <experimental/filesystem>
 #include <boost/algorithm/string.hpp>
 
-#include <fmi4cpp/common/logger.hpp>
-#include <fmi4cpp/common/tools/os_util.hpp>
-#include <fmi4cpp/common/driver/fmu_driver.hpp>
+#include <fmi4cpp/mlog.hpp>
+#include <fmi4cpp/tools/os_util.hpp>
+#include <fmi4cpp/driver/fmu_driver.hpp>
 
 using namespace std;
 
@@ -127,7 +127,7 @@ namespace fmi4cpp::xc {
 
         bool run(const fs::path &fmuDir, const fs::path &resultDir) {
 
-            fmi4cpp::logger::info("Cross-checking FMU '{}'!", fmuDir.string());
+            MLOG_INFO("Cross-checking FMU '" << fmuDir.string() << "'");
 
             fs::create_directories(resultDir);
 
@@ -148,11 +148,11 @@ namespace fmi4cpp::xc {
                 try {
 
                     if (opt.startTime >= opt.stopTime) {
-                        throw Rejection("Invalid start and/or stop time (startTime >= stopTime).");
+                        throw rejection("Invalid start and/or stop time (startTime >= stopTime).");
                     } else if (opt.stepSize == 0.0) {
-                        throw Failure("Don't know how to handle variable step solver (stepsize=0.0).");
+                        throw failure("Don't know how to handle variable step solver (stepsize=0.0).");
                     } else if (hasInput) {
-                        throw Failure("Unable to handle input files yet.");
+                        throw failure("Unable to handle input files yet.");
                     }
 
                     opt.variables = parseVariables(readLine(refFile));
@@ -161,22 +161,22 @@ namespace fmi4cpp::xc {
                     driver.run();
 
                     pass(resultDir);
-                    fmi4cpp::logger::info("Cross-checking FMU '{}' passed!", fmuDir.string());
+                    MLOG_INFO("Cross-checking FMU '" << fmuDir.string() << "' passed!");
 
                     return true;
 
-                } catch (Rejection &ex) {
-                    fmi4cpp::logger::warn("Cross-checking FMU '{}' rejected! {}", fmuDir.string(), ex.what());
+                } catch (rejection &ex) {
+                    MLOG_WARN("Cross-checking FMU '" << fmuDir.string() << "' rejected! " << ex.what());
                     reject(resultDir, ex.what());
-                } catch (Failure &ex) {
-                    fmi4cpp::logger::error("Cross-checking FMU '{}' failed! {}", fmuDir.string(), ex.what());
+                } catch (failure &ex) {
+                    MLOG_ERROR("Cross-checking FMU '" << fmuDir.string() << "' failed! " << ex.what());
                     fail(resultDir, ex.what());
                 }
 
 
             } catch (exception &ex) {
-                fmi4cpp::logger::error("Cross-checking FMU '{}' failed. An unexpected program error occurred: {}",
-                                       fmuDir.string(), ex.what());
+                MLOG_ERROR("Cross-checking FMU '" << fmuDir.string() <<
+                                                     "' failed. An unexpected program error occurred: " << ex.what());
                 fail(resultDir, "An unexpected program error occurred");
             }
 
@@ -217,9 +217,9 @@ namespace fmi4cpp::xc {
 
 int main(int argc, char **argv) {
 
-    if (! argv[1]) {
-        cerr << "Path to XC directory missing!" << endl;
-        return 1;
+    if (!argv[1]) {
+        MLOG_FATAL("Path to XC directory missing!");
+        return -1;
     }
 
     const string VERSION = "0.5.0";
@@ -249,7 +249,7 @@ int main(int argc, char **argv) {
 
     }
 
-    cout << std::to_string(passed) << " FMUs passed the cross-check" << endl;
+    MLOG_INFO(std::to_string(passed) << " FMUs passed the cross-check" );
 
     return 0;
 

@@ -9,8 +9,7 @@ class FMI4cppConan(ConanFile):
 
     requires = (
         "boost/1.66.0@conan/stable",
-        "libzip/1.5.1@bincrafters/stable",
-        "spdlog/1.3.1@bincrafters/stable"
+        "libzip/1.5.1@bincrafters/stable"
     )
 
     options = {"curl": [True, False]}

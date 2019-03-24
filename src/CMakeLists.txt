@@ -1,174 +1,157 @@
 
-SET(SOURCES
+set(publicHeaderDir ${CMAKE_CURRENT_SOURCE_DIR}/../include/fmi4cpp)
+set(privateHeaderDir "${CMAKE_CURRENT_SOURCE_DIR}/fmi4cpp")
 
-        fmi4cpp/common/import/FmuResource.cpp
-        fmi4cpp/common/driver/fmu_driver.cpp
+set(publicHeaders
 
-        fmi4cpp/fmi2/import/fmi2Fmu.cpp
-        fmi4cpp/fmi2/import/fmi2CoSimulationFmu.cpp
-        fmi4cpp/fmi2/import/fmi2ModelExchangeFmu.cpp
-        fmi4cpp/fmi2/import/fmi2Library.cpp
-        fmi4cpp/fmi2/import/fmi2CoSimulationLibrary.cpp
-        fmi4cpp/fmi2/import/fmi2ModelExchangeLibrary.cpp
-        fmi4cpp/fmi2/import/fmi2CoSimulationSlave.cpp
-        fmi4cpp/fmi2/import/fmi2ModelExchangeInstance.cpp
-        fmi4cpp/fmi2/import/fmi2ModelExchangeSlave.cpp
+    fmi4cpp.hpp
+    status.hpp
+    types.hpp
 
-        fmi4cpp/fmi2/xml/enums.cpp
-        fmi4cpp/fmi2/xml/ModelDescription.cpp
-        fmi4cpp/fmi2/xml/ModelDescriptionParser.cpp
-        fmi4cpp/fmi2/xml/ModelVariables.cpp
-        fmi4cpp/fmi2/xml/ScalarVariable.cpp
-        fmi4cpp/fmi2/xml/TypedScalarVariable.cpp
-        fmi4cpp/fmi2/xml/ScalarVariableAttribute.cpp
+    fmu_base.hpp
+    fmu_slave.hpp
+    fmu_resource.hpp
+    fmu_instance.hpp
+    fmu_instance_base.hpp
+    fmu_variable_accessor.hpp
 
-    )
+    driver/driver_options.hpp
+    driver/error_types.hpp
+    driver/fmu_driver.hpp
 
-set(FMI4CPP_LIB fmi4cpp)
-add_library(${FMI4CPP_LIB} ${SOURCES})
-add_library(FMI4cpp::${FMI4CPP_LIB} ALIAS fmi4cpp)
+    solver/solver.hpp
 
-target_include_directories(${FMI4CPP_LIB}
-    PUBLIC
-        $<INSTALL_INTERFACE:include>
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>
-    INTERFACE
-        ${Boost_INCLUDE_DIRS}
-    PRIVATE
-        ${CURRENT_CMAKE_SOURCE_DIR}/../src
+    fmi2/fmi2.hpp
+    fmi2/fmu.hpp
+    fmi2/fmi2_library.hpp
+
+    fmi2/fmi2Functions.h
+    fmi2/fmi2FunctionTypes.h
+    fmi2/fmi2TypesPlatform.h
+
+    fmi2/cs_fmu.hpp
+    fmi2/cs_library.hpp
+    fmi2/cs_slave.hpp
+
+    fmi2/me_fmu.hpp
+    fmi2/me_library.hpp
+    fmi2/me_slave.hpp
+    fmi2/me_instance.hpp
+
+    fmi2/xml/enums.hpp
+    fmi2/xml/source_files.hpp
+
+    fmi2/xml/default_experiment.hpp
+    fmi2/xml/fmu_attributes.hpp
+    fmi2/xml/model_structure.hpp
+    fmi2/xml/model_description.hpp
+    fmi2/xml/specific_model_description
+    fmi2/xml/me_model_description.hpp
+    fmi2/xml/cs_model_description.hpp
+    fmi2/xml/model_description_parser.hpp
+
+    fmi2/xml/model_variables.hpp
+    fmi2/xml/scalar_variable.hpp
+    fmi2/xml/typed_scalar_variable.hpp
+
 )
 
-target_link_libraries(${FMI4CPP_LIB}
-    PRIVATE
-        LIBZIP::LIBZIP
-        spdlog::spdlog
+set(privateHeaders
+
+    mlog.hpp
+
+    fmi2/status_converter.hpp
+    fmi2/library_helper.hpp
+
+    tools/os_util.hpp
+    tools/time_util.hpp
+    tools/unzipper.hpp
+    tools/optional_converter.hpp
 )
 
-if (FMI4CPP_WITH_CURL)
-    target_link_libraries(${FMI4CPP_LIB}
-        PRIVATE
-            CURL::CURL
-    )
-endif()
+set(sources
 
-if (UNIX)
-    target_link_libraries(${FMI4CPP_LIB}
-        PRIVATE
-            dl stdc++fs pthread
-    )
-endif()
+    fmu_resource.cpp
 
-target_compile_definitions(${FMI4CPP_LIB} PUBLIC "BOOST_ALL_DYN_LINK=1" "BOOST_ALL_NO_LIB=1" "BOOST_CONFIG_SUPPRESS_OUTDATED_MESSAGE=1")
-# Make sure that also downstream libraries that use fmi4cpp compile as C++17
-target_compile_features(${FMI4CPP_LIB} PUBLIC cxx_std_17)
+    fmi2/fmu.cpp
+    fmi2/fmi2_library.cpp
 
-# Enable fmi4cpp debug messages for debug configurations
-target_compile_definitions(${FMI4CPP_LIB} PRIVATE $<$<CONFIG:Debug>:FMI4CPP_LOG_LEVEL_DEBUG>)
+    fmi2/cs_fmu.cpp
+    fmi2/me_fmu.cpp
+    fmi2/cs_library.cpp
+    fmi2/cs_slave.cpp
+    fmi2/me_library.cpp
+
+    fmi2/me_instance.cpp
+    fmi2/me_slave.cpp
+
+    fmi2/xml/enums.cpp
+    fmi2/xml/model_description.cpp
+    fmi2/xml/model_description_parser.cpp
+    fmi2/xml/model_variables.cpp
+    fmi2/xml/scalar_variable.cpp
+
+    driver/fmu_driver.cpp
+
+)
+
+set(publicHeadersFull)
+foreach(header IN LISTS publicHeaders)
+    list(APPEND publicHeadersFull "${publicHeaderDir}/${header}")
+endforeach()
+set(privateHeadersFull)
+foreach(header IN LISTS privateHeaders)
+    list(APPEND privateHeadersFull "${privateHeaderDir}/${header}")
+endforeach()
+set(allSources ${publicHeadersFull} ${privateHeadersFull} ${sources})
+
+add_library(fmi4cpp ${allSources})
+add_library(fmi4cpp::fmi4cpp ALIAS fmi4cpp)
+target_compile_definitions(fmi4cpp PUBLIC "BOOST_ALL_DYN_LINK=1" "BOOST_ALL_NO_LIB=1" "BOOST_CONFIG_SUPPRESS_OUTDATED_MESSAGE=1")
+target_compile_features(fmi4cpp PUBLIC "cxx_std_17")
 
 if(FMI4CPP_WITH_ODEINT)
-    target_compile_definitions(${FMI4CPP_LIB} PUBLIC FMI4CPP_WITH_ODEINT)
+    list(APPEND publicHeaders solver/odeint_solver.hpp)
+    target_compile_definitions(fmi4cpp PUBLIC FMI4CPP_WITH_ODEINT)
 endif()
 
 if(FMI4CPP_WITH_CURL)
-    target_compile_definitions(${FMI4CPP_LIB} PUBLIC FMI4CPP_WITH_CURL)
+    target_compile_definitions(fmi4cpp PRIVATE FMI4CPP_WITH_CURL)
 endif()
 
-if (FMI4CPP_LOG_LEVEL STREQUAL "OFF")
-    target_compile_definitions(${FMI4CPP_LIB} PUBLIC FMI4CPP_LOG_LEVEL_OFF)
-elseif (FMI4CPP_LOG_LEVEL STREQUAL "INFO")
-    target_compile_definitions(${FMI4CPP_LIB} PUBLIC FMI4CPP_LOG_LEVEL_INFO)
-elseif (FMI4CPP_LOG_LEVEL STREQUAL "DEBUG")
-    target_compile_definitions(${FMI4CPP_LIB} PUBLIC FMI4CPP_LOG_LEVEL_DEBUG)
-elseif (FMI4CPP_LOG_LEVEL STREQUAL "DEBUG")
-    target_compile_definitions(${FMI4CPP_LIB} PUBLIC FMI4CPP_LOG_LEVEL_TRACE)
+target_include_directories(fmi4cpp
+    PUBLIC
+        $<INSTALL_INTERFACE:include>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>
+        ${Boost_INCLUDE_DIRS}
+    PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+if (FMI4CPP_WITH_ODEINT)
+    target_include_directories(fmi4cpp PUBLIC ${Boost_INCLUDE_DIRS})
 else ()
-    target_compile_definitions(${FMI4CPP_LIB} PUBLIC FMI4CPP_LOG_LEVEL_DEFAULT)
+    target_include_directories(fmi4cpp PRIVATE ${Boost_INCLUDE_DIRS})
 endif ()
 
-##############################################
-# Installation instructions
-include(GNUInstallDirs)
+target_link_libraries(fmi4cpp PRIVATE libzip::libzip)
 
-set(INSTALL_CONFIGDIR ${CMAKE_INSTALL_LIBDIR}/cmake/FMI4cpp)
-
-# Install target
-install(TARGETS ${FMI4CPP_LIB}
-    EXPORT ${FMI4CPP_LIB}-targets
-    LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-    ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-    RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
-
-#This is required so that the exported target has the name FMI4cpp and not fmi4cpp
-set_target_properties(${FMI4CPP_LIB} PROPERTIES EXPORT_NAME ${PROJECT_NAME})
-
-install(DIRECTORY ../include/
-    DESTINATION
-        ${CMAKE_INSTALL_INCLUDEDIR}
-    FILES_MATCHING
-        REGEX ".*.(hpp|h)"
-)
-
-install(EXPORT ${FMI4CPP_LIB}-targets
-    FILE
-        ${PROJECT_NAME}Targets.cmake
-    NAMESPACE
-        ${PROJECT_NAME}::
-    DESTINATION
-        ${INSTALL_CONFIGDIR}
-)
-
-#Create a ConfigVersion.cmake file
-include(CMakePackageConfigHelpers)
-write_basic_package_version_file(${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
-    VERSION
-     ${PROJECT_VERSION}
-    COMPATIBILITY
-        AnyNewerVersion
-)
-
-configure_package_config_file(${CMAKE_CURRENT_LIST_DIR}/../cmake/${PROJECT_NAME}Config.cmake.in
-        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
-    INSTALL_DESTINATION
-        ${INSTALL_CONFIGDIR}
-    )
-
-#Install the config, configversion and custom find modules
-install(FILES
-        ${CMAKE_CURRENT_LIST_DIR}/../cmake/FindLIBZIP.cmake
-        ${CMAKE_CURRENT_LIST_DIR}/../cmake/FindCURL_.cmake
-        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
-        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
-    DESTINATION
-        ${INSTALL_CONFIGDIR}
-)
-
-##############################################
-## Exporting from the build tree
-configure_file(${CMAKE_CURRENT_LIST_DIR}/../cmake/FindLIBZIP.cmake
-    ${CMAKE_CURRENT_BINARY_DIR}/FindLIBZIP.cmake
-    COPYONLY)
-configure_file(${CMAKE_CURRENT_LIST_DIR}/../cmake/FindCURL_.cmake
-        ${CMAKE_CURRENT_BINARY_DIR}/FindCURL_.cmake
-        COPYONLY)
-
-export(EXPORT ${FMI4CPP_LIB}-targets
-    FILE
-        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Targets.cmake
-    NAMESPACE
-        ${PROJECT_NAME}::
-)
-
-#Register package in user's package registry
-export(PACKAGE ${PROJECT_NAME})
-
-
-# Add uninstall logic (see https://gitlab.kitware.com/cmake/community/wikis/FAQ#can-i-do-make-uninstall-with-cmake)
-if (NOT TARGET uninstall)
-    configure_file(
-            "${CMAKE_CURRENT_SOURCE_DIR}/../cmake/cmake_uninstall.cmake.in"
-            "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
-            IMMEDIATE @ONLY)
-
-    add_custom_target(uninstall
-            COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)
+if (FMI4CPP_WITH_CURL)
+    target_link_libraries(fmi4cpp PRIVATE curl::curl)
 endif()
+
+if (UNIX)
+    target_link_libraries(fmi4cpp PRIVATE dl stdc++fs pthread)
+endif()
+
+install(
+    TARGETS fmi4cpp
+    EXPORT "${FMI4CPP_EXPORT_TARGET}"
+    ${FMI4CPP_INSTALL_DESTINATIONS}
+)
+install(
+    DIRECTORY "${publicHeaderDir}"
+    DESTINATION "${FMI4CPP_HEADER_INSTALL_DIR}"
+)
+
+include(set-log-level)

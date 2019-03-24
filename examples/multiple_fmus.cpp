@@ -24,12 +24,12 @@
 
 #include <assert.h>
 #include <string>
+#include <iostream>
 
 #include <fmi4cpp/fmi4cpp.hpp>
-#include <fmi4cpp/common/logger.hpp>
 
 using namespace std;
-using namespace fmi4cpp::fmi2;
+using namespace fmi4cpp;
 
 const string fmu_path1 = "../resources/fmus/2.0/cs/20sim/4.6.4.8004/"
                          "TorsionBar/TorsionBar.fmu";
@@ -39,35 +39,35 @@ const string fmu_path2 = "../resources/fmus/2.0/cs/20sim/4.6.4.8004/"
 
 int main() {
     
-    fmi2Fmu fmu1(fmu_path1);
-    fmi2Fmu fmu2(fmu_path2);
+    fmi2::fmu fmu1(fmu_path1);
+    fmi2::fmu fmu2(fmu_path2);
     
-    const auto slave1 = fmu1.asCoSimulationFmu()->newInstance();
-    const auto md1 = slave1->getModelDescription();
+    const auto slave1 = fmu1.as_cs_fmu()->new_instance();
+    const auto md1 = slave1->get_model_description();
 
-    slave1->setupExperiment();
-    slave1->enterInitializationMode();
-    slave1->exitInitializationMode();
+    slave1->setup_experiment();
+    slave1->enter_initialization_mode();
+    slave1->exit_initialization_mode();
 
-    const auto slave2 = fmu2.asCoSimulationFmu()->newInstance();
-    const auto md2 = slave2->getModelDescription();
-    slave2->setupExperiment();
-    slave2->enterInitializationMode();
-    slave2->exitInitializationMode();
+    const auto slave2 = fmu2.as_cs_fmu()->new_instance();
+    const auto md2 = slave2->get_model_description();
+    slave2->setup_experiment();
+    slave2->enter_initialization_mode();
+    slave2->exit_initialization_mode();
 
-    slave1->doStep(1E-5);
-    slave2->doStep(1E-4);
+    slave1->step(1E-5);
+    slave2->step(1E-4);
 
     double ref;
-    auto var = md1->getVariableByName("MotorDiskRev").asReal();
+    auto var = md1->get_variable_by_name("MotorDiskRev").as_real();
     assert(var.valueReference() == 105);
     var.read(*slave1, ref);
-    fmi4cpp::logger::info("MotorDiskRev={}", ref);
+    cout << "MotorDiskRev=" << ref << endl;
 
-    auto vr = md2->getValueReference("Temperature_Room");
+    auto vr = md2->get_value_reference("Temperature_Room");
     assert(vr == 47);
-    slave2->readReal(vr, ref);
-    fmi4cpp::logger::info("Temperature_Room={}", ref);
+    slave2->read_real(vr, ref);
+    cout << "Temperature_Room=" << ref << endl;
 
     slave1->terminate();
     slave2->terminate();

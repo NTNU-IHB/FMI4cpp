@@ -29,7 +29,6 @@
 #include <boost/test/unit_test.hpp>
 
 #include <fmi4cpp/fmi2/fmi2.hpp>
-#include <fmi4cpp/common/tools/os_util.hpp>
 
 using namespace std;
 using namespace fmi4cpp::fmi2;
@@ -39,11 +38,11 @@ const string fmu_path = "../resources/fmus/2.0/cs/OpenModelica/v1.11.0/"
 
 BOOST_AUTO_TEST_CASE(FmuExportCrossCompile_test1) {
 
-    auto md = parseModelDescription(fmu_path);
+    auto md = parse_model_description(fmu_path);
 
-    BOOST_CHECK_EQUAL("structured", md->variableNamingConvention.value());
+    BOOST_CHECK_EQUAL("structured", md->variable_naming_convention.value());
 
-    vector<Unknown> derivatives = md->modelStructure->derivatives;
+    vector<unknown> derivatives = md->model_structure->derivatives;
     BOOST_CHECK_EQUAL(2, derivatives.size());
 
     BOOST_CHECK_EQUAL(3, derivatives[0].index);
@@ -51,6 +50,6 @@ BOOST_AUTO_TEST_CASE(FmuExportCrossCompile_test1) {
 
     BOOST_CHECK_EQUAL(true, derivatives[0].dependencies.has_value());
     BOOST_CHECK_EQUAL(2, derivatives[0].dependencies.value()[0]);
-    BOOST_CHECK_EQUAL("dependent", derivatives[0].dependenciesKind.value()[0]);
+    BOOST_CHECK_EQUAL("dependent", derivatives[0].dependencies_kind.value()[0]);
 
 }
