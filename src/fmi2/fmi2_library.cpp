@@ -37,7 +37,6 @@ using namespace fmi4cpp::fmi2;
 namespace {
 
     const std::string to_string(fmi2Status status) {
-
         switch (status) {
             case fmi2OK:
                 return "OK";
@@ -54,15 +53,20 @@ namespace {
             default:
                 return "Unknown";
         }
-
     }
 
-    void logger(void *fmi2ComponentEnvironment,
-                fmi2String instance_name, fmi2Status status, fmi2String category, fmi2String message, ...) {
+    void logger(void *fmi2ComponentEnvironment, fmi2String instance_name, fmi2Status status, fmi2String category,
+                fmi2String message, ...) {
+
+        char msg[1000];
+        va_list argp;
+
+        va_start(argp, message);
+        vsprintf(msg, message, argp);
+        va_end(argp);
 
         MLOG_INFO("[FMI callback logger] status=" + to_string(status) + ", instanceName=" + instance_name +
-                      ", category=" + category + ", message=" + message);
-
+                  ", category=" + category + ", message=" + msg);
     }
 
     const fmi2CallbackFunctions callback = {
@@ -143,8 +147,8 @@ fmi2String fmi2_library::get_types_platform() const {
 }
 
 fmi2Component fmi2_library::instantiate(const std::string &instanceName, const fmi2Type type,
-                                       const std::string &guid, const std::string &resourceLocation,
-                                       bool visible, bool loggingOn) {
+                                        const std::string &guid, const std::string &resourceLocation,
+                                        bool loggingOn, bool visible) {
     fmi2Component c = fmi2Instantiate_(instanceName.c_str(), type, guid.c_str(),
                                        resourceLocation.c_str(), &callback, visible, loggingOn);
 
@@ -160,14 +164,18 @@ fmi2Component fmi2_library::instantiate(const std::string &instanceName, const f
 
 bool fmi2_library::set_debug_logging(fmi2Component c, bool loggingOn,
                                      std::vector<fmi2String> categories) {
-    return update_status_and_return_true_if_ok(fmi2SetDebugLogging_(c, loggingOn, categories.size(), categories.data()));
+    return update_status_and_return_true_if_ok(
+            fmi2SetDebugLogging_(c, loggingOn, categories.size(), categories.data()));
 }
 
 bool fmi2_library::setup_experiment(fmi2Component c, double tolerance, double startTime, double stopTime) {
 
     bool stopDefined = (stopTime > startTime);
     bool toleranceDefined = (tolerance > 0);
-    MLOG_DEBUG("Calling fmi2SetupExperiment with toleranceDefined=" << toleranceDefined << ", tolerance=" << tolerance << ", startTime=" << startTime << ", stopTimeDefined=" << stopDefined << ", stop=" << stopTime)
+    MLOG_INFO("Calling fmi2SetupExperiment with toleranceDefined=" + toleranceDefined << ", tolerance=" << tolerance
+                                                                    << ", startTime=" << startTime
+                                                                    << ", stopTimeDefined=" << stopDefined << ", stop="
+                                                                    << stopTime)
     return update_status_and_return_true_if_ok(
             fmi2SetupExperiment_(c, toleranceDefined, tolerance, startTime, stopDefined, stopTime));
 }

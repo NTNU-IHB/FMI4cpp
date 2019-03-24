@@ -121,7 +121,7 @@ namespace fmi4cpp::fmi2 {
 
         fmi2Component instantiate(const std::string &instanceName, fmi2Type type,
                                   const std::string &guid, const std::string &resourceLocation,
-                                  bool visible = false, bool loggingOn = false);
+                                  bool loggingOn = false, bool visible = false);
 
         bool setup_experiment(fmi2Component c, double tolerance, double startTime, double stopTime);
 

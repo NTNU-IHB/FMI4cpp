@@ -29,7 +29,7 @@ using namespace fmi4cpp;
 using namespace fmi4cpp::fmi2;
 
 cs_library::cs_library(const std::string &modelIdentifier,
-                                                 const std::shared_ptr<fmu_resource> &resource)
+                       const std::shared_ptr<fmu_resource> &resource)
         : fmi2_library(modelIdentifier, resource) {
 
     fmi2SetRealInputDerivatives_ = load_function<fmi2SetRealInputDerivativesTYPE *>(handle_,
