@@ -22,6 +22,7 @@
  * THE SOFTWARE.
  */
 
+#include <stdarg.h>
 #include <sstream>
 
 #include <fmi4cpp/fmi2/fmi2_library.hpp>
