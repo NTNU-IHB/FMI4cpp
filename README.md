@@ -46,10 +46,10 @@ int main() {
 
     fmi2::fmu fmu("path/to/fmu.fmu");
     // or (with -DFMI4CPP_WITH_CURL=ON)
-    // auto fmu = fmi2::fmu::fromUrl("http://somewebsite.org/somefmu.fmu")
+    // auto fmu = fmi2::fmu::from_url("http://somewebsite.org/somefmu.fmu")
     
-    auto cs_fmu = fmu.as_cs_description();
-    auto me_fmu = fmu.as_me_description();
+    auto cs_fmu = fmu.as_cs_fmu();
+    auto me_fmu = fmu.as_me_fmu();
     
     auto cs_md = fmu.get_model_description(); //smart pointer to a CoSimulationModelDescription instance
     cout << "model_identifier=" << cs_fmu->get_model_description()->model_identifier << endl;
@@ -58,7 +58,7 @@ int main() {
     cout << "model_identifier=" << me_fmu->get_model_description()->model_identifier << endl;
     
     auto var = cs_md->get_variable_by_name("my_var").asReal();
-    cout << "Name=" << var.name <<  ", start=" << var.start().value_or(0) << endl;
+    cout << "Name=" << var.name() <<  ", start=" << var.start().value_or(0) << endl;
               
     auto slave = cs_fmu->new_instance();
     
@@ -83,7 +83,7 @@ int main() {
             cerr << "Error! step() returned with status: " << to_string(slave->last_status()) << endl;
             break;
         }
-        cout << "t=" << t << ", " << var.name << "=" << value << endl;
+        cout << "t=" << t << ", " << var.name() << "=" << value << endl;
      
     }
     
