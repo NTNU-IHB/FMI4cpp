@@ -123,15 +123,10 @@ target_include_directories(fmi4cpp
     PUBLIC
         $<INSTALL_INTERFACE:include>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>
+        ${Boost_INCLUDE_DIRS}
     PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}
 )
-
-if (FMI4CPP_WITH_ODEINT)
-    target_include_directories(fmi4cpp PUBLIC ${Boost_INCLUDE_DIRS})
-else ()
-    target_include_directories(fmi4cpp PRIVATE ${Boost_INCLUDE_DIRS})
-endif ()
 
 target_link_libraries(fmi4cpp PRIVATE libzip::libzip)
 
