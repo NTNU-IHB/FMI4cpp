@@ -82,7 +82,7 @@ fmi2_library::fmi2_library(const std::string &modelIdentifier, const std::shared
 
     const auto libName = resource->absolute_library_path(modelIdentifier);
 
-    MLOG_DEBUG("Loading shared library '" + fs::path(libName).stem().string() + getLibExt() + "'");
+    MLOG_DEBUG("Loading shared library '" + fs::path(libName).stem().string() + get_shared_library_extension() + "'");
 
     handle_ = load_library(libName);
 
