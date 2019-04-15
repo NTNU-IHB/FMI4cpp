@@ -1,4 +1,6 @@
 
+include_directories(${FMI4CPP_SOURCE_DIR}/include/)
+
 set(publicHeaderDir ${CMAKE_CURRENT_SOURCE_DIR}/../include/fmi4cpp)
 set(privateHeaderDir "${CMAKE_CURRENT_SOURCE_DIR}/fmi4cpp")
 
