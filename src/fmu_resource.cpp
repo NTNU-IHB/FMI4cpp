@@ -40,7 +40,7 @@ const std::string fmu_resource::resource_path() const {
 }
 
 const std::string fmu_resource::absolute_library_path(const std::string &modelIdentifier) const {
-    return path_.string() + "/binaries/" + getOs() + "/" + modelIdentifier + getLibExt();
+    return path_.string() + "/binaries/" + get_os() + "/" + modelIdentifier + get_shared_library_extension();
 }
 
 fmu_resource::~fmu_resource() {

@@ -223,7 +223,7 @@ int main(int argc, char **argv) {
     }
 
     const string VERSION = "0.5.0";
-    const string os = getOs();
+    const string os = get_os();
 
     const fs::path xc_dir = fs::path(argv[1]);
     const fs::path csFmus = xc_dir / "fmus/2.0/cs" / os;

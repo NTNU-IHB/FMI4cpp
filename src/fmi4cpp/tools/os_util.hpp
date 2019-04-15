@@ -29,7 +29,7 @@
 
 namespace {
 
-    std::string getOs() {
+    std::string get_os() {
 #if _WIN32 || _WIN64
 #if _WIN64
         return "win64";
@@ -41,7 +41,7 @@ namespace {
 #endif
     }
 
-    std::string getLibExt() {
+    std::string get_shared_library_extension() {
 #if _WIN32
         return ".dll";
 #elif __linux__
