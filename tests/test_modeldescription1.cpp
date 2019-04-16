@@ -61,12 +61,12 @@ BOOST_AUTO_TEST_CASE(ControlledTemperature_test1) {
 
     const fmi2::real_variable& heatCapacity1 = md->get_variable_by_name("HeatCapacity1.T0").as_real();
     BOOST_CHECK_EQUAL(1, heatCapacity1.valueReference());
-    BOOST_CHECK_EQUAL(false, heatCapacity1.min().has_value());
-    BOOST_CHECK_EQUAL(false, heatCapacity1.max().has_value());
-    BOOST_CHECK_EQUAL(true, heatCapacity1.start().has_value());
+    BOOST_CHECK_EQUAL(false, heatCapacity1.min().is_initialized());
+    BOOST_CHECK_EQUAL(false, heatCapacity1.max().is_initialized());
+    BOOST_CHECK_EQUAL(true, heatCapacity1.start().is_initialized());
     BOOST_CHECK_EQUAL(298.0, heatCapacity1.start().value());
     BOOST_CHECK_EQUAL("starting temperature", heatCapacity1.description());
-    BOOST_CHECK_EQUAL(false, heatCapacity1.quantity().has_value());
+    BOOST_CHECK_EQUAL(false, heatCapacity1.quantity().is_initialized());
 
     auto& thermalConductor = md->model_variables->getByValueReference(12);
     BOOST_CHECK_EQUAL("TemperatureSource.T", thermalConductor.name);
@@ -82,12 +82,12 @@ BOOST_AUTO_TEST_CASE(ControlledTemperature_test1) {
     BOOST_CHECK_EQUAL(115, modelStructureOutputs[0].index);
     BOOST_CHECK_EQUAL(116, modelStructureOutputs[1].index);
 
-    std::optional<fmi2::default_experiment> de = md->default_experiment;
-    BOOST_CHECK(de.has_value());
+    boost::optional<fmi2::default_experiment> de = md->default_experiment;
+    BOOST_CHECK(de.is_initialized());
     BOOST_CHECK_EQUAL(0.0, *de->startTime);
     BOOST_CHECK_EQUAL(20.0, *de->stopTime);
     BOOST_CHECK_EQUAL(1E-4, *de->stepSize);
-    BOOST_CHECK_EQUAL(false, de->tolerance.has_value());
+    BOOST_CHECK_EQUAL(false, de->tolerance.is_initialized());
 
     size_t count = 0;
     auto mv = md->model_variables;

@@ -51,23 +51,23 @@ scalar_variable::scalar_variable(const scalar_variable_base &base,
 
 
 bool scalar_variable::is_integer() const {
-    return integer_.has_value();
+    return integer_.is_initialized();
 }
 
 bool scalar_variable::is_real() const {
-    return real_.has_value();
+    return real_.is_initialized();
 }
 
 bool scalar_variable::is_string() const {
-    return string_.has_value();
+    return string_.is_initialized();
 }
 
 bool scalar_variable::is_boolean() const {
-    return boolean_.has_value();
+    return boolean_.is_initialized();
 }
 
 bool scalar_variable::is_enumeration() const {
-    return enumeration_.has_value();
+    return enumeration_.is_initialized();
 }
 
 const integer_variable scalar_variable::as_integer() const {
@@ -121,19 +121,19 @@ bool integer_variable::write(fmu_writer &writer, int value) {
 real_variable::real_variable(const scalar_variable &variable, const real_attribute &attribute)
         : bounded_scalar_variable(variable, attribute) {}
 
-std::optional<std::string> real_variable::displayUnit() const {
+boost::optional<std::string> real_variable::displayUnit() const {
     return attribute_.display_unit;
 }
 
-std::optional<std::string> real_variable::unit() const {
+boost::optional<std::string> real_variable::unit() const {
     return attribute_.unit;
 }
 
-std::optional<size_t> real_variable::derivative() const {
+boost::optional<unsigned int> real_variable::derivative() const {
     return attribute_.derivative;
 }
 
-std::optional<double> real_variable::nominal() const {
+boost::optional<double> real_variable::nominal() const {
     return attribute_.nominal;
 }
 

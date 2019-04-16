@@ -33,7 +33,6 @@
 using namespace std;
 using namespace fmi4cpp;
 
-const double stop = 10.0;
 const double step_size = 1E-4;
 const fmi2ValueReference vr = 46;
 
@@ -58,10 +57,10 @@ BOOST_AUTO_TEST_CASE(ControlledTemperature_test1) {
     BOOST_CHECK(slave->exit_initialization_mode());
     
     double ref;
-    while ((slave->get_simulation_time()) <= (stop - step_size)) {
-        BOOST_CHECK(slave->step(step_size));
-        BOOST_CHECK(slave->read_real(vr, ref));
-    }
+    BOOST_CHECK(slave->step(step_size));
+    BOOST_CHECK(slave->read_real(vr, ref));
+
+    BOOST_CHECK_EQUAL(298.15, ref);
 
     BOOST_CHECK(slave->terminate());
     

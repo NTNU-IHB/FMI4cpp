@@ -76,11 +76,11 @@ namespace fmi4cpp::fmi2 {
             return variable_.can_handle_multiple_set_per_time_instant;
         }
 
-        std::optional<T> start() const {
+        boost::optional<T> start() const {
             return attribute_.start;
         }
 
-        std::optional<std::string> declaredType() const {
+        boost::optional<std::string> declaredType() const {
             return attribute_.declaredType;
         }
 
@@ -101,15 +101,15 @@ namespace fmi4cpp::fmi2 {
         bounded_scalar_variable(const scalar_variable &variable, const U &attribute)
                 : typed_scalar_variable<T, U>(variable, attribute) {}
 
-        std::optional<T> min() const {
+        boost::optional<T> min() const {
             return this->attribute_.min;
         }
 
-        std::optional<T> max() const {
+        boost::optional<T> max() const {
             return this->attribute_.max;
         }
 
-        std::optional<std::string> quantity() const {
+        boost::optional<std::string> quantity() const {
             return this->attribute_.quantity;
         }
 
@@ -138,13 +138,13 @@ namespace fmi4cpp::fmi2 {
 
         bool relativeQuantity() const;
 
-        std::optional<double> nominal() const;
+        boost::optional<double> nominal() const;
 
-        std::optional<size_t> derivative() const;
+        boost::optional<unsigned int> derivative() const;
 
-        std::optional<std::string> unit() const;
+        boost::optional<std::string> unit() const;
 
-        std::optional<std::string> displayUnit() const;
+        boost::optional<std::string> displayUnit() const;
 
         bool read(fmu_reader &reader, double &ref) override;
 

@@ -68,7 +68,7 @@ set(privateHeaders
     tools/os_util.hpp
     tools/time_util.hpp
     tools/unzipper.hpp
-    tools/optional_converter.hpp
+
 )
 
 set(sources

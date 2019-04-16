@@ -1,9 +1,3 @@
-#include <utility>
-
-#include <utility>
-
-#include <utility>
-
 /*
  * The MIT License
  *
@@ -33,15 +27,14 @@
 
 #include <string>
 #include <vector>
-#include <optional>
 
 namespace fmi4cpp::fmi2 {
 
     struct unknown {
 
         unsigned int index;
-        std::optional<std::vector<unsigned int >> dependencies;
-        std::optional<std::vector<std::string>> dependencies_kind;
+        boost::optional<std::vector<unsigned int >> dependencies;
+        boost::optional<std::vector<std::string>> dependencies_kind;
 
     };
 

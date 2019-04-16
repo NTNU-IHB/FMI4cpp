@@ -30,8 +30,6 @@
 #include <fmi4cpp/fmi2/xml/scalar_variable.hpp>
 #include <fmi4cpp/fmi2/xml/model_description_parser.hpp>
 
-#include <fmi4cpp/tools/optional_converter.hpp>
-
 using boost::property_tree::ptree;
 using namespace fmi4cpp::fmi2;
 
@@ -41,10 +39,10 @@ namespace {
 
     const default_experiment parse_default_experiment(const ptree &node) {
         default_experiment ex;
-        ex.startTime = convert(node.get_optional<double>("<xmlattr>.startTime"));
-        ex.stopTime = convert(node.get_optional<double>("<xmlattr>.stopTime"));
-        ex.stepSize = convert(node.get_optional<double>("<xmlattr>.stepSize"));
-        ex.tolerance = convert(node.get_optional<double>("<xmlattr>.tolerance"));
+        ex.startTime = node.get_optional<double>("<xmlattr>.startTime");
+        ex.stopTime = node.get_optional<double>("<xmlattr>.stopTime");
+        ex.stepSize = node.get_optional<double>("<xmlattr>.stepSize");
+        ex.tolerance = node.get_optional<double>("<xmlattr>.tolerance");
         return ex;
     }
 
@@ -175,17 +173,17 @@ namespace {
     template<typename T>
     scalar_variable_attribute<T> parse_scalar_variable_attributes(const ptree &node) {
         scalar_variable_attribute<T> attributes;
-        attributes.start = convert(node.get_optional<T>("<xmlattr>.start"));
-        attributes.declared_type = convert(node.get_optional<std::string>("<xmlattr>.declaredType"));
+        attributes.start = node.get_optional<T>("<xmlattr>.start");
+        attributes.declared_type = node.get_optional<std::string>("<xmlattr>.declaredType");
         return attributes;
     }
 
     template<typename T>
     bounded_scalar_variable_attribute<T> parse_bounded_scalar_variable_attributes(const ptree &node) {
         bounded_scalar_variable_attribute<T> attributes(parse_scalar_variable_attributes<T>(node));
-        attributes.min = convert(node.get_optional<T>("<xmlattr>.min"));
-        attributes.max = convert(node.get_optional<T>("<xmlattr>.max"));
-        attributes.quantity = convert(node.get_optional<std::string>("<xmlattr>.quantity"));
+        attributes.min = node.get_optional<T>("<xmlattr>.min");
+        attributes.max = node.get_optional<T>("<xmlattr>.max");
+        attributes.quantity = node.get_optional<std::string>("<xmlattr>.quantity");
         return attributes;
     }
 
@@ -195,9 +193,9 @@ namespace {
 
     real_attribute parse_real_attribute(const ptree &node) {
         real_attribute attributes(parse_bounded_scalar_variable_attributes<double>(node));
-        attributes.nominal = convert(node.get_optional<double>("<xmlattr>.nominal"));
-        attributes.unit = convert(node.get_optional<std::string>("<xmlattr>.unit"));
-        attributes.derivative = convert(node.get_optional<unsigned int>("<xmlattr>.derivative"));
+        attributes.nominal = node.get_optional<double>("<xmlattr>.nominal");
+        attributes.unit = node.get_optional<std::string>("<xmlattr>.unit");
+        attributes.derivative = node.get_optional<unsigned int>("<xmlattr>.derivative");
         attributes.reinit = node.get<bool>("<xmlattr>.reinit", false);
         attributes.unbounded = node.get<bool>("<xmlattr>.unbounded", false);
         attributes.relative_quantity = node.get<bool>("<xmlattr>.relativeQuantity", false);
@@ -283,8 +281,8 @@ std::unique_ptr<const model_description> fmi4cpp::fmi2::parse_model_description(
     base.variable_naming_convention = root.get<std::string>("<xmlattr>.variableNamingConvention",
                                                           DEFAULT_VARIABLE_NAMING_CONVENTION);
 
-    std::optional<cs_attributes> coSimulation;
-    std::optional<me_attributes> modelExchange;
+    boost::optional<cs_attributes> coSimulation;
+    boost::optional<me_attributes> modelExchange;
 
     for (const ptree::value_type &v : root) {
 
