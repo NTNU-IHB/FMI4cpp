@@ -27,16 +27,16 @@
 #ifndef FMI4CPP_DEFAULTEXPERIMENT_HPP
 #define FMI4CPP_DEFAULTEXPERIMENT_HPP
 
-#include <optional>
+#include <boost/optional.hpp>
 
 namespace fmi4cpp::fmi2 {
 
     struct default_experiment {
 
-        std::optional<double> startTime;
-        std::optional<double> stopTime;
-        std::optional<double> stepSize;
-        std::optional<double> tolerance;
+        boost::optional<double> startTime;
+        boost::optional<double> stopTime;
+        boost::optional<double> stepSize;
+        boost::optional<double> tolerance;
 
     };
 

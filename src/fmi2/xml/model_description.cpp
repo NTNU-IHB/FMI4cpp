@@ -1,3 +1,5 @@
+#include <utility>
+
 /*
  * The MIT License
  *
@@ -22,8 +24,9 @@
  * THE SOFTWARE.
  */
 
-#include <fmi4cpp/fmi2/xml/model_description.hpp>
+#include <utility>
 
+#include <fmi4cpp/fmi2/xml/model_description.hpp>
 #include <fmi4cpp/fmi2/xml/cs_model_description.hpp>
 #include <fmi4cpp/fmi2/xml/me_model_description.hpp>
 
@@ -42,16 +45,16 @@ fmi2ValueReference model_description_base::get_value_reference(const std::string
 }
 
 model_description::model_description(const model_description_base &base,
-                                   const std::optional<const cs_attributes> &coSimulation,
-                                   const std::optional<const me_attributes> &modelExchange)
-        : model_description_base(base), coSimulation_(coSimulation), modelExchange_(modelExchange) {}
+                                     boost::optional<cs_attributes> coSimulation,
+                                     boost::optional<me_attributes> modelExchange)
+        : model_description_base(base), coSimulation_(std::move(coSimulation)), modelExchange_(std::move(modelExchange)) {}
 
 bool model_description::supports_cs() const {
-    return coSimulation_.has_value();
+    return coSimulation_.is_initialized();
 }
 
 bool model_description::supports_me() const {
-    return modelExchange_.has_value();
+    return modelExchange_.is_initialized();
 }
 
 std::unique_ptr<const cs_model_description> model_description::as_cs_description() const {

@@ -27,7 +27,6 @@
 
 #include <string>
 #include <vector>
-#include <optional>
 
 namespace fmi4cpp::fmi2 {
 

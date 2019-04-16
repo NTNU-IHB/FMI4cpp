@@ -27,7 +27,7 @@
 #ifndef FMI4CPP_SCALARVARIABLE_HPP
 #define FMI4CPP_SCALARVARIABLE_HPP
 
-#include <optional>
+#include <boost/optional.hpp>
 
 #include <fmi4cpp/fmi2/fmi2Functions.h>
 #include <fmi4cpp/fmi2/xml/enums.hpp>
@@ -69,8 +69,8 @@ namespace fmi4cpp::fmi2 {
     template<typename T>
     struct scalar_variable_attribute {
 
-        std::optional<T> start;
-        std::optional<std::string> declared_type;
+        boost::optional<T> start;
+        boost::optional<std::string> declared_type;
 
     };
 
@@ -78,9 +78,9 @@ namespace fmi4cpp::fmi2 {
     template<typename T>
     struct bounded_scalar_variable_attribute : scalar_variable_attribute<T> {
 
-        std::optional<T> min;
-        std::optional<T> max;
-        std::optional<std::string> quantity;
+        boost::optional<T> min;
+        boost::optional<T> max;
+        boost::optional<std::string> quantity;
 
         explicit bounded_scalar_variable_attribute(const scalar_variable_attribute<T> &attributes)
                 : scalar_variable_attribute<T>(attributes) {}
@@ -95,15 +95,15 @@ namespace fmi4cpp::fmi2 {
 
     struct real_attribute : bounded_scalar_variable_attribute<double> {
 
-        bool reinit;
-        bool unbounded;
-        bool relative_quantity;
+        bool reinit = false;
+        bool unbounded = false;
+        bool relative_quantity = false;
 
-        std::optional<double> nominal;
-        std::optional<unsigned int> derivative;
+        boost::optional<double> nominal;
+        boost::optional<unsigned int> derivative;
 
-        std::optional<std::string> unit;
-        std::optional<std::string> display_unit;
+        boost::optional<std::string> unit;
+        boost::optional<std::string> display_unit;
 
         explicit real_attribute(const bounded_scalar_variable_attribute<double> &attributes);
 
@@ -132,11 +132,11 @@ namespace fmi4cpp::fmi2 {
 
     private:
 
-        std::optional<integer_attribute> integer_;
-        std::optional<real_attribute> real_;
-        std::optional<string_attribute> string_;
-        std::optional<boolean_attribute> boolean_;
-        std::optional<enumeration_attribute> enumeration_;
+        boost::optional<integer_attribute> integer_;
+        boost::optional<real_attribute> real_;
+        boost::optional<string_attribute> string_;
+        boost::optional<boolean_attribute> boolean_;
+        boost::optional<enumeration_attribute> enumeration_;
 
     public:
 

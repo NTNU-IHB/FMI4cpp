@@ -26,8 +26,9 @@
 #define FMI4CPP_MODELDESCRIPTION_HPP
 
 #include <memory>
-#include <optional>
 #include <string>
+
+#include <boost/optional.hpp>
 
 #include <fmi4cpp/fmi2/xml/model_structure.hpp>
 #include <fmi4cpp/fmi2/xml/model_variables.hpp>
@@ -42,21 +43,22 @@ namespace fmi4cpp::fmi2 {
         std::string model_name;
         std::string fmi_version;
 
-        std::optional<std::string> author;
-        std::optional<std::string> version;
-        std::optional<std::string> license;
-        std::optional<std::string> copyright;
-        std::optional<std::string> description;
-        std::optional<std::string> generation_tool;
-        std::optional<std::string> generation_date_and_time;
-        std::optional<std::string> variable_naming_convention;
+        boost::optional<std::string> author;
+        boost::optional<std::string> version;
+        boost::optional<std::string> license;
+        boost::optional<std::string> copyright;
+        boost::optional<std::string> description;
+        boost::optional<std::string> generation_tool;
+        boost::optional<std::string> generation_date_and_time;
+        boost::optional<std::string> variable_naming_convention;
 
         std::shared_ptr<const fmi2::model_variables> model_variables;
         std::shared_ptr<const fmi2::model_structure> model_structure;
 
-        std::optional<fmi2::default_experiment> default_experiment;
+        boost::optional<fmi2::default_experiment> default_experiment;
 
         size_t number_of_event_indicators;
+
         size_t number_of_continuous_states() const;
 
         unsigned int get_value_reference(const std::string &name) const;
@@ -71,14 +73,15 @@ namespace fmi4cpp::fmi2 {
     class model_description : public model_description_base {
 
     protected:
-        std::optional<const cs_attributes> coSimulation_;
-        std::optional<const me_attributes> modelExchange_;
+
+        boost::optional<cs_attributes> coSimulation_;
+        boost::optional<me_attributes> modelExchange_;
 
     public:
 
         model_description(const model_description_base &base,
-                         const std::optional<const cs_attributes> &coSimulation,
-                         const std::optional<const me_attributes> &modelExchange);
+                          boost::optional<cs_attributes> coSimulation,
+                          boost::optional<me_attributes> modelExchange);
 
         bool supports_cs() const;
 
