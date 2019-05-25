@@ -35,7 +35,7 @@ jobs:
             - conan-cache-v1
       - run:
           name: Conan install
-          command: 'conan install . -s build_type=Debug -s compiler.libcxx=libstdc++11 --install-folder=build'
+          command: 'conan install . -s build_type=Debug -s compiler.libcxx=libstdc++11 --install-folder=build -o curl=True'
 
       - save_cache:
           paths:
@@ -44,7 +44,7 @@ jobs:
 
       - run:
           name: Configuring
-          command: 'cmake -H. -Bbuild -DFMI4CPP_USING_CONAN=ON -DFMI4CPP_WITH_ODEINT=ON -DFMI4CPP_WITH_CURL=OFF -DFMI4CPP_BUILD_TOOL=OFF -DFMI4CPP_BUILD_TESTS=ON -DFMI4CPP_BUILD_EXAMPLES=ON'
+          command: 'cmake -H. -Bbuild -DFMI4CPP_USING_CONAN=ON -DFMI4CPP_WITH_ODEINT=ON -DFMI4CPP_WITH_CURL=ON -DFMI4CPP_BUILD_TOOL=OFF -DFMI4CPP_BUILD_TESTS=ON -DFMI4CPP_BUILD_EXAMPLES=ON'
       - run:
           name: Building
           command: 'cmake --build build'

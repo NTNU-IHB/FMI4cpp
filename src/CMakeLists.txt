@@ -133,7 +133,7 @@ target_include_directories(fmi4cpp
 target_link_libraries(fmi4cpp PRIVATE libzip::libzip)
 
 if (FMI4CPP_WITH_CURL)
-    target_link_libraries(fmi4cpp PRIVATE curl::curl)
+    target_link_libraries(fmi4cpp PRIVATE CURL::libcurl)
 endif()
 
 if (UNIX)
