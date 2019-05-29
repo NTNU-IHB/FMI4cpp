@@ -51,11 +51,11 @@ int main() {
     auto cs_fmu = fmu.as_cs_fmu();
     auto me_fmu = fmu.as_me_fmu();
     
-    auto cs_md = fmu.get_model_description(); //smart pointer to a CoSimulationModelDescription instance
-    cout << "model_identifier=" << cs_fmu->get_model_description()->model_identifier << endl;
+    auto cs_md = cs_fmu.get_model_description(); //smart pointer to a cs_model_description instance
+    cout << "model_identifier=" << cs_md->model_identifier << endl;
     
-    auto me_md = fmu.get_model_description(); //smart pointer to a ModelExchangeModelDescription instance
-    cout << "model_identifier=" << me_fmu->get_model_description()->model_identifier << endl;
+    auto me_md = me_fmu.get_model_description(); //smart pointer to a me_model_description instance
+    cout << "model_identifier=" << me_md->model_identifier << endl;
     
     auto var = cs_md->get_variable_by_name("my_var").asReal();
     cout << "Name=" << var.name() <<  ", start=" << var.start().value_or(0) << endl;
