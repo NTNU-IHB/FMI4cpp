@@ -51,10 +51,10 @@ int main() {
     auto cs_fmu = fmu.as_cs_fmu();
     auto me_fmu = fmu.as_me_fmu();
     
-    auto cs_md = cs_fmu.get_model_description(); //smart pointer to a cs_model_description instance
+    auto cs_md = cs_fmu->get_model_description(); //smart pointer to a cs_model_description instance
     cout << "model_identifier=" << cs_md->model_identifier << endl;
     
-    auto me_md = me_fmu.get_model_description(); //smart pointer to a me_model_description instance
+    auto me_md = me_fmu->get_model_description(); //smart pointer to a me_model_description instance
     cout << "model_identifier=" << me_md->model_identifier << endl;
     
     auto var = cs_md->get_variable_by_name("my_var").asReal();
