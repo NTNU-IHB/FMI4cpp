@@ -40,16 +40,12 @@ shared_ptr<const cs_model_description> cs_fmu::get_model_description() const {
 unique_ptr<cs_slave> cs_fmu::new_instance(const bool loggingOn, const bool visible) {
     shared_ptr<cs_library> lib = nullptr;
     auto modelIdentifier = modelDescription_->model_identifier;
-    if (modelDescription_->can_be_instantiated_only_once_per_process) {
-        lib = make_shared<cs_library>(modelIdentifier, resource_);
-    } else {
-        if (lib_ == nullptr) {
-            lib_ = make_shared<cs_library>(modelIdentifier, resource_);
-        }
-        lib = lib_;
+    if (lib_ == nullptr) {
+        lib_ = make_shared<cs_library>(modelIdentifier, resource_);
     }
+    lib = lib_;
+
     auto c = lib->instantiate(modelIdentifier, fmi2CoSimulation, guid(),
                               resource_->resource_path(), loggingOn, visible);
     return make_unique<cs_slave>(c, resource_, lib, modelDescription_);
 }
-

@@ -43,14 +43,11 @@ shared_ptr<const me_model_description> me_fmu::get_model_description() const {
 std::unique_ptr<me_instance> me_fmu::new_instance(bool visible, bool loggingOn) {
     shared_ptr<me_library> lib = nullptr;
     auto modelIdentifier = modelDescription_->model_identifier;
-    if (modelDescription_->can_be_instantiated_only_once_per_process) {
-        lib = make_shared<me_library>(modelIdentifier, resource_);
-    } else {
-        if (lib_ == nullptr) {
-            lib_ = make_shared<me_library>(modelIdentifier, resource_);
-        }
-        lib = lib_;
+    if (lib_ == nullptr) {
+        lib_ = make_shared<me_library>(modelIdentifier, resource_);
     }
+    lib = lib_;
+
     fmi2Component c = lib->instantiate(modelIdentifier, fmi2ModelExchange, guid(),
                                        resource_->resource_path(), visible, loggingOn);
     return make_unique<me_instance>(c, resource_, lib, modelDescription_);
