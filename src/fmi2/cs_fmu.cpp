@@ -49,4 +49,3 @@ unique_ptr<cs_slave> cs_fmu::new_instance(const bool loggingOn, const bool visib
                               resource_->resource_path(), loggingOn, visible);
     return make_unique<cs_slave>(c, resource_, lib, modelDescription_);
 }
-
