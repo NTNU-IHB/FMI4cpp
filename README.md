@@ -45,9 +45,7 @@ const double stepSize = ...;
 int main() {
 
     fmi2::fmu fmu("path/to/fmu.fmu");
-    // or (with -DFMI4CPP_WITH_CURL=ON)
-    // auto fmu = fmi2::fmu::from_url("http://somewebsite.org/somefmu.fmu")
-    
+
     auto cs_fmu = fmu.as_cs_fmu();
     auto me_fmu = fmu.as_me_fmu();
     
