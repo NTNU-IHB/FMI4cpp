@@ -35,7 +35,7 @@ jobs:
             - conan-cache-v1
       - run:
           name: Conan install
-          command: 'conan install . -s build_type=Debug -s compiler.libcxx=libstdc++11 --install-folder=build -o curl=True'
+          command: 'conan install . -s build_type=Debug -s compiler.libcxx=libstdc++11 --install-folder=build'
 
       - save_cache:
           paths:
