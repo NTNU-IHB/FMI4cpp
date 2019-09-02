@@ -1,22 +1,6 @@
 ### BUILDING
 
-For building FMI4cpp, you are free to use either `vcpkg`, `conan` or `apt-get` for getting the required dependencies.
-
-##### vcpkg
-
-Install [vcpkg](https://github.com/Microsoft/vcpkg) and run:
-
-```bash
-./vcpkg install boost-property-tree libzip[core]
-``` 
-
-On Windows you might want to specify the target architecture (defaults to x86) by appending:
-
-```bash
---triplet [x86-windows|x64-windows]
-```
-
-Then tell CMake about your vcpkg installation by passing <br> ```-DCMAKE_TOOLCHAIN_FILE=<path/to/vcpkg>/scripts/buildsystems/vcpkg.cmake``` to it.
+For building FMI4cpp, you are can use either `conan` or `apt-get` for getting the required dependencies.
 
 ##### conan
 
@@ -40,35 +24,9 @@ Linux:~/$ sudo apt-get install libzip-dev libboost-dev
 
 ## Optional features
 
-#### Load FMUs from URL
-
-Set `-DFMI4CPP_WITH_CURL=ON`
-
-This feature requires libcurl:
-
-##### vcpkg
-`./vcpkg install curl`
-
-##### conan
-pass `-o curl=True` to the install command
-
-##### apt-get
-```bash
-sudo apt-get install libcurl4-openssl-dev
-``` 
-
 #### Wrap Model Exchange models as Co-simulation models
 
 Set `-DFMI4CPP_WITH_ODEINT=ON`
-
-This feature requires boost-odeint:
-
-##### vcpkg
-`./vcpkg install boost-ublas boost-odeint` 
-
-##### conan & apt-get
-_Dependencies should already be fulfilled.._
-
 
 
 ### fmu_driver
@@ -76,10 +34,6 @@ _Dependencies should already be fulfilled.._
 The fmu_driver tool is not built by default. To build it, pass ```FMI4CPP_BUILD_TOOL=ON``` to CMake. 
 An additional dependency is required if you do:
 
-##### vcpkg
-```bash
-./vcpkg install boost-program-options
-```
 ##### conan
 _Dependency should already be fulfilled.._
 
@@ -98,10 +52,6 @@ Test are on the other hand _not_ built by default. To change this pass ```-DFMI4
 
 To run the tests you will need an additional dependency:
 
-##### vcpkg
-```
-./vcpkg install boost-test
-``` 
 ##### conan
 _Dependency should already be fulfilled.._
 

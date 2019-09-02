@@ -51,39 +51,11 @@ jobs:
       - run:
           name: Unit tests
           command: 'cd build/tests && ctest'
-  vcpkg:
-    docker:
-      - image: laht/vcpkg
-    steps:
-      - checkout
-      - run:
-          name: Update vcpkg
-          command: 'cd /home/vcpkg && git pull'
-      - restore_cache:
-          keys:
-            - cache-v2-{{ .Branch }}
-            - cache-v2
-      - run:
-          name: Install dependencies
-          command: 'cd /home/vcpkg && ./vcpkg upgrade --no-dry-run && ./vcpkg install boost-property-tree boost-test libzip[core]'
-      - save_cache:
-          key: cache-v2-{{ .Branch }}
-          paths:
-            - '/home/vcpkg/installed/'
-      - run:
-          name: Configuring
-          command: 'cmake -H. -Bbuild -DCMAKE_TOOLCHAIN_FILE=/home/vcpkg/scripts/buildsystems/vcpkg.cmake-DFMI4CPP_WITH_ODEINT=OFF -DFMI4CPP_BUILD_TOOL=OFF -DFMI4CPP_BUILD_TESTS=ON -DFMI4CPP_BUILD_EXAMPLES=ON'
-      - run:
-          name: Building
-          command: 'cmake --build build'
-      - run:
-          name: Unit tests
-          command: 'cd build/tests && ctest'
+
 
 workflows:
   version: 2
   build:
     jobs:
       - apt-get
-      - vcpkg
       - conan
