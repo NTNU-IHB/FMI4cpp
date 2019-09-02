@@ -117,10 +117,6 @@ if(FMI4CPP_WITH_ODEINT)
     target_compile_definitions(fmi4cpp PUBLIC FMI4CPP_WITH_ODEINT)
 endif()
 
-if(FMI4CPP_WITH_CURL)
-    target_compile_definitions(fmi4cpp PRIVATE FMI4CPP_WITH_CURL)
-endif()
-
 target_include_directories(fmi4cpp
     PUBLIC
         $<INSTALL_INTERFACE:include>
@@ -131,10 +127,6 @@ target_include_directories(fmi4cpp
 )
 
 target_link_libraries(fmi4cpp PRIVATE libzip::libzip)
-
-if (FMI4CPP_WITH_CURL)
-    target_link_libraries(fmi4cpp PRIVATE CURL::libcurl)
-endif()
 
 if (UNIX)
     target_link_libraries(fmi4cpp PRIVATE dl stdc++fs pthread)

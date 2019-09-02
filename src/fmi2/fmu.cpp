@@ -22,10 +22,6 @@
  * THE SOFTWARE.
  */
 
-#ifdef FMI4CPP_WITH_CURL
-#include <curl/curl.h>
-#endif
-
 #include <utility>
 #include <experimental/filesystem>
 
@@ -93,50 +89,4 @@ unique_ptr<cs_fmu> fmu::as_cs_fmu() const {
 unique_ptr<me_fmu> fmu::as_me_fmu() const {
     shared_ptr<const me_model_description> me = std::move(modelDescription_->as_me_description());
     return make_unique<me_fmu>(resource_, me);
-}
-
-
-
-namespace {
-    size_t write_data(void *ptr, size_t size, size_t nmemb, FILE *stream) {
-        size_t written = fwrite(ptr, size, nmemb, stream);
-        return written;
-    }
-}
-
-std::unique_ptr<fmu> fmu::from_url(const std::string &fmuPath) {
-
-#ifdef FMI4CPP_WITH_CURL
-
-    MLOG_DEBUG("Loading FMU from URL: " << fmuPath);
-
-    auto fmuName = fs::path(fmuPath).filename();
-    fs::path tmp(fs::temp_directory_path() /= fmuName);
-    CURL *curl = curl_easy_init();
-    if (curl) {
-        FILE *fp = fopen(tmp.string().c_str(), "wb");
-        curl_easy_setopt(curl, CURLOPT_URL, fmuPath.c_str());
-        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data);
-        curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);
-        CURLcode res = curl_easy_perform(curl);
-        if (res != CURLE_OK) {
-            const auto err = "Failed to download FMU from URL:" + fmuPath;
-            MLOG_FATAL(err);
-            throw runtime_error(err);
-        }
-        /* always cleanup */
-        curl_easy_cleanup(curl);
-        fclose(fp);
-    }
-
-    auto fmu = std::make_unique<fmi2::fmu>(tmp.string());
-    fs::remove(tmp); //delete downloaded FMU, it has been extracted by now.
-    return fmu;
-
-#else
-
-    throw runtime_error("fmi2Fmu::fromUrl not enabled! To enable compile with FMI4CPP_WITH_CURL=ON");
-
-#endif
-
 }

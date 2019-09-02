@@ -63,8 +63,6 @@ namespace fmi4cpp::fmi2 {
 
         std::unique_ptr<me_fmu> as_me_fmu() const override;
 
-        static std::unique_ptr<fmu> from_url(const std::string &url);
-
     };
 
 }

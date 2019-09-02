@@ -9,7 +9,3 @@ endif()
 
 find_package(Boost 1.65 COMPONENTS ${Boost_COMPONENTS} REQUIRED)
 find_package(LIBZIP REQUIRED)
-
-if (FMI4CPP_WITH_CURL)
-    find_package(CURL_ REQUIRED)
-endif()
