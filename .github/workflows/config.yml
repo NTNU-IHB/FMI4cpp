@@ -19,8 +19,14 @@ jobs:
       run: pip install setuptools wheel
        
     - name: Install conan
-      run: sudo pip install conan --upgrade
-      
+      run: |
+        unameOut="$(uname -s)"
+        case "${unameOut}" in
+            MINGW*)     pip install conan --upgrade;;
+            Linux*)     sudo pip install conan --upgrade;;
+        esac
+      shell: bash
+
     - name: Run conan
       run: |
         conan remote add bincrafters "https://api.bintray.com/conan/bincrafters/public-conan" --f
