@@ -29,6 +29,7 @@ jobs:
 
     - name: Run conan
       run: |
+        conan remote add conan-center "https://conan.bintray.com" --f
         conan remote add bincrafters "https://api.bintray.com/conan/bincrafters/public-conan" --f
         unameOut="$(uname -s)"
         case "${unameOut}" in
