@@ -42,13 +42,19 @@ jobs:
       run: |
         unameOut="$(uname -s)"
         case "${unameOut}" in
-            MINGW*)     cmake . -Bbuild -DFMI4CPP_USING_CONAN=TRUE -DFMI4CPP_BUILD_TESTS=ON -A x64;;
+            MINGW*)     cmake . -G "Visual Studio 15 2017 Win64" -Bbuild -DFMI4CPP_USING_CONAN=TRUE -DFMI4CPP_BUILD_TESTS=ON;;
             Linux*)     cmake -H. -Bbuild -DFMI4CPP_USING_CONAN=TRUE -DFMI4CPP_BUILD_TESTS=ON;;
         esac
       shell: bash
       
     - name: Build
-      run: cmake --build build
+      run: |
+        unameOut="$(uname -s)"
+        case "${unameOut}" in
+            MINGW*)     cmake --build build --config Release;;
+            Linux*)     cmake --build build;;
+        esac
+      shell: bash
       
     - name: Test
       run: |
