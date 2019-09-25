@@ -6,7 +6,6 @@
 
 
 [![CircleCI](https://circleci.com/gh/NTNU-IHB/FMI4cpp/tree/master.svg?style=svg)](https://circleci.com/gh/NTNU-IHB/FMI4cpp/tree/master)
-[![Build status](https://dev.azure.com/laht/laht/_apis/build/status/NTNU-IHB.FMI4cpp?branchName=master)](https://dev.azure.com/laht/laht/_build/latest?definitionId=3&branchName=master)
 
 FMI4cpp is a cross-platform [FMI](https://fmi-standard.org/) 2.0 implementation written in modern C++.
 
