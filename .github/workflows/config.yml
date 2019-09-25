@@ -45,6 +45,7 @@ jobs:
             MINGW*)     cmake . -Bbuild -DFMI4CPP_USING_CONAN=TRUE -DFMI4CPP_BUILD_TESTS=ON -A x64;;
             Linux*)     cmake -H. -Bbuild -DFMI4CPP_USING_CONAN=TRUE -DFMI4CPP_BUILD_TESTS=ON;;
         esac
+      shell: bash
       
     - name: Build
       run: cmake --build build
