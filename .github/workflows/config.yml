@@ -49,3 +49,12 @@ jobs:
       
     - name: Build
       run: cmake --build build
+      
+    - name: Test
+      run: |
+        unameOut="$(uname -s)"
+        case "${unameOut}" in
+            MINGW*)     cd build/tests && ctest -C Release;;
+            Linux*)     cd build/tests && ctest;;
+        esac
+      shell: bash
