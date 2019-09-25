@@ -49,5 +49,3 @@ jobs:
       
     - name: Build
       run: cmake --build build
-      
-      -A x64
