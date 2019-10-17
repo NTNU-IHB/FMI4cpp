@@ -26,9 +26,9 @@
 
 #include <fmi4cpp/fmi2/fmi2.hpp>
 
+#include <boost/filesystem.hpp>
 #include <boost/test/unit_test.hpp>
 
-#include <boost::filesystem.hpp>
 #include <iostream>
 #include <string>
 
