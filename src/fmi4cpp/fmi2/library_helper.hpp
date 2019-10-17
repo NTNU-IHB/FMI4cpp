@@ -27,25 +27,28 @@
 
 #include <fmi4cpp/fmi2/fmi2_library.hpp>
 
-namespace {
+namespace
+{
 
-    DLL_HANDLE load_library(const std::string &libName) {
+DLL_HANDLE load_library(const std::string& libName)
+{
 #ifdef WIN32
-        return LoadLibrary(libName.c_str());
+    return LoadLibrary(libName.c_str());
 #else
-        return dlopen(libName.c_str(), RTLD_NOW | RTLD_LOCAL);
+    return dlopen(libName.c_str(), RTLD_NOW | RTLD_LOCAL);
 #endif
-    }
-
-    template<class T>
-    T load_function(DLL_HANDLE handle, const char *function_name) {
-#ifdef WIN32
-        return (T) GetProcAddress(handle, function_name);
-#else
-        return (T) dlsym(handle, function_name);
-#endif
-    }
-
 }
+
+template<class T>
+T load_function(DLL_HANDLE handle, const char* function_name)
+{
+#ifdef WIN32
+    return (T)GetProcAddress(handle, function_name);
+#else
+    return (T)dlsym(handle, function_name);
+#endif
+}
+
+} // namespace
 
 #endif //FMI4CPP_LIBRARYHELPER_HPP

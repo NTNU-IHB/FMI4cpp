@@ -25,37 +25,35 @@
 #ifndef FMI4CPP_FMUDRIVER_HPP
 #define FMI4CPP_FMUDRIVER_HPP
 
-#include <string>
-#include <memory>
-
+#include <fmi4cpp/driver/driver_options.hpp>
+#include <fmi4cpp/driver/error_types.hpp>
 #include <fmi4cpp/fmi4cpp.hpp>
 
-#include <fmi4cpp/driver/error_types.hpp>
-#include <fmi4cpp/driver/driver_options.hpp>
+#include <memory>
+#include <string>
 
 
-namespace fmi4cpp::driver {
+namespace fmi4cpp::driver
+{
 
-    class fmu_driver {
+class fmu_driver
+{
 
-    public:
+public:
+    fmu_driver(const std::string& fmuPath, const driver_options& options);
 
-        fmu_driver(const std::string &fmuPath, const driver_options &options);
+    void run();
 
-        void run();
+private:
+    const std::string& fmuPath_;
+    const driver_options& options_;
 
-    private:
+    void dump_output(const std::string& data, const std::string& outputFolder);
 
-        const std::string &fmuPath_;
-        const driver_options &options_;
+    void simulate(std::unique_ptr<fmu_slave<fmi2::cs_model_description>> slave);
+};
 
-        void dump_output(const std::string &data, const std::string &outputFolder);
-
-        void simulate(std::unique_ptr<fmu_slave<fmi2::cs_model_description>> slave);
-
-    };
-
-}
+} // namespace fmi4cpp::driver
 
 
 #endif //FMI4CPP_FMUDRIVER_HPP

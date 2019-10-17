@@ -24,13 +24,13 @@
 
 #define BOOST_TEST_MODULE ControlledTemperature_test1
 
-#include <string>
-#include <iostream>
-#include <boost/test/unit_test.hpp>
-
 #include <fmi4cpp/fmi2/fmi2.hpp>
 
+#include <boost/test/unit_test.hpp>
+
 #include <experimental/filesystem>
+#include <iostream>
+#include <string>
 
 using namespace std;
 using namespace fmi4cpp;
@@ -40,7 +40,8 @@ namespace fs = std::experimental::filesystem;
 const string fmu_path = "../resources/fmus/2.0/cs/20sim/4.6.4.8004/"
                         "ControlledTemperature/modelDescription.xml";
 
-BOOST_AUTO_TEST_CASE(ControlledTemperature_test1) {
+BOOST_AUTO_TEST_CASE(ControlledTemperature_test1)
+{
 
     auto md = fmi2::parse_model_description(fmu_path);
     auto md_cs = md->as_cs_description();
@@ -91,7 +92,7 @@ BOOST_AUTO_TEST_CASE(ControlledTemperature_test1) {
 
     size_t count = 0;
     auto mv = md->model_variables;
-    for (const auto &v : *mv) {
+    for (const auto& v : *mv) {
         if (v.causality == fmi2::causality::output) {
             count++;
         }
@@ -102,5 +103,4 @@ BOOST_AUTO_TEST_CASE(ControlledTemperature_test1) {
     md->model_variables->getByCausality(fmi2::causality::output, outputs);
 
     BOOST_CHECK_EQUAL(count, outputs.size());
-
 }

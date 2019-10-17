@@ -1,5 +1,3 @@
-#include <utility>
-
 /*
  * The MIT License
  *
@@ -29,17 +27,18 @@
 
 #include <boost/optional.hpp>
 
-namespace fmi4cpp::fmi2 {
+namespace fmi4cpp::fmi2
+{
 
-    struct default_experiment {
+struct default_experiment
+{
 
-        boost::optional<double> startTime;
-        boost::optional<double> stopTime;
-        boost::optional<double> stepSize;
-        boost::optional<double> tolerance;
+    boost::optional<double> startTime;
+    boost::optional<double> stopTime;
+    boost::optional<double> stepSize;
+    boost::optional<double> tolerance;
+};
 
-    };
-
-}
+} // namespace fmi4cpp::fmi2
 
 #endif //FMI4CPP_DEFAULTEXPERIMENT_HPP

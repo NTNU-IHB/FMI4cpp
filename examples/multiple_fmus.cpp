@@ -22,11 +22,11 @@
  * THE SOFTWARE.
  */
 
-#include <assert.h>
-#include <string>
-#include <iostream>
-
 #include <fmi4cpp/fmi4cpp.hpp>
+
+#include <assert.h>
+#include <iostream>
+#include <string>
 
 using namespace std;
 using namespace fmi4cpp;
@@ -37,11 +37,12 @@ const string fmu_path1 = "../resources/fmus/2.0/cs/20sim/4.6.4.8004/"
 const string fmu_path2 = "../resources/fmus/2.0/cs/20sim/4.6.4.8004/"
                          "ControlledTemperature/ControlledTemperature.fmu";
 
-int main() {
-    
+int main()
+{
+
     fmi2::fmu fmu1(fmu_path1);
     fmi2::fmu fmu2(fmu_path2);
-    
+
     const auto slave1 = fmu1.as_cs_fmu()->new_instance();
     const auto md1 = slave1->get_model_description();
 
@@ -71,7 +72,6 @@ int main() {
 
     slave1->terminate();
     slave2->terminate();
-    
+
     return 0;
-    
 }

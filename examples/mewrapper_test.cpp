@@ -23,12 +23,12 @@
  */
 
 
-#include <iostream>
-#include <string>
-#include <memory>
-#include <vector>
-
 #include <fmi4cpp/fmi4cpp.hpp>
+
+#include <iostream>
+#include <memory>
+#include <string>
+#include <vector>
 
 using namespace std;
 using namespace fmi4cpp;
@@ -36,12 +36,13 @@ using namespace fmi4cpp::solver;
 
 const double stop = 1.0;
 const double microStep = 1E-3;
-const double macroStep = 1.0/10;
+const double macroStep = 1.0 / 10;
 
 const string fmuPath = "../resources/fmus/2.0/me/Test-FMUs/0.0.1/"
                        "BouncingBall/BouncingBall.fmu";
 
-int main() {
+int main()
+{
 
     auto fmu = fmi2::fmu(fmuPath).as_me_fmu();
 
@@ -56,7 +57,7 @@ int main() {
     double ref = 0;
     auto hVar = slave->get_model_description()->get_variable_by_name("h").as_real();
 
-    while ( ( t = slave->get_simulation_time()) <= stop) {
+    while ((t = slave->get_simulation_time()) <= stop) {
 
         if (!slave->step(macroStep)) {
             cerr << "Error! step returned with status: " << to_string(slave->last_status()) << endl;
@@ -74,5 +75,4 @@ int main() {
     slave->terminate();
 
     return 0;
-    
 }

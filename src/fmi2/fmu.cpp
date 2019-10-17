@@ -22,25 +22,25 @@
  * THE SOFTWARE.
  */
 
-#include <utility>
-#include <experimental/filesystem>
-
 #include <fmi4cpp/fmi2/fmu.hpp>
 #include <fmi4cpp/fmi2/xml/model_description_parser.hpp>
-
 #include <fmi4cpp/mlog.hpp>
-#include <fmi4cpp/tools/unzipper.hpp>
 #include <fmi4cpp/tools/os_util.hpp>
 #include <fmi4cpp/tools/simple_id.hpp>
+#include <fmi4cpp/tools/unzipper.hpp>
+
+#include <experimental/filesystem>
+#include <utility>
 
 using namespace std;
 using namespace fmi4cpp::fmi2;
 
 namespace fs = std::experimental::filesystem;
 
-fmu::fmu(const string &fmuPath) {
+fmu::fmu(const string& fmuPath)
+{
 
-    MLOG_DEBUG("Loading FMU '" <<  fmuPath << "'");
+    MLOG_DEBUG("Loading FMU '" << fmuPath << "'");
 
     const std::string fmuName = fs::path(fmuPath).stem().string();
     fs::path tmpPath(fs::temp_directory_path() /= fs::path("fmi4cpp_" + fmuName + "_" + generate_simple_id(8)));
@@ -61,32 +61,37 @@ fmu::fmu(const string &fmuPath) {
 
     resource_ = make_shared<fmu_resource>(tmpPath);
     modelDescription_ = std::move(parse_model_description(resource_->model_description_path()));
-
 }
 
-const std:: string fmu::get_model_description_xml() const {
+const std::string fmu::get_model_description_xml() const
+{
     ifstream stream(resource_->model_description_path());
     return string((istreambuf_iterator<char>(stream)), istreambuf_iterator<char>());
 }
 
-shared_ptr<const model_description> fmu::get_model_description() const {
+shared_ptr<const model_description> fmu::get_model_description() const
+{
     return modelDescription_;
 }
 
-bool fmu::supports_me() const {
+bool fmu::supports_me() const
+{
     return modelDescription_->supports_me();
 }
 
-bool fmu::supports_cs() const {
+bool fmu::supports_cs() const
+{
     return modelDescription_->supports_cs();
 }
 
-unique_ptr<cs_fmu> fmu::as_cs_fmu() const {
+unique_ptr<cs_fmu> fmu::as_cs_fmu() const
+{
     shared_ptr<const cs_model_description> cs = std::move(modelDescription_->as_cs_description());
     return make_unique<cs_fmu>(resource_, cs);
 }
 
-unique_ptr<me_fmu> fmu::as_me_fmu() const {
+unique_ptr<me_fmu> fmu::as_me_fmu() const
+{
     shared_ptr<const me_model_description> me = std::move(modelDescription_->as_me_description());
     return make_unique<me_fmu>(resource_, me);
 }

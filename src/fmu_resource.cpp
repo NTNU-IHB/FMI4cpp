@@ -23,29 +23,35 @@
  */
 
 
+#include <fmi4cpp/fmu_resource.hpp>
 #include <fmi4cpp/mlog.hpp>
 #include <fmi4cpp/tools/os_util.hpp>
-#include <fmi4cpp/fmu_resource.hpp>
 
 using namespace fmi4cpp;
 
-fmu_resource::fmu_resource(fs::path &path): path_(path){}
+fmu_resource::fmu_resource(fs::path& path)
+    : path_(path)
+{}
 
-const std::string fmu_resource::model_description_path() const {
+std::string fmu_resource::model_description_path() const
+{
     return path_.string() + "/modelDescription.xml";
 }
 
-const std::string fmu_resource::resource_path() const {
+std::string fmu_resource::resource_path() const
+{
     return "file:///" + path_.string() + "/resources/";
 }
 
-const std::string fmu_resource::absolute_library_path(const std::string &modelIdentifier) const {
+std::string fmu_resource::absolute_library_path(const std::string& modelIdentifier) const
+{
     return path_.string() + "/binaries/" + get_os() + "/" + modelIdentifier + get_shared_library_extension();
 }
 
-fmu_resource::~fmu_resource() {
+fmu_resource::~fmu_resource()
+{
 
-    std::error_code success {};
+    std::error_code success{};
     fs::remove_all(path_, success);
 
     if (!success) {
@@ -53,5 +59,4 @@ fmu_resource::~fmu_resource() {
     } else {
         MLOG_DEBUG("Unable to delete temporal folder '" + path_.string() + "'");
     }
-
 }

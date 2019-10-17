@@ -25,39 +25,42 @@
 #ifndef FMI4CPP_DRIVEROPTIONS_HPP
 #define FMI4CPP_DRIVEROPTIONS_HPP
 
+#include <fmi4cpp/fmi2/xml/model_description.hpp>
+#include <fmi4cpp/fmi2/xml/scalar_variable.hpp>
+
 #include <algorithm>
 #include <experimental/filesystem>
 
-#include <fmi4cpp/fmi2/xml/scalar_variable.hpp>
-
 namespace fs = std::experimental::filesystem;
 
-namespace fmi4cpp::driver {
+namespace fmi4cpp::driver
+{
 
-    struct driver_options {
+struct driver_options
+{
 
-        double startTime = 0.0;
-        double stopTime = 0.0;
-        double stepSize = 1e-3;
+    double startTime = 0.0;
+    double stopTime = 0.0;
+    double stepSize = 1e-3;
 
-        bool modelExchange = false;
-        bool failOnLargeFileSize = false;
+    bool modelExchange = false;
+    bool failOnLargeFileSize = false;
 
-        std::vector<std::string> variables;
-        fs::path outputFolder = fs::current_path();
+    std::vector<std::string> variables;
+    fs::path outputFolder = fs::current_path();
 
-        std::vector<fmi2::scalar_variable>
-        transformVariables(std::shared_ptr<const fmi2::model_description_base> md) const {
-            std::vector<fmi2::scalar_variable> result;
-            std::transform(variables.begin(), variables.end(), std::back_inserter(result),
-                           [md](std::string name) -> fmi2::scalar_variable {
-                               return md->get_variable_by_name(name);
-                           });
-            return result;
-        }
+    std::vector<fmi2::scalar_variable>
+    transformVariables(std::shared_ptr<const fmi2::model_description_base> md) const
+    {
+        std::vector<fmi2::scalar_variable> result;
+        std::transform(variables.begin(), variables.end(), std::back_inserter(result),
+            [md](std::string name) -> fmi2::scalar_variable {
+                return md->get_variable_by_name(name);
+            });
+        return result;
+    }
+};
 
-    };
-
-}
+} // namespace fmi4cpp::driver
 
 #endif //FMI4CPP_DRIVEROPTIONS_HPP

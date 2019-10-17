@@ -22,16 +22,16 @@
  * THE SOFTWARE.
  */
 
-#include <memory>
-#include <vector>
-#include <string>
-#include <iostream>
+#include <fmi4cpp/driver/fmu_driver.hpp>
+#include <fmi4cpp/fmi2/fmi2.hpp>
 
-#include <experimental/filesystem>
 #include <boost/program_options.hpp>
 
-#include <fmi4cpp/fmi2/fmi2.hpp>
-#include <fmi4cpp/driver/fmu_driver.hpp>
+#include <experimental/filesystem>
+#include <iostream>
+#include <memory>
+#include <string>
+#include <vector>
 
 using namespace std;
 
@@ -40,36 +40,31 @@ using namespace fmi4cpp::driver;
 
 namespace fs = std::experimental::filesystem;
 
-namespace {
+namespace
+{
 
-    const int SUCCESS = 0;
-    const int COMMANDLINE_ERROR = 1;
-    const int UNHANDLED_ERROR = 2;
+const int SUCCESS = 0;
+const int COMMANDLINE_ERROR = 1;
+const int UNHANDLED_ERROR = 2;
 
-    const char* START = "start";
-    const char* STOP = "stop";
-    const char* STEP_SIZE = "stepsize";
+const char* START = "start";
+const char* STOP = "stop";
+const char* STEP_SIZE = "stepsize";
 
-}
+} // namespace
 
 
-int main(int argc, char** argv) {
+int main(int argc, char** argv)
+{
 
     namespace po = boost::program_options;
 
     po::options_description desc("Options");
-    desc.add_options()
-            ("help,h", "Print this help message and quits.")
-            ("me", "Treat FMU as an Model Exchange FMU.")
-            ("fmu,f", po::value<string>(), "Path to FMU.")
-            ("output,o", po::value<string>(), "Where to store the generated CSV results.")
-            (START, po::value<double>(), "Start time.")
-            (STOP, po::value<double>(), "Stop time.")
-            (STEP_SIZE, po::value<double>(), "StepSize.")
-            ("variables,v", po::value<vector<string>>()->multitoken(), "Variables to print.");
+    desc.add_options()("help,h", "Print this help message and quits.")("me", "Treat FMU as an Model Exchange FMU.")("fmu,f", po::value<string>(), "Path to FMU.")("output,o", po::value<string>(), "Where to store the generated CSV results.")(START, po::value<double>(), "Start time.")(STOP, po::value<double>(), "Stop time.")(STEP_SIZE, po::value<double>(), "StepSize.")("variables,v", po::value<vector<string>>()->multitoken(), "Variables to print.");
 
     if (argc == 1) {
-        cout << "fmu_driver" << endl << desc << endl;
+        cout << "fmu_driver" << endl
+             << desc << endl;
         return 0;
     }
 
@@ -78,22 +73,25 @@ int main(int argc, char** argv) {
 
         po::store(po::parse_command_line(argc, argv, desc), vm);
 
-        if ( vm.count("help") ) {
-            cout << "fmu_driver" << endl << desc << endl;
+        if (vm.count("help")) {
+            cout << "fmu_driver" << endl
+                 << desc << endl;
             return SUCCESS;
         }
 
         po::notify(vm);
 
-    } catch(po::error& e) {
-        std::cerr << "ERROR: " << e.what() << std::endl << std::endl;
+    } catch (po::error& e) {
+        std::cerr << "ERROR: " << e.what() << std::endl
+                  << std::endl;
         std::cerr << desc << std::endl;
         return COMMANDLINE_ERROR;
     }
 
     if (!vm.count("fmu")) {
         cout << "Missing path to FMU.. Please try again." << endl;
-        cout << "fmu_driver" << endl << desc << endl;
+        cout << "fmu_driver" << endl
+             << desc << endl;
         return COMMANDLINE_ERROR;
     }
 
@@ -101,7 +99,8 @@ int main(int argc, char** argv) {
 
     if (!vm.count("variables")) {
         cerr << "Missing variables to print.. Please try again." << endl;
-        cout << "fmu_driver" << endl << desc << endl;
+        cout << "fmu_driver" << endl
+             << desc << endl;
     }
 
     driver_options options;
@@ -130,5 +129,4 @@ int main(int argc, char** argv) {
     driver.run();
 
     return 0;
-
 }

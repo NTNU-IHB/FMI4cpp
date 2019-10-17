@@ -25,169 +25,182 @@
 #ifndef FMI4CPP_TYPEDSCALARVARIABLE_HPP
 #define FMI4CPP_TYPEDSCALARVARIABLE_HPP
 
-#include <fmi4cpp/fmu_variable_accessor.hpp>
 #include <fmi4cpp/fmi2/xml/scalar_variable.hpp>
+#include <fmi4cpp/fmu_variable_accessor.hpp>
+
+
+namespace fmi4cpp::fmi2
+{
+
+template<typename T, typename U>
+class typed_scalar_variable
+{
+
+protected:
+    const U attribute_;
 
+private:
+    const scalar_variable variable_;
 
-namespace fmi4cpp::fmi2 {
 
-    template<typename T, typename U>
-    class typed_scalar_variable {
+public:
+    typed_scalar_variable(const scalar_variable& variable, const U& attribute)
+        : variable_(variable)
+        , attribute_(attribute)
+    {}
 
-    protected:
+    std::string name() const
+    {
+        return variable_.name;
+    }
 
-        const U attribute_;
+    std::string description() const
+    {
+        return variable_.description;
+    }
 
-    private:
+    fmi2ValueReference valueReference() const
+    {
+        return variable_.value_reference;
+    }
 
-        const scalar_variable variable_;
+    fmi2::causality causality() const
+    {
+        return variable_.causality;
+    }
 
+    fmi2::variability variability() const
+    {
+        return variable_.variability;
+    }
 
-    public:
+    fmi2::initial initial() const
+    {
+        return variable_.initial;
+    }
 
-        typed_scalar_variable(const scalar_variable &variable, const U &attribute)
-                : variable_(variable), attribute_(attribute) {}
+    bool canHandleMultipleSetPerTimelnstant() const
+    {
+        return variable_.can_handle_multiple_set_per_time_instant;
+    }
 
-        std::string name() const {
-            return variable_.name;
-        }
+    boost::optional<T> start() const
+    {
+        return attribute_.start;
+    }
 
-        std::string description() const {
-            return variable_.description;
-        }
+    boost::optional<std::string> declaredType() const
+    {
+        return attribute_.declaredType;
+    }
 
-        fmi2ValueReference valueReference() const {
-            return variable_.value_reference;
-        }
+    const U& attribute() const
+    {
+        return attribute_;
+    }
 
-        fmi2::causality causality() const {
-            return variable_.causality;
-        }
+    virtual bool read(fmu_reader& reader, T& ref) = 0;
 
-        fmi2::variability variability() const {
-            return variable_.variability;
-        }
+    virtual bool write(fmu_writer& writer, T value) = 0;
+};
 
-        fmi2::initial initial() const {
-            return variable_.initial;
-        }
+template<typename T, typename U>
+class bounded_scalar_variable : public typed_scalar_variable<T, U>
+{
 
-        bool canHandleMultipleSetPerTimelnstant() const {
-            return variable_.can_handle_multiple_set_per_time_instant;
-        }
+public:
+    bounded_scalar_variable(const scalar_variable& variable, const U& attribute)
+        : typed_scalar_variable<T, U>(variable, attribute)
+    {}
 
-        boost::optional<T> start() const {
-            return attribute_.start;
-        }
+    boost::optional<T> min() const
+    {
+        return this->attribute_.min;
+    }
 
-        boost::optional<std::string> declaredType() const {
-            return attribute_.declaredType;
-        }
+    boost::optional<T> max() const
+    {
+        return this->attribute_.max;
+    }
 
-        const U &attribute() const {
-            return attribute_;
-        }
+    boost::optional<std::string> quantity() const
+    {
+        return this->attribute_.quantity;
+    }
+};
 
-        virtual bool read(fmu_reader &reader, T &ref) = 0;
+class integer_variable : public bounded_scalar_variable<int, integer_attribute>
+{
 
-        virtual bool write(fmu_writer &writer, T value) = 0;
+public:
+    integer_variable(const scalar_variable& variable, const integer_attribute& attribute);
 
-    };
+    bool read(fmu_reader& reader, int& ref) override;
 
-    template<typename T, typename U>
-    class bounded_scalar_variable : public typed_scalar_variable<T, U> {
+    bool write(fmu_writer& writer, int value) override;
+};
 
-    public:
-        bounded_scalar_variable(const scalar_variable &variable, const U &attribute)
-                : typed_scalar_variable<T, U>(variable, attribute) {}
+class real_variable : public bounded_scalar_variable<double, real_attribute>
+{
 
-        boost::optional<T> min() const {
-            return this->attribute_.min;
-        }
+public:
+    real_variable(const scalar_variable& variable, const real_attribute& attribute);
 
-        boost::optional<T> max() const {
-            return this->attribute_.max;
-        }
+    bool reinit() const;
 
-        boost::optional<std::string> quantity() const {
-            return this->attribute_.quantity;
-        }
+    bool unbounded() const;
 
-    };
+    bool relativeQuantity() const;
 
-    class integer_variable : public bounded_scalar_variable<int, integer_attribute> {
+    boost::optional<double> nominal() const;
 
-    public:
-        integer_variable(const scalar_variable &variable, const integer_attribute &attribute);
+    boost::optional<unsigned int> derivative() const;
 
-        bool read(fmu_reader &reader, int &ref) override;
+    boost::optional<std::string> unit() const;
 
-        bool write(fmu_writer &writer, int value) override;
+    boost::optional<std::string> displayUnit() const;
 
-    };
+    bool read(fmu_reader& reader, double& ref) override;
 
-    class real_variable : public bounded_scalar_variable<double, real_attribute> {
+    bool write(fmu_writer& writer, double value) override;
+};
 
-    public:
 
-        real_variable(const scalar_variable &variable, const real_attribute &attribute);
+class string_variable : public typed_scalar_variable<std::string, string_attribute>
+{
 
-        bool reinit() const;
+public:
+    string_variable(const scalar_variable& variable, const string_attribute& attribute);
 
-        bool unbounded() const;
+    bool read(fmu_reader& reader, std::string& ref) override;
 
-        bool relativeQuantity() const;
+    bool write(fmu_writer& writer, std::string value) override;
+};
 
-        boost::optional<double> nominal() const;
+class boolean_variable : public typed_scalar_variable<bool, boolean_attribute>
+{
 
-        boost::optional<unsigned int> derivative() const;
+public:
+    boolean_variable(const scalar_variable& variable, const boolean_attribute& attribute);
 
-        boost::optional<std::string> unit() const;
+    bool read(fmu_reader& reader, bool& ref) override;
 
-        boost::optional<std::string> displayUnit() const;
+    bool write(fmu_writer& writer, bool value) override;
+};
 
-        bool read(fmu_reader &reader, double &ref) override;
+class enumeration_variable : public typed_scalar_variable<int, enumeration_attribute>
+{
 
-        bool write(fmu_writer &writer, double value) override;
+public:
+    enumeration_variable(const scalar_variable& variable, const enumeration_attribute& attribute);
 
-    };
+    bool read(fmu_reader& reader, int& ref) override;
 
+    bool write(fmu_writer& writer, int value) override;
+};
 
-    class string_variable : public typed_scalar_variable<std::string, string_attribute> {
 
-    public:
-        string_variable(const scalar_variable &variable, const string_attribute &attribute);
-
-        bool read(fmu_reader &reader, std::string &ref) override;
-
-        bool write(fmu_writer &writer, std::string value) override;
-
-    };
-
-    class boolean_variable : public typed_scalar_variable<bool, boolean_attribute> {
-
-    public:
-        boolean_variable(const scalar_variable &variable, const boolean_attribute &attribute);
-
-        bool read(fmu_reader &reader, bool &ref) override;
-
-        bool write(fmu_writer &writer, bool value) override;
-
-    };
-
-    class enumeration_variable : public typed_scalar_variable<int, enumeration_attribute> {
-
-    public:
-        enumeration_variable(const scalar_variable &variable, const enumeration_attribute &attribute);
-
-        bool read(fmu_reader &reader, int &ref) override;
-
-        bool write(fmu_writer &writer, int value) override;
-
-    };
-
-
-}
+} // namespace fmi4cpp::fmi2
 
 
 #endif //FMI4CPP_TYPEDSCALARVARIABLE_HPP

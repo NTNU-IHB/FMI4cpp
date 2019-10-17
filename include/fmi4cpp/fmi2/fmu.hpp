@@ -25,47 +25,45 @@
 #ifndef FMI4CPP_FMI2FMU_HPP
 #define FMI4CPP_FMI2FMU_HPP
 
+#include <fmi4cpp/fmi2/cs_fmu.hpp>
+#include <fmi4cpp/fmi2/me_fmu.hpp>
+#include <fmi4cpp/fmi2/xml/cs_model_description.hpp>
+#include <fmi4cpp/fmi2/xml/me_model_description.hpp>
+#include <fmi4cpp/fmu_base.hpp>
+
 #include <memory>
 #include <string>
 
-#include <fmi4cpp/fmu_base.hpp>
+namespace fmi4cpp::fmi2
+{
 
-#include <fmi4cpp/fmi2/cs_fmu.hpp>
-#include <fmi4cpp/fmi2/me_fmu.hpp>
+class fmu : public virtual fmu_provider<model_description, cs_fmu, me_fmu>
+{
 
-#include <fmi4cpp/fmi2/xml/cs_model_description.hpp>
-#include <fmi4cpp/fmi2/xml/me_model_description.hpp>
+    friend class cs_fmu;
+    friend class me_fmu;
 
-namespace fmi4cpp::fmi2 {
+private:
+    std::shared_ptr<fmu_resource> resource_;
+    std::shared_ptr<const fmi4cpp::fmi2::model_description> modelDescription_;
 
-    class fmu : public virtual fmu_provider<model_description, cs_fmu, me_fmu> {
+public:
+    explicit fmu(const std::string& fmuPath);
 
-        friend class cs_fmu;
-        friend class me_fmu;
+    const std::string get_model_description_xml() const;
 
-    private:
+    std::shared_ptr<const fmi4cpp::fmi2::model_description> get_model_description() const override;
 
-        std::shared_ptr<fmu_resource> resource_;
-        std::shared_ptr<const fmi4cpp::fmi2::model_description> modelDescription_;
+    bool supports_me() const override;
 
-    public:
-        explicit fmu(const std::string &fmuPath);
+    bool supports_cs() const override;
 
-        const std::string get_model_description_xml() const;
+    std::unique_ptr<cs_fmu> as_cs_fmu() const override;
 
-        std::shared_ptr<const fmi4cpp::fmi2::model_description> get_model_description() const override;
+    std::unique_ptr<me_fmu> as_me_fmu() const override;
+};
 
-        bool supports_me() const override;
-
-        bool supports_cs() const override;
-
-        std::unique_ptr<cs_fmu> as_cs_fmu() const override;
-
-        std::unique_ptr<me_fmu> as_me_fmu() const override;
-
-    };
-
-}
+} // namespace fmi4cpp::fmi2
 
 
 #endif //FMI4CPP_FMI2FMU_HPP

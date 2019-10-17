@@ -22,10 +22,10 @@
  * THE SOFTWARE.
  */
 
-#include <string>
-#include <iostream>
-
 #include <fmi4cpp/fmi4cpp.hpp>
+
+#include <iostream>
+#include <string>
 
 using namespace std;
 using namespace fmi4cpp;
@@ -36,7 +36,8 @@ const double stepSize = 1E-3;
 const string fmuPath = "../resources/fmus/2.0/cs/20sim/4.6.4.8004/"
                        "ControlledTemperature/ControlledTemperature.fmu";
 
-int main() {
+int main()
+{
 
     fmi2::fmu fmu(fmuPath);
     auto cs_fmu = fmu.as_cs_fmu();
@@ -60,7 +61,7 @@ int main() {
 
     vector<fmi2Real> ref(2);
     vector<fmi2ValueReference> vr = {md->get_variable_by_name("Temperature_Reference").value_reference,
-                                     md->get_variable_by_name("Temperature_Room").value_reference};
+        md->get_variable_by_name("Temperature_Room").value_reference};
 
     double t = 0;
     while ((t = slave1->get_simulation_time()) <= stop) {
@@ -68,12 +69,10 @@ int main() {
         if (!slave1->step(stepSize)) { break; }
         if (!slave1->read_real(vr, ref)) { break; }
         cout << "t=" << t << ", Temperature_Reference=" << ref[0] << ", Temperature_Room=" << ref[1] << endl;
-
     }
 
     cout << "FMU '" << fmu.model_name() << "' terminated with success: " << (slave1->terminate() == 1 ? "true" : "false") << endl;
     cout << "FMU '" << fmu.model_name() << "' terminated with success: " << (slave2->terminate() == 1 ? "true" : "false") << endl;
 
     return 0;
-
 }
