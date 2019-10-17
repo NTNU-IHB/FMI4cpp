@@ -156,7 +156,7 @@ fmi2String fmi2_library::get_types_platform() const
 
 fmi2Component fmi2_library::instantiate(const std::string& instanceName, const fmi2Type type,
     const std::string& guid, const std::string& resourceLocation,
-    bool loggingOn, bool visible)
+    bool visible, bool loggingOn)
 {
     fmi2Component c = fmi2Instantiate_(instanceName.c_str(), type, guid.c_str(),
         resourceLocation.c_str(), &callback, visible, loggingOn);
