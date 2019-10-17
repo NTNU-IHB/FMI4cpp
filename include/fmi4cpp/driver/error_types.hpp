@@ -28,21 +28,24 @@
 #include <stdexcept>
 #include <string>
 
-namespace fmi4cpp::driver {
+namespace fmi4cpp::driver
+{
 
-    class rejection: public std::runtime_error {
+class rejection : public std::runtime_error
+{
 
-    public:
-        explicit rejection(const std::string &msg): std::runtime_error(msg.c_str()) {};
+public:
+    explicit rejection(const std::string& msg)
+        : std::runtime_error(msg.c_str()){};
+};
 
-    };
+class failure : public std::runtime_error
+{
 
-    class failure: public std::runtime_error {
-
-    public:
-        explicit failure(const std::string &msg): std::runtime_error(msg.c_str()) {};
-
-    };
-}
+public:
+    explicit failure(const std::string& msg)
+        : std::runtime_error(msg.c_str()){};
+};
+} // namespace fmi4cpp::driver
 
 #endif //FMI4CPP_ERROR_TYPES_HPP

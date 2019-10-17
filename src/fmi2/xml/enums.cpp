@@ -25,10 +25,11 @@
 #include <fmi4cpp/fmi2/xml/enums.hpp>
 
 using fmi4cpp::fmi2::causality;
-using fmi4cpp::fmi2::variability;
 using fmi4cpp::fmi2::initial;
+using fmi4cpp::fmi2::variability;
 
-causality fmi4cpp::fmi2::parse_causality(const std::string &str) {
+causality fmi4cpp::fmi2::parse_causality(const std::string& str)
+{
     if (str == "calculatedParameter") {
         return causality::calculatedParameter;
     } else if (str == "parameter") {
@@ -46,7 +47,8 @@ causality fmi4cpp::fmi2::parse_causality(const std::string &str) {
     }
 }
 
-variability fmi4cpp::fmi2::parse_variability(const std::string &str) {
+variability fmi4cpp::fmi2::parse_variability(const std::string& str)
+{
     if (str == "constant") {
         return variability::constant;
     } else if (str == "fixed") {
@@ -62,7 +64,8 @@ variability fmi4cpp::fmi2::parse_variability(const std::string &str) {
     }
 }
 
-initial fmi4cpp::fmi2::parse_initial(const std::string &str) {
+initial fmi4cpp::fmi2::parse_initial(const std::string& str)
+{
     if (str == "exact") {
         return initial::exact;
     } else if (str == "approx") {
@@ -72,10 +75,10 @@ initial fmi4cpp::fmi2::parse_initial(const std::string &str) {
     } else {
         return initial::unknown;
     }
-
 }
 
-std::string fmi4cpp::fmi2::to_string(causality causality) {
+std::string fmi4cpp::fmi2::to_string(causality causality)
+{
 
     switch (causality) {
         case causality::calculatedParameter:
@@ -94,10 +97,10 @@ std::string fmi4cpp::fmi2::to_string(causality causality) {
         default:
             return "unknown";
     }
-
 }
 
-std::string fmi4cpp::fmi2::to_string(variability variability) {
+std::string fmi4cpp::fmi2::to_string(variability variability)
+{
 
     switch (variability) {
         case variability::constant:
@@ -114,10 +117,10 @@ std::string fmi4cpp::fmi2::to_string(variability variability) {
         default:
             return "unknown";
     }
-
 }
 
-std::string fmi4cpp::fmi2::to_string(initial initial) {
+std::string fmi4cpp::fmi2::to_string(initial initial)
+{
     switch (initial) {
         case initial::exact:
             return "exact";

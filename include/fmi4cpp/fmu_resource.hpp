@@ -25,32 +25,31 @@
 #ifndef FMI4CPP_FMURESOURCE_HPP
 #define FMI4CPP_FMURESOURCE_HPP
 
+#include <boost/filesystem.hpp>
+
 #include <string>
-#include <experimental/filesystem>
 
-namespace fs = std::experimental::filesystem;
+namespace fmi4cpp
+{
 
-namespace fmi4cpp {
+class fmu_resource
+{
 
-    class fmu_resource {
+private:
+    boost::filesystem::path path_;
 
-    private:
+public:
+    explicit fmu_resource(boost::filesystem::path& path);
 
-        fs::path path_;
+    std::string resource_path() const;
 
-    public:
-        explicit fmu_resource(fs::path &path);
+    std::string model_description_path() const;
 
-        const std::string resource_path() const;
+    std::string absolute_library_path(const std::string& modelIdentifier) const;
 
-        const std::string model_description_path() const;
+    ~fmu_resource();
+};
 
-        const std::string absolute_library_path(const std::string &modelIdentifier) const;
-
-        ~fmu_resource();
-
-    };
-
-}
+} // namespace fmi4cpp
 
 #endif //FMI4CPP_FMURESOURCE_HPP

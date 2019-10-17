@@ -25,40 +25,39 @@
 #ifndef FMI4CPP_MODELVARIABLES_HPP
 #define FMI4CPP_MODELVARIABLES_HPP
 
-#include <vector>
-#include <memory>
-#include <string>
-
 #include <fmi4cpp/fmi2/xml/scalar_variable.hpp>
 
-namespace fmi4cpp::fmi2 {
+#include <memory>
+#include <string>
+#include <vector>
 
-    class model_variables {
+namespace fmi4cpp::fmi2
+{
 
-    private:
+class model_variables
+{
 
-        const std::vector<scalar_variable> variables_;
+private:
+    const std::vector<scalar_variable> variables_;
 
-    public:
+public:
+    model_variables();
 
-        model_variables();
+    explicit model_variables(const std::vector<scalar_variable>& variables);
 
-        explicit model_variables(const std::vector<scalar_variable> &variables);
+    size_t size() const;
 
-        size_t size() const;
+    const scalar_variable& operator[](size_t index) const;
+    const scalar_variable& getByName(const std::string& name) const;
+    const scalar_variable& getByValueReference(fmi2ValueReference vr) const;
 
-        const scalar_variable &operator[](size_t index) const;
-        const scalar_variable &getByName(const std::string &name) const;
-        const scalar_variable &getByValueReference(fmi2ValueReference vr) const;
+    void getByValueReference(fmi2ValueReference vr, std::vector<scalar_variable>& store) const;
+    void getByCausality(causality causality, std::vector<scalar_variable>& store) const;
 
-        void getByValueReference(fmi2ValueReference vr, std::vector<scalar_variable> &store) const;
-        void getByCausality(causality causality, std::vector<scalar_variable> &store) const;
+    std::vector<scalar_variable>::const_iterator begin() const;
+    std::vector<scalar_variable>::const_iterator end() const;
+};
 
-        std::vector<scalar_variable>::const_iterator begin() const;
-        std::vector<scalar_variable>::const_iterator end() const;
-
-    };
-
-}
+} // namespace fmi4cpp::fmi2
 
 #endif //FMI4CPP_MODELVARIABLES_HPP

@@ -23,9 +23,9 @@
  */
 
 
-#include <iostream>
-
 #include <fmi4cpp/fmi4cpp.hpp>
+
+#include <iostream>
 #include <time_util.hpp>
 
 using namespace std;
@@ -35,14 +35,14 @@ const double stop = 10.0;
 const double step_size = 1E-4;
 const fmi2ValueReference vr = 46;
 
-void run(unique_ptr<fmi2::cs_slave> &slave) {
+void run(unique_ptr<fmi2::cs_slave>& slave)
+{
 
     slave->setup_experiment();
     slave->enter_initialization_mode();
     slave->exit_initialization_mode();
 
-    auto elapsed = measure_time_sec([&slave]{
-
+    auto elapsed = measure_time_sec([&slave] {
         double ref;
         while ((slave->get_simulation_time()) <= (stop - step_size)) {
             if (!slave->step(step_size)) {
@@ -54,7 +54,6 @@ void run(unique_ptr<fmi2::cs_slave> &slave) {
                 break;
             }
         }
-
     });
 
     cout << "Time elapsed=" << elapsed << "s" << endl;
@@ -62,14 +61,14 @@ void run(unique_ptr<fmi2::cs_slave> &slave) {
     slave->terminate();
 }
 
-int main() {
+int main()
+{
 
     const string fmu_path = "../resources/fmus/2.0/cs/20sim/4.6.4.8004/"
                             "ControlledTemperature/ControlledTemperature.fmu";
 
     auto fmu = fmi2::fmu(fmu_path).as_cs_fmu()->new_instance();
     run(fmu);
-    
-    return 0;
 
+    return 0;
 }

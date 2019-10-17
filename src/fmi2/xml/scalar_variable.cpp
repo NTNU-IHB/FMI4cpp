@@ -29,68 +29,89 @@ using namespace fmi4cpp;
 using namespace fmi4cpp::fmi2;
 
 
-scalar_variable::scalar_variable(const scalar_variable_base &base,
-                               const integer_attribute &integer)
-        : scalar_variable_base(base), integer_(integer) {}
+scalar_variable::scalar_variable(const scalar_variable_base& base,
+    const integer_attribute& integer)
+    : scalar_variable_base(base)
+    , integer_(integer)
+{}
 
-scalar_variable::scalar_variable(const scalar_variable_base &base,
-                               const real_attribute &real)
-        : scalar_variable_base(base), real_(real) {}
+scalar_variable::scalar_variable(const scalar_variable_base& base,
+    const real_attribute& real)
+    : scalar_variable_base(base)
+    , real_(real)
+{}
 
-scalar_variable::scalar_variable(const scalar_variable_base &base,
-                               const string_attribute &string)
-        : scalar_variable_base(base), string_(string) {}
+scalar_variable::scalar_variable(const scalar_variable_base& base,
+    const string_attribute& string)
+    : scalar_variable_base(base)
+    , string_(string)
+{}
 
-scalar_variable::scalar_variable(const scalar_variable_base &base,
-                               const boolean_attribute &boolean)
-        : scalar_variable_base(base), boolean_(boolean) {}
+scalar_variable::scalar_variable(const scalar_variable_base& base,
+    const boolean_attribute& boolean)
+    : scalar_variable_base(base)
+    , boolean_(boolean)
+{}
 
-scalar_variable::scalar_variable(const scalar_variable_base &base,
-                               const enumeration_attribute &enumeration)
-        : scalar_variable_base(base), enumeration_(enumeration) {}
+scalar_variable::scalar_variable(const scalar_variable_base& base,
+    const enumeration_attribute& enumeration)
+    : scalar_variable_base(base)
+    , enumeration_(enumeration)
+{}
 
 
-bool scalar_variable::is_integer() const {
+bool scalar_variable::is_integer() const
+{
     return integer_.is_initialized();
 }
 
-bool scalar_variable::is_real() const {
+bool scalar_variable::is_real() const
+{
     return real_.is_initialized();
 }
 
-bool scalar_variable::is_string() const {
+bool scalar_variable::is_string() const
+{
     return string_.is_initialized();
 }
 
-bool scalar_variable::is_boolean() const {
+bool scalar_variable::is_boolean() const
+{
     return boolean_.is_initialized();
 }
 
-bool scalar_variable::is_enumeration() const {
+bool scalar_variable::is_enumeration() const
+{
     return enumeration_.is_initialized();
 }
 
-const integer_variable scalar_variable::as_integer() const {
+const integer_variable scalar_variable::as_integer() const
+{
     return integer_variable(*this, *integer_);
 }
 
-const real_variable scalar_variable::as_real() const {
+const real_variable scalar_variable::as_real() const
+{
     return real_variable(*this, *real_);
 }
 
-const string_variable scalar_variable::as_string() const {
+const string_variable scalar_variable::as_string() const
+{
     return string_variable(*this, *string_);
 }
 
-const boolean_variable scalar_variable::as_boolean() const {
+const boolean_variable scalar_variable::as_boolean() const
+{
     return boolean_variable(*this, *boolean_);
 }
 
-const enumeration_variable scalar_variable::as_enumeration() const {
+const enumeration_variable scalar_variable::as_enumeration() const
+{
     return enumeration_variable(*this, *enumeration_);
 }
 
-std::string scalar_variable::type_name() const {
+std::string scalar_variable::type_name() const
+{
     if (integer_) {
         return INTEGER_TYPE;
     } else if (real_) {
@@ -107,116 +128,142 @@ std::string scalar_variable::type_name() const {
 }
 
 
-integer_variable::integer_variable(const scalar_variable &variable, const integer_attribute &attribute)
-        : bounded_scalar_variable(variable, attribute) {}
+integer_variable::integer_variable(const scalar_variable& variable, const integer_attribute& attribute)
+    : bounded_scalar_variable(variable, attribute)
+{}
 
-bool integer_variable::read(fmu_reader &reader, int &ref) {
+bool integer_variable::read(fmu_reader& reader, int& ref)
+{
     return reader.read_integer(valueReference(), ref);
 }
 
-bool integer_variable::write(fmu_writer &writer, int value) {
+bool integer_variable::write(fmu_writer& writer, int value)
+{
     return writer.write_integer(valueReference(), value);
 }
 
-real_variable::real_variable(const scalar_variable &variable, const real_attribute &attribute)
-        : bounded_scalar_variable(variable, attribute) {}
+real_variable::real_variable(const scalar_variable& variable, const real_attribute& attribute)
+    : bounded_scalar_variable(variable, attribute)
+{}
 
-boost::optional<std::string> real_variable::displayUnit() const {
+boost::optional<std::string> real_variable::displayUnit() const
+{
     return attribute_.display_unit;
 }
 
-boost::optional<std::string> real_variable::unit() const {
+boost::optional<std::string> real_variable::unit() const
+{
     return attribute_.unit;
 }
 
-boost::optional<unsigned int> real_variable::derivative() const {
+boost::optional<unsigned int> real_variable::derivative() const
+{
     return attribute_.derivative;
 }
 
-boost::optional<double> real_variable::nominal() const {
+boost::optional<double> real_variable::nominal() const
+{
     return attribute_.nominal;
 }
 
-bool real_variable::relativeQuantity() const {
+bool real_variable::relativeQuantity() const
+{
     return attribute_.relative_quantity;
 }
 
-bool real_variable::unbounded() const {
+bool real_variable::unbounded() const
+{
     return attribute_.unbounded;
 }
 
-bool real_variable::reinit() const {
+bool real_variable::reinit() const
+{
     return attribute_.reinit;
 }
 
-bool real_variable::read(fmu_reader &reader, double &ref) {
+bool real_variable::read(fmu_reader& reader, double& ref)
+{
     return reader.read_real(valueReference(), ref);
 }
 
-bool real_variable::write(fmu_writer &writer, double value) {
+bool real_variable::write(fmu_writer& writer, double value)
+{
     return writer.write_real(valueReference(), value);
 }
 
 
-string_variable::string_variable(const scalar_variable &variable, const string_attribute &attribute) : typed_scalar_variable(
-        variable, attribute) {}
+string_variable::string_variable(const scalar_variable& variable, const string_attribute& attribute)
+    : typed_scalar_variable(
+          variable, attribute)
+{}
 
-bool string_variable::read(fmu_reader &reader, std::string &ref) {
+bool string_variable::read(fmu_reader& reader, std::string& ref)
+{
     fmi2String str;
     auto status = reader.read_string(valueReference(), str);
     ref = str;
     return status;
 }
 
-bool string_variable::write(fmu_writer &writer, std::string value) {
+bool string_variable::write(fmu_writer& writer, std::string value)
+{
     return writer.write_string(valueReference(), value.c_str());
 }
 
 
-boolean_variable::boolean_variable(const scalar_variable &variable, const boolean_attribute &attribute)
-        : typed_scalar_variable(variable, attribute) {}
+boolean_variable::boolean_variable(const scalar_variable& variable, const boolean_attribute& attribute)
+    : typed_scalar_variable(variable, attribute)
+{}
 
-bool boolean_variable::read(fmu_reader &reader, bool &ref) {
+bool boolean_variable::read(fmu_reader& reader, bool& ref)
+{
     fmi2Boolean _ref;
     auto status = reader.read_boolean(valueReference(), _ref);
     ref = _ref != 0;
     return status;
 }
 
-bool boolean_variable::write(fmu_writer &writer, bool value) {
+bool boolean_variable::write(fmu_writer& writer, bool value)
+{
     return writer.write_boolean(valueReference(), value);
 }
 
 
-enumeration_variable::enumeration_variable(const scalar_variable &variable, const enumeration_attribute &attribute)
-        : typed_scalar_variable(variable, attribute) {}
+enumeration_variable::enumeration_variable(const scalar_variable& variable, const enumeration_attribute& attribute)
+    : typed_scalar_variable(variable, attribute)
+{}
 
-bool enumeration_variable::read(fmu_reader &reader, int &ref) {
+bool enumeration_variable::read(fmu_reader& reader, int& ref)
+{
     return reader.read_integer(valueReference(), ref);
 }
 
-bool enumeration_variable::write(fmu_writer &writer, int value) {
+bool enumeration_variable::write(fmu_writer& writer, int value)
+{
     return writer.write_integer(valueReference(), value);
 }
 
 
+integer_attribute::integer_attribute(const bounded_scalar_variable_attribute<int>& attributes)
+    : bounded_scalar_variable_attribute<int>(attributes)
+{}
 
 
-integer_attribute::integer_attribute(const bounded_scalar_variable_attribute<int> &attributes)
-        : bounded_scalar_variable_attribute<int>(attributes) {}
+real_attribute::real_attribute(const bounded_scalar_variable_attribute<double>& attributes)
+    : bounded_scalar_variable_attribute<double>(attributes)
+{}
 
 
-real_attribute::real_attribute(const bounded_scalar_variable_attribute<double> &attributes)
-        : bounded_scalar_variable_attribute<double>(attributes) {}
+string_attribute::string_attribute(const scalar_variable_attribute<std::string>& attributes)
+    : scalar_variable_attribute<std::string>(attributes)
+{}
 
 
-string_attribute::string_attribute(const scalar_variable_attribute<std::string> &attributes)
-        : scalar_variable_attribute<std::string>(attributes) {}
+boolean_attribute::boolean_attribute(const scalar_variable_attribute<bool>& attributes)
+    : scalar_variable_attribute<bool>(attributes)
+{}
 
 
-boolean_attribute::boolean_attribute(const scalar_variable_attribute<bool> &attributes)
-        : scalar_variable_attribute<bool>(attributes) {}
-
-
-enumeration_attribute::enumeration_attribute(const bounded_scalar_variable_attribute<int> &attributes)
-        : bounded_scalar_variable_attribute<int>(attributes) {}
+enumeration_attribute::enumeration_attribute(const bounded_scalar_variable_attribute<int>& attributes)
+    : bounded_scalar_variable_attribute<int>(attributes)
+{}

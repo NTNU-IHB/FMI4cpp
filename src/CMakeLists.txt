@@ -126,10 +126,14 @@ target_include_directories(fmi4cpp
         ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-target_link_libraries(fmi4cpp PRIVATE libzip::libzip)
+target_link_libraries(fmi4cpp
+    PRIVATE
+        libzip::libzip
+        Boost::filesystem
+)
 
 if (UNIX)
-    target_link_libraries(fmi4cpp PRIVATE dl stdc++fs pthread)
+    target_link_libraries(fmi4cpp PRIVATE dl pthread)
 endif()
 
 install(

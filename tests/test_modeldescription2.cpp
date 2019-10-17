@@ -24,11 +24,12 @@
 
 #define BOOST_TEST_MODULE FmuExportCrossCompile_test1
 
-#include <vector>
-#include <string>
+#include <fmi4cpp/fmi2/fmi2.hpp>
+
 #include <boost/test/unit_test.hpp>
 
-#include <fmi4cpp/fmi2/fmi2.hpp>
+#include <string>
+#include <vector>
 
 using namespace std;
 using namespace fmi4cpp::fmi2;
@@ -36,7 +37,8 @@ using namespace fmi4cpp::fmi2;
 const string fmu_path = "../resources/fmus/2.0/cs/OpenModelica/v1.11.0/"
                         "FmuExportCrossCompile/modelDescription.xml";
 
-BOOST_AUTO_TEST_CASE(FmuExportCrossCompile_test1) {
+BOOST_AUTO_TEST_CASE(FmuExportCrossCompile_test1)
+{
 
     auto md = parse_model_description(fmu_path);
 
@@ -51,5 +53,4 @@ BOOST_AUTO_TEST_CASE(FmuExportCrossCompile_test1) {
     BOOST_CHECK_EQUAL(true, derivatives[0].dependencies.is_initialized());
     BOOST_CHECK_EQUAL(2, derivatives[0].dependencies.value()[0]);
     BOOST_CHECK_EQUAL("dependent", derivatives[0].dependencies_kind.value()[0]);
-
 }

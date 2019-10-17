@@ -25,66 +25,65 @@
 #ifndef FMI4CPP_UNZIPPER_HPP
 #define FMI4CPP_UNZIPPER_HPP
 
+#include <boost/filesystem.hpp>
+#include <zip.h>
+
 #include <fstream>
 #include <iostream>
 #include <sstream>
-#include <zip.h>
 #include <string>
-#include <experimental/filesystem>
 
-namespace fs = std::experimental::filesystem;
+namespace
+{
 
-namespace {
+bool unzip(const std::string& zip_file, const std::string& tmp_path)
+{
 
-    bool unzip(const std::string &zip_file, const std::string &tmp_path) {
-
-        int *err = 0;
-        zip *za = zip_open(zip_file.c_str(), 0, err);
-        if (za == nullptr) {
-            return false;
-        }
-
-        struct zip_file *zf;
-        struct zip_stat sb{};
-
-        const int bufferSize = 1000;
-        char *contents = (char *) malloc(sizeof(char) * bufferSize);
-        zip_int64_t sum, len;
-        for (int i = 0; i < zip_get_num_entries(za, 0); i++) {
-            if (zip_stat_index(za, i, 0, &sb) == 0) {
-
-                std::string newFile = tmp_path + "/" + sb.name;
-
-                if (sb.size == 0) {
-                    fs::create_directories(newFile);
-                } else {
-                    zf = zip_fopen_index(za, i, 0);
-
-                    std::ofstream file;
-                    file.open(newFile, std::ios::out | std::ios::binary);
-
-                    sum = 0;
-                    while (sum != sb.size) {
-                        len = zip_fread(zf, contents, bufferSize);
-                        file.write(contents, len);
-                        sum += len;
-                    }
-
-                    file.flush();
-                    file.close();
-
-                    zip_fclose(zf);
-                }
-
-            }
-        }
-        free(contents);
-        zip_close(za);
-
-        return true;
-
+    int* err = nullptr;
+    zip* za = zip_open(zip_file.c_str(), 0, err);
+    if (za == nullptr) {
+        return false;
     }
 
+    struct zip_file* zf;
+    struct zip_stat sb;
+
+    const int bufferSize = 1000;
+    char* contents = (char*)malloc(sizeof(char) * bufferSize);
+    zip_int64_t sum, len;
+    for (int i = 0; i < zip_get_num_entries(za, 0); i++) {
+        if (zip_stat_index(za, i, 0, &sb) == 0) {
+
+            std::string newFile = tmp_path + "/" + sb.name;
+
+            if (sb.size == 0) {
+                boost::filesystem::create_directories(newFile);
+            } else {
+                zf = zip_fopen_index(za, i, 0);
+
+                std::ofstream file;
+                file.open(newFile, std::ios::out | std::ios::binary);
+
+                sum = 0;
+                while (sum != sb.size) {
+                    len = zip_fread(zf, contents, bufferSize);
+                    file.write(contents, len);
+                    sum += len;
+                }
+
+                file.flush();
+                file.close();
+
+                zip_fclose(zf);
+            }
+        }
+    }
+    free(contents);
+    zip_close(za);
+
+    return true;
 }
+
+} // namespace
 
 #endif //FMI4CPP_UNZIPPER_HPP

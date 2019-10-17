@@ -28,27 +28,28 @@
 #include <memory>
 #include <vector>
 
-namespace fmi4cpp::solver {
+namespace fmi4cpp::solver
+{
 
-    typedef std::vector<double> state_type;
+typedef std::vector<double> state_type;
 
-    class fmu_wrapper;
+class fmu_wrapper;
 
-    class me_solver {
+class me_solver
+{
 
-    public:
+public:
+    virtual double integrate(fmu_wrapper& wrapper, std::vector<double>& x, double tStart, double tStop) = 0;
 
-        virtual double integrate(fmu_wrapper &wrapper, std::vector<double> &x, double tStart, double tStop) = 0;
+    virtual ~me_solver() = default;
+};
 
-        virtual ~me_solver() = default;
-
-    };
-
-    template <typename T, typename ... Args>
-    std::unique_ptr<me_solver> make_solver(Args ... args) {
-        return std::make_unique<T>(args ...);
-    }
-
+template<typename T, typename... Args>
+std::unique_ptr<me_solver> make_solver(Args... args)
+{
+    return std::make_unique<T>(args...);
 }
+
+} // namespace fmi4cpp::solver
 
 #endif //FMI4CPP_SOLVER_HPP

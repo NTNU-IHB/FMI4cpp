@@ -6,7 +6,7 @@ include(CMakeFindDependencyMacro)
 
 list(APPEND CMAKE_MODULE_PATH ${FMI4CPP_CMAKE_DIR})
 
-find_dependency(Boost REQUIRED)
+find_dependency(Boost COMPONENTS filesystem REQUIRED)
 find_dependency(LIBZIP REQUIRED)
 
 list(REMOVE_AT CMAKE_MODULE_PATH -1)
