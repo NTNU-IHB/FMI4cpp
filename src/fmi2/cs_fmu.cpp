@@ -24,15 +24,17 @@
 
 #include <fmi4cpp/fmi2/cs_fmu.hpp>
 
+#include <utility>
+
 using namespace std;
 
 using namespace fmi4cpp;
 using namespace fmi4cpp::fmi2;
 
-cs_fmu::cs_fmu(const shared_ptr<fmu_resource>& resource,
-    const shared_ptr<const cs_model_description>& md)
-    : resource_(resource)
-    , modelDescription_(md)
+cs_fmu::cs_fmu(shared_ptr<fmu_resource> resource,
+    shared_ptr<const cs_model_description> md)
+    : resource_(std::move(resource))
+    , modelDescription_(std::move(md))
 {}
 
 shared_ptr<const cs_model_description> cs_fmu::get_model_description() const
@@ -40,7 +42,7 @@ shared_ptr<const cs_model_description> cs_fmu::get_model_description() const
     return modelDescription_;
 }
 
-unique_ptr<cs_slave> cs_fmu::new_instance(const bool loggingOn, const bool visible)
+unique_ptr<cs_slave> cs_fmu::new_instance(const bool visible, const bool loggingOn)
 {
     shared_ptr<cs_library> lib = nullptr;
     auto modelIdentifier = modelDescription_->model_identifier;
@@ -50,6 +52,6 @@ unique_ptr<cs_slave> cs_fmu::new_instance(const bool loggingOn, const bool visib
     lib = lib_;
 
     auto c = lib->instantiate(modelIdentifier, fmi2CoSimulation, guid(),
-        resource_->resource_path(), loggingOn, visible);
+        resource_->resource_path(), visible, loggingOn);
     return make_unique<cs_slave>(c, resource_, lib, modelDescription_);
 }

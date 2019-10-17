@@ -44,8 +44,8 @@ private:
     std::shared_ptr<const cs_model_description> modelDescription_;
 
 public:
-    cs_fmu(const std::shared_ptr<fmu_resource>& resource,
-        const std::shared_ptr<const cs_model_description>& md);
+    cs_fmu(std::shared_ptr<fmu_resource>  resource,
+        std::shared_ptr<const cs_model_description>  md);
 
     std::shared_ptr<const cs_model_description> get_model_description() const override;
 
