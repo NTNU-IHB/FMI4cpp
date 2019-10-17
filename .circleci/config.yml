@@ -31,7 +31,7 @@ jobs:
 
       - restore_cache:
           keys:
-            - conan-cache-v1--{{ checksum "conanfile.py" }}
+            - conan-cache-v1--{{ checksum "conanfile.txt" }}
             - conan-cache-v1
       - run:
           name: Conan install
@@ -40,7 +40,7 @@ jobs:
       - save_cache:
           paths:
             - ~/.conan
-          key: conan-cache-v1--{{ checksum "conanfile.py" }}
+          key: conan-cache-v1--{{ checksum "conanfile.txt" }}
 
       - run:
           name: Configuring
