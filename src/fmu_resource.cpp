@@ -29,6 +29,8 @@
 
 using namespace fmi4cpp;
 
+namespace fs = boost::filesystem;
+
 fmu_resource::fmu_resource(fs::path& path)
     : path_(path)
 {}
@@ -51,7 +53,7 @@ std::string fmu_resource::absolute_library_path(const std::string& modelIdentifi
 fmu_resource::~fmu_resource()
 {
 
-    std::error_code success{};
+    boost::system::error_code success{};
     fs::remove_all(path_, success);
 
     if (!success) {

@@ -28,14 +28,14 @@
 
 #include <boost/test/unit_test.hpp>
 
-#include <filesystem>
+#include <boost::filesystem.hpp>
 #include <iostream>
 #include <string>
 
 using namespace std;
 using namespace fmi4cpp;
 
-namespace fs = std::filesystem;
+namespace fs = boost::filesystem;
 
 const string fmu_path = "../resources/fmus/2.0/cs/20sim/4.6.4.8004/"
                         "ControlledTemperature/modelDescription.xml";

@@ -34,10 +34,12 @@
 using namespace fmi4cpp;
 using namespace fmi4cpp::fmi2;
 
+namespace fs = boost::filesystem;
+
 namespace
 {
 
-const std::string to_string(fmi2Status status)
+std::string to_string(fmi2Status status)
 {
     switch (status) {
         case fmi2OK:

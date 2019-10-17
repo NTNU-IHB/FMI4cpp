@@ -25,10 +25,9 @@
 #ifndef FMI4CPP_FMURESOURCE_HPP
 #define FMI4CPP_FMURESOURCE_HPP
 
-#include <filesystem>
-#include <string>
+#include <boost/filesystem.hpp>
 
-namespace fs = std::filesystem;
+#include <string>
 
 namespace fmi4cpp
 {
@@ -37,10 +36,10 @@ class fmu_resource
 {
 
 private:
-    fs::path path_;
+    boost::filesystem::path path_;
 
 public:
-    explicit fmu_resource(fs::path& path);
+    explicit fmu_resource(boost::filesystem::path& path);
 
     std::string resource_path() const;
 

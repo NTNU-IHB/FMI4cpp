@@ -1,4 +1,6 @@
 
+set(Boost_COMPONENTS filesystem)
+
 if (FMI4CPP_BUILD_TOOL)
     list(APPEND Boost_COMPONENTS program_options)
 endif()

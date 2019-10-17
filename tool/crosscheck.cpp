@@ -27,8 +27,8 @@
 #include <fmi4cpp/tools/os_util.hpp>
 
 #include <boost/algorithm/string.hpp>
+#include <boost/filesystem.hpp>
 
-#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <memory>
@@ -41,7 +41,7 @@ using namespace std;
 using namespace fmi4cpp::fmi2;
 using namespace fmi4cpp::driver;
 
-namespace fs = std::filesystem;
+namespace fs = boost::filesystem;
 
 namespace
 {

@@ -29,13 +29,14 @@
 #include <fmi4cpp/tools/simple_id.hpp>
 #include <fmi4cpp/tools/unzipper.hpp>
 
-#include <filesystem>
+#include <boost/filesystem.hpp>
+
 #include <utility>
 
 using namespace std;
 using namespace fmi4cpp::fmi2;
 
-namespace fs = std::filesystem;
+namespace fs = boost::filesystem;
 
 fmu::fmu(const string& fmuPath)
 {

@@ -28,10 +28,9 @@
 #include <fmi4cpp/fmi2/xml/model_description.hpp>
 #include <fmi4cpp/fmi2/xml/scalar_variable.hpp>
 
-#include <algorithm>
-#include <filesystem>
+#include <boost/filesystem.hpp>
 
-namespace fs = std::filesystem;
+#include <algorithm>
 
 namespace fmi4cpp::driver
 {
@@ -47,14 +46,14 @@ struct driver_options
     bool failOnLargeFileSize = false;
 
     std::vector<std::string> variables;
-    fs::path outputFolder = fs::current_path();
+    boost::filesystem::path outputFolder = boost::filesystem::current_path();
 
     std::vector<fmi2::scalar_variable>
     transformVariables(std::shared_ptr<const fmi2::model_description_base> md) const
     {
         std::vector<fmi2::scalar_variable> result;
         std::transform(variables.begin(), variables.end(), std::back_inserter(result),
-            [md](std::string name) -> fmi2::scalar_variable {
+            [md](const std::string& name) -> fmi2::scalar_variable {
                 return md->get_variable_by_name(name);
             });
         return result;
