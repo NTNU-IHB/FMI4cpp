@@ -25,10 +25,10 @@
 #ifndef FMI4CPP_FMURESOURCE_HPP
 #define FMI4CPP_FMURESOURCE_HPP
 
-#include <experimental/filesystem>
+#include <filesystem>
 #include <string>
 
-namespace fs = std::experimental::filesystem;
+namespace fs = std::filesystem;
 
 namespace fmi4cpp
 {
