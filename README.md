@@ -17,7 +17,7 @@ For Model Exchange, solvers from [odeint](http://headmyshoulder.github.io/odeint
 
 ### Why should I use this over other C/C++ FMI Libraries
 
-Because it provides a clean, easy to use API and is easy to install (through vcpkg).
+Because it provides a clean, easy to use API and is easy to install.
 It perform just as good as FMI Library, provides more features and is significantly easier to both build and use.
 
 
