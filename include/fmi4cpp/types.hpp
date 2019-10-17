@@ -29,7 +29,6 @@ namespace fmi4cpp
 {
 
 typedef void* fmi4cppComponent; /* Pointer to FMU instance       */
-typedef void* fmi4cppComponentEnvironment; /* Pointer to FMU environment    */
 typedef void* fmi4cppFMUstate; /* Pointer to internal FMU state */
 typedef unsigned int fmi4cppValueReference;
 typedef double fmi4cppReal;
