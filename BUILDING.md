@@ -18,7 +18,7 @@ When using conan, set `FMI4CPP_USING_CONAN=ON`.
 ##### apt-get
 
 ```bash
-Linux:~/$ sudo apt-get install libzip-dev libboost-dev
+Linux:~/$ sudo apt-get install libzip-dev libboost-dev libbbost-filesystem-dev
 ``` 
 
 
