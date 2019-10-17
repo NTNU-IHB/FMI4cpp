@@ -119,7 +119,7 @@ public:
 
     fmi2Component instantiate(const std::string& instanceName, fmi2Type type,
         const std::string& guid, const std::string& resourceLocation,
-        bool loggingOn = false, bool visible = false);
+        bool visible = false, bool loggingOn = false);
 
     bool setup_experiment(fmi2Component c, double tolerance, double startTime, double stopTime);
 
