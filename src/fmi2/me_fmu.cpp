@@ -57,10 +57,3 @@ std::unique_ptr<me_instance> me_fmu::new_instance(const bool visible, const bool
         resource_->resource_path(), visible, loggingOn);
     return make_unique<me_instance>(c, resource_, lib, modelDescription_);
 }
-
-std::unique_ptr<me_slave>
-me_fmu::new_instance(std::unique_ptr<me_solver>& solver, const bool visible, const bool loggingOn)
-{
-    unique_ptr<me_instance> instance = new_instance(visible, loggingOn);
-    return make_unique<me_slave>(resource_, instance, solver);
-}
