@@ -41,7 +41,7 @@ enum class status
     Unknown
 };
 
-const inline std::string to_string(fmi4cpp::status status)
+inline std::string to_string(fmi4cpp::status status)
 {
     switch (status) {
         case fmi4cpp::status::OK:
