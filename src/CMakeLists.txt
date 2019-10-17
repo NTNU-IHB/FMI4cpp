@@ -17,8 +17,6 @@ set(publicHeaders
     fmu_instance_base.hpp
     fmu_variable_accessor.hpp
 
-    solver/solver.hpp
-
     fmi2/fmi2.hpp
     fmi2/fmu.hpp
     fmi2/fmi2_library.hpp
@@ -33,7 +31,6 @@ set(publicHeaders
 
     fmi2/me_fmu.hpp
     fmi2/me_library.hpp
-    fmi2/me_slave.hpp
     fmi2/me_instance.hpp
 
     fmi2/xml/enums.hpp
@@ -81,9 +78,8 @@ set(sources
     fmi2/me_library.cpp
 
     fmi2/me_instance.cpp
-    fmi2/me_slave.cpp
 
-    fmi2/xml/enums.cpp
+        fmi2/xml/enums.cpp
     fmi2/xml/model_description.cpp
     fmi2/xml/model_description_parser.cpp
     fmi2/xml/model_variables.cpp
