@@ -1,6 +1,6 @@
 
 option(FMI4CPP_BUILD_TESTS "Build tests" OFF)
-option(FMI4CPP_BUILD_EXAMPLES "Build examples" ON)
+option(FMI4CPP_BUILD_EXAMPLES "Build examples" OFF)
 option(FMI4CPP_USING_CONAN "Build using conan" OFF)
 
 set(FMI4CPP_LOG_LEVEL "DEFAULT" CACHE STRING "FMI4cpp logging level")
