@@ -1,5 +1,3 @@
-#include <utility>
-
 /*
  * The MIT License
  *
@@ -25,11 +23,11 @@
  */
 
 #ifndef FMI4CPP_FMUTYPESATTRIBUTE_HPP
-#    define FMI4CPP_FMUTYPESATTRIBUTE_HPP
+#define FMI4CPP_FMUTYPESATTRIBUTE_HPP
 
-#    include <fmi4cpp/fmi2/xml/source_files.hpp>
+#include <fmi4cpp/fmi2/xml/source_files.hpp>
 
-#    include <string>
+#include <string>
 
 namespace fmi4cpp::fmi2
 {

@@ -1,5 +1,3 @@
-#include <utility>
-
 /*
  * The MIT License
  *
@@ -25,14 +23,14 @@
  */
 
 #ifndef FMI4CPP_ABSTRACTFMUINSTANCE_HPP
-#    define FMI4CPP_ABSTRACTFMUINSTANCE_HPP
+#define FMI4CPP_ABSTRACTFMUINSTANCE_HPP
 
-#    include <fmi4cpp/fmu_instance.hpp>
-#    include <fmi4cpp/fmu_resource.hpp>
-#    include <fmi4cpp/types.hpp>
+#include <fmi4cpp/fmu_instance.hpp>
+#include <fmi4cpp/fmu_resource.hpp>
+#include <fmi4cpp/types.hpp>
 
-#    include <memory>
-#    include <string>
+#include <memory>
+#include <string>
 
 namespace fmi4cpp
 {
