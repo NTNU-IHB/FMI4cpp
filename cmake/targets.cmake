@@ -1,10 +1,6 @@
 
 add_subdirectory(src)
 
-if (FMI4CPP_BUILD_TOOL)
-    add_subdirectory(tool)
-endif()
-
 if (FMI4CPP_BUILD_TESTS)
     add_subdirectory(tests)
 endif()

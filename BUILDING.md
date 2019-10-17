@@ -28,12 +28,6 @@ Linux:~/$ sudo apt-get install libzip-dev libboost-dev
 
 Set `-DFMI4CPP_WITH_ODEINT=ON`
 
-
-### fmu_driver
-
-The fmu_driver tool is not built by default. To build it, pass ```FMI4CPP_BUILD_TOOL=ON``` to CMake. 
-An additional dependency is required if you do:
-
 ##### conan
 _Dependency should already be fulfilled.._
 

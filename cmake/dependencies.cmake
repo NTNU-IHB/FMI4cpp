@@ -1,10 +1,6 @@
 
 set(Boost_COMPONENTS filesystem)
 
-if (FMI4CPP_BUILD_TOOL)
-    list(APPEND Boost_COMPONENTS program_options)
-endif()
-
 if (FMI4CPP_BUILD_TESTS)
     list(APPEND Boost_COMPONENTS unit_test_framework)
 endif()

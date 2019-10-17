@@ -17,10 +17,6 @@ set(publicHeaders
     fmu_instance_base.hpp
     fmu_variable_accessor.hpp
 
-    driver/driver_options.hpp
-    driver/error_types.hpp
-    driver/fmu_driver.hpp
-
     solver/solver.hpp
 
     fmi2/fmi2.hpp
@@ -92,8 +88,6 @@ set(sources
     fmi2/xml/model_description_parser.cpp
     fmi2/xml/model_variables.cpp
     fmi2/xml/scalar_variable.cpp
-
-    driver/fmu_driver.cpp
 
 )
 
