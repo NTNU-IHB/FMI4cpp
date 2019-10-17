@@ -27,9 +27,4 @@
 
 #include <fmi4cpp/fmi2/fmi2.hpp>
 
-#ifdef FMI4CPP_WITH_ODEINT
-#    include <fmi4cpp/solver/odeint_solver.hpp>
-#endif
-
-
 #endif //FMI4CPP_FMI4CPP_HPP

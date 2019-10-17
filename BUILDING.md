@@ -21,24 +21,6 @@ When using conan, set `FMI4CPP_USING_CONAN=ON`.
 Linux:~/$ sudo apt-get install libzip-dev libboost-dev libbbost-filesystem-dev
 ``` 
 
-
-## Optional features
-
-#### Wrap Model Exchange models as Co-simulation models
-
-Set `-DFMI4CPP_WITH_ODEINT=ON`
-
-##### conan
-_Dependency should already be fulfilled.._
-
-##### apt-get
-```bash
-Linux:~/$ sudo apt-get install libboost-program-options-dev
-```
-
----
-
-
 ### Running examples/tests
 
 The examples are built by default. To change this pass ```-DFMI4CPP_BUILD_EXAMPLES=OFF``` to CMake.

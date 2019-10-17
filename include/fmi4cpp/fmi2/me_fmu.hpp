@@ -25,7 +25,7 @@
 #ifndef FMI4CPP_FMI2MODELEXCHANGEFMU_H
 #define FMI4CPP_FMI2MODELEXCHANGEFMU_H
 
-#include <fmi4cpp/fmi2/me_slave.hpp>
+#include <fmi4cpp/fmi2/me_instance.hpp>
 #include <fmi4cpp/fmi2/xml/me_model_description.hpp>
 #include <fmi4cpp/fmu_base.hpp>
 #include <fmi4cpp/fmu_resource.hpp>
@@ -33,7 +33,7 @@
 namespace fmi4cpp::fmi2
 {
 
-class me_fmu : public virtual me_fmu_base<me_instance, me_slave, me_model_description>
+class me_fmu : public virtual me_fmu_base<me_instance, me_model_description>
 {
 
 private:
@@ -48,9 +48,6 @@ public:
     std::shared_ptr<const me_model_description> get_model_description() const override;
 
     std::unique_ptr<me_instance> new_instance(bool visible = false, bool loggingOn = false);
-
-    std::unique_ptr<me_slave>
-    new_instance(std::unique_ptr<fmi4cpp::solver::me_solver>& solver, bool visible = false, bool loggingOn = false);
 };
 
 } // namespace fmi4cpp::fmi2

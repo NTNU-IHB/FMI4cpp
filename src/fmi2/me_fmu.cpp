@@ -31,7 +31,6 @@ using namespace std;
 
 using namespace fmi4cpp;
 using namespace fmi4cpp::fmi2;
-using namespace fmi4cpp::solver;
 
 me_fmu::me_fmu(shared_ptr<fmu_resource> resource,
     shared_ptr<const me_model_description> md)
@@ -57,11 +56,4 @@ std::unique_ptr<me_instance> me_fmu::new_instance(const bool visible, const bool
     fmi2Component c = lib->instantiate(modelIdentifier, fmi2ModelExchange, guid(),
         resource_->resource_path(), visible, loggingOn);
     return make_unique<me_instance>(c, resource_, lib, modelDescription_);
-}
-
-std::unique_ptr<me_slave>
-me_fmu::new_instance(std::unique_ptr<me_solver>& solver, const bool visible, const bool loggingOn)
-{
-    unique_ptr<me_instance> instance = new_instance(visible, loggingOn);
-    return make_unique<me_slave>(resource_, instance, solver);
 }

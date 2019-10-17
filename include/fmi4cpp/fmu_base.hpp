@@ -25,8 +25,6 @@
 #ifndef FMI4CPP_FMU_HPP
 #define FMI4CPP_FMU_HPP
 
-#include <fmi4cpp/solver/solver.hpp>
-
 #include <memory>
 #include <string>
 
@@ -38,12 +36,12 @@ class fmu_base
 {
 
 public:
-    const std::string guid() const
+    std::string guid() const
     {
         return get_model_description()->guid;
     }
 
-    const std::string model_name() const
+    std::string model_name() const
     {
         return get_model_description()->model_name;
     }
@@ -75,17 +73,14 @@ public:
     virtual std::unique_ptr<cs_slave> new_instance(bool visible, bool loggingOn) = 0;
 };
 
-template<class me_instance, class me_slave, class me_model_description>
+template<class me_instance, class me_model_description>
 class me_fmu_base : public fmu_base<me_model_description>
 {
 
 public:
-    virtual std::shared_ptr<const me_model_description> get_model_description() const override = 0;
+    virtual std::shared_ptr<const me_model_description> get_model_description() const = 0;
 
-    virtual std::unique_ptr<me_instance> new_instance(bool visible = false, bool loggingOn = false) = 0;
-
-    virtual std::unique_ptr<me_slave>
-    new_instance(std::unique_ptr<fmi4cpp::solver::me_solver>& solver, bool visible = false, bool loggingOn = false) = 0;
+    virtual std::unique_ptr<me_instance> new_instance(bool visible, bool loggingOn) = 0;
 };
 
 } // namespace fmi4cpp

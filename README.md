@@ -13,7 +13,6 @@ Influenced by it's spiritual brother [FMI4j](https://github.com/NTNU-IHB/FMI4j),
 an easy to install, easy to use, object oriented and fast FMI implementation for C++.    
 
 FMI4cpp supports both **Co-simulation** and **Model Exchange**. <br/>
-For Model Exchange, solvers from [odeint](http://headmyshoulder.github.io/odeint-v2/doc/boost_numeric_odeint/getting_started/overview.html) can be used. 
 
 ### Why should I use this over other C/C++ FMI Libraries
 
@@ -59,10 +58,6 @@ int main() {
               
     auto slave = cs_fmu->new_instance();
     
-    // or (with -DFMI4CPP_WITH_ODEINT=ON)
-    // auto solver = make_solver<rk4_classic_solver>(1E-3);
-    // auto slave = me_fmu->new_instance(solver);
-         
     slave->setup_experiment();
     slave->enter_initialization_mode();
     slave->exit_initialization_mode();
