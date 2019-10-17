@@ -90,21 +90,3 @@ int main() {
     
 }
 ```
-
-----
-### fmu_driver
-
-FMI4cpp comes with a simple CLI for testing FMUs, called _fmu_driver_. 
-
-```bash
-Options:
-  -h [ --help ]          Print this help message and quits.
-  -f [ --fmu ] arg       Path to FMU.
-  -o [ --output ] arg    Where to store the generated CSV results.
-  --start arg            Start time.
-  --stop arg             Stop time.
-  --stepsize arg         StepSize.
-  --me                   Treat FMU as an Model Exchange FMU.
-  -v [ --variables ] arg Variables to print.
-```
-

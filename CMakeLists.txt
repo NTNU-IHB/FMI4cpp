@@ -1,5 +1,4 @@
 
-option(FMI4CPP_BUILD_TOOL "Build tool" OFF)
 option(FMI4CPP_BUILD_TESTS "Build tests" OFF)
 option(FMI4CPP_BUILD_EXAMPLES "Build examples" ON)
 option(FMI4CPP_USING_CONAN "Build using conan" OFF)
