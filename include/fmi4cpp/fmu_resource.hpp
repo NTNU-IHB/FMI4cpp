@@ -47,6 +47,8 @@ public:
 
     std::string absolute_library_path(const std::string& modelIdentifier) const;
 
+    std::string get_model_description_xml() const;
+
     ~fmu_resource();
 };
 

@@ -50,7 +50,7 @@ private:
 public:
     explicit fmu(const std::string& fmuPath);
 
-    const std::string get_model_description_xml() const;
+    std::string get_model_description_xml() const;
 
     std::shared_ptr<const fmi4cpp::fmi2::model_description> get_model_description() const override;
 

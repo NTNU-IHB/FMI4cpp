@@ -64,10 +64,9 @@ fmu::fmu(const string& fmuPath)
     modelDescription_ = std::move(parse_model_description(resource_->model_description_path()));
 }
 
-const std::string fmu::get_model_description_xml() const
+std::string fmu::get_model_description_xml() const
 {
-    ifstream stream(resource_->model_description_path());
-    return string((istreambuf_iterator<char>(stream)), istreambuf_iterator<char>());
+    return resource_->get_model_description_xml();
 }
 
 shared_ptr<const model_description> fmu::get_model_description() const

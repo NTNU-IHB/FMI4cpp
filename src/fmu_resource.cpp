@@ -27,6 +27,9 @@
 #include <fmi4cpp/mlog.hpp>
 #include <fmi4cpp/tools/os_util.hpp>
 
+#include <fstream>
+#include <string>
+
 using namespace fmi4cpp;
 
 namespace fs = boost::filesystem;
@@ -48,6 +51,12 @@ std::string fmu_resource::resource_path() const
 std::string fmu_resource::absolute_library_path(const std::string& modelIdentifier) const
 {
     return path_.string() + "/binaries/" + get_os() + "/" + modelIdentifier + get_shared_library_extension();
+}
+
+std::string fmu_resource::get_model_description_xml() const
+{
+    std::ifstream stream(model_description_path());
+    return std::string((std::istreambuf_iterator<char>(stream)), std::istreambuf_iterator<char>());
 }
 
 fmu_resource::~fmu_resource()

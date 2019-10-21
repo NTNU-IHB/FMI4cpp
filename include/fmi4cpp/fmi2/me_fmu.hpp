@@ -42,8 +42,10 @@ private:
     std::shared_ptr<const me_model_description> modelDescription_;
 
 public:
-    me_fmu(std::shared_ptr<fmu_resource>  resource,
-        std::shared_ptr<const me_model_description>  md);
+    me_fmu(std::shared_ptr<fmu_resource> resource,
+        std::shared_ptr<const me_model_description> md);
+
+    std::string get_model_description_xml() const;
 
     std::shared_ptr<const me_model_description> get_model_description() const override;
 

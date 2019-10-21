@@ -37,6 +37,11 @@ cs_fmu::cs_fmu(shared_ptr<fmu_resource> resource,
     , modelDescription_(std::move(md))
 {}
 
+std::string cs_fmu::get_model_description_xml() const
+{
+    return resource_->get_model_description_xml();
+}
+
 shared_ptr<const cs_model_description> cs_fmu::get_model_description() const
 {
     return modelDescription_;
