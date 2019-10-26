@@ -85,3 +85,9 @@ int main() {
     
 }
 ```
+
+*** 
+
+Would you rather simulate FMUs in Java? Check out [FMI4j](https://github.com/NTNU-IHB/FMI4j)! <br>
+Need to distribute your FMUs? [FMU-proxy](https://github.com/NTNU-IHB/FMU-proxy) to the rescue! 
+
