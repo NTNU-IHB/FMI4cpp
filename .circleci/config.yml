@@ -19,17 +19,20 @@ jobs:
           command: 'cd build/tests && ctest'
   conan:
     docker:
-      - image: lasote/conangcc7
+      - image: circleci/python:3.7.0
     steps:
       - checkout
+#      - run:
+#            name: Install tools
+#            command: 'apt-get update && apt-get install -y sudo python3-setuptools python3-wheel python3-pip && rm -rf /var/lib/apt/lists/*'
       - run:
-          name: Update conan
-          command: 'sudo pip install conan --upgrade'
+          name: Install stuff
+          command: 'sudo pip3 install cmake conan '
 
       - restore_cache:
           keys:
-            - conan-cache-v1--{{ checksum "conanfile.txt" }}
-            - conan-cache-v1
+            - conan-cache-v2--{{ checksum "conanfile.txt" }}
+            - conan-cache-v2
       - run:
           name: Conan install
           command: 'conan install . -s build_type=Debug -s compiler.libcxx=libstdc++11 --install-folder=build'
@@ -37,7 +40,7 @@ jobs:
       - save_cache:
           paths:
             - ~/.conan
-          key: conan-cache-v1--{{ checksum "conanfile.txt" }}
+          key: conan-cache-v2--{{ checksum "conanfile.txt" }}
 
       - run:
           name: Configuring
