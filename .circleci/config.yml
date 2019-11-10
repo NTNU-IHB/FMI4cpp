@@ -28,8 +28,8 @@ jobs:
 
       - restore_cache:
           keys:
-            - conan-cache-v1--{{ checksum "conanfile.txt" }}
-            - conan-cache-v1
+            - conan-cache-v2--{{ checksum "conanfile.txt" }}
+            - conan-cache-v2
       - run:
           name: Conan install
           command: 'conan install . -s build_type=Debug -s compiler.libcxx=libstdc++11 --install-folder=build'
@@ -37,7 +37,7 @@ jobs:
       - save_cache:
           paths:
             - ~/.conan
-          key: conan-cache-v1--{{ checksum "conanfile.txt" }}
+          key: conan-cache-v2--{{ checksum "conanfile.txt" }}
 
       - run:
           name: Configuring
