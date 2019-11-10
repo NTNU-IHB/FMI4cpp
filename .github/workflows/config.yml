@@ -23,8 +23,7 @@ jobs:
       run: |
         unameOut="$(uname -s)"
         case "${unameOut}" in
-            MINGW*)     pip3 install setuptools wheel;;
-            Linux*)     sudo pip3 install setuptools wheel;;
+            Linux*)     sudo apt-get install python3-setuptools python3-wheel python3-pip;;
         esac
       shell: bash
 

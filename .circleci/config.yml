@@ -23,8 +23,11 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install conan
-          command: 'sudo pip3 install conan --upgrade'
+            name: Install tools
+            command: 'apt-get update && apt-get install -y sudo python3-setuptools python3-wheel python3-pip && rm -rf /var/lib/apt/lists/*'
+      - run:
+          name: Install stuff
+          command: 'sudo pip3 install cmake conan '
 
       - restore_cache:
           keys:
