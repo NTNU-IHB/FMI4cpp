@@ -20,7 +20,7 @@ jobs:
         python-version: '3.x'
     
     - name: Install build tools
-      run: pip3 install setuptools wheel
+      run: sudo pip3 install setuptools wheel
        
     - name: Install conan
       run: |
