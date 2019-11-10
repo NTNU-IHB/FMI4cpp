@@ -24,7 +24,7 @@ jobs:
       - checkout
       - run:
           name: Update conan
-          command: 'sudo pip install conan --upgrade'
+          command: 'sudo pip3 install conan --upgrade'
 
       - restore_cache:
           keys:
