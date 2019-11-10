@@ -25,6 +25,7 @@ jobs:
         case "${unameOut}" in
             MINGW*)     pip3 install setuptools wheel;;
             Linux*)     sudo pip3 install setuptools wheel;;
+        esac
       shell: bash
 
     - name: Install conan
