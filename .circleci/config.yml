@@ -19,11 +19,11 @@ jobs:
           command: 'cd build/tests && ctest'
   conan:
     docker:
-      - image: lasote/conangcc7
+      - image: circleci/python:3.7.0
     steps:
       - checkout
       - run:
-          name: Update conan
+          name: Install conan
           command: 'sudo pip3 install conan --upgrade'
 
       - restore_cache:
