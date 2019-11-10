@@ -18,21 +18,13 @@ jobs:
     - uses: actions/setup-python@v1
       with:
         python-version: '3.x'
-    
-    - name: Install build tools
-      run: sudo pip3 install setuptools wheel
-        unameOut="$(uname -s)"
-        case "${unameOut}" in
-            MINGW*)     pip3 install setuptools wheel;;
-            Linux*)     sudo pip3 install setuptools wheel;;
-      shell: bash
-       
-    - name: Install conan
+
+    - name: Install tools
       run: |
         unameOut="$(uname -s)"
         case "${unameOut}" in
-            MINGW*)     pip3 install conan --upgrade;;
-            Linux*)     sudo pip3 install conan --upgrade;;
+            MINGW*)     pip3 install setuptools wheel conan --upgrade;;
+            Linux*)     sudo pip3 install setuptools wheel conan --upgrade;;
         esac
       shell: bash
 
