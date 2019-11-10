@@ -21,6 +21,11 @@ jobs:
     
     - name: Install build tools
       run: sudo pip3 install setuptools wheel
+        unameOut="$(uname -s)"
+        case "${unameOut}" in
+            MINGW*)     pip3 install setuptools wheel;;
+            Linux*)     sudo pip3 install setuptools wheel;;
+      shell: bash
        
     - name: Install conan
       run: |
