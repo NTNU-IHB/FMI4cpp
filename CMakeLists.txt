@@ -2,6 +2,7 @@
 option(FMI4CPP_BUILD_TESTS "Build tests" OFF)
 option(FMI4CPP_BUILD_EXAMPLES "Build examples" OFF)
 option(FMI4CPP_USING_CONAN "Build using conan" OFF)
+option(BUILD_SHARED_LIBS "Build shared libraries instead of static libraries" ON)
 
 set(FMI4CPP_LOG_LEVEL "DEFAULT" CACHE STRING "FMI4cpp logging level")
 set(FMI4CPP_LOG_LEVEL_VALUES "DEFAULT;OFF;TRACE;DEBUG;INFO;WARN;ERROR;FATAL" CACHE STRING "List of possible log levels")
