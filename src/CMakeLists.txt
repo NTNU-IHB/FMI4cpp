@@ -112,8 +112,9 @@ target_include_directories(fmi4cpp
 )
 
 target_link_libraries(fmi4cpp
-    PRIVATE
+    PUBLIC
         libzip::libzip
+        Boost::boost
         Boost::filesystem
 )
 
