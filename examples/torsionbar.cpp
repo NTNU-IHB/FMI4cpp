@@ -27,18 +27,16 @@
 #include <iostream>
 #include <time_util.hpp>
 
-using namespace std;
 using namespace fmi4cpp;
 
 const double stop = 12.0;
 const double step_size = 1E-5;
 const fmi2ValueReference vr = 2;
 
-const string fmu_path = "../resources/fmus/2.0/cs/20sim/4.6.4.8004/"
-                        "TorsionBar/TorsionBar.fmu";
-
 int main()
 {
+    const std::string fmu_path = "../resources/fmus/2.0/cs/20sim/4.6.4.8004/"
+                                 "TorsionBar/TorsionBar.fmu";
 
     fmi2::fmu fmu(fmu_path);
 
@@ -51,17 +49,17 @@ int main()
         double ref;
         while ((slave->get_simulation_time()) <= (stop - step_size)) {
             if (!slave->step(step_size)) {
-                cerr << "Error! step returned with status: " << to_string(slave->last_status()) << endl;
+                std::cerr << "Error! step returned with status: " << to_string(slave->last_status()) << std::endl;
                 break;
             }
             if (!slave->read_real(vr, ref)) {
-                cerr << "Error! read_real returned with status: " << to_string(slave->last_status()) << endl;
+                std::cerr << "Error! read_real returned with status: " << to_string(slave->last_status()) << std::endl;
                 break;
             }
         }
     });
 
-    cout << "Time elapsed=" << elapsed << "s" << endl;
+    std::cout << "Time elapsed=" << elapsed << "s" << std::endl;
 
     slave->terminate();
 

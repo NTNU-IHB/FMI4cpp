@@ -24,21 +24,18 @@
 
 #include <fmi4cpp/fmi4cpp.hpp>
 
-#include <assert.h>
+#include <cassert>
 #include <iostream>
-#include <string>
 
-using namespace std;
 using namespace fmi4cpp;
-
-const string fmu_path1 = "../resources/fmus/2.0/cs/20sim/4.6.4.8004/"
-                         "TorsionBar/TorsionBar.fmu";
-
-const string fmu_path2 = "../resources/fmus/2.0/cs/20sim/4.6.4.8004/"
-                         "ControlledTemperature/ControlledTemperature.fmu";
 
 int main()
 {
+    const std::string fmu_path1 = "../resources/fmus/2.0/cs/20sim/4.6.4.8004/"
+                             "TorsionBar/TorsionBar.fmu";
+
+    const std::string fmu_path2 = "../resources/fmus/2.0/cs/20sim/4.6.4.8004/"
+                             "ControlledTemperature/ControlledTemperature.fmu";
 
     fmi2::fmu fmu1(fmu_path1);
     fmi2::fmu fmu2(fmu_path2);
@@ -63,12 +60,12 @@ int main()
     auto var = md1->get_variable_by_name("MotorDiskRev").as_real();
     assert(var.valueReference() == 105);
     var.read(*slave1, ref);
-    cout << "MotorDiskRev=" << ref << endl;
+    std::cout << "MotorDiskRev=" << ref << std::endl;
 
     auto vr = md2->get_value_reference("Temperature_Room");
     assert(vr == 47);
     slave2->read_real(vr, ref);
-    cout << "Temperature_Room=" << ref << endl;
+    std::cout << "Temperature_Room=" << ref << std::endl;
 
     slave1->terminate();
     slave2->terminate();
