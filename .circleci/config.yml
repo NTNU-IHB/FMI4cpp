@@ -23,11 +23,11 @@ jobs:
     steps:
       - checkout
       - run:
-            name: Install tools
-            command: 'sudo pip3 install scikit-build'
+          name: Installing tools and libraries
+            command: 'apt-get update && apt-get install -y sudo gcc g++ cmake && rm -rf /var/lib/apt/lists/*'
       - run:
           name: Install stuff
-          command: 'sudo pip3 install cmake conan'
+          command: 'sudo pip3 install conan'
 
       - restore_cache:
           keys:
