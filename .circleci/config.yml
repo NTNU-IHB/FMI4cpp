@@ -24,7 +24,7 @@ jobs:
       - checkout
       - run:
             name: Install tools
-            command: 'apt-get update && apt-get install -y sudo python3-setuptools python3-wheel python3-pip && rm -rf /var/lib/apt/lists/*'
+            command: 'sudo pip3 install scikit-build'
       - run:
           name: Install stuff
           command: 'sudo pip3 install cmake conan'
