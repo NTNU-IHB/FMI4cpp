@@ -71,7 +71,6 @@ int main()
             break;
         }
         
-        double ref;
         if (!slave->read_real(vr, value)) {
             std::cerr << "Error! step() returned with status: " << to_string(slave->last_status()) << std::endl;
             break;
