@@ -22,12 +22,12 @@ jobs:
       - image: circleci/python:3.7.0
     steps:
       - checkout
-#      - run:
-#            name: Install tools
-#            command: 'apt-get update && apt-get install -y sudo python3-setuptools python3-wheel python3-pip && rm -rf /var/lib/apt/lists/*'
+      - run:
+            name: Install tools
+            command: 'apt-get update && apt-get install -y sudo python3-setuptools python3-wheel python3-pip && rm -rf /var/lib/apt/lists/*'
       - run:
           name: Install stuff
-          command: 'sudo pip3 install scikit-build cmake conan'
+          command: 'sudo pip3 install cmake conan'
 
       - restore_cache:
           keys:
