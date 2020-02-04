@@ -27,7 +27,7 @@ jobs:
 #            command: 'apt-get update && apt-get install -y sudo python3-setuptools python3-wheel python3-pip && rm -rf /var/lib/apt/lists/*'
       - run:
           name: Install stuff
-          command: 'sudo pip3 install cmake conan '
+          command: 'sudo pip3 install scikit-build cmake conan'
 
       - restore_cache:
           keys:
