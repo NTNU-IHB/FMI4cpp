@@ -13,63 +13,70 @@ jobs:
         os: [ubuntu-18.04, windows-2016]
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
 
     - uses: actions/setup-python@v1
       with:
         python-version: '3.x'
 
-    - name: Install build tools
+    - name: Install tools (Linux)
+      if: startsWith(runner.os, 'Linux')
       run: |
-        unameOut="$(uname -s)"
-        case "${unameOut}" in
-            Linux*)     sudo apt-get install python3-setuptools python3-wheel python3-pip;;
-        esac
+        sudo apt-get install python3-setuptools python3-wheel python3-pip
       shell: bash
 
-    - name: Install conan
+    - name: Install conan (Linux)
+      if: startsWith(runner.os, 'Linux')
       run: |
-        unameOut="$(uname -s)"
-        case "${unameOut}" in
-            MINGW*)     pip3 install conan --upgrade;;
-            Linux*)     sudo pip3 install conan --upgrade;;
-        esac
+        sudo pip3 install conan --upgrade
       shell: bash
 
-    - name: Run conan
+    - name: Install conan (Windows)
+      if: startsWith(runner.os, 'Windows')
+      run: |
+        pip3 install conan --upgrade
+      shell: bash
+
+    - name: Setup conan remotes
       run: |
         conan remote add conan-center "https://conan.bintray.com" --f
         conan remote add bincrafters "https://api.bintray.com/conan/bincrafters/public-conan" --f
-        unameOut="$(uname -s)"
-        case "${unameOut}" in
-            MINGW*)     conan install . -s build_type=Release --install-folder=build;;
-            Linux*)     conan install . -s build_type=Release -s compiler.libcxx=libstdc++11 --install-folder=build;;
-        esac
+      shell: bash
+
+    - name: Run conan (Linux)
+      if: startsWith(runner.os, 'Linux')
+      run: |
+        conan install . -s build_type=Release -s compiler.libcxx=libstdc++11 --install-folder=build
+      shell: bash
+
+    - name: Run conan (Windows)
+      if: startsWith(runner.os, 'Windows')
+      run: |
+        conan install . -s build_type=Release --install-folder=build
       shell: bash
       
-    - name: Configure
+    - name: Configure (Linux)
+      if: startsWith(runner.os, 'Linux')
       run: |
-        unameOut="$(uname -s)"
-        case "${unameOut}" in
-            MINGW*)     cmake . -G "Visual Studio 15 2017 Win64" -Bbuild -DFMI4CPP_USING_CONAN=TRUE -DFMI4CPP_BUILD_TESTS=ON -DFMI4CPP_BUILD_EXAMPLES=ON;;
-            Linux*)     cmake -H. -Bbuild -DFMI4CPP_USING_CONAN=TRUE -DFMI4CPP_BUILD_TESTS=ON -DFMI4CPP_BUILD_EXAMPLES=ON;;
-        esac
+        cmake -H. -Bbuild -DFMI4CPP_USING_CONAN=TRUE -DFMI4CPP_BUILD_TESTS=ON -DFMI4CPP_BUILD_EXAMPLES=ON
+        cmake --build build
       shell: bash
-      
-    - name: Build
+
+    - name: Configure and build (Windows)
+      if: startsWith(runner.os, 'Windows')
       run: |
-        unameOut="$(uname -s)"
-        case "${unameOut}" in
-            MINGW*)     cmake --build build --config Release;;
-            Linux*)     cmake --build build;;
-        esac
+        cmake . -G "Visual Studio 15 2017 Win64" -Bbuild -DFMI4CPP_USING_CONAN=TRUE -DFMI4CPP_BUILD_TESTS=ON -DFMI4CPP_BUILD_EXAMPLES=ON
+        cmake --build build --config Release
       shell: bash
-      
-    - name: Test
+
+    - name: Test (Linux)
+      if: startsWith(runner.os, 'Linux')
       run: |
-        unameOut="$(uname -s)"
-        case "${unameOut}" in
-            MINGW*)     cd build/tests && ctest -C Release;;
-            Linux*)     cd build/tests && ctest;;
-        esac
+        cd build/tests && ctest
+      shell: bash
+
+    - name: Test (Windows)
+      if: startsWith(runner.os, 'Windows')
+      run: |
+        cd build/tests && ctest -C Release
       shell: bash
