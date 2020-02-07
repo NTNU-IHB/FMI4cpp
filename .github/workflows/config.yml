@@ -1,5 +1,5 @@
 
-name: C++ CI (conan)
+name: Conan
 
 on: [push]
 
