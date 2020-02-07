@@ -18,7 +18,7 @@ jobs:
 
     - name: Configure
       run: |
-        cmake -H. -Bbuild -DFMI4CPP_BUILD_TESTS=ON -DFMI4CPP_BUILD_EXAMPLES=ON -BUILD_SHARED_LIBS=OFF
+        cmake -H. -Bbuild -DFMI4CPP_BUILD_TESTS=ON -DFMI4CPP_BUILD_EXAMPLES=ON -DBUILD_SHARED_LIBS=OFF
       shell: bash
 
     - name: Build
