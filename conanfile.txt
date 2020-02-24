@@ -1,5 +1,5 @@
 [requires]
-boost/1.66.0@conan/stable
+boost/1.69.0
 libzip/1.5.2@bincrafters/stable
 bzip2/1.0.8
 zlib/1.2.11
