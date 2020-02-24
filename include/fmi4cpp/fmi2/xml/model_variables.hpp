@@ -45,17 +45,17 @@ public:
 
     explicit model_variables(const std::vector<scalar_variable>& variables);
 
-    size_t size() const;
+    [[nodiscard]] size_t size() const;
 
     const scalar_variable& operator[](size_t index) const;
-    const scalar_variable& getByName(const std::string& name) const;
-    const scalar_variable& getByValueReference(fmi2ValueReference vr) const;
+    [[nodiscard]] const scalar_variable& getByName(const std::string& name) const;
+    [[nodiscard]] const scalar_variable& getByValueReference(fmi2ValueReference vr) const;
 
     void getByValueReference(fmi2ValueReference vr, std::vector<scalar_variable>& store) const;
     void getByCausality(causality causality, std::vector<scalar_variable>& store) const;
 
-    std::vector<scalar_variable>::const_iterator begin() const;
-    std::vector<scalar_variable>::const_iterator end() const;
+    [[nodiscard]] std::vector<scalar_variable>::const_iterator begin() const;
+    [[nodiscard]] std::vector<scalar_variable>::const_iterator end() const;
 };
 
 } // namespace fmi4cpp::fmi2

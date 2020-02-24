@@ -38,7 +38,7 @@ namespace
 
 const char* DEFAULT_VARIABLE_NAMING_CONVENTION = "flat";
 
-const default_experiment parse_default_experiment(const ptree& node)
+default_experiment parse_default_experiment(const ptree& node)
 {
     default_experiment ex;
     ex.startTime = node.get_optional<double>("<xmlattr>.startTime");
@@ -48,7 +48,7 @@ const default_experiment parse_default_experiment(const ptree& node)
     return ex;
 }
 
-const source_file parse_file(const ptree& node)
+source_file parse_file(const ptree& node)
 {
     source_file file;
     file.name = node.get<std::string>("<xmlattr>.name");
@@ -82,7 +82,7 @@ void parse_unknown_dependencies_kind(const std::string& str, std::vector<std::st
     boost::split(store, str, [](char c) { return c == ' '; });
 }
 
-const unknown parse_unknown(const ptree& node)
+unknown parse_unknown(const ptree& node)
 {
 
     unknown unknown;
@@ -159,9 +159,8 @@ fmu_attributes parse_fmu_attributes(const ptree& node)
     return attributes;
 }
 
-const cs_attributes parse_cs_attributes(const ptree& node)
+cs_attributes parse_cs_attributes(const ptree& node)
 {
-
     cs_attributes attributes(parse_fmu_attributes(node));
     attributes.max_output_derivative_order = node.get<unsigned int>("<xmlattr>.maxOutputDerivativeOrder", 0);
     attributes.can_interpolate_inputs = node.get<bool>("<xmlattr>.canInterpolateInputs", false);
@@ -171,7 +170,7 @@ const cs_attributes parse_cs_attributes(const ptree& node)
     return attributes;
 }
 
-const me_attributes parse_me_attributes(const ptree& node)
+me_attributes parse_me_attributes(const ptree& node)
 {
     me_attributes attributes(parse_fmu_attributes(node));
     attributes.completed_integrator_step_not_needed = node.get<bool>(
@@ -231,9 +230,8 @@ enumeration_attribute parseEnumerationAttribute(const ptree& node)
 }
 
 
-const scalar_variable parse_scalar_variable(const ptree& node)
+scalar_variable parse_scalar_variable(const ptree& node)
 {
-
     scalar_variable_base base;
 
     base.name = node.get<std::string>("<xmlattr>.name");

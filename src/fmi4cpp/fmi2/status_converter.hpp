@@ -33,7 +33,6 @@ namespace fmi4cpp::fmi2
 
 inline status convert(fmi2Status status)
 {
-
     switch (status) {
         case fmi2OK:
             return status::OK;

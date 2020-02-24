@@ -26,7 +26,6 @@
 #include <fmi4cpp/fmi2/library_helper.hpp>
 #include <fmi4cpp/fmi2/me_library.hpp>
 
-
 using namespace fmi4cpp;
 using namespace fmi4cpp::fmi2;
 

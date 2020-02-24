@@ -41,13 +41,13 @@ private:
 public:
     explicit fmu_resource(boost::filesystem::path& path);
 
-    std::string resource_path() const;
+    [[nodiscard]] std::string resource_path() const;
 
-    std::string model_description_path() const;
+    [[nodiscard]] std::string model_description_path() const;
 
-    std::string absolute_library_path(const std::string& modelIdentifier) const;
+    [[nodiscard]] std::string absolute_library_path(const std::string& modelIdentifier) const;
 
-    std::string get_model_description_xml() const;
+    [[nodiscard]] std::string get_model_description_xml() const;
 
     ~fmu_resource();
 };

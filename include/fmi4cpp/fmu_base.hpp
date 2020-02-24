@@ -36,12 +36,12 @@ class fmu_base
 {
 
 public:
-    std::string guid() const
+    [[nodiscard]] std::string guid() const
     {
         return get_model_description()->guid;
     }
 
-    std::string model_name() const
+    [[nodiscard]] std::string model_name() const
     {
         return get_model_description()->model_name;
     }
@@ -54,12 +54,10 @@ class fmu_provider : public virtual fmu_base<model_description>
 {
 
 public:
-    virtual bool supports_cs() const = 0;
-
-    virtual bool supports_me() const = 0;
+    [[nodiscard]] virtual bool supports_cs() const = 0;
+    [[nodiscard]] virtual bool supports_me() const = 0;
 
     virtual std::unique_ptr<cs_fmu> as_cs_fmu() const = 0;
-
     virtual std::unique_ptr<me_fmu> as_me_fmu() const = 0;
 };
 

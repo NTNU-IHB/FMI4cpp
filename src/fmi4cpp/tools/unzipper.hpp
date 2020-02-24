@@ -38,7 +38,6 @@ namespace
 
 bool unzip(const std::string& zip_file, const std::string& tmp_path)
 {
-
     int* err = nullptr;
     zip* za = zip_open(zip_file.c_str(), 0, err);
     if (za == nullptr) {
@@ -46,7 +45,7 @@ bool unzip(const std::string& zip_file, const std::string& tmp_path)
     }
 
     struct zip_file* zf;
-    struct zip_stat sb;
+    struct zip_stat sb{};
 
     const int bufferSize = 1000;
     char* contents = (char*)malloc(sizeof(char) * bufferSize);

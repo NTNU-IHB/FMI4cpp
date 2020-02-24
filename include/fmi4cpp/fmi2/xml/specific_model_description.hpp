@@ -33,7 +33,6 @@ namespace fmi4cpp::fmi2
 template<typename T>
 struct specific_model_description : model_description_base, T
 {
-
     specific_model_description(const model_description_base& base, const T& attributes)
         : model_description_base(base)
         , T(attributes)

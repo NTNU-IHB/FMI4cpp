@@ -45,9 +45,9 @@ public:
     me_fmu(std::shared_ptr<fmu_resource> resource,
         std::shared_ptr<const me_model_description> md);
 
-    std::string get_model_description_xml() const;
+    [[nodiscard]] std::string get_model_description_xml() const;
 
-    std::shared_ptr<const me_model_description> get_model_description() const override;
+    [[nodiscard]] std::shared_ptr<const me_model_description> get_model_description() const override;
 
     std::unique_ptr<me_instance> new_instance(bool visible = false, bool loggingOn = false);
 };

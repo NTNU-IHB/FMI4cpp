@@ -42,7 +42,7 @@ public:
     virtual bool read_real(fmi4cppValueReference vr, fmi4cppReal& ref) = 0;
     virtual bool read_real(const std::vector<fmi4cppValueReference>& vr, std::vector<fmi4cppReal>& ref) = 0;
 
-    virtual bool read_string(const fmi4cppValueReference vr, fmi4cppString& ref) = 0;
+    virtual bool read_string(fmi4cppValueReference vr, fmi4cppString& ref) = 0;
     virtual bool read_string(const std::vector<fmi4cppValueReference>& vr, std::vector<fmi4cppString>& ref) = 0;
 
     virtual bool read_boolean(fmi4cppValueReference vr, fmi4cppBoolean& ref) = 0;

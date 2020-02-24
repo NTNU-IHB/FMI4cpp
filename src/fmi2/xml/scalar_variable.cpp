@@ -85,27 +85,27 @@ bool scalar_variable::is_enumeration() const
     return enumeration_.is_initialized();
 }
 
-const integer_variable scalar_variable::as_integer() const
+integer_variable scalar_variable::as_integer() const
 {
     return integer_variable(*this, *integer_);
 }
 
-const real_variable scalar_variable::as_real() const
+real_variable scalar_variable::as_real() const
 {
     return real_variable(*this, *real_);
 }
 
-const string_variable scalar_variable::as_string() const
+string_variable scalar_variable::as_string() const
 {
     return string_variable(*this, *string_);
 }
 
-const boolean_variable scalar_variable::as_boolean() const
+boolean_variable scalar_variable::as_boolean() const
 {
     return boolean_variable(*this, *boolean_);
 }
 
-const enumeration_variable scalar_variable::as_enumeration() const
+enumeration_variable scalar_variable::as_enumeration() const
 {
     return enumeration_variable(*this, *enumeration_);
 }

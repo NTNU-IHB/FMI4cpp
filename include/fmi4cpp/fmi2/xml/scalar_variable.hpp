@@ -156,27 +156,19 @@ public:
         const enumeration_attribute& enumeration);
 
 
-    bool is_integer() const;
+    [[nodiscard]] bool is_integer() const;
+    [[nodiscard]] bool is_real() const;
+    [[nodiscard]] bool is_string() const;
+    [[nodiscard]] bool is_boolean() const;
+    [[nodiscard]] bool is_enumeration() const;
 
-    bool is_real() const;
+    [[nodiscard]] std::string type_name() const;
 
-    bool is_string() const;
-
-    bool is_boolean() const;
-
-    bool is_enumeration() const;
-
-    std::string type_name() const;
-
-    const integer_variable as_integer() const;
-
-    const real_variable as_real() const;
-
-    const string_variable as_string() const;
-
-    const boolean_variable as_boolean() const;
-
-    const enumeration_variable as_enumeration() const;
+    [[nodiscard]] integer_variable as_integer() const;
+    [[nodiscard]] real_variable as_real() const;
+    [[nodiscard]] string_variable as_string() const;
+    [[nodiscard]] boolean_variable as_boolean() const;
+    [[nodiscard]] enumeration_variable as_enumeration() const;
 };
 
 } // namespace fmi4cpp::fmi2

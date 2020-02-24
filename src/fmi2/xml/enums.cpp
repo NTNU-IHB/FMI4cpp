@@ -57,8 +57,6 @@ variability fmi4cpp::fmi2::parse_variability(const std::string& str)
         return variability::tunable;
     } else if (str == "discrete") {
         return variability::discrete;
-    } else if (str == "continuous") {
-        return variability::continuous;
     } else {
         return variability::continuous;
     }
@@ -79,7 +77,6 @@ initial fmi4cpp::fmi2::parse_initial(const std::string& str)
 
 std::string fmi4cpp::fmi2::to_string(causality causality)
 {
-
     switch (causality) {
         case causality::calculatedParameter:
             return "calculatedParameter";
@@ -101,7 +98,6 @@ std::string fmi4cpp::fmi2::to_string(causality causality)
 
 std::string fmi4cpp::fmi2::to_string(variability variability)
 {
-
     switch (variability) {
         case variability::constant:
             return "constant";

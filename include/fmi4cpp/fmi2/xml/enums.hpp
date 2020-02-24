@@ -60,15 +60,11 @@ enum class initial
 };
 
 causality parse_causality(const std::string& str);
-
 variability parse_variability(const std::string& str);
-
 initial parse_initial(const std::string& str);
 
 std::string to_string(causality causality);
-
 std::string to_string(variability variability);
-
 std::string to_string(initial initial);
 
 } // namespace fmi4cpp::fmi2

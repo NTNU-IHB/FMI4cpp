@@ -27,7 +27,7 @@
 
 using namespace fmi4cpp::fmi2;
 
-cs_slave::cs_slave(const fmi2Component c,
+cs_slave::cs_slave(fmi2Component c,
     const std::shared_ptr<fmi4cpp::fmu_resource>& resource,
     const std::shared_ptr<cs_library>& library,
     const std::shared_ptr<const cs_model_description>& modelDescription)

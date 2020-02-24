@@ -32,7 +32,6 @@ namespace fmi4cpp::fmi2
 
 struct cs_model_description : specific_model_description<cs_attributes>
 {
-
     cs_model_description(const model_description_base& base, const cs_attributes& attributes)
         : specific_model_description(base, attributes)
     {}

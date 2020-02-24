@@ -62,7 +62,6 @@ std::string to_string(fmi2Status status)
 void logger(void* fmi2ComponentEnvironment, fmi2String instance_name, fmi2Status status, fmi2String category,
     fmi2String message, ...)
 {
-
     char msg[1000];
     va_list argp;
 
@@ -83,7 +82,6 @@ const fmi2CallbackFunctions callback = {
 fmi2_library::fmi2_library(const std::string& modelIdentifier, const std::shared_ptr<fmu_resource>& resource)
     : resource_(resource)
 {
-
     const auto libName = resource->absolute_library_path(modelIdentifier);
 
     MLOG_DEBUG("Loading shared library '" + fs::path(libName).stem().string() + get_shared_library_extension() + "'");
@@ -200,12 +198,12 @@ bool fmi2_library::exit_initialization_mode(fmi2Component c)
     return update_status_and_return_true_if_ok(fmi2ExitInitializationMode_(c));
 }
 
-bool fmi2_library::reset(const fmi2Component c)
+bool fmi2_library::reset(fmi2Component c)
 {
     return update_status_and_return_true_if_ok(fmi2Reset_(c));
 }
 
-bool fmi2_library::terminate(const fmi2Component c)
+bool fmi2_library::terminate(fmi2Component c)
 {
     return update_status_and_return_true_if_ok(fmi2Terminate_(c));
 }

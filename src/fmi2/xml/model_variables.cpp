@@ -77,16 +77,17 @@ size_t model_variables::size() const
 {
     return variables_.size();
 }
+
 const scalar_variable& model_variables::operator[](const size_t index) const
 {
     return variables_[index];
 }
 
-
 std::vector<scalar_variable>::const_iterator model_variables::begin() const
 {
     return variables_.begin();
 }
+
 std::vector<scalar_variable>::const_iterator model_variables::end() const
 {
     return variables_.end();

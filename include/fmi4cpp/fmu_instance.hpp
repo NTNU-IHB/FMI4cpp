@@ -43,23 +43,20 @@ protected:
     double simulationTime_ = 0.0;
 
 public:
-    virtual const double get_simulation_time() const
+    [[nodiscard]] virtual const double get_simulation_time() const
     {
         return simulationTime_;
     }
 
-    virtual fmi4cpp::status last_status() const = 0;
+    [[nodiscard]] virtual fmi4cpp::status last_status() const = 0;
 
     virtual std::shared_ptr<const ModelDescription> get_model_description() const = 0;
 
     virtual bool setup_experiment(double startTime = 0.0, double stopTime = 0.0, double tolerance = 0.0) = 0;
-
     virtual bool enter_initialization_mode() = 0;
-
     virtual bool exit_initialization_mode() = 0;
 
     virtual bool reset() = 0;
-
     virtual bool terminate() = 0;
 
     virtual bool get_fmu_state(fmi4cppFMUstate& state) = 0;

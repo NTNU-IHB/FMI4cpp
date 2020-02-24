@@ -69,7 +69,7 @@ public:
 
     bool new_discrete_states();
 
-    fmi4cpp::status last_status() const override;
+    [[nodiscard]] fmi4cpp::status last_status() const override;
 };
 
 } // namespace fmi4cpp::fmi2
