@@ -50,17 +50,14 @@ private:
 public:
     explicit fmu(const std::string& fmuPath);
 
-    std::string get_model_description_xml() const;
+    [[nodiscard]] std::string get_model_description_xml() const;
+    [[nodiscard]] std::shared_ptr<const fmi4cpp::fmi2::model_description> get_model_description() const override;
 
-    std::shared_ptr<const fmi4cpp::fmi2::model_description> get_model_description() const override;
+    [[nodiscard]] bool supports_me() const override;
+    [[nodiscard]] bool supports_cs() const override;
 
-    bool supports_me() const override;
-
-    bool supports_cs() const override;
-
-    std::unique_ptr<cs_fmu> as_cs_fmu() const override;
-
-    std::unique_ptr<me_fmu> as_me_fmu() const override;
+    [[nodiscard]] std::unique_ptr<cs_fmu> as_cs_fmu() const override;
+    [[nodiscard]] std::unique_ptr<me_fmu> as_me_fmu() const override;
 };
 
 } // namespace fmi4cpp::fmi2

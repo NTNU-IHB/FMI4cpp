@@ -33,7 +33,6 @@ namespace fmi4cpp::fmi2
 
 struct unknown
 {
-
     unsigned int index;
     boost::optional<std::vector<unsigned int>> dependencies;
     boost::optional<std::vector<std::string>> dependencies_kind;
@@ -41,7 +40,6 @@ struct unknown
 
 struct model_structure
 {
-
     const std::vector<unknown> outputs;
     const std::vector<unknown> derivatives;
     const std::vector<unknown> initialUnknowns;

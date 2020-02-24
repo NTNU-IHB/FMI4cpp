@@ -38,14 +38,12 @@ namespace
 
 enum mlog_level
 {
-
     Trace = 0,
     Debug = 1,
     Info = 2,
     Warn = 3,
     Error = 4,
     Fatal = 5
-
 };
 
 const char* to_string(mlog_level lvl)
@@ -100,7 +98,6 @@ mlog_level M_LOG_LEVEL = Info;
                 std::cout << msg << std::endl; \
             }                                  \
         }
-
 
 #else
 

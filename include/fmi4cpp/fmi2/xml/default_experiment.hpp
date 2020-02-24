@@ -32,7 +32,6 @@ namespace fmi4cpp::fmi2
 
 struct default_experiment
 {
-
     boost::optional<double> startTime;
     boost::optional<double> stopTime;
     boost::optional<double> stepSize;

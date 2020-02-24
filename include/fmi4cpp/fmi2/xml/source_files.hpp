@@ -34,7 +34,6 @@ namespace fmi4cpp::fmi2
 
 struct source_file
 {
-
     std::string name;
 };
 

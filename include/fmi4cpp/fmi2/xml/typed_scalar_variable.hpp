@@ -49,52 +49,52 @@ public:
         , attribute_(attribute)
     {}
 
-    std::string name() const
+    [[nodiscard]] std::string name() const
     {
         return variable_.name;
     }
 
-    std::string description() const
+    [[nodiscard]] std::string description() const
     {
         return variable_.description;
     }
 
-    fmi2ValueReference valueReference() const
+    [[nodiscard]] fmi2ValueReference valueReference() const
     {
         return variable_.value_reference;
     }
 
-    fmi2::causality causality() const
+    [[nodiscard]] fmi2::causality causality() const
     {
         return variable_.causality;
     }
 
-    fmi2::variability variability() const
+    [[nodiscard]] fmi2::variability variability() const
     {
         return variable_.variability;
     }
 
-    fmi2::initial initial() const
+    [[nodiscard]] fmi2::initial initial() const
     {
         return variable_.initial;
     }
 
-    bool canHandleMultipleSetPerTimelnstant() const
+    [[nodiscard]] bool canHandleMultipleSetPerTimelnstant() const
     {
         return variable_.can_handle_multiple_set_per_time_instant;
     }
 
-    boost::optional<T> start() const
+    [[nodiscard]] boost::optional<T> start() const
     {
         return attribute_.start;
     }
 
-    boost::optional<std::string> declaredType() const
+    [[nodiscard]] boost::optional<std::string> declaredType() const
     {
         return attribute_.declaredType;
     }
 
-    const U& attribute() const
+    [[nodiscard]] const U& attribute() const
     {
         return attribute_;
     }
@@ -113,17 +113,17 @@ public:
         : typed_scalar_variable<T, U>(variable, attribute)
     {}
 
-    boost::optional<T> min() const
+    [[nodiscard]] boost::optional<T> min() const
     {
         return this->attribute_.min;
     }
 
-    boost::optional<T> max() const
+    [[nodiscard]] boost::optional<T> max() const
     {
         return this->attribute_.max;
     }
 
-    boost::optional<std::string> quantity() const
+    [[nodiscard]] boost::optional<std::string> quantity() const
     {
         return this->attribute_.quantity;
     }
@@ -146,19 +146,19 @@ class real_variable : public bounded_scalar_variable<double, real_attribute>
 public:
     real_variable(const scalar_variable& variable, const real_attribute& attribute);
 
-    bool reinit() const;
+    [[nodiscard]] bool reinit() const;
 
-    bool unbounded() const;
+    [[nodiscard]] bool unbounded() const;
 
-    bool relativeQuantity() const;
+    [[nodiscard]] bool relativeQuantity() const;
 
-    boost::optional<double> nominal() const;
+    [[nodiscard]] boost::optional<double> nominal() const;
 
-    boost::optional<unsigned int> derivative() const;
+    [[nodiscard]] boost::optional<unsigned int> derivative() const;
 
-    boost::optional<std::string> unit() const;
+    [[nodiscard]] boost::optional<std::string> unit() const;
 
-    boost::optional<std::string> displayUnit() const;
+    [[nodiscard]] boost::optional<std::string> displayUnit() const;
 
     bool read(fmu_reader& reader, double& ref) override;
 

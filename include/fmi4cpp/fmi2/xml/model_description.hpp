@@ -40,7 +40,6 @@ namespace fmi4cpp::fmi2
 
 struct model_description_base
 {
-
     std::string guid;
     std::string model_name;
     std::string fmi_version;
@@ -60,12 +59,10 @@ struct model_description_base
     boost::optional<fmi2::default_experiment> default_experiment;
 
     size_t number_of_event_indicators;
+    [[nodiscard]] size_t number_of_continuous_states() const;
 
-    size_t number_of_continuous_states() const;
-
-    unsigned int get_value_reference(const std::string& name) const;
-
-    const scalar_variable& get_variable_by_name(const std::string& name) const;
+    [[nodiscard]] unsigned int get_value_reference(const std::string& name) const;
+    [[nodiscard]] const scalar_variable& get_variable_by_name(const std::string& name) const;
 };
 
 struct cs_model_description;
@@ -83,13 +80,13 @@ public:
         boost::optional<cs_attributes> coSimulation,
         boost::optional<me_attributes> modelExchange);
 
-    bool supports_cs() const;
+    [[nodiscard]] bool supports_cs() const;
 
-    bool supports_me() const;
+    [[nodiscard]] bool supports_me() const;
 
-    std::unique_ptr<const cs_model_description> as_cs_description() const;
+    [[nodiscard]] std::unique_ptr<const cs_model_description> as_cs_description() const;
 
-    std::unique_ptr<const me_model_description> as_me_description() const;
+    [[nodiscard]] std::unique_ptr<const me_model_description> as_me_description() const;
 };
 
 } // namespace fmi4cpp::fmi2

@@ -34,7 +34,6 @@ namespace fmi4cpp::fmi2
 
 struct fmu_attributes
 {
-
     source_files sourceFiles;
     std::string model_identifier;
 
@@ -48,7 +47,6 @@ struct fmu_attributes
 
 struct cs_attributes : fmu_attributes
 {
-
     bool can_interpolate_inputs = false;
     bool can_run_asynchronuously = false;
     bool can_handle_variable_communication_step_size = false;
