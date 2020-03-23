@@ -119,7 +119,7 @@ target_link_libraries(fmi4cpp
 )
 
 if (UNIX)
-    target_link_libraries(fmi4cpp PRIVATE dl pthread)
+    target_link_libraries(fmi4cpp PRIVATE stdc++fs dl pthread)
 endif()
 
 install(
