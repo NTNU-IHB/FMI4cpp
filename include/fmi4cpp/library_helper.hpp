@@ -71,7 +71,7 @@ bool free_library(DLL_HANDLE handle)
 #ifdef WIN32
     return static_cast<bool>(FreeLibrary(handle));
 #else
-    return (dlclose(handle_) == 0);
+    return (dlclose(handle) == 0);
 #endif
 }
 
