@@ -26,7 +26,7 @@ BOOST_AUTO_TEST_CASE(FmuExportCrossCompile_test1)
     BOOST_CHECK_EQUAL(3, derivatives[0].index);
     BOOST_CHECK_EQUAL(4, derivatives[1].index);
 
-    BOOST_CHECK_EQUAL(true, derivatives[0].dependencies.is_initialized());
+    BOOST_CHECK_EQUAL(true, derivatives[0].dependencies.has_value());
     BOOST_CHECK_EQUAL(2, derivatives[0].dependencies.value()[0]);
     BOOST_CHECK_EQUAL("dependent", derivatives[0].dependencies_kind.value()[0]);
 }
