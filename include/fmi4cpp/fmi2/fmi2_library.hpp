@@ -25,9 +25,9 @@
 #ifndef FMI4CPP_FMI2LIBRARY_HPP
 #define FMI4CPP_FMI2LIBRARY_HPP
 
+#include <fmi4cpp/dll_handle.hpp>
 #include <fmi4cpp/fmi2/fmi2FunctionTypes.h>
 #include <fmi4cpp/fmu_resource.hpp>
-#include <fmi4cpp/library_helper.hpp>
 
 #include <cstdio>
 #include <cstdlib>

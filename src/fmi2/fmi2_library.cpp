@@ -24,6 +24,7 @@
 
 #include <fmi4cpp/fmi2/fmi2_library.hpp>
 #include <fmi4cpp/fs_portability.hpp>
+#include <fmi4cpp/library_helper.hpp>
 #include <fmi4cpp/mlog.hpp>
 #include <fmi4cpp/tools/os_util.hpp>
 

@@ -23,6 +23,7 @@
  */
 
 #include <fmi4cpp/fmi2/cs_library.hpp>
+#include <fmi4cpp/library_helper.hpp>
 
 using namespace fmi4cpp;
 using namespace fmi4cpp::fmi2;

@@ -17,7 +17,7 @@ set(publicHeaders
     fmu_instance_base.hpp
     fmu_variable_accessor.hpp
 
-    library_helper.hpp
+    dll_handle.hpp
     fs_portability.hpp
 
     fmi2/fmi2.hpp
@@ -57,6 +57,7 @@ set(publicHeaders
 set(privateHeaders
 
     mlog.hpp
+    library_helper.hpp
     optional_converter.hpp
 
     fmi2/status_converter.hpp
@@ -120,7 +121,7 @@ target_link_libraries(fmi4cpp
 )
 
 if (UNIX)
-    target_link_libraries(fmi4cpp PRIVATE stdc++fs ${CMAKE_DL_LIBS})
+    target_link_libraries(fmi4cpp PRIVATE stdc++fs dl)
 endif()
 
 install(

@@ -25,24 +25,9 @@
 #ifndef FMI4CPP_LIBRARYHELPER_HPP
 #define FMI4CPP_LIBRARYHELPER_HPP
 
-#include <fmi4cpp/fmi2/fmi2_library.hpp>
+#include <fmi4cpp/dll_handle.hpp>
 
 #include <sstream>
-
-#if defined(_MSC_VER) || defined(WIN32) || defined(__MINGW32__)
-#    define WIN32_LEAN_AND_MEAN
-#    include <windows.h>
-#    define DLL_HANDLE HMODULE
-#else
-#    define DLL_HANDLE void*
-#    include <dlfcn.h>
-#endif
-
-#ifdef WIN32
-#    define function_ptr FARPROC
-#else
-typedef void* function_ptr;
-#endif
 
 namespace
 {
