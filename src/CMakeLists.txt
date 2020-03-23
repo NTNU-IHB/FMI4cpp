@@ -120,7 +120,7 @@ target_link_libraries(fmi4cpp
 )
 
 if (UNIX)
-    target_link_libraries(fmi4cpp PRIVATE stdc++fs dl pthread)
+    target_link_libraries(fmi4cpp PRIVATE stdc++fs ${CMAKE_DL_LIBS})
 endif()
 
 install(
