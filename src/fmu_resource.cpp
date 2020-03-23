@@ -22,7 +22,6 @@
  * THE SOFTWARE.
  */
 
-
 #include <fmi4cpp/fmu_resource.hpp>
 #include <fmi4cpp/mlog.hpp>
 #include <fmi4cpp/tools/os_util.hpp>
@@ -32,8 +31,6 @@
 #include <utility>
 
 using namespace fmi4cpp;
-
-namespace fs = std::filesystem;
 
 fmu_resource::fmu_resource(fs::path path)
     : path_(std::move(path))

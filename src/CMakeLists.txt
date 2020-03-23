@@ -18,6 +18,7 @@ set(publicHeaders
     fmu_variable_accessor.hpp
 
     library_helper.hpp
+    fs_portability.hpp
 
     fmi2/fmi2.hpp
     fmi2/fmu.hpp
@@ -119,7 +120,7 @@ target_link_libraries(fmi4cpp
 )
 
 if (UNIX)
-    target_link_libraries(fmi4cpp PUBLIC stdc++fs PRIVATE dl pthread)
+    target_link_libraries(fmi4cpp PRIVATE stdc++fs dl)
 endif()
 
 install(

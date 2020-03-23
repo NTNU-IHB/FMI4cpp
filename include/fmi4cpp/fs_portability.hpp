@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017-2018 Norwegian University of Technology
+ * Copyright 2017-2020 Norwegian University of Technology
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,36 +22,21 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMI4CPP_FMURESOURCE_HPP
-#define FMI4CPP_FMURESOURCE_HPP
+#ifndef FMI4CPP_FS_PORTABILITY_HPP
+#define FMI4CPP_FS_PORTABILITY_HPP
 
-#include <fmi4cpp/fs_portability.hpp>
-
-#include <string>
-
+#if __has_include(<filesystem>)
+#    include <filesystem>
 namespace fmi4cpp
 {
-
-class fmu_resource
+namespace fs = std::filesystem;
+}
+#else
+#    include <experimental/filesystem>
+namespace fmi4cpp
 {
+namespace fs = std::experimental::filesystem;
+}
+#endif
 
-private:
-    const fs::path path_;
-
-public:
-    explicit fmu_resource(fs::path path);
-
-    [[nodiscard]] std::string resource_path() const;
-
-    [[nodiscard]] std::string model_description_path() const;
-
-    [[nodiscard]] std::string absolute_library_path(const std::string& modelIdentifier) const;
-
-    [[nodiscard]] std::string get_model_description_xml() const;
-
-    ~fmu_resource();
-};
-
-} // namespace fmi4cpp
-
-#endif //FMI4CPP_FMURESOURCE_HPP
+#endif //FMI4CPP_FS_PORTABILITY_HPP

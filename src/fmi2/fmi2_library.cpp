@@ -23,6 +23,7 @@
  */
 
 #include <fmi4cpp/fmi2/fmi2_library.hpp>
+#include <fmi4cpp/fs_portability.hpp>
 #include <fmi4cpp/mlog.hpp>
 #include <fmi4cpp/tools/os_util.hpp>
 
@@ -31,8 +32,6 @@
 
 using namespace fmi4cpp;
 using namespace fmi4cpp::fmi2;
-
-namespace fs = std::filesystem;
 
 namespace
 {
