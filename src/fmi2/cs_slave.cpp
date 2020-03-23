@@ -88,7 +88,9 @@ bool cs_slave::read_integer(unsigned int vr, int& ref)
     return fmu_instance_base::read_integer(vr, ref);
 }
 
-bool cs_slave::read_integer(const std::vector<unsigned int>& vr, std::vector<int>& ref)
+bool cs_slave::read_integer(
+    const std::vector<unsigned int>& vr,
+    std::vector<int>& ref)
 {
     return fmu_instance_base::read_integer(vr, ref);
 }
@@ -98,7 +100,9 @@ bool cs_slave::read_real(unsigned int vr, double& ref)
     return fmu_instance_base::read_real(vr, ref);
 }
 
-bool cs_slave::read_real(const std::vector<unsigned int>& vr, std::vector<double>& ref)
+bool cs_slave::read_real(
+    const std::vector<unsigned int>& vr,
+    std::vector<double>& ref)
 {
     return fmu_instance_base::read_real(vr, ref);
 }
@@ -108,7 +112,9 @@ bool cs_slave::read_string(unsigned int vr, const char*& ref)
     return fmu_instance_base::read_string(vr, ref);
 }
 
-bool cs_slave::read_string(const std::vector<unsigned int>& vr, std::vector<const char*>& ref)
+bool cs_slave::read_string(
+    const std::vector<unsigned int>& vr,
+    std::vector<const char*>& ref)
 {
     return fmu_instance_base::read_string(vr, ref);
 }
@@ -118,7 +124,9 @@ bool cs_slave::read_boolean(unsigned int vr, int& ref)
     return fmu_instance_base::read_boolean(vr, ref);
 }
 
-bool cs_slave::read_boolean(const std::vector<unsigned int>& vr, std::vector<int>& ref)
+bool cs_slave::read_boolean(
+    const std::vector<unsigned int>& vr,
+    std::vector<int>& ref)
 {
     return fmu_instance_base::read_boolean(vr, ref);
 }
@@ -128,7 +136,9 @@ bool cs_slave::write_integer(unsigned int vr, int value)
     return fmu_instance_base::write_integer(vr, value);
 }
 
-bool cs_slave::write_integer(const std::vector<unsigned int>& vr, const std::vector<int>& values)
+bool cs_slave::write_integer(
+    const std::vector<unsigned int>& vr,
+    const std::vector<int>& values)
 {
     return fmu_instance_base::write_integer(vr, values);
 }
@@ -138,7 +148,9 @@ bool cs_slave::write_real(unsigned int vr, double value)
     return fmu_instance_base::write_real(vr, value);
 }
 
-bool cs_slave::write_real(const std::vector<unsigned int>& vr, const std::vector<double>& values)
+bool cs_slave::write_real(
+    const std::vector<unsigned int>& vr,
+    const std::vector<double>& values)
 {
     return fmu_instance_base::write_real(vr, values);
 }
@@ -148,7 +160,9 @@ bool cs_slave::write_string(unsigned int vr, const char* value)
     return fmu_instance_base::write_string(vr, value);
 }
 
-bool cs_slave::write_string(const std::vector<unsigned int>& vr, const std::vector<const char*>& values)
+bool cs_slave::write_string(
+    const std::vector<unsigned int>& vr,
+    const std::vector<const char*>& values)
 {
     return fmu_instance_base::write_string(vr, values);
 }
@@ -158,7 +172,9 @@ bool cs_slave::write_boolean(unsigned int vr, int value)
     return fmu_instance_base::write_boolean(vr, value);
 }
 
-bool cs_slave::write_boolean(const std::vector<unsigned int>& vr, const std::vector<int>& values)
+bool cs_slave::write_boolean(
+    const std::vector<unsigned int>& vr,
+    const std::vector<int>& values)
 {
     return fmu_instance_base::write_boolean(vr, values);
 }
@@ -179,20 +195,28 @@ bool cs_slave::free_fmu_state(void*& state)
     return fmu_instance_base::free_fmu_state(state);
 }
 
-bool cs_slave::serialize_fmu_state(const fmi2FMUstate& state, std::vector<char>& serializedState)
+bool cs_slave::serialize_fmu_state(
+    const fmi2FMUstate& state,
+    std::vector<char>& serializedState)
 {
-    return fmu_instance_base::serialize_fmu_state(state, serializedState);
+    return fmu_instance_base::serialize_fmu_state(
+        state, serializedState);
 }
 
-bool cs_slave::de_serialize_fmu_state(fmi2FMUstate& state, const std::vector<char>& serializedState)
+bool cs_slave::de_serialize_fmu_state(
+    fmi2FMUstate& state,
+    const std::vector<char>& serializedState)
 {
-    return fmu_instance_base::de_serialize_fmu_state(state, serializedState);
+    return fmu_instance_base::de_serialize_fmu_state(
+        state, serializedState);
 }
 
-bool cs_slave::get_directional_derivative(const std::vector<unsigned int>& vUnknownRef,
+bool cs_slave::get_directional_derivative(
+    const std::vector<unsigned int>& vUnknownRef,
     const std::vector<unsigned int>& vKnownRef,
     const std::vector<double>& dvKnownRef,
     std::vector<double>& dvUnknownRef)
 {
-    return fmu_instance_base::get_directional_derivative(vUnknownRef, vKnownRef, dvKnownRef, dvUnknownRef);
+    return fmu_instance_base::get_directional_derivative(
+        vUnknownRef, vKnownRef, dvKnownRef, dvUnknownRef);
 }

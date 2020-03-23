@@ -25,9 +25,9 @@
 #ifndef FMI4CPP_UNZIPPER_HPP
 #define FMI4CPP_UNZIPPER_HPP
 
-#include <boost/filesystem.hpp>
 #include <zip.h>
 
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -45,7 +45,9 @@ bool unzip(const std::string& zip_file, const std::string& tmp_path)
     }
 
     struct zip_file* zf;
-    struct zip_stat sb{};
+    struct zip_stat sb
+    {
+    };
 
     const int bufferSize = 1000;
     char* contents = (char*)malloc(sizeof(char) * bufferSize);
@@ -56,7 +58,7 @@ bool unzip(const std::string& zip_file, const std::string& tmp_path)
             std::string newFile = tmp_path + "/" + sb.name;
 
             if (sb.size == 0) {
-                boost::filesystem::create_directories(newFile);
+                std::filesystem::create_directories(newFile);
             } else {
                 zf = zip_fopen_index(za, i, 0);
 

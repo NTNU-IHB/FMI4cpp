@@ -28,20 +28,15 @@
 #include <fmi4cpp/fmi2/fmi2Functions.h>
 #include <fmi4cpp/fmi2/xml/enums.hpp>
 
-#include <boost/optional.hpp>
-
+#include <optional>
 
 namespace fmi4cpp::fmi2
 {
 
 class integer_variable;
-
 class real_variable;
-
 class string_variable;
-
 class boolean_variable;
-
 class enumeration_variable;
 
 const std::string INTEGER_TYPE = "Integer";
@@ -53,7 +48,6 @@ const std::string UNKNOWN_TYPE = "Unknown";
 
 struct scalar_variable_base
 {
-
     std::string name;
     std::string description;
 
@@ -69,19 +63,17 @@ struct scalar_variable_base
 template<typename T>
 struct scalar_variable_attribute
 {
-
-    boost::optional<T> start;
-    boost::optional<std::string> declared_type;
+    std::optional<T> start;
+    std::optional<std::string> declared_type;
 };
 
 
 template<typename T>
 struct bounded_scalar_variable_attribute : scalar_variable_attribute<T>
 {
-
-    boost::optional<T> min;
-    boost::optional<T> max;
-    boost::optional<std::string> quantity;
+    std::optional<T> min;
+    std::optional<T> max;
+    std::optional<std::string> quantity;
 
     explicit bounded_scalar_variable_attribute(const scalar_variable_attribute<T>& attributes)
         : scalar_variable_attribute<T>(attributes)
@@ -90,41 +82,36 @@ struct bounded_scalar_variable_attribute : scalar_variable_attribute<T>
 
 struct integer_attribute : bounded_scalar_variable_attribute<int>
 {
-
     explicit integer_attribute(const bounded_scalar_variable_attribute<int>& attributes);
 };
 
 struct real_attribute : bounded_scalar_variable_attribute<double>
 {
-
     bool reinit = false;
     bool unbounded = false;
     bool relative_quantity = false;
 
-    boost::optional<double> nominal;
-    boost::optional<unsigned int> derivative;
+    std::optional<double> nominal;
+    std::optional<unsigned int> derivative;
 
-    boost::optional<std::string> unit;
-    boost::optional<std::string> display_unit;
+    std::optional<std::string> unit;
+    std::optional<std::string> display_unit;
 
     explicit real_attribute(const bounded_scalar_variable_attribute<double>& attributes);
 };
 
 struct string_attribute : scalar_variable_attribute<std::string>
 {
-
     explicit string_attribute(const scalar_variable_attribute<std::string>& attributes);
 };
 
 struct boolean_attribute : scalar_variable_attribute<bool>
 {
-
     explicit boolean_attribute(const scalar_variable_attribute<bool>& attributes);
 };
 
 struct enumeration_attribute : bounded_scalar_variable_attribute<int>
 {
-
     explicit enumeration_attribute(const bounded_scalar_variable_attribute<int>& attributes);
 };
 
@@ -133,11 +120,11 @@ class scalar_variable : public scalar_variable_base
 {
 
 private:
-    boost::optional<integer_attribute> integer_;
-    boost::optional<real_attribute> real_;
-    boost::optional<string_attribute> string_;
-    boost::optional<boolean_attribute> boolean_;
-    boost::optional<enumeration_attribute> enumeration_;
+    std::optional<integer_attribute> integer_;
+    std::optional<real_attribute> real_;
+    std::optional<string_attribute> string_;
+    std::optional<boolean_attribute> boolean_;
+    std::optional<enumeration_attribute> enumeration_;
 
 public:
     scalar_variable(const scalar_variable_base& base,

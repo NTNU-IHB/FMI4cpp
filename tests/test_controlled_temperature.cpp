@@ -5,10 +5,8 @@
 
 #include <boost/test/unit_test.hpp>
 
-#include <iostream>
 #include <string>
 
-using namespace std;
 using namespace fmi4cpp;
 
 const double step_size = 1E-4;
@@ -17,7 +15,7 @@ const fmi2ValueReference vr = 46;
 BOOST_AUTO_TEST_CASE(ControlledTemperature_test1)
 {
 
-    const string fmu_path = "../resources/fmus/2.0/cs/20sim/4.6.4.8004/"
+    const std::string fmu_path = "../resources/fmus/2.0/cs/20sim/4.6.4.8004/"
                             "ControlledTemperature/ControlledTemperature.fmu";
 
     auto fmu = fmi2::fmu(fmu_path).as_cs_fmu();

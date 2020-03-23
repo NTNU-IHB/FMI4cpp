@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017-2018 Norwegian University of Technology
+ * Copyright 2017-2020 Norwegian University of Technology
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,22 +22,26 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMI4CPP_DEFAULTEXPERIMENT_HPP
-#define FMI4CPP_DEFAULTEXPERIMENT_HPP
+#ifndef FMI4CPP_OPTIONAL_CONVERTER_HPP
+#define FMI4CPP_OPTIONAL_CONVERTER_HPP
+
+#include <boost/optional.hpp>
 
 #include <optional>
 
-namespace fmi4cpp::fmi2
+namespace
 {
 
-struct default_experiment
+template<class T>
+std::optional<T> convert(boost::optional<T> opt)
 {
-    std::optional<double> startTime;
-    std::optional<double> stopTime;
-    std::optional<double> stepSize;
-    std::optional<double> tolerance;
-};
+    if (!opt) {
+        return std::nullopt;
+    } else {
+        return *opt;
+    }
+}
 
-} // namespace fmi4cpp::fmi2
+} // namespace
 
-#endif //FMI4CPP_DEFAULTEXPERIMENT_HPP
+#endif //FMI4CPP_OPTIONAL_CONVERTER_HPP

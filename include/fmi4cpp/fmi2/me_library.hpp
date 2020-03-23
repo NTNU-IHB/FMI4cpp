@@ -46,7 +46,8 @@ private:
     fmi2NewDiscreteStatesTYPE* fmi2NewDiscreteStates_;
 
 public:
-    explicit me_library(const std::string& modelIdentifier,
+    explicit me_library(
+        const std::string& modelIdentifier,
         const std::shared_ptr<fmu_resource>& resource);
 
     bool enter_event_mode(fmi2Component c);
@@ -65,8 +66,10 @@ public:
 
     bool get_nominals_of_continuous_states(fmi2Component c, std::vector<fmi2Real>& x_nominal);
 
-    bool completed_integrator_step(fmi2Component c, fmi2Boolean noSetFMUStatePriorToCurrentPoint,
-        fmi2Boolean& enterEventMode, fmi2Boolean& terminateSimulation);
+    bool completed_integrator_step(fmi2Component c,
+        fmi2Boolean noSetFMUStatePriorToCurrentPoint,
+        fmi2Boolean& enterEventMode,
+        fmi2Boolean& terminateSimulation);
 
     bool new_discrete_states(fmi2Component c, fmi2EventInfo& eventInfo);
 };

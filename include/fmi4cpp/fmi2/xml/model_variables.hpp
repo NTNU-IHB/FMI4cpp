@@ -43,7 +43,7 @@ private:
 public:
     model_variables();
 
-    explicit model_variables(const std::vector<scalar_variable>& variables);
+    explicit model_variables(std::vector<scalar_variable>  variables);
 
     [[nodiscard]] size_t size() const;
 

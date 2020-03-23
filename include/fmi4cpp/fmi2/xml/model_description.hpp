@@ -30,9 +30,8 @@
 #include <fmi4cpp/fmi2/xml/model_structure.hpp>
 #include <fmi4cpp/fmi2/xml/model_variables.hpp>
 
-#include <boost/optional.hpp>
-
 #include <memory>
+#include <optional>
 #include <string>
 
 namespace fmi4cpp::fmi2
@@ -44,19 +43,19 @@ struct model_description_base
     std::string model_name;
     std::string fmi_version;
 
-    boost::optional<std::string> author;
-    boost::optional<std::string> version;
-    boost::optional<std::string> license;
-    boost::optional<std::string> copyright;
-    boost::optional<std::string> description;
-    boost::optional<std::string> generation_tool;
-    boost::optional<std::string> generation_date_and_time;
-    boost::optional<std::string> variable_naming_convention;
+    std::optional<std::string> author;
+    std::optional<std::string> version;
+    std::optional<std::string> license;
+    std::optional<std::string> copyright;
+    std::optional<std::string> description;
+    std::optional<std::string> generation_tool;
+    std::optional<std::string> generation_date_and_time;
+    std::optional<std::string> variable_naming_convention;
 
     std::shared_ptr<const fmi2::model_variables> model_variables;
     std::shared_ptr<const fmi2::model_structure> model_structure;
 
-    boost::optional<fmi2::default_experiment> default_experiment;
+    std::optional<fmi2::default_experiment> default_experiment;
 
     size_t number_of_event_indicators;
     [[nodiscard]] size_t number_of_continuous_states() const;
@@ -72,20 +71,19 @@ class model_description : public model_description_base
 {
 
 protected:
-    boost::optional<cs_attributes> coSimulation_;
-    boost::optional<me_attributes> modelExchange_;
+    std::optional<cs_attributes> coSimulation_;
+    std::optional<me_attributes> modelExchange_;
 
 public:
-    model_description(const model_description_base& base,
-        boost::optional<cs_attributes> coSimulation,
-        boost::optional<me_attributes> modelExchange);
+    model_description(
+        const model_description_base& base,
+        std::optional<cs_attributes> coSimulation,
+        std::optional<me_attributes> modelExchange);
 
     [[nodiscard]] bool supports_cs() const;
-
     [[nodiscard]] bool supports_me() const;
 
     [[nodiscard]] std::unique_ptr<const cs_model_description> as_cs_description() const;
-
     [[nodiscard]] std::unique_ptr<const me_model_description> as_me_description() const;
 };
 

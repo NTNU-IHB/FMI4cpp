@@ -26,13 +26,14 @@
 #include <fmi4cpp/fmi2/xml/model_variables.hpp>
 
 #include <stdexcept>
+#include <utility>
 
 using namespace fmi4cpp::fmi2;
 
-model_variables::model_variables() {}
+model_variables::model_variables() = default;
 
-model_variables::model_variables(const std::vector<scalar_variable>& variables)
-    : variables_(variables)
+model_variables::model_variables(std::vector<scalar_variable> variables)
+    : variables_(std::move(variables))
 {}
 
 const scalar_variable& model_variables::getByName(const std::string& name) const
@@ -55,7 +56,9 @@ const scalar_variable& model_variables::getByValueReference(const fmi2ValueRefer
     throw std::runtime_error("No such variable with valueReference '" + std::to_string(vr) + "'!");
 }
 
-void model_variables::getByValueReference(const fmi2ValueReference vr, std::vector<scalar_variable>& store) const
+void model_variables::getByValueReference(
+    const fmi2ValueReference vr,
+    std::vector<scalar_variable>& store) const
 {
     for (const auto& var : variables_) {
         if (var.value_reference == vr) {
@@ -64,7 +67,9 @@ void model_variables::getByValueReference(const fmi2ValueReference vr, std::vect
     }
 }
 
-void model_variables::getByCausality(const causality causality, std::vector<scalar_variable>& store) const
+void model_variables::getByCausality(
+    const causality causality,
+    std::vector<scalar_variable>& store) const
 {
     for (const auto& var : variables_) {
         if (var.causality == causality) {

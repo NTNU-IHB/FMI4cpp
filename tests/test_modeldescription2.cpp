@@ -8,10 +8,9 @@
 #include <string>
 #include <vector>
 
-using namespace std;
 using namespace fmi4cpp::fmi2;
 
-const string fmu_path = "../resources/fmus/2.0/cs/OpenModelica/v1.11.0/"
+const std::string fmu_path = "../resources/fmus/2.0/cs/OpenModelica/v1.11.0/"
                         "FmuExportCrossCompile/modelDescription.xml";
 
 BOOST_AUTO_TEST_CASE(FmuExportCrossCompile_test1)
@@ -21,7 +20,7 @@ BOOST_AUTO_TEST_CASE(FmuExportCrossCompile_test1)
 
     BOOST_CHECK_EQUAL("structured", md->variable_naming_convention.value());
 
-    vector<unknown> derivatives = md->model_structure->derivatives;
+    std::vector<unknown> derivatives = md->model_structure->derivatives;
     BOOST_CHECK_EQUAL(2, derivatives.size());
 
     BOOST_CHECK_EQUAL(3, derivatives[0].index);

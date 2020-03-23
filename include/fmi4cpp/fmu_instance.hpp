@@ -63,8 +63,12 @@ public:
     virtual bool set_fmu_state(fmi4cppFMUstate state) = 0;
     virtual bool free_fmu_state(fmi4cppFMUstate& state) = 0;
 
-    virtual bool serialize_fmu_state(const fmi4cppFMUstate& state, std::vector<fmi4cppByte>& serializedState) = 0;
-    virtual bool de_serialize_fmu_state(fmi4cppFMUstate& state, const std::vector<fmi4cppByte>& serializedState) = 0;
+    virtual bool serialize_fmu_state(
+        const fmi4cppFMUstate& state,
+        std::vector<fmi4cppByte>& serializedState) = 0;
+    virtual bool de_serialize_fmu_state(
+        fmi4cppFMUstate& state,
+        const std::vector<fmi4cppByte>& serializedState) = 0;
 
     virtual bool get_directional_derivative(
         const std::vector<fmi4cppValueReference>& vUnknownRef,

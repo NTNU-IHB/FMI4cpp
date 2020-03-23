@@ -85,7 +85,9 @@ bool me_instance::completed_integrator_step(
     fmi2Boolean& enterEventMode,
     fmi2Boolean& terminateSimulation)
 {
-    return library_->completed_integrator_step(c_, noSetFMUStatePriorToCurrentPoint, enterEventMode,
+    return library_->completed_integrator_step(c_,
+        noSetFMUStatePriorToCurrentPoint,
+        enterEventMode,
         terminateSimulation);
 }
 

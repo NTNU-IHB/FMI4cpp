@@ -54,18 +54,23 @@ class fmu_writer
 
 public:
     virtual bool write_integer(fmi4cppValueReference vr, fmi4cppInteger value) = 0;
-    virtual bool write_integer(const std::vector<fmi4cppValueReference>& vr,
+    virtual bool write_integer(
+        const std::vector<fmi4cppValueReference>& vr,
         const std::vector<fmi4cppInteger>& values) = 0;
 
     virtual bool write_real(fmi4cppValueReference vr, fmi4cppReal value) = 0;
-    virtual bool write_real(const std::vector<fmi4cppValueReference>& vr, const std::vector<fmi4cppReal>& values) = 0;
+    virtual bool write_real(
+        const std::vector<fmi4cppValueReference>& vr,
+        const std::vector<fmi4cppReal>& values) = 0;
 
     virtual bool write_string(fmi4cppValueReference vr, fmi4cppString value) = 0;
-    virtual bool write_string(const std::vector<fmi4cppValueReference>& vr,
+    virtual bool write_string(
+        const std::vector<fmi4cppValueReference>& vr,
         const std::vector<fmi4cppString>& values) = 0;
 
     virtual bool write_boolean(fmi4cppValueReference vr, fmi4cppBoolean value) = 0;
-    virtual bool write_boolean(const std::vector<fmi4cppValueReference>& vr,
+    virtual bool write_boolean(
+        const std::vector<fmi4cppValueReference>& vr,
         const std::vector<fmi4cppBoolean>& values) = 0;
 };
 
