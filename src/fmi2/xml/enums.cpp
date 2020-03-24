@@ -38,8 +38,6 @@ causality fmi4cpp::fmi2::parse_causality(const std::string& str)
         return causality::input;
     } else if (str == "output") {
         return causality::output;
-    } else if (str == "local") {
-        return causality::local;
     } else if (str == "independent") {
         return causality::independent;
     } else {

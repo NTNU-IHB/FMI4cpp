@@ -25,7 +25,9 @@
 #ifndef FMI4CPP_LIBRARYHELPER_HPP
 #define FMI4CPP_LIBRARYHELPER_HPP
 
-#include <fmi4cpp/fmi2/fmi2_library.hpp>
+#include <fmi4cpp/dll_handle.hpp>
+
+#include <sstream>
 
 namespace
 {
@@ -46,6 +48,26 @@ T load_function(DLL_HANDLE handle, const char* function_name)
     return (T)GetProcAddress(handle, function_name);
 #else
     return (T)dlsym(handle, function_name);
+#endif
+}
+
+bool free_library(DLL_HANDLE handle)
+{
+#ifdef WIN32
+    return static_cast<bool>(FreeLibrary(handle));
+#else
+    return (dlclose(handle) == 0);
+#endif
+}
+
+std::string getLastError()
+{
+#ifdef WIN32
+    std::ostringstream os;
+    os << GetLastError();
+    return os.str();
+#else
+    return dlerror();
 #endif
 }
 

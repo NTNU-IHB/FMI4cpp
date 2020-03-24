@@ -44,7 +44,9 @@ private:
 
 
 public:
-    typed_scalar_variable(const scalar_variable& variable, const U& attribute)
+    typed_scalar_variable(
+        const scalar_variable& variable,
+        const U& attribute)
         : variable_(variable)
         , attribute_(attribute)
     {}
@@ -84,12 +86,12 @@ public:
         return variable_.can_handle_multiple_set_per_time_instant;
     }
 
-    [[nodiscard]] boost::optional<T> start() const
+    [[nodiscard]] std::optional<T> start() const
     {
         return attribute_.start;
     }
 
-    [[nodiscard]] boost::optional<std::string> declaredType() const
+    [[nodiscard]] std::optional<std::string> declaredType() const
     {
         return attribute_.declaredType;
     }
@@ -113,17 +115,17 @@ public:
         : typed_scalar_variable<T, U>(variable, attribute)
     {}
 
-    [[nodiscard]] boost::optional<T> min() const
+    [[nodiscard]] std::optional<T> min() const
     {
         return this->attribute_.min;
     }
 
-    [[nodiscard]] boost::optional<T> max() const
+    [[nodiscard]] std::optional<T> max() const
     {
         return this->attribute_.max;
     }
 
-    [[nodiscard]] boost::optional<std::string> quantity() const
+    [[nodiscard]] std::optional<std::string> quantity() const
     {
         return this->attribute_.quantity;
     }
@@ -133,10 +135,11 @@ class integer_variable : public bounded_scalar_variable<int, integer_attribute>
 {
 
 public:
-    integer_variable(const scalar_variable& variable, const integer_attribute& attribute);
+    integer_variable(
+        const scalar_variable& variable,
+        const integer_attribute& attribute);
 
     bool read(fmu_reader& reader, int& ref) override;
-
     bool write(fmu_writer& writer, int value) override;
 };
 
@@ -144,24 +147,20 @@ class real_variable : public bounded_scalar_variable<double, real_attribute>
 {
 
 public:
-    real_variable(const scalar_variable& variable, const real_attribute& attribute);
+    real_variable(
+        const scalar_variable& variable,
+        const real_attribute& attribute);
 
     [[nodiscard]] bool reinit() const;
-
     [[nodiscard]] bool unbounded() const;
-
     [[nodiscard]] bool relativeQuantity() const;
 
-    [[nodiscard]] boost::optional<double> nominal() const;
-
-    [[nodiscard]] boost::optional<unsigned int> derivative() const;
-
-    [[nodiscard]] boost::optional<std::string> unit() const;
-
-    [[nodiscard]] boost::optional<std::string> displayUnit() const;
+    [[nodiscard]] std::optional<double> nominal() const;
+    [[nodiscard]] std::optional<unsigned int> derivative() const;
+    [[nodiscard]] std::optional<std::string> unit() const;
+    [[nodiscard]] std::optional<std::string> displayUnit() const;
 
     bool read(fmu_reader& reader, double& ref) override;
-
     bool write(fmu_writer& writer, double value) override;
 };
 
@@ -170,10 +169,11 @@ class string_variable : public typed_scalar_variable<std::string, string_attribu
 {
 
 public:
-    string_variable(const scalar_variable& variable, const string_attribute& attribute);
+    string_variable(
+        const scalar_variable& variable,
+        const string_attribute& attribute);
 
     bool read(fmu_reader& reader, std::string& ref) override;
-
     bool write(fmu_writer& writer, std::string value) override;
 };
 
@@ -181,10 +181,11 @@ class boolean_variable : public typed_scalar_variable<bool, boolean_attribute>
 {
 
 public:
-    boolean_variable(const scalar_variable& variable, const boolean_attribute& attribute);
+    boolean_variable(
+        const scalar_variable& variable,
+        const boolean_attribute& attribute);
 
     bool read(fmu_reader& reader, bool& ref) override;
-
     bool write(fmu_writer& writer, bool value) override;
 };
 
@@ -192,10 +193,11 @@ class enumeration_variable : public typed_scalar_variable<int, enumeration_attri
 {
 
 public:
-    enumeration_variable(const scalar_variable& variable, const enumeration_attribute& attribute);
+    enumeration_variable(
+        const scalar_variable& variable,
+        const enumeration_attribute& attribute);
 
     bool read(fmu_reader& reader, int& ref) override;
-
     bool write(fmu_writer& writer, int value) override;
 };
 

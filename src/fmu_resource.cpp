@@ -22,20 +22,18 @@
  * THE SOFTWARE.
  */
 
-
 #include <fmi4cpp/fmu_resource.hpp>
 #include <fmi4cpp/mlog.hpp>
 #include <fmi4cpp/tools/os_util.hpp>
 
 #include <fstream>
 #include <string>
+#include <utility>
 
 using namespace fmi4cpp;
 
-namespace fs = boost::filesystem;
-
-fmu_resource::fmu_resource(fs::path& path)
-    : path_(path)
+fmu_resource::fmu_resource(fs::path path)
+    : path_(std::move(path))
 {}
 
 std::string fmu_resource::model_description_path() const
@@ -61,8 +59,7 @@ std::string fmu_resource::get_model_description_xml() const
 
 fmu_resource::~fmu_resource()
 {
-
-    boost::system::error_code success{};
+    std::error_code success;
     fs::remove_all(path_, success);
 
     if (!success) {

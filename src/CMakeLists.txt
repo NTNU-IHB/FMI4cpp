@@ -17,6 +17,9 @@ set(publicHeaders
     fmu_instance_base.hpp
     fmu_variable_accessor.hpp
 
+    dll_handle.hpp
+    fs_portability.hpp
+
     fmi2/fmi2.hpp
     fmi2/fmu.hpp
     fmi2/fmi2_library.hpp
@@ -54,9 +57,10 @@ set(publicHeaders
 set(privateHeaders
 
     mlog.hpp
+    library_helper.hpp
+    optional_converter.hpp
 
     fmi2/status_converter.hpp
-    fmi2/library_helper.hpp
 
     tools/os_util.hpp
     tools/time_util.hpp
@@ -76,10 +80,9 @@ set(sources
     fmi2/cs_library.cpp
     fmi2/cs_slave.cpp
     fmi2/me_library.cpp
-
     fmi2/me_instance.cpp
 
-        fmi2/xml/enums.cpp
+    fmi2/xml/enums.cpp
     fmi2/xml/model_description.cpp
     fmi2/xml/model_description_parser.cpp
     fmi2/xml/model_variables.cpp
@@ -106,8 +109,8 @@ target_include_directories(fmi4cpp
     PUBLIC
         $<INSTALL_INTERFACE:include>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>
-        ${Boost_INCLUDE_DIRS}
     PRIVATE
+        ${Boost_INCLUDE_DIRS}
         ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
@@ -115,11 +118,10 @@ target_link_libraries(fmi4cpp
     PUBLIC
         libzip::libzip
         Boost::boost
-        Boost::filesystem
 )
 
 if (UNIX)
-    target_link_libraries(fmi4cpp PRIVATE dl pthread)
+    target_link_libraries(fmi4cpp PRIVATE stdc++fs dl)
 endif()
 
 install(

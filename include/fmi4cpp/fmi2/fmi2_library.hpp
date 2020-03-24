@@ -25,33 +25,14 @@
 #ifndef FMI4CPP_FMI2LIBRARY_HPP
 #define FMI4CPP_FMI2LIBRARY_HPP
 
+#include <fmi4cpp/dll_handle.hpp>
 #include <fmi4cpp/fmi2/fmi2FunctionTypes.h>
+#include <fmi4cpp/fmu_resource.hpp>
 
 #include <cstdio>
 #include <cstdlib>
 #include <string>
 #include <vector>
-
-#if defined(_MSC_VER) || defined(WIN32) || defined(__MINGW32__)
-#    define WIN32_LEAN_AND_MEAN
-
-#    include <windows.h>
-
-#    define DLL_HANDLE HMODULE
-#else
-#    define DLL_HANDLE void*
-
-#    include <dlfcn.h>
-
-#endif
-
-#ifdef WIN32
-#    define function_ptr FARPROC
-#else
-typedef void* function_ptr;
-#endif
-
-#include "fmi4cpp/fmu_resource.hpp"
 
 namespace fmi4cpp::fmi2
 {
@@ -97,13 +78,9 @@ private:
 
     fmi2FreeInstanceTYPE* fmi2FreeInstance_;
 
-    std::string getLastError() const;
-
 protected:
-    DLL_HANDLE handle_ = nullptr;
-
     fmi2Status lastStatus_;
-
+    DLL_HANDLE handle_ = nullptr;
     bool update_status_and_return_true_if_ok(fmi2Status status);
 
 public:

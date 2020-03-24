@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017-2018 Norwegian University of Technology
+ * Copyright 2017-2020 Norwegian University of Technology
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,22 +22,22 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMI4CPP_DEFAULTEXPERIMENT_HPP
-#define FMI4CPP_DEFAULTEXPERIMENT_HPP
+#ifndef FMI4CPP_DLL_HANDLE_HPP
+#define FMI4CPP_DLL_HANDLE_HPP
 
-#include <optional>
+#if defined(_MSC_VER) || defined(WIN32) || defined(__MINGW32__)
+#    define WIN32_LEAN_AND_MEAN
+#    include <windows.h>
+#    define DLL_HANDLE HMODULE
+#else
+#    define DLL_HANDLE void*
+#    include <dlfcn.h>
+#endif
 
-namespace fmi4cpp::fmi2
-{
+#ifdef WIN32
+#    define function_ptr FARPROC
+#else
+typedef void* function_ptr;
+#endif
 
-struct default_experiment
-{
-    std::optional<double> startTime;
-    std::optional<double> stopTime;
-    std::optional<double> stepSize;
-    std::optional<double> tolerance;
-};
-
-} // namespace fmi4cpp::fmi2
-
-#endif //FMI4CPP_DEFAULTEXPERIMENT_HPP
+#endif //FMI4CPP_DLL_HANDLE_HPP

@@ -25,7 +25,6 @@
 #ifndef MLOG_HPP
 #define MLOG_HPP
 
-
 #include <chrono>
 #include <ctime>
 #include <iostream>
@@ -109,7 +108,6 @@ mlog_level M_LOG_LEVEL = Info;
 #    define MLOG_FATAL(msg)
 
 #endif
-
 
 } // namespace
 

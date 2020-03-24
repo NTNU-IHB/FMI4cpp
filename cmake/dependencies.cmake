@@ -1,6 +1,4 @@
 
-set(Boost_COMPONENTS filesystem)
-
 if (FMI4CPP_BUILD_TESTS)
     list(APPEND Boost_COMPONENTS unit_test_framework)
 endif()

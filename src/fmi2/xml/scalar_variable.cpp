@@ -28,32 +28,36 @@
 using namespace fmi4cpp;
 using namespace fmi4cpp::fmi2;
 
-
-scalar_variable::scalar_variable(const scalar_variable_base& base,
+scalar_variable::scalar_variable(
+    const scalar_variable_base& base,
     const integer_attribute& integer)
     : scalar_variable_base(base)
     , integer_(integer)
 {}
 
-scalar_variable::scalar_variable(const scalar_variable_base& base,
+scalar_variable::scalar_variable(
+    const scalar_variable_base& base,
     const real_attribute& real)
     : scalar_variable_base(base)
     , real_(real)
 {}
 
-scalar_variable::scalar_variable(const scalar_variable_base& base,
+scalar_variable::scalar_variable(
+    const scalar_variable_base& base,
     const string_attribute& string)
     : scalar_variable_base(base)
     , string_(string)
 {}
 
-scalar_variable::scalar_variable(const scalar_variable_base& base,
+scalar_variable::scalar_variable(
+    const scalar_variable_base& base,
     const boolean_attribute& boolean)
     : scalar_variable_base(base)
     , boolean_(boolean)
 {}
 
-scalar_variable::scalar_variable(const scalar_variable_base& base,
+scalar_variable::scalar_variable(
+    const scalar_variable_base& base,
     const enumeration_attribute& enumeration)
     : scalar_variable_base(base)
     , enumeration_(enumeration)
@@ -62,27 +66,27 @@ scalar_variable::scalar_variable(const scalar_variable_base& base,
 
 bool scalar_variable::is_integer() const
 {
-    return integer_.is_initialized();
+    return integer_.has_value();
 }
 
 bool scalar_variable::is_real() const
 {
-    return real_.is_initialized();
+    return real_.has_value();
 }
 
 bool scalar_variable::is_string() const
 {
-    return string_.is_initialized();
+    return string_.has_value();
 }
 
 bool scalar_variable::is_boolean() const
 {
-    return boolean_.is_initialized();
+    return boolean_.has_value();
 }
 
 bool scalar_variable::is_enumeration() const
 {
-    return enumeration_.is_initialized();
+    return enumeration_.has_value();
 }
 
 integer_variable scalar_variable::as_integer() const
@@ -128,7 +132,9 @@ std::string scalar_variable::type_name() const
 }
 
 
-integer_variable::integer_variable(const scalar_variable& variable, const integer_attribute& attribute)
+integer_variable::integer_variable(
+    const scalar_variable& variable,
+    const integer_attribute& attribute)
     : bounded_scalar_variable(variable, attribute)
 {}
 
@@ -142,26 +148,28 @@ bool integer_variable::write(fmu_writer& writer, int value)
     return writer.write_integer(valueReference(), value);
 }
 
-real_variable::real_variable(const scalar_variable& variable, const real_attribute& attribute)
+real_variable::real_variable(
+    const scalar_variable& variable,
+    const real_attribute& attribute)
     : bounded_scalar_variable(variable, attribute)
 {}
 
-boost::optional<std::string> real_variable::displayUnit() const
+std::optional<std::string> real_variable::displayUnit() const
 {
     return attribute_.display_unit;
 }
 
-boost::optional<std::string> real_variable::unit() const
+std::optional<std::string> real_variable::unit() const
 {
     return attribute_.unit;
 }
 
-boost::optional<unsigned int> real_variable::derivative() const
+std::optional<unsigned int> real_variable::derivative() const
 {
     return attribute_.derivative;
 }
 
-boost::optional<double> real_variable::nominal() const
+std::optional<double> real_variable::nominal() const
 {
     return attribute_.nominal;
 }
@@ -192,9 +200,10 @@ bool real_variable::write(fmu_writer& writer, double value)
 }
 
 
-string_variable::string_variable(const scalar_variable& variable, const string_attribute& attribute)
-    : typed_scalar_variable(
-          variable, attribute)
+string_variable::string_variable(
+    const scalar_variable& variable,
+    const string_attribute& attribute)
+    : typed_scalar_variable(variable, attribute)
 {}
 
 bool string_variable::read(fmu_reader& reader, std::string& ref)
@@ -211,7 +220,9 @@ bool string_variable::write(fmu_writer& writer, std::string value)
 }
 
 
-boolean_variable::boolean_variable(const scalar_variable& variable, const boolean_attribute& attribute)
+boolean_variable::boolean_variable(
+    const scalar_variable& variable,
+    const boolean_attribute& attribute)
     : typed_scalar_variable(variable, attribute)
 {}
 
@@ -229,7 +240,9 @@ bool boolean_variable::write(fmu_writer& writer, bool value)
 }
 
 
-enumeration_variable::enumeration_variable(const scalar_variable& variable, const enumeration_attribute& attribute)
+enumeration_variable::enumeration_variable(
+    const scalar_variable& variable,
+    const enumeration_attribute& attribute)
     : typed_scalar_variable(variable, attribute)
 {}
 

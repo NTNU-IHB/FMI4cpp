@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017-2018 Norwegian University of Technology
+ * Copyright 2017-2020 Norwegian University of Technology
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,22 +22,21 @@
  * THE SOFTWARE.
  */
 
-#ifndef FMI4CPP_DEFAULTEXPERIMENT_HPP
-#define FMI4CPP_DEFAULTEXPERIMENT_HPP
+#ifndef FMI4CPP_FS_PORTABILITY_HPP
+#define FMI4CPP_FS_PORTABILITY_HPP
 
-#include <optional>
-
-namespace fmi4cpp::fmi2
+#if __has_include(<filesystem>)
+#    include <filesystem>
+namespace fmi4cpp
 {
-
-struct default_experiment
+namespace fs = std::filesystem;
+}
+#else
+#    include <experimental/filesystem>
+namespace fmi4cpp
 {
-    std::optional<double> startTime;
-    std::optional<double> stopTime;
-    std::optional<double> stepSize;
-    std::optional<double> tolerance;
-};
+namespace fs = std::experimental::filesystem;
+}
+#endif
 
-} // namespace fmi4cpp::fmi2
-
-#endif //FMI4CPP_DEFAULTEXPERIMENT_HPP
+#endif //FMI4CPP_FS_PORTABILITY_HPP

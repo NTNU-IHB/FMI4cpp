@@ -45,9 +45,10 @@ fmi2ValueReference model_description_base::get_value_reference(const std::string
     return model_variables->getByName(name).value_reference;
 }
 
-model_description::model_description(const model_description_base& base,
-    boost::optional<cs_attributes> coSimulation,
-    boost::optional<me_attributes> modelExchange)
+model_description::model_description(
+    const model_description_base& base,
+    std::optional<cs_attributes> coSimulation,
+    std::optional<me_attributes> modelExchange)
     : model_description_base(base)
     , coSimulation_(std::move(coSimulation))
     , modelExchange_(std::move(modelExchange))
@@ -55,12 +56,12 @@ model_description::model_description(const model_description_base& base,
 
 bool model_description::supports_cs() const
 {
-    return coSimulation_.is_initialized();
+    return coSimulation_.has_value();
 }
 
 bool model_description::supports_me() const
 {
-    return modelExchange_.is_initialized();
+    return modelExchange_.has_value();
 }
 
 std::unique_ptr<const cs_model_description> model_description::as_cs_description() const

@@ -24,22 +24,19 @@
 
 #include <fmi4cpp/fmi2/fmu.hpp>
 #include <fmi4cpp/fmi2/xml/model_description_parser.hpp>
+#include <fmi4cpp/fs_portability.hpp>
 #include <fmi4cpp/mlog.hpp>
 #include <fmi4cpp/tools/os_util.hpp>
 #include <fmi4cpp/tools/simple_id.hpp>
 #include <fmi4cpp/tools/unzipper.hpp>
 
-#include <boost/filesystem.hpp>
-
 #include <utility>
 
+using namespace fmi4cpp;
 using namespace fmi4cpp::fmi2;
-
-namespace fs = boost::filesystem;
 
 fmu::fmu(const std::string& fmuPath)
 {
-
     MLOG_DEBUG("Loading FMU '" << fmuPath << "'");
 
     const std::string fmuName = fs::path(fmuPath).stem().string();
