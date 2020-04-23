@@ -61,6 +61,9 @@ bool unzip(const std::string& zip_file, const std::string& tmp_path)
             if (sb.size == 0) {
                 fmi4cpp::fs::create_directories(newFile);
             } else {
+                std::string containingDirectory = fmi4cpp::fs::path{newFile}.parent_path().string();
+
+                fmi4cpp::fs::create_directories(containingDirectory);
                 zf = zip_fopen_index(za, i, 0);
 
                 std::ofstream file;
