@@ -46,21 +46,24 @@ bool unzip(const std::string& zip_file, const std::string& tmp_path)
     }
 
     struct zip_file* zf;
-    struct zip_stat sb
-    {
-    };
+    struct zip_stat sb{};
 
     const int bufferSize = 1000;
     char* contents = (char*)malloc(sizeof(char) * bufferSize);
-    zip_int64_t sum, len;
+    zip_int64_t sum;
+    zip_int64_t len;
     for (int i = 0; i < zip_get_num_entries(za, 0); i++) {
         if (zip_stat_index(za, i, 0, &sb) == 0) {
 
-            std::string newFile = tmp_path + "/" + sb.name;
+            const std::string newFile = tmp_path + "/" + sb.name;
 
             if (sb.size == 0) {
                 fmi4cpp::fs::create_directories(newFile);
             } else {
+                const auto containingDirectory = fmi4cpp::fs::path{newFile}.parent_path();
+                if (!fmi4cpp::fs::exists(containingDirectory) && !fmi4cpp::fs::create_directories(containingDirectory)) {
+                    return false;
+                }
                 zf = zip_fopen_index(za, i, 0);
 
                 std::ofstream file;
