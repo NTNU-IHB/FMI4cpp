@@ -24,7 +24,6 @@
 
 #include <fmi4cpp/fmi2/xml/cs_model_description.hpp>
 #include <fmi4cpp/fmi2/xml/me_model_description.hpp>
-#include <fmi4cpp/fmi2/xml/model_description.hpp>
 
 #include <utility>
 #include <stdexcept>
