@@ -27,6 +27,7 @@
 #include <fmi4cpp/fmi2/xml/model_description.hpp>
 
 #include <utility>
+#include <stdexcept>
 
 using namespace fmi4cpp::fmi2;
 
