@@ -1,14 +1,14 @@
 [requires]
-boost/1.66.0@conan/stable
-libzip/1.5.2@bincrafters/stable
-bzip2/1.0.8
-zlib/1.2.11
+boost/1.71.0
+libzip/1.7.3
 
 [generators]
 cmake
 
 [options]
 boost:shared=True
+libzip:shared=True
 
 [imports]
 bin, *.dll -> ./bin
+lib, *.dll -> ./bin
