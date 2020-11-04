@@ -1,3 +1,8 @@
+cmake_minimum_required(VERSION 3.10)
+file(STRINGS "${CMAKE_SOURCE_DIR}/version.txt" projectVersion)
+project(fmi4cpp VERSION  ${projectVersion})
+message("Current fmi4cpp version: ${CMAKE_PROJECT_VERSION}\n")
+
 
 option(FMI4CPP_BUILD_TESTS "Build tests" OFF)
 option(FMI4CPP_BUILD_EXAMPLES "Build examples" OFF)
@@ -7,10 +12,6 @@ option(BUILD_SHARED_LIBS "Build shared libraries instead of static libraries" ON
 set(FMI4CPP_LOG_LEVEL "DEFAULT" CACHE STRING "FMI4cpp logging level")
 set(FMI4CPP_LOG_LEVEL_VALUES "DEFAULT;OFF;TRACE;DEBUG;INFO;WARN;ERROR;FATAL" CACHE STRING "List of possible log levels")
 set_property(CACHE FMI4CPP_LOG_LEVEL PROPERTY STRINGS ${FMI4CPP_LOG_LEVEL_VALUES})
-
-cmake_minimum_required(VERSION 3.10)
-project(fmi4cpp
-        VERSION 0.8.0)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
