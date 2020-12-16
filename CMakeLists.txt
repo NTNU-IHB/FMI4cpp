@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-file(STRINGS "${CMAKE_SOURCE_DIR}/version.txt" projectVersion)
+file(STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/version.txt" projectVersion)
 project(fmi4cpp VERSION ${projectVersion})
 message("Current fmi4cpp version: ${projectVersion}\n")
 
