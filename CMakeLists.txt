@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 file(STRINGS "${CMAKE_SOURCE_DIR}/version.txt" projectVersion)
-project(fmi4cpp VERSION  ${projectVersion})
-message("Current fmi4cpp version: ${CMAKE_PROJECT_VERSION}\n")
+project(fmi4cpp VERSION ${projectVersion})
+message("Current fmi4cpp version: ${projectVersion}\n")
 
 
 option(FMI4CPP_BUILD_TESTS "Build tests" OFF)
