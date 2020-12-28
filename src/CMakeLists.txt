@@ -120,6 +120,10 @@ target_link_libraries(fmi4cpp
         Boost::boost
 )
 
+if(WIN32)
+    target_link_libraries(fmi4cpp PUBLIC "Bcrypt")
+endif()
+
 if (UNIX)
     target_link_libraries(fmi4cpp PRIVATE stdc++fs dl)
 endif()
