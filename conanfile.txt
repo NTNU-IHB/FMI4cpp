@@ -7,7 +7,6 @@ cmake
 
 [options]
 boost:shared=True
-libzip:shared=True
 
 [imports]
 bin, *.dll -> ./bin
