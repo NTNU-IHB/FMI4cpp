@@ -11,7 +11,6 @@
 #
 cmake_minimum_required (VERSION 3.0.0)
 
-find_package(ZLIB REQUIRED)
 find_package(BZip2 QUIET) # optional package - used when building using conan
 find_package(OpenSSL COMPONENTS Crypto SSL QUIET) # optional package - used when building using conan on linux
 find_package(ZLIB QUIET) # optional package - used when building using conan
