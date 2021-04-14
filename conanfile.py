@@ -8,6 +8,7 @@ class FMI4cppConan(ConanFile):
     name = "fmi4cpp"
     author = "NTNU Aalesund"
     exports = "version.txt"
+    license = "MIT"
     scm = {
         "type": "git",
         "url": "auto",
@@ -24,10 +25,10 @@ class FMI4cppConan(ConanFile):
         "shared": [True, False]
     }
 
-    default_options = (
-        "shared=True",
-        "boost:shared=True"
-    )
+    default_options = {
+        "shared": True,
+        "boost:shared": True
+    }
 
     def set_version(self):
         self.version = tools.load(path.join(self.recipe_folder, "version.txt")).strip()
