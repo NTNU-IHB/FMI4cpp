@@ -101,9 +101,6 @@ public:
         return attribute_;
     }
 
-    virtual bool read(fmu_reader& reader, T& ref) = 0;
-
-    virtual bool write(fmu_writer& writer, T value) = 0;
 };
 
 template<typename T, typename U>
@@ -138,9 +135,6 @@ public:
     integer_variable(
         const scalar_variable& variable,
         const integer_attribute& attribute);
-
-    bool read(fmu_reader& reader, int& ref) override;
-    bool write(fmu_writer& writer, int value) override;
 };
 
 class real_variable : public bounded_scalar_variable<double, real_attribute>
@@ -159,9 +153,6 @@ public:
     [[nodiscard]] std::optional<unsigned int> derivative() const;
     [[nodiscard]] std::optional<std::string> unit() const;
     [[nodiscard]] std::optional<std::string> displayUnit() const;
-
-    bool read(fmu_reader& reader, double& ref) override;
-    bool write(fmu_writer& writer, double value) override;
 };
 
 
@@ -172,9 +163,6 @@ public:
     string_variable(
         const scalar_variable& variable,
         const string_attribute& attribute);
-
-    bool read(fmu_reader& reader, std::string& ref) override;
-    bool write(fmu_writer& writer, std::string value) override;
 };
 
 class boolean_variable : public typed_scalar_variable<bool, boolean_attribute>
@@ -184,9 +172,6 @@ public:
     boolean_variable(
         const scalar_variable& variable,
         const boolean_attribute& attribute);
-
-    bool read(fmu_reader& reader, bool& ref) override;
-    bool write(fmu_writer& writer, bool value) override;
 };
 
 class enumeration_variable : public typed_scalar_variable<int, enumeration_attribute>
@@ -196,9 +181,6 @@ public:
     enumeration_variable(
         const scalar_variable& variable,
         const enumeration_attribute& attribute);
-
-    bool read(fmu_reader& reader, int& ref) override;
-    bool write(fmu_writer& writer, int value) override;
 };
 
 

@@ -138,15 +138,6 @@ integer_variable::integer_variable(
     : bounded_scalar_variable(variable, attribute)
 {}
 
-bool integer_variable::read(fmu_reader& reader, int& ref)
-{
-    return reader.read_integer(valueReference(), ref);
-}
-
-bool integer_variable::write(fmu_writer& writer, int value)
-{
-    return writer.write_integer(valueReference(), value);
-}
 
 real_variable::real_variable(
     const scalar_variable& variable,
@@ -189,35 +180,12 @@ bool real_variable::reinit() const
     return attribute_.reinit;
 }
 
-bool real_variable::read(fmu_reader& reader, double& ref)
-{
-    return reader.read_real(valueReference(), ref);
-}
-
-bool real_variable::write(fmu_writer& writer, double value)
-{
-    return writer.write_real(valueReference(), value);
-}
-
 
 string_variable::string_variable(
     const scalar_variable& variable,
     const string_attribute& attribute)
     : typed_scalar_variable(variable, attribute)
 {}
-
-bool string_variable::read(fmu_reader& reader, std::string& ref)
-{
-    fmi2String str;
-    auto status = reader.read_string(valueReference(), str);
-    ref = str;
-    return status;
-}
-
-bool string_variable::write(fmu_writer& writer, std::string value)
-{
-    return writer.write_string(valueReference(), value.c_str());
-}
 
 
 boolean_variable::boolean_variable(
@@ -226,35 +194,12 @@ boolean_variable::boolean_variable(
     : typed_scalar_variable(variable, attribute)
 {}
 
-bool boolean_variable::read(fmu_reader& reader, bool& ref)
-{
-    fmi2Boolean _ref;
-    auto status = reader.read_boolean(valueReference(), _ref);
-    ref = _ref != 0;
-    return status;
-}
-
-bool boolean_variable::write(fmu_writer& writer, bool value)
-{
-    return writer.write_boolean(valueReference(), value);
-}
-
 
 enumeration_variable::enumeration_variable(
     const scalar_variable& variable,
     const enumeration_attribute& attribute)
     : typed_scalar_variable(variable, attribute)
 {}
-
-bool enumeration_variable::read(fmu_reader& reader, int& ref)
-{
-    return reader.read_integer(valueReference(), ref);
-}
-
-bool enumeration_variable::write(fmu_writer& writer, int value)
-{
-    return writer.write_integer(valueReference(), value);
-}
 
 
 integer_attribute::integer_attribute(const bounded_scalar_variable_attribute<int>& attributes)

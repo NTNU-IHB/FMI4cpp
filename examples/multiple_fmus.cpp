@@ -33,15 +33,19 @@ int main()
     slave2->step(1E-4);
 
     double ref;
-    auto var = md1->get_variable_by_name("MotorDiskRev").as_real();
-    assert(var.valueReference() == 105);
-    var.read(*slave1, ref);
-    std::cout << "MotorDiskRev=" << ref << std::endl;
+    {
+        auto vr = md1->get_variable_by_name("MotorDiskRev").value_reference;
+        assert(vr == 105);
+        slave1->read_real(vr, ref);
+        std::cout << "MotorDiskRev=" << ref << std::endl;
+    }
 
-    auto vr = md2->get_value_reference("Temperature_Room");
-    assert(vr == 47);
-    slave2->read_real(vr, ref);
-    std::cout << "Temperature_Room=" << ref << std::endl;
+    {
+        auto vr = md2->get_value_reference("Temperature_Room");
+        assert(vr == 47);
+        slave2->read_real(vr, ref);
+        std::cout << "Temperature_Room=" << ref << std::endl;
+    }
 
     slave1->terminate();
     slave2->terminate();
