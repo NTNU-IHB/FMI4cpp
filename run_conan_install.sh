@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-conan remote add bincrafters "https://api.bintray.com/conan/bincrafters/public-conan" --f
-
 unameOut="$(uname -s)"
 case "${unameOut}" in
 
