@@ -9,7 +9,6 @@
 #    LIBZIP_LIBRARIES       - Contains "libzip::libzip"
 #    LIBZIP_LIBRARY         - Path to static/import library file.
 #
-cmake_minimum_required (VERSION 3.0.0)
 
 find_package(BZip2 QUIET) # optional package - used when building using conan
 find_package(OpenSSL COMPONENTS Crypto SSL QUIET) # optional package - used when building using conan on linux
