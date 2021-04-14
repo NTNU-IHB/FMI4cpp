@@ -7,6 +7,4 @@ FMI4cpp can be installed using the `conan` package manager, simply run
 conan create . 
 ```
 
-----
-
 Additionally, you can use it as a submodule in your own CMake project.
