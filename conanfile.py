@@ -15,7 +15,7 @@ class FMI4cppConan(ConanFile):
         "revision": "auto"
     }
     settings = "os", "compiler", "build_type", "arch"
-    generators = "cmake", "virtualrunenv"
+    generators = "cmake"
     requires = (
         "boost/1.71.0",
         "libzip/1.7.3"
@@ -34,10 +34,9 @@ class FMI4cppConan(ConanFile):
         self.version = tools.load(path.join(self.recipe_folder, "version.txt")).strip()
 
     def imports(self):
-        binDir = os.path.join("output", str(self.settings.build_type).lower(), "bin")
-        self.copy("*.dll", dst=binDir, src="lib", keep_path=False)
-        self.copy("*.dll", dst=binDir, keep_path=False)
-        self.copy("*.pdb", dst=binDir, keep_path=False)
+        self.copy("*.dll", dst="bin", src="lib", keep_path=False)
+        self.copy("*.dll", dst="bin", keep_path=False)
+        self.copy("*.pdb", dst="bin", keep_path=False)
 
     def configure_cmake(self):
         cmake = CMake(self)
