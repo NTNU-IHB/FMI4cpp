@@ -39,7 +39,7 @@ set(publicHeaders
     "fmi4cpp/fmi2/xml/fmu_attributes.hpp"
     "fmi4cpp/fmi2/xml/model_structure.hpp"
     "fmi4cpp/fmi2/xml/model_description.hpp"
-    "fmi4cpp/fmi2/xml/specific_model_description"
+    "fmi4cpp/fmi2/xml/specific_model_description.hpp"
     "fmi4cpp/fmi2/xml/me_model_description.hpp"
     "fmi4cpp/fmi2/xml/cs_model_description.hpp"
     "fmi4cpp/fmi2/xml/model_description_parser.hpp"
