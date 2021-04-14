@@ -42,7 +42,7 @@ class FMI4cppConan(ConanFile):
     def configure_cmake(self):
         cmake = CMake(self)
         cmake.definitions["FMI4CPP_USING_CONAN"] = "ON"
-        cmake.definitions["BUILD_SHARED_LIBS"] = self.options.shared
+        cmake.definitions["BUILD_SHARED_LIBS"] = "ON" if self.options.shared else "OFF"
         cmake.configure()
         return cmake
 
