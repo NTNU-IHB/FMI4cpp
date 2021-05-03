@@ -1,81 +1,97 @@
 
-name: Conan
+name: FMI4cpp CI
 
-on: [push]
+on: [push, workflow_dispatch]
 
 jobs:
-  build:
+  conan-on-linux:
 
     runs-on: ${{ matrix.os }}
+    env:
+      CC: gcc-${{ matrix.compiler_version }}
+      CXX: g++-${{ matrix.compiler_version }}
     strategy:
+      fail-fast: false
       matrix:
-        os: [ubuntu-18.04, windows-2016]
+        os: [ubuntu-18.04]
+        compiler_version: [7, 8, 9]
 
     steps:
     - uses: actions/checkout@v2
 
-    - uses: actions/setup-python@v1
-      with:
-        python-version: '3.x'
-
-    - name: Install tools (Linux)
-      if: startsWith(runner.os, 'Linux')
+    - name: Install prerequisites
       run: |
-        sudo apt-get install python3-setuptools python3-wheel python3-pip
-      shell: bash
+        sudo apt-get install -y g++-8
+        sudo pip3 install --upgrade setuptools pip
+        sudo pip3 install conan
 
-    - name: Install conan (Linux)
-      if: startsWith(runner.os, 'Linux')
+    - name: Run conan
       run: |
-        sudo pip3 install conan --upgrade
-      shell: bash
+        conan install . -s build_type=Release -s compiler.version=${{ matrix.compiler_version }} -s compiler.libcxx=libstdc++11 --install-folder=build
 
-    - name: Install conan (Windows)
-      if: startsWith(runner.os, 'Windows')
-      run: |
-        pip3 install conan --upgrade
-      shell: bash
-
-    - name: Setup conan remotes
-      run: |
-        conan remote add conan-center "https://conan.bintray.com" --f
-        conan remote add bincrafters "https://api.bintray.com/conan/bincrafters/public-conan" --f
-      shell: bash
-
-    - name: Run conan (Linux)
-      if: startsWith(runner.os, 'Linux')
-      run: |
-        conan install . -s build_type=Release -s compiler.libcxx=libstdc++11 --install-folder=build
-      shell: bash
-
-    - name: Run conan (Windows)
-      if: startsWith(runner.os, 'Windows')
-      run: |
-        conan install . -s build_type=Release --install-folder=build
-      shell: bash
-      
-    - name: Configure (Linux)
-      if: startsWith(runner.os, 'Linux')
+    - name: Configure and build
       run: |
         cmake -H. -Bbuild -DFMI4CPP_USING_CONAN=TRUE -DFMI4CPP_BUILD_TESTS=ON -DFMI4CPP_BUILD_EXAMPLES=ON
         cmake --build build
-      shell: bash
 
-    - name: Configure and build (Windows)
-      if: startsWith(runner.os, 'Windows')
-      run: |
-        cmake . -G "Visual Studio 15 2017 Win64" -Bbuild -DFMI4CPP_USING_CONAN=TRUE -DFMI4CPP_BUILD_TESTS=ON -DFMI4CPP_BUILD_EXAMPLES=ON
-        cmake --build build --config Release
-      shell: bash
-
-    - name: Test (Linux)
-      if: startsWith(runner.os, 'Linux')
+    - name: Test
       run: |
         cd build/tests && ctest
-      shell: bash
 
-    - name: Test (Windows)
-      if: startsWith(runner.os, 'Windows')
-      run: |
-        cd build/tests && ctest -C Release
-      shell: bash
+
+  conan-on-windows:
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-2016]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install prerequisites
+        run: |
+          pip3 install conan
+        shell: bash
+
+      - name: Run conan
+        run: |
+          conan install . -s build_type=Release --install-folder=build
+        shell: bash
+
+      - name: Configure and build
+        run: |
+          cmake . -G "Visual Studio 15 2017 Win64" -Bbuild -DFMI4CPP_USING_CONAN=TRUE -DFMI4CPP_BUILD_TESTS=ON -DFMI4CPP_BUILD_EXAMPLES=ON
+          cmake --build build --config Release
+        shell: bash
+
+      - name: Test
+        run: |
+          cd build/tests && ctest -C Release
+        shell: bash
+
+  cmake-on-linux:
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-18.04 ]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install prerequisites
+        run: |
+          sudo apt-get install -y --no-install-recommends \
+          gcc g++ cmake libzip-dev libboost-dev libboost-test-dev
+
+      - name: Configure and build
+        run: |
+          cmake -H. -Bbuild -DFMI4CPP_BUILD_TESTS=ON -DFMI4CPP_BUILD_EXAMPLES=ON
+          cmake --build build
+
+      - name: Test
+        run: |
+          cd build/tests && ctest
