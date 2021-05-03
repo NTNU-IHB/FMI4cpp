@@ -7,6 +7,9 @@ jobs:
   conan-on-linux:
 
     runs-on: ${{ matrix.os }}
+    env:
+      CC: gcc-${{ matrix.compiler_version }}
+      CXX: g++-${{ matrix.compiler_version }}
     strategy:
       fail-fast: false
       matrix:
@@ -40,6 +43,7 @@ jobs:
 
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os: [windows-2016]
 
@@ -67,3 +71,28 @@ jobs:
         run: |
           cd build/tests && ctest -C Release
         shell: bash
+
+  cmake-on-linux:
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-18.04 ]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install prerequisites
+        run: |
+          sudo apt-get install -y --no-install-recommends \
+          gcc g++ cmake libzip-dev libboost-dev libboost-test-dev
+
+      - name: Configure and build
+        run: |
+          cmake -H. -Bbuild -DFMI4CPP_BUILD_TESTS=ON -DFMI4CPP_BUILD_EXAMPLES=ON
+          cmake --build build
+
+          - name: Test
+            run: |
+              cd build/tests && ctest
