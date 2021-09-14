@@ -18,7 +18,7 @@ class FMI4cppConan(ConanFile):
     generators = "cmake"
     requires = (
         "boost/1.71.0",
-        "libzip/1.7.3"
+        "libzip/1.8.0"
     )
 
     options = {
