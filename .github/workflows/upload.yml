@@ -32,7 +32,6 @@ jobs:
       - name: Configure Conan
         run: |
           conan remote add ais https://ais.jfrog.io/artifactory/api/conan/ais-conan --force
-          conan remote add osp https://osp.jfrog.io/artifactory/api/conan/conan-local --force
       - name: Conan create
         run: |
           REFNAME="${GITHUB_REF#refs/*/}"
@@ -65,7 +64,6 @@ jobs:
       - name: Configure Conan
         run: |
           conan remote add ais https://ais.jfrog.io/artifactory/api/conan/ais-conan --force
-          conan remote add osp https://osp.jfrog.io/artifactory/api/conan/conan-local --force
       - name: Conan create
         shell: bash
         run: |
