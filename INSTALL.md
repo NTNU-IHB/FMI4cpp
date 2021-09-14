@@ -1,10 +1,15 @@
 
 ### INSTALL
 
-FMI4cpp can be installed using the `conan` package manager, simply run
+`fmi4cpp` is available through the conan remote ais:
 
-```bash
-conan create . 
-```
+`conan remote add ais https://ais.jfrog.io/artifactory/api/conan/ais-conan-local`
 
-Additionally, you can use it as a submodule in your own CMake project.
+Then add a dependency to: </br>
+`fmi4cpp/<version>@ais/stable` (stable channel -> releases) </br>
+`fmi4cpp/<version>@ais/testing` (development builds -> master) </br>
+`fmi4cpp/<version>@ais/testing-<branch>` (development builds -> branches)
+
+
+Additionally, you can of course build, include and link to it as any other 
+CMake project or include it as a subproject in your own CMake project.
