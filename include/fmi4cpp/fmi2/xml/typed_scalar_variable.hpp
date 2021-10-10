@@ -28,6 +28,8 @@
 #include <fmi4cpp/fmi2/xml/scalar_variable.hpp>
 #include <fmi4cpp/fmu_variable_accessor.hpp>
 
+#include <utility>
+
 
 namespace fmi4cpp::fmi2
 {
@@ -45,11 +47,11 @@ private:
 
 public:
     typed_scalar_variable(
-        const scalar_variable& variable,
+        scalar_variable variable,
         const U& attribute)
-        : variable_(variable)
+        : variable_(std::move(variable))
         , attribute_(attribute)
-    {}
+    { }
 
     [[nodiscard]] std::string name() const
     {
@@ -100,7 +102,6 @@ public:
     {
         return attribute_;
     }
-
 };
 
 template<typename T, typename U>
@@ -110,14 +111,26 @@ class bounded_scalar_variable : public typed_scalar_variable<T, U>
 public:
     bounded_scalar_variable(const scalar_variable& variable, const U& attribute)
         : typed_scalar_variable<T, U>(variable, attribute)
-    {}
+    { }
 
-    [[nodiscard]] std::optional<T> min() const
+#if !defined(_WIN32) || (defined(_WIN32) && defined(NOMINMAX))
+    [[deprecated("Use get_min() instead")]] [[nodiscard]] std::optional<T> min() const
     {
         return this->attribute_.min;
     }
 
-    [[nodiscard]] std::optional<T> max() const
+    [[deprecated("Use get_max() instead")]] [[nodiscard]] std::optional<T> max() const
+    {
+        return this->attribute_.max;
+    }
+#endif
+
+    [[nodiscard]] std::optional<T> get_min() const
+    {
+        return this->attribute_.min;
+    }
+
+    [[nodiscard]] std::optional<T> get_max() const
     {
         return this->attribute_.max;
     }
@@ -187,4 +200,4 @@ public:
 } // namespace fmi4cpp::fmi2
 
 
-#endif //FMI4CPP_TYPEDSCALARVARIABLE_HPP
+#endif // FMI4CPP_TYPEDSCALARVARIABLE_HPP
