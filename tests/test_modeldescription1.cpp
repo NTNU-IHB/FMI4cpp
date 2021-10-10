@@ -33,8 +33,8 @@ BOOST_AUTO_TEST_CASE(ControlledTemperature_test1)
 
     const fmi2::real_variable& heatCapacity1 = md->get_variable_by_name("HeatCapacity1.T0").as_real();
     BOOST_CHECK_EQUAL(1, heatCapacity1.valueReference());
-    BOOST_CHECK_EQUAL(false, heatCapacity1.min().has_value());
-    BOOST_CHECK_EQUAL(false, heatCapacity1.max().has_value());
+    BOOST_CHECK_EQUAL(false, heatCapacity1.get_min().has_value());
+    BOOST_CHECK_EQUAL(false, heatCapacity1.get_max().has_value());
     BOOST_CHECK_EQUAL(true, heatCapacity1.start().has_value());
     BOOST_CHECK_EQUAL(298.0, heatCapacity1.start().value());
     BOOST_CHECK_EQUAL("starting temperature", heatCapacity1.description());
