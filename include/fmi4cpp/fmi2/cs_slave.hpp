@@ -53,6 +53,7 @@ public:
 
     [[nodiscard]] std::shared_ptr<const cs_model_description> get_model_description() const override;
 
+    [[nodiscard]] DLL_HANDLE handle() const override;
     [[nodiscard]] status last_status() const override;
 
     bool setup_experiment(double start = 0, double stop = 0, double tolerance = 0) override;
