@@ -8,15 +8,15 @@
 
 FMI4cpp is a cross-platform [FMI](https://fmi-standard.org/) 2.0 implementation written in modern C++.
 
-Influenced by it's spiritual brother [FMI4j](https://github.com/NTNU-IHB/FMI4j), it aims to be
-an easy to install, easy to use, object oriented and fast FMI implementation for C++.    
+Influenced by its spiritual brother [FMI4j](https://github.com/NTNU-IHB/FMI4j), it aims to be
+an easy to install, easy to use, object-oriented and fast FMI implementation for C++.    
 
 FMI4cpp supports both **Co-simulation** and **Model Exchange**. <br/>
 
 ### Why should I use this over other C/C++ FMI Libraries
 
 Because it provides a clean, easy to use API and is easy to install.
-It perform just as good as FMI Library, provides more features and is significantly easier to both build and use.
+It performs just as good as FMI Library, provides more features and is significantly easier to both build and use.
 
 
 ## Install instructions
