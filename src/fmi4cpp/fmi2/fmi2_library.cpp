@@ -112,6 +112,11 @@ bool fmi2_library::update_status_and_return_true_if_ok(fmi2Status status)
     return status == fmi2OK;
 }
 
+DLL_HANDLE fmi2_library::handle() const
+{
+    return handle_;
+}
+
 fmi2Status fmi2_library::last_status() const
 {
     return lastStatus_;

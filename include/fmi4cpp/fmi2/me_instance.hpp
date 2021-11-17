@@ -46,6 +46,8 @@ public:
 
     bool new_discrete_states();
 
+    [[nodiscard]] DLL_HANDLE handle() const override;
+
     [[nodiscard]] fmi4cpp::status last_status() const override;
 };
 

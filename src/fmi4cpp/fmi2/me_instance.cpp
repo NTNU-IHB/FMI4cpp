@@ -11,6 +11,11 @@ me_instance::me_instance(fmi2Component c,
     : fmu_instance_base<me_library, me_model_description>(c, resource, library, modelDescription)
 {}
 
+DLL_HANDLE me_instance::handle() const
+{
+    return library_->handle();
+}
+
 fmi4cpp::status me_instance::last_status() const
 {
     return convert(library_->last_status());

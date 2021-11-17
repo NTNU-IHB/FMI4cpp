@@ -63,6 +63,7 @@ protected:
 public:
     fmi2_library(const std::string& modelIdentifier, const std::shared_ptr<fmu_resource>& resource);
 
+    [[nodiscard]] DLL_HANDLE handle() const;
     [[nodiscard]] fmi2Status last_status() const;
     [[nodiscard]] fmi2String get_version() const;
     [[nodiscard]] fmi2String get_types_platform() const;

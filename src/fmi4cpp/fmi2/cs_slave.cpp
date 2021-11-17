@@ -11,6 +11,11 @@ cs_slave::cs_slave(fmi2Component c,
     : fmu_instance_base<cs_library, cs_model_description>(c, resource, library, modelDescription)
 {}
 
+DLL_HANDLE cs_slave::handle() const
+{
+    return library_->handle();
+}
+
 fmi4cpp::status cs_slave::last_status() const
 {
     return convert(library_->last_status());

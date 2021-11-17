@@ -3,6 +3,7 @@
 #define FMI4CPP_FMUINSTANCE_HPP
 
 #include <fmi4cpp/fmu_variable_accessor.hpp>
+#include <fmi4cpp/dll_handle.hpp>
 #include <fmi4cpp/status.hpp>
 #include <fmi4cpp/types.hpp>
 
@@ -24,6 +25,8 @@ public:
     {
         return simulationTime_;
     }
+
+    [[nodiscard]] virtual DLL_HANDLE handle() const = 0;
 
     [[nodiscard]] virtual fmi4cpp::status last_status() const = 0;
 
