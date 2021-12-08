@@ -4,16 +4,7 @@ For building FMI4cpp, you are can use either `conan` or `apt-get` for getting th
 
 ##### conan
 
-Install [conan](https://conan.io/) and run `conan install`:
-
-```bash
-conan install . -s build_type=Debug --install-folder=cmake-build-debug
-conan install . -s build_type=Release --install-folder=cmake-build-release
-```
-
-On Linux you should add `-s compiler.libcxx=libstdc++11` to the command.
-
-When using conan, set `FMI4CPP_USING_CONAN=ON`.
+Install [conan](https://conan.io/) and run cmake with the option `FMI4CPP_USING_CONAN=ON`.
 
 ##### apt-get
 
