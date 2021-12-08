@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.15)
 file(STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/version.txt" projectVersion)
 project(fmi4cpp VERSION ${projectVersion})
 message("Current fmi4cpp version: ${projectVersion}\n")
@@ -24,13 +24,34 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE "Release")
+endif()
+
 if (FMI4CPP_USING_CONAN)
-  if (EXISTS ${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+  if(CONAN_EXPORTED) # in conan local cache
+    # standard conan installation, deps will be defined in conanfile.py
+    # and not necessary to call conan again, conan is already running
     include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
     conan_basic_setup()
-  else ()
-    message(FATAL_ERROR "The file conanbuildinfo.cmake doesn't exist, you have to run conan install first!")
-  endif ()
+  else()
+
+    include(cmake/conan.cmake)
+    conan_cmake_autodetect(settings)
+
+    set(shared False)
+    if(BUILD_SHARED_LIBS)
+      set(shared True)
+    endif()
+
+    conan_cmake_run(
+            CONANFILE conanfile.py
+            OPTIONS shared=${shared}
+            BUILD missing
+            SETTINGS ${settings}
+            BASIC_SETUP)
+
+  endif()
 endif ()
 
 if (MSVC)
