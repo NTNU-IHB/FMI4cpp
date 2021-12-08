@@ -1,7 +1,7 @@
 #include <fmi4cpp/fmi4cpp.hpp>
 
 #include <iostream>
-#include <time_util.hpp>
+#include "time_util.hpp"
 
 using namespace fmi4cpp;
 

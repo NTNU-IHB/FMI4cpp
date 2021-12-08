@@ -58,8 +58,8 @@ set(privateHeaders
 
     "fmi4cpp/fmi2/status_converter.hpp"
 
+    "fmi4cpp/tools/simple_id.hpp"
     "fmi4cpp/tools/os_util.hpp"
-    "fmi4cpp/tools/time_util.hpp"
     "fmi4cpp/tools/unzipper.hpp"
 
 )
