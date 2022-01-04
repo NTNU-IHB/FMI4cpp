@@ -31,8 +31,8 @@ public:
         std::shared_ptr<fmu_resource> resource,
         const std::shared_ptr<fmi_library>& library,
         const std::shared_ptr<const model_description>& modelDescription)
-        : c_(c)
-        , resource_(std::move(resource))
+        : resource_(std::move(resource))
+        , c_(c)
         , library_(library)
         , modelDescription_(modelDescription)
     {}
