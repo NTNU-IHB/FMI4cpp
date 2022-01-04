@@ -15,7 +15,7 @@ class model_variables
 {
 
 private:
-    const std::vector<scalar_variable> variables_;
+    const std::vector<scalar_variable> variables_ = {};
 
 public:
     model_variables();
