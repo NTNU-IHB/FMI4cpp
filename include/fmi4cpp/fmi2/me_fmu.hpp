@@ -26,7 +26,7 @@ public:
 
     [[nodiscard]] std::shared_ptr<const me_model_description> get_model_description() const override;
 
-    std::unique_ptr<me_instance> new_instance(bool visible = false, bool loggingOn = false);
+    std::unique_ptr<me_instance> new_instance(bool visible = false, bool loggingOn = false) override;
 };
 
 } // namespace fmi4cpp::fmi2
