@@ -138,7 +138,7 @@ install(FILES "${versionFile}" DESTINATION "${FMI4CPP_CMAKE_INSTALL_DIR}")
 
 # Install custom find modules
 install(FILES
-        ${CMAKE_SOURCE_DIR}/cmake/FindLIBZIP.cmake
+        ${PROJECT_SOURCE_DIR}/cmake/FindLIBZIP.cmake
         DESTINATION
         ${FMI4CPP_CMAKE_INSTALL_DIR}
         )
