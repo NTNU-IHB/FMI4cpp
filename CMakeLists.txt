@@ -61,10 +61,11 @@ if (MSVC)
   #https://docs.microsoft.com/en-us/cpp/error-messages/compiler-warnings/compiler-warning-level-3-c4996?view=vs-2017
 endif ()
 
+include(GNUInstallDirs)
 
-set(FMI4CPP_HEADER_INSTALL_DIR "include")
-set(FMI4CPP_CMAKE_INSTALL_DIR "share/${PROJECT_NAME}")
-set(FMI4CPP_DOC_INSTALL_DIR "share/doc/${PROJECT_NAME}")
+set(FMI4CPP_HEADER_INSTALL_DIR "${CMAKE_INSTALL_INCLUDEDIR}")
+set(FMI4CPP_CMAKE_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME}"  )
+set(FMI4CPP_DOC_INSTALL_DIR "${CMAKE_INSTALL_DOCDIR}")
 
 set(FMI4CPP_INSTALL_DESTINATIONS
         ARCHIVE DESTINATION "lib"
@@ -138,7 +139,7 @@ install(FILES "${versionFile}" DESTINATION "${FMI4CPP_CMAKE_INSTALL_DIR}")
 
 # Install custom find modules
 install(FILES
-        ${CMAKE_SOURCE_DIR}/cmake/FindLIBZIP.cmake
+        ${PROJECT_SOURCE_DIR}/cmake/FindLIBZIP.cmake
         DESTINATION
         ${FMI4CPP_CMAKE_INSTALL_DIR}
         )
