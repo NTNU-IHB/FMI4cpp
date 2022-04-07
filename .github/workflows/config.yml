@@ -45,7 +45,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-2016]
+        os: [windows-2019, windows-2022]
 
     steps:
       - uses: actions/checkout@v2
@@ -62,7 +62,7 @@ jobs:
 
       - name: Configure and build
         run: |
-          cmake . -G "Visual Studio 15 2017 Win64" -Bbuild -DFMI4CPP_USING_CONAN=TRUE -DFMI4CPP_BUILD_TESTS=ON -DFMI4CPP_BUILD_EXAMPLES=ON
+          cmake . -B build -A x64 -DFMI4CPP_USING_CONAN=TRUE -DFMI4CPP_BUILD_TESTS=ON -DFMI4CPP_BUILD_EXAMPLES=ON
           cmake --build build --config Release
         shell: bash
 
