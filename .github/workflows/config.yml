@@ -14,14 +14,13 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-18.04]
-        compiler_version: [7, 8, 9]
+        compiler_version: [7, 9]
 
     steps:
     - uses: actions/checkout@v2
 
     - name: Install prerequisites
       run: |
-        sudo apt-get install -y g++-8
         sudo pip3 install --upgrade setuptools pip
         sudo pip3 install conan
 
@@ -45,7 +44,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-2016]
+        os: [windows-2019]
 
     steps:
       - uses: actions/checkout@v2
@@ -57,12 +56,12 @@ jobs:
 
       - name: Run conan
         run: |
-          conan install . -s build_type=Release --install-folder=build
+          conan install . -s build_type=Release --install-folder=build -b missing
         shell: bash
 
       - name: Configure and build
         run: |
-          cmake . -G "Visual Studio 15 2017 Win64" -Bbuild -DFMI4CPP_USING_CONAN=TRUE -DFMI4CPP_BUILD_TESTS=ON -DFMI4CPP_BUILD_EXAMPLES=ON
+          cmake . -B build -A x64 -DFMI4CPP_USING_CONAN=TRUE -DFMI4CPP_BUILD_TESTS=ON -DFMI4CPP_BUILD_EXAMPLES=ON
           cmake --build build --config Release
         shell: bash
 
@@ -89,7 +88,7 @@ jobs:
 
       - name: Configure and build
         run: |
-          cmake -H. -Bbuild -DFMI4CPP_BUILD_TESTS=ON -DFMI4CPP_BUILD_EXAMPLES=ON
+          cmake . -B build -DFMI4CPP_BUILD_TESTS=ON -DFMI4CPP_BUILD_EXAMPLES=ON
           cmake --build build
 
       - name: Test
