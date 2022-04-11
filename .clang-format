@@ -28,7 +28,7 @@ IncludeBlocks: Regroup
 IncludeCategories:
   - Regex:      '^[<"]fmi4cpp[/.]'
     Priority:   20
-  - Regex:      '^[<"](boost|zip)[/.]'
+  - Regex:      '^[<"](boost|zip|catch2)[/.]'
     Priority:   30
   - Regex:      '^"'
     Priority:   10
