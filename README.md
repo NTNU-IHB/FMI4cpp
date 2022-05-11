@@ -86,7 +86,8 @@ int main()
 
 *** 
 
-Would you rather simulate or build FMUs in Java? Check out [FMI4j](https://github.com/NTNU-IHB/FMI4j)! <br>
+Would you rather simulate FMUs in Java? Check out [FMI4j](https://github.com/NTNU-IHB/FMI4j)! <br>
+Would you like to build JVM based FMUs? Check out [FMU4j](https://github.com/https://github.com/Vico-platform/FMU4j)! <br>
 Perhaps you want to build FMUs using plain Python? Check out [PythonFMU](https://github.com/NTNU-IHB/PythonFMU)! <br>
 Need to distribute your FMUs? [FMU-proxy](https://github.com/NTNU-IHB/FMU-proxy) to the rescue! 
 
