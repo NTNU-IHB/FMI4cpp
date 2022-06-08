@@ -11,8 +11,6 @@ using namespace fmi4cpp::fmi2;
 namespace
 {
 
-const char* DEFAULT_VARIABLE_NAMING_CONVENTION = "flat";
-
 void split(std::vector<std::string>& store, const std::string& target, char c)
 {
     std::string temp;
@@ -22,7 +20,6 @@ void split(std::vector<std::string>& store, const std::string& target, char c)
     while (std::getline(ss, temp, c)) {
         store.push_back(temp);
     }
-
 }
 
 
@@ -97,7 +94,6 @@ void parse_unknown_dependencies(const std::string& str, std::vector<unsigned int
         }
     }
 }
-
 
 unknown parse_unknown(const pugi::xml_node& node)
 {
@@ -258,15 +254,15 @@ scalar_variable parse_scalar_variable(const pugi::xml_node& node)
 
     for (const pugi::xml_node& v : node) {
         if (INTEGER_TYPE == v.name()) {
-            return scalar_variable(base, parse_integer_attribute(v));
+            return {base, parse_integer_attribute(v)};
         } else if (REAL_TYPE == v.name()) {
-            return scalar_variable(base, parse_real_attribute(v));
+            return {base, parse_real_attribute(v)};
         } else if (STRING_TYPE == v.name()) {
-            return scalar_variable(base, parse_string_attribute(v));
+            return {base, parse_string_attribute(v)};
         } else if (BOOLEAN_TYPE == v.name()) {
-            return scalar_variable(base, parse_boolean_attribute(v));
+            return {base, parse_boolean_attribute(v)};
         } else if (ENUMERATION_TYPE == v.name()) {
-            return scalar_variable(base, parseEnumerationAttribute(v));
+            return {base, parseEnumerationAttribute(v)};
         }
     }
 
@@ -310,7 +306,7 @@ std::unique_ptr<const model_description> fmi4cpp::fmi2::parse_model_description(
     base.generation_tool = root.attribute("generationTool").as_string();
     base.generation_date_and_time = root.attribute("generationDateAndTime").as_string();
     base.number_of_event_indicators = root.attribute("numberOfEventIndicators").as_ullong();
-    base.variable_naming_convention = root.attribute("variableNamingConvention").as_string(DEFAULT_VARIABLE_NAMING_CONVENTION);
+    base.variable_naming_convention = root.attribute("variableNamingConvention").as_string("flat");
 
     std::optional<cs_attributes> coSimulation;
     std::optional<me_attributes> modelExchange;
