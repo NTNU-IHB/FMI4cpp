@@ -54,9 +54,8 @@ set(privateHeaders
 
     "fmi4cpp/mlog.hpp"
     "fmi4cpp/library_helper.hpp"
-    "fmi4cpp/optional_converter.hpp"
 
-    "fmi4cpp/fmi2/status_converter.hpp"
+        "fmi4cpp/fmi2/status_converter.hpp"
 
     "fmi4cpp/tools/simple_id.hpp"
     "fmi4cpp/tools/os_util.hpp"
@@ -101,14 +100,13 @@ target_include_directories(fmi4cpp
         $<INSTALL_INTERFACE:include>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>
     PRIVATE
-        ${Boost_INCLUDE_DIRS}
         ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 target_link_libraries(fmi4cpp
     PRIVATE
+        pugixml
         libzip::libzip
-        Boost::boost
 )
 
 if(WIN32)

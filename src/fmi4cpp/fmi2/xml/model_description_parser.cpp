@@ -1,13 +1,11 @@
 
 #include <fmi4cpp/fmi2/xml/model_description_parser.hpp>
 #include <fmi4cpp/fmi2/xml/scalar_variable.hpp>
-#include <fmi4cpp/optional_converter.hpp>
 
-#include <boost/algorithm/string.hpp>
-#include <boost/property_tree/ptree.hpp>
-#include <boost/property_tree/xml_parser.hpp>
+#include <pugixml.hpp>
+#include <sstream>
+#include <stdexcept>
 
-using boost::property_tree::ptree;
 using namespace fmi4cpp::fmi2;
 
 namespace
@@ -15,28 +13,74 @@ namespace
 
 const char* DEFAULT_VARIABLE_NAMING_CONVENTION = "flat";
 
-default_experiment parse_default_experiment(const ptree& node)
+void split(std::vector<std::string>& store, const std::string& target, char c)
+{
+    std::string temp;
+    std::stringstream ss{target};
+    std::vector<std::string> result;
+
+    while (std::getline(ss, temp, c)) {
+        store.push_back(temp);
+    }
+
+}
+
+
+void parse_unknown_dependencies_kind(const std::string& str, std::vector<std::string>& store)
+{
+    split(store, str, ' ');
+}
+
+template<typename T>
+T parse_attribute(const pugi::xml_node& node, const std::string& name)
+{
+    if constexpr (std::is_same_v<T, int>) {
+        return node.attribute(name.c_str()).as_int();
+    } else if constexpr (std::is_same_v<T, unsigned int>) {
+        return node.attribute(name.c_str()).as_uint();
+    } else if constexpr (std::is_same_v<T, double>) {
+        return node.attribute(name.c_str()).as_double();
+    } else if constexpr (std::is_same_v<T, bool>) {
+        return node.attribute(name.c_str()).as_bool();
+    } else if constexpr (std::is_same_v<T, std::string>) {
+        return node.attribute(name.c_str()).as_string();
+    } else {
+        throw std::runtime_error("Unable to parse attribute: " + name);
+    }
+}
+
+template<typename T>
+std::optional<T> parse_optional_attribute(const pugi::xml_node& node, const std::string& name)
+{
+    if (node.attribute(name.c_str()).empty()) {
+        return std::nullopt;
+    }
+    return parse_attribute<T>(node, name);
+}
+
+
+default_experiment parse_default_experiment(const pugi::xml_node& node)
 {
     default_experiment ex;
-    ex.startTime = convert(node.get_optional<double>("<xmlattr>.startTime"));
-    ex.stopTime = convert(node.get_optional<double>("<xmlattr>.stopTime"));
-    ex.stepSize = convert(node.get_optional<double>("<xmlattr>.stepSize"));
-    ex.tolerance = convert(node.get_optional<double>("<xmlattr>.tolerance"));
+    ex.startTime = parse_optional_attribute<double>(node, "startTime");
+    ex.stopTime = parse_optional_attribute<double>(node, "stopTime");
+    ex.stepSize = parse_optional_attribute<double>(node, "stepSize");
+    ex.tolerance = parse_optional_attribute<double>(node, "tolerance");
     return ex;
 }
 
-source_file parse_file(const ptree& node)
+source_file parse_file(const pugi::xml_node& node)
 {
     source_file file;
-    file.name = node.get<std::string>("<xmlattr>.name");
+    file.name = node.attribute("name").as_string();
     return file;
 }
 
-void parse_source_files(const ptree& node, source_files& files)
+void parse_source_files(const pugi::xml_node& node, source_files& files)
 {
-    for (const ptree::value_type& v : node) {
-        if (v.first == "File") {
-            auto file = parse_file(v.second);
+    for (const pugi::xml_node& v : node) {
+        if (std::string("File") == v.name()) {
+            auto file = parse_file(v);
             files.push_back(file);
         }
     }
@@ -54,25 +98,21 @@ void parse_unknown_dependencies(const std::string& str, std::vector<unsigned int
     }
 }
 
-void parse_unknown_dependencies_kind(const std::string& str, std::vector<std::string>& store)
-{
-    boost::split(store, str, [](char c) { return c == ' '; });
-}
 
-unknown parse_unknown(const ptree& node)
+unknown parse_unknown(const pugi::xml_node& node)
 {
 
     unknown unknown;
-    unknown.index = node.get<unsigned int>("<xmlattr>.index");
+    unknown.index = node.attribute("index").as_uint();
 
-    auto optDependencies = node.get_optional<std::string>("<xmlattr>.dependencies");
+    auto optDependencies = parse_optional_attribute<std::string>(node, "dependencies");
     if (optDependencies) {
         std::vector<unsigned int> dependencies;
         parse_unknown_dependencies(*optDependencies, dependencies);
         unknown.dependencies = dependencies;
     }
 
-    auto optDependenciesKind = node.get_optional<std::string>("<xmlattr>.dependenciesKind");
+    auto optDependenciesKind = parse_optional_attribute<std::string>(node, "dependenciesKind");
     if (optDependenciesKind) {
         std::vector<std::string> dependenciesKind;
         parse_unknown_dependencies_kind(*optDependenciesKind, dependenciesKind);
@@ -82,167 +122,163 @@ unknown parse_unknown(const ptree& node)
     return unknown;
 }
 
-void load_unknowns(const ptree& node, std::vector<unknown>& vector)
+void load_unknowns(const pugi::xml_node& node, std::vector<unknown>& vector)
 {
-    for (const ptree::value_type& v : node) {
-        if (v.first == "Unknown") {
-            auto unknown = parse_unknown(v.second);
+    for (const pugi::xml_node& v : node) {
+        if (std::string("Unknown") == v.name()) {
+            auto unknown = parse_unknown(v);
             vector.push_back(unknown);
         }
     }
 }
 
-std::unique_ptr<const model_structure> parse_model_structure(const ptree& node)
+std::unique_ptr<const model_structure> parse_model_structure(const pugi::xml_node& node)
 {
 
     std::vector<unknown> outputs;
     std::vector<unknown> derivatives;
     std::vector<unknown> initial_unknowns;
 
-    for (const ptree::value_type& v : node) {
-        if (v.first == "Outputs") {
-            load_unknowns(v.second, outputs);
-        } else if (v.first == "Derivatives") {
-            load_unknowns(v.second, derivatives);
-        } else if (v.first == "InitialUnknowns") {
-            load_unknowns(v.second, initial_unknowns);
+    for (const pugi::xml_node& v : node) {
+        if (std::string("Outputs") == v.name()) {
+            load_unknowns(v, outputs);
+        } else if (std::string("Derivatives") == v.name()) {
+            load_unknowns(v, derivatives);
+        } else if (std::string("InitialUnknowns") == v.name()) {
+            load_unknowns(v, initial_unknowns);
         }
     }
 
     return std::make_unique<const model_structure>(outputs, derivatives, initial_unknowns);
 }
 
-fmu_attributes parse_fmu_attributes(const ptree& node)
+fmu_attributes parse_fmu_attributes(const pugi::xml_node& node)
 {
 
     fmu_attributes attributes;
 
-    attributes.model_identifier = node.get<std::string>("<xmlattr>.modelIdentifier");
-    attributes.needs_execution_tool = node.get<bool>("xmlattr>.needsExecutionTool", false);
-    attributes.can_get_and_set_fmu_state = node.get<bool>("xmlattr>.canGetAndSetFMUstate", false);
-    attributes.can_serialize_fmu_state = node.get<bool>("xmlattr>.canSerializeFMUstate", false);
-    attributes.provides_directional_derivative = node.get<bool>("xmlattr>.providesDirectionalDerivative", false);
-    attributes.can_not_use_memory_management_functions = node.get<bool>("xmlattr>.canNotUseMemoryManagementFunctions",
-        false);
-    attributes.can_be_instantiated_only_once_per_process = node.get<bool>("xmlattr>.canBeInstantiatedOnlyOncePerProcess",
-        false);
+    attributes.model_identifier = node.attribute("modelIdentifier").as_string();
+    attributes.needs_execution_tool = node.attribute("needsExecutionTool").as_bool();
+    attributes.can_get_and_set_fmu_state = node.attribute("canGetAndSetFMUstate").as_bool();
+    attributes.can_serialize_fmu_state = node.attribute("canSerializeFMUstate").as_bool();
+    attributes.provides_directional_derivative = node.attribute("providesDirectionalDerivative").as_bool();
+    attributes.can_not_use_memory_management_functions = node.attribute("canNotUseMemoryManagementFunctions").as_bool();
+    attributes.can_be_instantiated_only_once_per_process = node.attribute("canBeInstantiatedOnlyOncePerProcess").as_bool();
 
-    for (const ptree::value_type& v : node) {
-        if (v.first == "SourceFiles") {
-            parse_source_files(v.second, attributes.sourceFiles);
+    for (const pugi::xml_node& v : node) {
+        if (std::string("SourceFiles") == v.name()) {
+            parse_source_files(v, attributes.sourceFiles);
         }
     }
 
     return attributes;
 }
 
-cs_attributes parse_cs_attributes(const ptree& node)
+cs_attributes parse_cs_attributes(const pugi::xml_node& node)
 {
     cs_attributes attributes(parse_fmu_attributes(node));
-    attributes.max_output_derivative_order = node.get<unsigned int>("<xmlattr>.maxOutputDerivativeOrder", 0);
-    attributes.can_interpolate_inputs = node.get<bool>("<xmlattr>.canInterpolateInputs", false);
-    attributes.can_run_asynchronuously = node.get<bool>("<xmlattr>.canRunAsynchronuously", false);
-    attributes.can_handle_variable_communication_step_size = node.get<bool>(
-        "<xmlattr>.canHandleVariableCommunicationStepSize", false);
+    attributes.max_output_derivative_order = node.attribute("maxOutputDerivativeOrder").as_uint();
+    attributes.can_interpolate_inputs = node.attribute("canInterpolateInputs").as_bool();
+    attributes.can_run_asynchronuously = node.attribute("canRunAsynchronuously").as_bool();
+    attributes.can_handle_variable_communication_step_size = node.attribute("canHandleVariableCommunicationStepSize").as_bool();
     return attributes;
 }
 
-me_attributes parse_me_attributes(const ptree& node)
+me_attributes parse_me_attributes(const pugi::xml_node& node)
 {
     me_attributes attributes(parse_fmu_attributes(node));
-    attributes.completed_integrator_step_not_needed = node.get<bool>(
-        "<xmlattr>.completedIntegratorStepNotNeeded", false);
+    attributes.completed_integrator_step_not_needed = node.attribute("completedIntegratorStepNotNeeded").as_bool();
     return attributes;
 }
 
 template<typename T>
-scalar_variable_attribute<T> parse_scalar_variable_attributes(const ptree& node)
+scalar_variable_attribute<T> parse_scalar_variable_attributes(const pugi::xml_node& node)
 {
     scalar_variable_attribute<T> attributes;
-    attributes.start = convert(node.get_optional<T>("<xmlattr>.start"));
-    attributes.declared_type = convert(node.get_optional<std::string>("<xmlattr>.declaredType"));
+    attributes.start = parse_attribute<T>(node, "start");
+    attributes.declared_type = parse_optional_attribute<std::string>(node, "declaredType");
     return attributes;
 }
 
 template<typename T>
-bounded_scalar_variable_attribute<T> parse_bounded_scalar_variable_attributes(const ptree& node)
+bounded_scalar_variable_attribute<T> parse_bounded_scalar_variable_attributes(const pugi::xml_node& node)
 {
     bounded_scalar_variable_attribute<T> attributes(parse_scalar_variable_attributes<T>(node));
-    attributes.min = convert(node.get_optional<T>("<xmlattr>.min"));
-    attributes.max = convert(node.get_optional<T>("<xmlattr>.max"));
-    attributes.quantity = convert(node.get_optional<std::string>("<xmlattr>.quantity"));
+    attributes.min = parse_optional_attribute<T>(node, "min");
+    attributes.max = parse_optional_attribute<T>(node, "max");
+    attributes.quantity = parse_optional_attribute<std::string>(node, "quantity");
     return attributes;
 }
 
-integer_attribute parse_integer_attribute(const ptree& node)
+integer_attribute parse_integer_attribute(const pugi::xml_node& node)
 {
     return integer_attribute(parse_bounded_scalar_variable_attributes<int>(node));
 }
 
-real_attribute parse_real_attribute(const ptree& node)
+real_attribute parse_real_attribute(const pugi::xml_node& node)
 {
     real_attribute attributes(parse_bounded_scalar_variable_attributes<double>(node));
-    attributes.nominal = convert(node.get_optional<double>("<xmlattr>.nominal"));
-    attributes.unit = convert(node.get_optional<std::string>("<xmlattr>.unit"));
-    attributes.derivative = convert(node.get_optional<unsigned int>("<xmlattr>.derivative"));
-    attributes.reinit = node.get<bool>("<xmlattr>.reinit", false);
-    attributes.unbounded = node.get<bool>("<xmlattr>.unbounded", false);
-    attributes.relative_quantity = node.get<bool>("<xmlattr>.relativeQuantity", false);
+    attributes.nominal = parse_optional_attribute<double>(node, "nominal");
+    attributes.unit = parse_optional_attribute<std::string>(node, "unit");
+    attributes.derivative = parse_optional_attribute<unsigned int>(node, "derivative");
+    attributes.reinit = node.attribute("reinit").as_bool();
+    attributes.unbounded = node.attribute("<unbounded").as_bool();
+    attributes.relative_quantity = node.attribute("relativeQuantity").as_bool();
     return attributes;
 }
 
-string_attribute parse_string_attribute(const ptree& node)
+string_attribute parse_string_attribute(const pugi::xml_node& node)
 {
     return string_attribute(parse_scalar_variable_attributes<std::string>(node));
 }
 
-boolean_attribute parse_boolean_attribute(const ptree& node)
+boolean_attribute parse_boolean_attribute(const pugi::xml_node& node)
 {
     return boolean_attribute(parse_scalar_variable_attributes<bool>(node));
 }
 
-enumeration_attribute parseEnumerationAttribute(const ptree& node)
+enumeration_attribute parseEnumerationAttribute(const pugi::xml_node& node)
 {
     return enumeration_attribute(parse_bounded_scalar_variable_attributes<int>(node));
 }
 
 
-scalar_variable parse_scalar_variable(const ptree& node)
+scalar_variable parse_scalar_variable(const pugi::xml_node& node)
 {
     scalar_variable_base base;
 
-    base.name = node.get<std::string>("<xmlattr>.name");
-    base.description = node.get<std::string>("<xmlattr>.description", "");
-    base.value_reference = node.get<fmi2ValueReference>("<xmlattr>.valueReference");
-    base.can_handle_multiple_set_per_time_instant = node.get<bool>("<xmlattr>.canHandleMultipleSetPerTimelnstant", false);
+    base.name = node.attribute("name").as_string();
+    base.description = node.attribute("description").as_string();
+    base.value_reference = node.attribute("valueReference").as_uint();
+    base.can_handle_multiple_set_per_time_instant = node.attribute("canHandleMultipleSetPerTimelnstant").as_bool();
 
-    base.causality = parse_causality(node.get<std::string>("<xmlattr>.causality", ""));
-    base.variability = parse_variability(node.get<std::string>("<xmlattr>.variability", ""));
-    base.initial = parse_initial(node.get<std::string>("<xmlattr>.initial", ""));
+    base.causality = parse_causality(node.attribute("causality").as_string());
+    base.variability = parse_variability(node.attribute("variability").as_string());
+    base.initial = parse_initial(node.attribute("initial").as_string());
 
-    for (const ptree::value_type& v : node) {
-        if (v.first == INTEGER_TYPE) {
-            return scalar_variable(base, parse_integer_attribute(v.second));
-        } else if (v.first == REAL_TYPE) {
-            return scalar_variable(base, parse_real_attribute(v.second));
-        } else if (v.first == STRING_TYPE) {
-            return scalar_variable(base, parse_string_attribute(v.second));
-        } else if (v.first == BOOLEAN_TYPE) {
-            return scalar_variable(base, parse_boolean_attribute(v.second));
-        } else if (v.first == ENUMERATION_TYPE) {
-            return scalar_variable(base, parseEnumerationAttribute(v.second));
+    for (const pugi::xml_node& v : node) {
+        if (INTEGER_TYPE == v.name()) {
+            return scalar_variable(base, parse_integer_attribute(v));
+        } else if (REAL_TYPE == v.name()) {
+            return scalar_variable(base, parse_real_attribute(v));
+        } else if (STRING_TYPE == v.name()) {
+            return scalar_variable(base, parse_string_attribute(v));
+        } else if (BOOLEAN_TYPE == v.name()) {
+            return scalar_variable(base, parse_boolean_attribute(v));
+        } else if (ENUMERATION_TYPE == v.name()) {
+            return scalar_variable(base, parseEnumerationAttribute(v));
         }
     }
 
     throw std::runtime_error("FATAL: Failed to parse ScalarVariable!");
 }
 
-std::unique_ptr<const model_variables> parse_model_variables(const ptree& node)
+std::unique_ptr<const model_variables> parse_model_variables(const pugi::xml_node& node)
 {
     std::vector<scalar_variable> variables;
-    for (const ptree::value_type& v : node) {
-        if (v.first == "ScalarVariable") {
-            auto var = parse_scalar_variable(v.second);
+    for (const pugi::xml_node& v : node) {
+        if (std::string("ScalarVariable") == v.name()) {
+            auto var = parse_scalar_variable(v);
             variables.push_back(var);
         }
     }
@@ -254,40 +290,42 @@ std::unique_ptr<const model_variables> parse_model_variables(const ptree& node)
 std::unique_ptr<const model_description> fmi4cpp::fmi2::parse_model_description(const std::string& fileName)
 {
 
-    ptree tree;
-    read_xml(fileName, tree);
-    ptree root = tree.get_child("fmiModelDescription");
+    pugi::xml_document doc;
+    pugi::xml_parse_result result = doc.load_file(fileName.c_str());
+    if (!result) {
+        throw std::runtime_error("Unable to parse modelDescription.xml");
+    }
+    auto root = doc.child("fmiModelDescription");
 
     model_description_base base;
 
-    base.guid = root.get<std::string>("<xmlattr>.guid");
-    base.fmi_version = root.get<std::string>("<xmlattr>.fmiVersion");
-    base.model_name = root.get<std::string>("<xmlattr>.modelName");
-    base.description = root.get<std::string>("<xmlattr>.description", "");
-    base.author = root.get<std::string>("<xmlattr>.author", "");
-    base.version = root.get<std::string>("<xmlattr>.version", "");
-    base.license = root.get<std::string>("<xmlattr>.license", "");
-    base.copyright = root.get<std::string>("<xmlattr>.copyright", "");
-    base.generation_tool = root.get<std::string>("<xmlattr>.generationTool", "");
-    base.generation_date_and_time = root.get<std::string>("<xmlattr>.generationDateAndTime", "");
-    base.number_of_event_indicators = root.get<size_t>("<xmlattr>.numberOfEventIndicators", 0);
-    base.variable_naming_convention = root.get<std::string>("<xmlattr>.variableNamingConvention",
-        DEFAULT_VARIABLE_NAMING_CONVENTION);
+    base.guid = root.attribute("guid").as_string();
+    base.fmi_version = root.attribute("fmiVersion").as_string();
+    base.model_name = root.attribute("modelName").as_string();
+    base.description = root.attribute("description").as_string();
+    base.author = root.attribute("author").as_string();
+    base.version = root.attribute("version").as_string();
+    base.license = root.attribute("license").as_string();
+    base.copyright = root.attribute("copyright").as_string();
+    base.generation_tool = root.attribute("generationTool").as_string();
+    base.generation_date_and_time = root.attribute("generationDateAndTime").as_string();
+    base.number_of_event_indicators = root.attribute("numberOfEventIndicators").as_ullong();
+    base.variable_naming_convention = root.attribute("variableNamingConvention").as_string(DEFAULT_VARIABLE_NAMING_CONVENTION);
 
     std::optional<cs_attributes> coSimulation;
     std::optional<me_attributes> modelExchange;
 
-    for (const ptree::value_type& v : root) {
-        if (v.first == "CoSimulation") {
-            coSimulation = parse_cs_attributes(v.second);
-        } else if (v.first == "ModelExchange") {
-            modelExchange = parse_me_attributes(v.second);
-        } else if (v.first == "DefaultExperiment") {
-            base.default_experiment = parse_default_experiment(v.second);
-        } else if (v.first == "ModelVariables") {
-            base.model_variables = std::move(parse_model_variables(v.second));
-        } else if (v.first == "ModelStructure") {
-            base.model_structure = std::move(parse_model_structure(v.second));
+    for (const auto& v : root) {
+        if (std::string("CoSimulation") == v.name()) {
+            coSimulation = parse_cs_attributes(v);
+        } else if (std::string("ModelExchange") == v.name()) {
+            modelExchange = parse_me_attributes(v);
+        } else if (std::string("DefaultExperiment") == v.name()) {
+            base.default_experiment = parse_default_experiment(v);
+        } else if (std::string("ModelVariables") == v.name()) {
+            base.model_variables = std::move(parse_model_variables(v));
+        } else if (std::string("ModelStructure") == v.name()) {
+            base.model_structure = std::move(parse_model_structure(v));
         }
     }
 

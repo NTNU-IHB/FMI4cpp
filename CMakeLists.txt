@@ -78,8 +78,17 @@ set(FMI4CPP_EXPORT_TARGET "${PROJECT_NAME}-targets")
 # Dependencies
 # ==============================================================================
 
-find_package(Boost 1.65 REQUIRED)
 find_package(LIBZIP REQUIRED)
+
+Include(FetchContent)
+
+FetchContent_Declare(
+        pugixml
+        GIT_REPOSITORY https://github.com/zeux/pugixml.git
+        GIT_TAG        v1.12.1
+)
+
+FetchContent_MakeAvailable(pugixml)
 
 # ==============================================================================
 # Targets
@@ -88,7 +97,6 @@ find_package(LIBZIP REQUIRED)
 add_subdirectory(src)
 
 if (FMI4CPP_BUILD_TESTS)
-    Include(FetchContent)
 
     FetchContent_Declare(
             Catch2

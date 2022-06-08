@@ -84,7 +84,7 @@ jobs:
       - name: Install prerequisites
         run: |
           sudo apt-get install -y --no-install-recommends \
-          gcc g++ cmake libzip-dev libboost-dev libboost-test-dev
+          gcc g++ cmake libzip-dev
 
       - name: Configure and build
         run: |
