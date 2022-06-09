@@ -26,8 +26,7 @@ class FMI4cppConan(ConanFile):
     }
 
     default_options = {
-        "shared": True,
-        "boost:shared": True
+        "shared": True
     }
 
     def set_version(self):
