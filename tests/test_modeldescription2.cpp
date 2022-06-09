@@ -27,5 +27,7 @@ TEST_CASE("FmuExportCrossCompile_test1")
 
     CHECK(true == derivatives[0].dependencies.has_value());
     CHECK(2 == derivatives[0].dependencies.value()[0]);
+    REQUIRE(derivatives[0].dependencies_kind);
+    REQUIRE(1 == derivatives[0].dependencies_kind.value().size());
     CHECK("dependent" == derivatives[0].dependencies_kind.value()[0]);
 }
