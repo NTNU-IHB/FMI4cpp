@@ -1,7 +1,6 @@
-
 name: FMI4cpp CI
 
-on: [push, workflow_dispatch]
+on: [ push, workflow_dispatch ]
 
 jobs:
   conan-on-linux:
@@ -13,29 +12,29 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-18.04]
-        compiler_version: [7, 9]
+        os: [ ubuntu-18.04 ]
+        compiler_version: [ 7, 9 ]
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Install prerequisites
-      run: |
-        sudo pip3 install --upgrade setuptools pip
-        sudo pip3 install conan
+      - name: Install prerequisites
+        run: |
+          sudo pip3 install --upgrade setuptools pip
+          sudo pip3 install conan
 
-    - name: Run conan
-      run: |
-        conan install . -s build_type=Release -s compiler.version=${{ matrix.compiler_version }} -s compiler.libcxx=libstdc++11 --install-folder=build
+      - name: Run conan
+        run: |
+          conan install . -s build_type=Release -s compiler.version=${{ matrix.compiler_version }} -s compiler.libcxx=libstdc++11 --install-folder=build
 
-    - name: Configure and build
-      run: |
-        cmake -H. -Bbuild -DFMI4CPP_USING_CONAN=TRUE -DFMI4CPP_BUILD_TESTS=ON -DFMI4CPP_BUILD_EXAMPLES=ON
-        cmake --build build
+      - name: Configure and build
+        run: |
+          cmake -H. -Bbuild -DFMI4CPP_USING_CONAN=TRUE -DFMI4CPP_BUILD_TESTS=ON -DFMI4CPP_BUILD_EXAMPLES=ON
+          cmake --build build
 
-    - name: Test
-      run: |
-        cd build/tests && ctest
+      - name: Test
+        run: |
+          cd build/tests && ctest
 
 
   conan-on-windows:
@@ -44,7 +43,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-2019]
+        os: [ windows-2019, windows-2022 ]
 
     steps:
       - uses: actions/checkout@v2
