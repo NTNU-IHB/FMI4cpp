@@ -1,7 +1,8 @@
+#include "time_util.hpp"
+
 #include <fmi4cpp/fmi4cpp.hpp>
 
 #include <iostream>
-#include "time_util.hpp"
 
 using namespace fmi4cpp;
 
@@ -37,7 +38,7 @@ void run(std::unique_ptr<fmi2::cs_slave>& slave)
 int main()
 {
     const std::string fmu_path = "../resources/fmus/2.0/cs/20sim/4.6.4.8004/"
-                            "ControlledTemperature/ControlledTemperature.fmu";
+                                 "ControlledTemperature/ControlledTemperature.fmu";
 
     auto fmu = fmi2::fmu(fmu_path).as_cs_fmu()->new_instance();
     run(fmu);
