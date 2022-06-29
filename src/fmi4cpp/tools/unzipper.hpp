@@ -14,10 +14,10 @@
 namespace
 {
 
-bool unzip(const std::string& zip_file, const std::string& tmp_path)
+bool unzip(const fmi4cpp::fs::path& zip_file, const fmi4cpp::fs::path& tmp_path)
 {
     int* err = nullptr;
-    zip* za = zip_open(zip_file.c_str(), 0, err);
+    zip* za = zip_open(absolute(zip_file).string().c_str(), 0, err);
     if (za == nullptr) {
         return false;
     }
@@ -32,12 +32,12 @@ bool unzip(const std::string& zip_file, const std::string& tmp_path)
     for (int i = 0; i < zip_get_num_entries(za, 0); i++) {
         if (zip_stat_index(za, i, 0, &sb) == 0) {
 
-            const std::string newFile = tmp_path + "/" + sb.name;
+            const fmi4cpp::fs::path newFile = tmp_path / sb.name;
 
             if (sb.size == 0) {
                 fmi4cpp::fs::create_directories(newFile);
             } else {
-                const auto containingDirectory = fmi4cpp::fs::path{newFile}.parent_path();
+                const auto containingDirectory = newFile.parent_path();
                 if (!fmi4cpp::fs::exists(containingDirectory) && !fmi4cpp::fs::create_directories(containingDirectory)) {
                     return false;
                 }
