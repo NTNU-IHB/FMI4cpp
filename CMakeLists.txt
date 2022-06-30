@@ -3,6 +3,7 @@ file(STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/version.txt" projectVersion)
 project(fmi4cpp VERSION ${projectVersion})
 message("Current fmi4cpp version: ${projectVersion}\n")
 
+
 # ==============================================================================
 # Build settings
 # ==============================================================================
@@ -15,6 +16,7 @@ option(BUILD_SHARED_LIBS "Build shared libraries instead of static libraries" ON
 set(FMI4CPP_LOG_LEVEL "DEFAULT" CACHE STRING "FMI4cpp logging level")
 set(FMI4CPP_LOG_LEVEL_VALUES "DEFAULT;OFF;TRACE;DEBUG;INFO;WARN;ERROR;FATAL" CACHE STRING "List of possible log levels")
 set_property(CACHE FMI4CPP_LOG_LEVEL PROPERTY STRINGS ${FMI4CPP_LOG_LEVEL_VALUES})
+
 
 # ==============================================================================
 # Global internal configuration
@@ -74,21 +76,26 @@ set(FMI4CPP_INSTALL_DESTINATIONS
         INCLUDES DESTINATION "${FMI4CPP_HEADER_INSTALL_DIR}")
 set(FMI4CPP_EXPORT_TARGET "${PROJECT_NAME}-targets")
 
+
 # ==============================================================================
 # Dependencies
 # ==============================================================================
 
 find_package(LIBZIP REQUIRED)
+find_package(PugiXML REQUIRED)
 
-Include(FetchContent)
+if (FMI4CPP_BUILD_TESTS)
 
-FetchContent_Declare(
-        pugixml
-        GIT_REPOSITORY https://github.com/zeux/pugixml.git
-        GIT_TAG        v1.12.1
-)
+    Include(FetchContent)
+    FetchContent_Declare(
+            Catch2
+            GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+            GIT_TAG v2.13.8
+    )
 
-FetchContent_MakeAvailable(pugixml)
+    FetchContent_MakeAvailable(Catch2)
+endif()
+
 
 # ==============================================================================
 # Targets
@@ -97,15 +104,6 @@ FetchContent_MakeAvailable(pugixml)
 add_subdirectory(src)
 
 if (FMI4CPP_BUILD_TESTS)
-
-    FetchContent_Declare(
-            Catch2
-            GIT_REPOSITORY https://github.com/catchorg/Catch2.git
-            GIT_TAG v2.13.8
-    )
-
-    FetchContent_MakeAvailable(Catch2)
-
     enable_testing()
     add_subdirectory(tests)
 endif ()
@@ -154,7 +152,7 @@ install(FILES "${versionFile}" DESTINATION "${FMI4CPP_CMAKE_INSTALL_DIR}")
 # Install custom find modules
 install(FILES
         ${PROJECT_SOURCE_DIR}/cmake/FindLIBZIP.cmake
+        ${PROJECT_SOURCE_DIR}/cmake/FindPugiXML.cmake
         DESTINATION
         ${FMI4CPP_CMAKE_INSTALL_DIR}
         )
-

@@ -7,5 +7,6 @@ include(CMakeFindDependencyMacro)
 list(APPEND CMAKE_MODULE_PATH ${FMI4CPP_CMAKE_DIR})
 
 find_dependency(LIBZIP REQUIRED)
+find_dependency(PugiXML REQUIRED)
 
 list(REMOVE_AT CMAKE_MODULE_PATH -1)

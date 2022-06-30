@@ -17,8 +17,9 @@ class FMI4cppConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
     generators = "cmake"
     requires = (
+        "pugixml/1.12.1",
         "libzip/1.7.3",
-        "zlib/1.2.12"
+        "zlib/1.2.12",
     )
 
     options = {
