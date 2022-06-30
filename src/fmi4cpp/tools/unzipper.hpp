@@ -23,10 +23,12 @@ bool unzip(const fmi4cpp::fs::path& zip_file, const fmi4cpp::fs::path& tmp_path)
     }
 
     struct zip_file* zf;
+    // clang-format off
     struct zip_stat sb{};
+    // clang-format on
 
     const int bufferSize = 1000;
-    char* contents = (char*)malloc(sizeof(char) * bufferSize);
+    std::vector<char> contents(sizeof(char) * bufferSize);
     zip_int64_t sum;
     zip_int64_t len;
     for (int i = 0; i < zip_get_num_entries(za, 0); i++) {
@@ -48,8 +50,8 @@ bool unzip(const fmi4cpp::fs::path& zip_file, const fmi4cpp::fs::path& tmp_path)
 
                 sum = 0;
                 while (sum != sb.size) {
-                    len = zip_fread(zf, contents, bufferSize);
-                    file.write(contents, len);
+                    len = zip_fread(zf, contents.data(), bufferSize);
+                    file.write(contents.data(), len);
                     sum += len;
                 }
 
@@ -60,7 +62,6 @@ bool unzip(const fmi4cpp::fs::path& zip_file, const fmi4cpp::fs::path& tmp_path)
             }
         }
     }
-    free(contents);
     zip_close(za);
 
     return true;
@@ -68,4 +69,4 @@ bool unzip(const fmi4cpp::fs::path& zip_file, const fmi4cpp::fs::path& tmp_path)
 
 } // namespace
 
-#endif //FMI4CPP_UNZIPPER_HPP
+#endif // FMI4CPP_UNZIPPER_HPP
