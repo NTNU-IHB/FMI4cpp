@@ -9,7 +9,7 @@ Install [conan](https://conan.io/) and run cmake with the option `-DFMI4CPP_USIN
 ##### apt-get
 
 ```bash
-Linux:~/$ sudo apt-get install libzip-dev
+Linux:~/$ sudo apt-get install libzip-dev libpugixml-dev
 ``` 
 
 ### Running examples/tests
