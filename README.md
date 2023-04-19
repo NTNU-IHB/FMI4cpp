@@ -13,15 +13,6 @@ an easy to install, easy to use, object-oriented and fast FMI implementation for
 
 FMI4cpp supports both **Co-simulation** and **Model Exchange**. <br/>
 
-### Why should I use this over other C/C++ FMI Libraries
-
-Because it provides a clean, easy to use API and is easy to install.
-It performs just as good as FMI Library, provides more features and is significantly easier to both build and use.
-
-
-## Install instructions
-
-Refer to [INSTALL.md](INSTALL.md)
 
 ## Build instructions
 

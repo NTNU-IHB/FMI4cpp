@@ -1,10 +1,10 @@
 ### BUILDING
 
-For building FMI4cpp, you can use either `conan` or `apt-get` for getting the required dependencies.
+For building FMI4cpp, you can use either `vcpkg` or `apt-get` for getting the required dependencies.
 
-##### conan
+##### vcpkg
 
-Install [conan](https://conan.io/) and run cmake with the option `-DFMI4CPP_USING_CONAN=ON`.
+Call CMake with `-DCMAKE_TOOLCHAIN_FILE=[path to vcpkg]/scripts/buildsystems/vcpkg.cmake`
 
 ##### apt-get
 
