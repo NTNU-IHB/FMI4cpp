@@ -10,7 +10,6 @@ message("Current fmi4cpp version: ${projectVersion}\n")
 
 option(FMI4CPP_BUILD_TESTS "Build tests" OFF)
 option(FMI4CPP_BUILD_EXAMPLES "Build examples" OFF)
-option(FMI4CPP_USING_CONAN "Build using conan" OFF)
 option(BUILD_SHARED_LIBS "Build shared libraries instead of static libraries" ON)
 
 set(FMI4CPP_LOG_LEVEL "DEFAULT" CACHE STRING "FMI4cpp logging level")
@@ -26,34 +25,10 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin)
+
 if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release")
-endif ()
-
-if (FMI4CPP_USING_CONAN)
-    if (CONAN_EXPORTED) # in conan local cache
-        # standard conan installation, deps will be defined in conanfile.py
-        # and not necessary to call conan again, conan is already running
-        include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-        conan_basic_setup()
-    else ()
-
-        include(cmake/conan.cmake)
-        conan_cmake_autodetect(settings)
-
-        set(shared False)
-        if (BUILD_SHARED_LIBS)
-            set(shared True)
-        endif ()
-
-        conan_cmake_run(
-                CONANFILE conanfile.py
-                OPTIONS shared=${shared}
-                BUILD missing
-                SETTINGS ${settings}
-                BASIC_SETUP)
-
-    endif ()
 endif ()
 
 if (MSVC)

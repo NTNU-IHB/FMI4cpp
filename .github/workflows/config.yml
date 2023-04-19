@@ -3,7 +3,34 @@ name: FMI4cpp CI
 on: [ push, workflow_dispatch ]
 
 jobs:
-  conan-on-linux:
+
+  cmake-on-linux:
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-20.04]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install prerequisites
+        run: |
+          sudo apt-get update && sudo apt-get install -y --no-install-recommends \
+          gcc g++ cmake libzip-dev libpugixml-dev
+
+      - name: Configure and build
+        run: |
+          cmake . -B build -DFMI4CPP_BUILD_TESTS=ON -DFMI4CPP_BUILD_EXAMPLES=ON -DCMAKE_BUILD_TYPE=Release
+          cmake --build build
+
+      - name: Test
+        run: |
+          cd build/tests && ctest
+
+
+  vcpkg-on-linux:
 
     runs-on: ${{ matrix.os }}
     env:
@@ -16,16 +43,20 @@ jobs:
         compiler_version: [9]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - name: Install prerequisites
-        run: |
-          sudo pip3 install --upgrade setuptools pip
-          sudo pip3 install conan
+      - name: Restore artifacts, or run vcpkg, build (and cache artifacts as post step)
+        uses: lukka/run-vcpkg@v10
+        id: runvcpkg
+        with:
+          vcpkgDirectory: '${{ github.workspace }}/vcpkg'
+          vcpkgGitCommitId: '12c2a93b4007612b5ffa980c9d2235eb0bcac10f'
+          vcpkgJsonGlob: 'vcpkg.json'
+          appendedCacheKey: vcpkginstall
 
       - name: Configure and build
         run: |
-          cmake . -B build -DFMI4CPP_USING_CONAN=TRUE -DFMI4CPP_BUILD_TESTS=ON -DFMI4CPP_BUILD_EXAMPLES=ON
+          cmake . -B build -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake" -DFMI4CPP_BUILD_TESTS=ON -DFMI4CPP_BUILD_EXAMPLES=ON -DCMAKE_BUILD_TYPE=Release
           cmake --build build
 
       - name: Test
@@ -33,25 +64,29 @@ jobs:
           cd build/tests && ctest
 
 
-  conan-on-windows:
+  vcpkg-on-windows:
 
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-2019]
+        os: [windows-2019, windows-2022]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - name: Install prerequisites
-        run: |
-          pip3 install conan
-        shell: bash
+      - name: Restore artifacts, or run vcpkg, build (and cache artifacts as post step)
+        uses: lukka/run-vcpkg@v10
+        id: runvcpkg
+        with:
+          vcpkgDirectory: '${{ github.workspace }}/vcpkg'
+          vcpkgGitCommitId: '12c2a93b4007612b5ffa980c9d2235eb0bcac10f'
+          vcpkgJsonGlob: 'vcpkg.json'
+          appendedCacheKey: vcpkginstall
 
       - name: Configure and build
         run: |
-          cmake . -B build -A x64 -DFMI4CPP_USING_CONAN=TRUE -DFMI4CPP_BUILD_TESTS=ON -DFMI4CPP_BUILD_EXAMPLES=ON
+          cmake . -B build -A x64 -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake" -DFMI4CPP_BUILD_TESTS=ON -DFMI4CPP_BUILD_EXAMPLES=ON -DCMAKE_BUILD_TYPE=Release
           cmake --build build --config Release
         shell: bash
 
@@ -59,28 +94,3 @@ jobs:
         run: |
           cd build/tests && ctest -C Release
         shell: bash
-
-  cmake-on-linux:
-
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-20.04]
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Install prerequisites
-        run: |
-          sudo apt-get install -y --no-install-recommends \
-          gcc g++ cmake libzip-dev libpugixml-dev
-
-      - name: Configure and build
-        run: |
-          cmake . -B build -DFMI4CPP_BUILD_TESTS=ON -DFMI4CPP_BUILD_EXAMPLES=ON
-          cmake --build build
-
-      - name: Test
-        run: |
-          cd build/tests && ctest
