@@ -13,7 +13,7 @@ jobs:
         os: [ubuntu-20.04]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Install prerequisites
         run: |
@@ -43,7 +43,7 @@ jobs:
         compiler_version: [9]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Restore artifacts, or run vcpkg, build (and cache artifacts as post step)
         uses: lukka/run-vcpkg@v10
@@ -73,7 +73,7 @@ jobs:
         os: [windows-2019, windows-2020]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Restore artifacts, or run vcpkg, build (and cache artifacts as post step)
         uses: lukka/run-vcpkg@v10
