@@ -11,34 +11,38 @@
 using namespace fmi4cpp;
 using namespace fmi4cpp::fmi2;
 
-fmu::fmu(const fs::path& fmuPath)
+fmu::fmu(const fs::path& fmuPath, bool unzipFmu)
 {
+    if (unzipFmu) {
+        if (!exists(fmuPath)) {
+            const auto err = "No such file '" + absolute(fmuPath).string() + "'!";
+            MLOG_FATAL(err);
+            throw std::runtime_error(err);
+        }
 
-    if (!exists(fmuPath)) {
-        const auto err = "No such file '" + absolute(fmuPath).string() + "'!";
-        MLOG_FATAL(err);
-        throw std::runtime_error(err);
+        const std::string fmuName = fmuPath.stem().string();
+        fs::path tmpPath(fs::temp_directory_path() /= fs::path("fmi4cpp_" + fmuName + "_" + generate_simple_id(8)));
+
+        if (!create_directories(tmpPath)) {
+            const auto err = "Failed to create temporary directory '" + tmpPath.string() + "' !";
+            MLOG_FATAL(err);
+            throw std::runtime_error(err);
+        }
+
+        MLOG_DEBUG("Created temporary directory '" << tmpPath.string());
+
+        if (!unzip(fmuPath, tmpPath.string())) {
+            const auto err = "Failed to extract FMU '" + absolute(fmuPath).string() + "'!";
+            MLOG_FATAL(err);
+            throw std::runtime_error(err);
+        }
+
+        resource_ = std::make_shared<fmu_resource>(tmpPath);
+        modelDescription_ = std::move(parse_model_description(resource_->model_description_path()));
+    } else {
+        resource_ = std::make_shared<fmu_resource>(fmuPath);
+        modelDescription_ = std::move(parse_model_description(resource_->model_description_path()));
     }
-
-    const std::string fmuName = fmuPath.stem().string();
-    fs::path tmpPath(fs::temp_directory_path() /= fs::path("fmi4cpp_" + fmuName + "_" + generate_simple_id(8)));
-
-    if (!create_directories(tmpPath)) {
-        const auto err = "Failed to create temporary directory '" + tmpPath.string() + "' !";
-        MLOG_FATAL(err);
-        throw std::runtime_error(err);
-    }
-
-    MLOG_DEBUG("Created temporary directory '" << tmpPath.string());
-
-    if (!unzip(fmuPath, tmpPath.string())) {
-        const auto err = "Failed to extract FMU '" + absolute(fmuPath).string() + "'!";
-        MLOG_FATAL(err);
-        throw std::runtime_error(err);
-    }
-
-    resource_ = std::make_shared<fmu_resource>(tmpPath);
-    modelDescription_ = std::move(parse_model_description(resource_->model_description_path()));
 }
 
 std::string fmu::get_model_description_xml() const

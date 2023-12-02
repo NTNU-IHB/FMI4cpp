@@ -26,7 +26,7 @@ private:
     std::shared_ptr<const fmi4cpp::fmi2::model_description> modelDescription_;
 
 public:
-    explicit fmu(const fs::path& fmuPath);
+    explicit fmu(const fs::path& fmuPath, bool unzipFmu = true);
 
     [[nodiscard]] std::string get_model_description_xml() const;
     [[nodiscard]] std::shared_ptr<const fmi4cpp::fmi2::model_description> get_model_description() const override;

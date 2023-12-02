@@ -1,7 +1,8 @@
 
 add_executable(test_controlled_temperature test_controlled_temperature.cpp)
-target_link_libraries(test_controlled_temperature PRIVATE fmi4cpp::fmi4cpp Catch2::Catch2)
+target_link_libraries(test_controlled_temperature PRIVATE fmi4cpp::fmi4cpp Catch2::Catch2 libzip::libzip)
 add_test(NAME test_controlled_temperature COMMAND test_controlled_temperature)
+target_include_directories(test_controlled_temperature PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../src)
 
 add_executable(test_model_description1 test_modeldescription1.cpp)
 target_link_libraries(test_model_description1 PRIVATE fmi4cpp::fmi4cpp Catch2::Catch2)
