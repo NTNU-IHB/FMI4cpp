@@ -17,8 +17,9 @@ class FMI4cppConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
     generators = "cmake"
     requires = (
-        "boost/1.71.0",
-        "libzip/1.7.3"
+        "pugixml/1.12.1",
+        "libzip/1.7.3",
+        "zlib/1.2.12",
     )
 
     options = {
@@ -26,8 +27,7 @@ class FMI4cppConan(ConanFile):
     }
 
     default_options = {
-        "shared": True,
-        "boost:shared": True
+        "shared": True
     }
 
     def set_version(self):

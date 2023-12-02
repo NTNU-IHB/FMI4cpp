@@ -46,7 +46,7 @@ bool cs_library::set_real_input_derivatives(
     const std::vector<fmi2Integer>& order,
     const std::vector<fmi2Real>& value)
 {
-    return fmi2SetRealInputDerivatives_(c, vr.data(), vr.size(), order.data(), value.data());
+    return update_status_and_return_true_if_ok(fmi2SetRealInputDerivatives_(c, vr.data(), vr.size(), order.data(), value.data()));
 }
 
 bool cs_library::get_real_output_derivatives(

@@ -1,7 +1,6 @@
-
 name: FMI4cpp CI
 
-on: [push, workflow_dispatch]
+on: [ push, workflow_dispatch ]
 
 jobs:
   conan-on-linux:
@@ -13,30 +12,25 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-18.04]
-        compiler_version: [7, 8, 9]
+        os: [ubuntu-20.04]
+        compiler_version: [9]
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Install prerequisites
-      run: |
-        sudo apt-get install -y g++-8
-        sudo pip3 install --upgrade setuptools pip
-        sudo pip3 install conan
+      - name: Install prerequisites
+        run: |
+          sudo pip3 install --upgrade setuptools pip
+          sudo pip3 install conan
 
-    - name: Run conan
-      run: |
-        conan install . -s build_type=Release -s compiler.version=${{ matrix.compiler_version }} -s compiler.libcxx=libstdc++11 --install-folder=build
+      - name: Configure and build
+        run: |
+          cmake . -B build -DFMI4CPP_USING_CONAN=TRUE -DFMI4CPP_BUILD_TESTS=ON -DFMI4CPP_BUILD_EXAMPLES=ON
+          cmake --build build
 
-    - name: Configure and build
-      run: |
-        cmake -H. -Bbuild -DFMI4CPP_USING_CONAN=TRUE -DFMI4CPP_BUILD_TESTS=ON -DFMI4CPP_BUILD_EXAMPLES=ON
-        cmake --build build
-
-    - name: Test
-      run: |
-        cd build/tests && ctest
+      - name: Test
+        run: |
+          cd build/tests && ctest
 
 
   conan-on-windows:
@@ -45,7 +39,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-2016]
+        os: [windows-2019]
 
     steps:
       - uses: actions/checkout@v2
@@ -55,14 +49,9 @@ jobs:
           pip3 install conan
         shell: bash
 
-      - name: Run conan
-        run: |
-          conan install . -s build_type=Release --install-folder=build
-        shell: bash
-
       - name: Configure and build
         run: |
-          cmake . -G "Visual Studio 15 2017 Win64" -Bbuild -DFMI4CPP_USING_CONAN=TRUE -DFMI4CPP_BUILD_TESTS=ON -DFMI4CPP_BUILD_EXAMPLES=ON
+          cmake . -B build -A x64 -DFMI4CPP_USING_CONAN=TRUE -DFMI4CPP_BUILD_TESTS=ON -DFMI4CPP_BUILD_EXAMPLES=ON
           cmake --build build --config Release
         shell: bash
 
@@ -77,7 +66,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ ubuntu-18.04 ]
+        os: [ubuntu-20.04]
 
     steps:
       - uses: actions/checkout@v2
@@ -85,11 +74,11 @@ jobs:
       - name: Install prerequisites
         run: |
           sudo apt-get install -y --no-install-recommends \
-          gcc g++ cmake libzip-dev libboost-dev libboost-test-dev
+          gcc g++ cmake libzip-dev libpugixml-dev
 
       - name: Configure and build
         run: |
-          cmake -H. -Bbuild -DFMI4CPP_BUILD_TESTS=ON -DFMI4CPP_BUILD_EXAMPLES=ON
+          cmake . -B build -DFMI4CPP_BUILD_TESTS=ON -DFMI4CPP_BUILD_EXAMPLES=ON
           cmake --build build
 
       - name: Test

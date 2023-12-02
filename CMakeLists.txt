@@ -3,6 +3,7 @@ file(STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/version.txt" projectVersion)
 project(fmi4cpp VERSION ${projectVersion})
 message("Current fmi4cpp version: ${projectVersion}\n")
 
+
 # ==============================================================================
 # Build settings
 # ==============================================================================
@@ -16,6 +17,7 @@ set(FMI4CPP_LOG_LEVEL "DEFAULT" CACHE STRING "FMI4cpp logging level")
 set(FMI4CPP_LOG_LEVEL_VALUES "DEFAULT;OFF;TRACE;DEBUG;INFO;WARN;ERROR;FATAL" CACHE STRING "List of possible log levels")
 set_property(CACHE FMI4CPP_LOG_LEVEL PROPERTY STRINGS ${FMI4CPP_LOG_LEVEL_VALUES})
 
+
 # ==============================================================================
 # Global internal configuration
 # ==============================================================================
@@ -24,47 +26,47 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
-if(NOT CMAKE_BUILD_TYPE)
+if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release")
-endif()
+endif ()
 
 if (FMI4CPP_USING_CONAN)
-  if(CONAN_EXPORTED) # in conan local cache
-    # standard conan installation, deps will be defined in conanfile.py
-    # and not necessary to call conan again, conan is already running
-    include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-    conan_basic_setup()
-  else()
+    if (CONAN_EXPORTED) # in conan local cache
+        # standard conan installation, deps will be defined in conanfile.py
+        # and not necessary to call conan again, conan is already running
+        include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+        conan_basic_setup()
+    else ()
 
-    include(cmake/conan.cmake)
-    conan_cmake_autodetect(settings)
+        include(cmake/conan.cmake)
+        conan_cmake_autodetect(settings)
 
-    set(shared False)
-    if(BUILD_SHARED_LIBS)
-      set(shared True)
-    endif()
+        set(shared False)
+        if (BUILD_SHARED_LIBS)
+            set(shared True)
+        endif ()
 
-    conan_cmake_run(
-            CONANFILE conanfile.py
-            OPTIONS shared=${shared}
-            BUILD missing
-            SETTINGS ${settings}
-            BASIC_SETUP)
+        conan_cmake_run(
+                CONANFILE conanfile.py
+                OPTIONS shared=${shared}
+                BUILD missing
+                SETTINGS ${settings}
+                BASIC_SETUP)
 
-  endif()
+    endif ()
 endif ()
 
 if (MSVC)
-  set(CMAKE_DEBUG_POSTFIX "d")
-  add_definitions("-D_CRT_SECURE_NO_WARNINGS")
-  add_compile_options(/wd4996) # suppress warning appearing in boost headers under MSVC.
-  #https://docs.microsoft.com/en-us/cpp/error-messages/compiler-warnings/compiler-warning-level-3-c4996?view=vs-2017
+    set(CMAKE_DEBUG_POSTFIX "d")
+    add_definitions("-D_CRT_SECURE_NO_WARNINGS")
+    add_compile_options(/wd4996) # suppress warning appearing in boost headers under MSVC.
+    #https://docs.microsoft.com/en-us/cpp/error-messages/compiler-warnings/compiler-warning-level-3-c4996?view=vs-2017
 endif ()
 
 include(GNUInstallDirs)
 
 set(FMI4CPP_HEADER_INSTALL_DIR "${CMAKE_INSTALL_INCLUDEDIR}")
-set(FMI4CPP_CMAKE_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME}"  )
+set(FMI4CPP_CMAKE_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME}")
 set(FMI4CPP_DOC_INSTALL_DIR "${CMAKE_INSTALL_DOCDIR}")
 
 set(FMI4CPP_INSTALL_DESTINATIONS
@@ -74,16 +76,25 @@ set(FMI4CPP_INSTALL_DESTINATIONS
         INCLUDES DESTINATION "${FMI4CPP_HEADER_INSTALL_DIR}")
 set(FMI4CPP_EXPORT_TARGET "${PROJECT_NAME}-targets")
 
+
 # ==============================================================================
 # Dependencies
 # ==============================================================================
 
-if (FMI4CPP_BUILD_TESTS)
-  list(APPEND Boost_COMPONENTS unit_test_framework)
-endif ()
-
-find_package(Boost 1.65 COMPONENTS ${Boost_COMPONENTS} REQUIRED)
 find_package(LIBZIP REQUIRED)
+find_package(PugiXML REQUIRED)
+
+if (FMI4CPP_BUILD_TESTS)
+
+    Include(FetchContent)
+    FetchContent_Declare(
+            Catch2
+            GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+            GIT_TAG v2.13.8
+    )
+
+    FetchContent_MakeAvailable(Catch2)
+endif()
 
 
 # ==============================================================================
@@ -93,15 +104,16 @@ find_package(LIBZIP REQUIRED)
 add_subdirectory(src)
 
 if (FMI4CPP_BUILD_TESTS)
-  add_subdirectory(tests)
+    enable_testing()
+    add_subdirectory(tests)
 endif ()
 
 if (FMI4CPP_BUILD_EXAMPLES)
-  add_subdirectory(examples)
+    add_subdirectory(examples)
 endif ()
 
 if (FMI4CPP_BUILD_TESTS OR FMI4CPP_BUILD_EXAMPLES)
-  file(COPY resources DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+    file(COPY resources DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 endif ()
 
 
@@ -140,7 +152,7 @@ install(FILES "${versionFile}" DESTINATION "${FMI4CPP_CMAKE_INSTALL_DIR}")
 # Install custom find modules
 install(FILES
         ${PROJECT_SOURCE_DIR}/cmake/FindLIBZIP.cmake
+        ${PROJECT_SOURCE_DIR}/cmake/FindPugiXML.cmake
         DESTINATION
         ${FMI4CPP_CMAKE_INSTALL_DIR}
         )
-

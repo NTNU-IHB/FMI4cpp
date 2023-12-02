@@ -1,7 +1,6 @@
 
 #include <fmi4cpp/fmi2/fmu.hpp>
 #include <fmi4cpp/fmi2/xml/model_description_parser.hpp>
-#include <fmi4cpp/fs_portability.hpp>
 #include <fmi4cpp/mlog.hpp>
 #include <fmi4cpp/tools/os_util.hpp>
 #include <fmi4cpp/tools/simple_id.hpp>
@@ -12,11 +11,16 @@
 using namespace fmi4cpp;
 using namespace fmi4cpp::fmi2;
 
-fmu::fmu(const std::string& fmuPath)
+fmu::fmu(const fs::path& fmuPath)
 {
-    MLOG_DEBUG("Loading FMU '" << fmuPath << "'");
 
-    const std::string fmuName = fs::path(fmuPath).stem().string();
+    if (!exists(fmuPath)) {
+        const auto err = "No such file '" + absolute(fmuPath).string() + "'!";
+        MLOG_FATAL(err);
+        throw std::runtime_error(err);
+    }
+
+    const std::string fmuName = fmuPath.stem().string();
     fs::path tmpPath(fs::temp_directory_path() /= fs::path("fmi4cpp_" + fmuName + "_" + generate_simple_id(8)));
 
     if (!create_directories(tmpPath)) {
@@ -28,7 +32,7 @@ fmu::fmu(const std::string& fmuPath)
     MLOG_DEBUG("Created temporary directory '" << tmpPath.string());
 
     if (!unzip(fmuPath, tmpPath.string())) {
-        const auto err = "Failed to extract FMU '" + fmuPath + "'!";
+        const auto err = "Failed to extract FMU '" + absolute(fmuPath).string() + "'!";
         MLOG_FATAL(err);
         throw std::runtime_error(err);
     }

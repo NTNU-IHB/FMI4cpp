@@ -45,8 +45,8 @@ int main()
         std::cout << "t=" << t << ", Temperature_Reference=" << ref[0] << ", Temperature_Room=" << ref[1] << std::endl;
     }
 
-    std::cout << "FMU '" << fmu.model_name() << "' terminated with success: " << (slave1->terminate() == 1 ? "true" : "false") << std::endl;
-    std::cout << "FMU '" << fmu.model_name() << "' terminated with success: " << (slave2->terminate() == 1 ? "true" : "false") << std::endl;
+    std::cout << "FMU '" << fmu.model_name() << "' terminated with success: " << std::boolalpha << slave1->terminate() << std::endl;
+    std::cout << "FMU '" << fmu.model_name() << "' terminated with success: " << std::boolalpha << slave2->terminate() << std::endl;
 
     return 0;
 }
