@@ -13,6 +13,10 @@ using namespace fmi4cpp::fmi2;
 
 fmu::fmu(const fs::path& fmuPath, bool unzipFmu)
 {
+    if ( fs::is_directory(fmuPath) && fs::exists(fmuPath / "modelDescription.xml") ) {
+        MLOG_DEBUG("fmuPath is a directory, assuming it is an unzipped FMU");
+        unzipFmu = false;
+    }
     if (unzipFmu) {
         if (!exists(fmuPath)) {
             const auto err = "No such file '" + absolute(fmuPath).string() + "'!";
