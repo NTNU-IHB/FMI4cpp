@@ -3,7 +3,7 @@
 #define FMI4CPP_LIBRARYHELPER_HPP
 
 #include <fmi4cpp/dll_handle.hpp>
-
+#include <fmi4cpp/fs_portability.hpp>
 #include <sstream>
 
 namespace
@@ -11,8 +11,28 @@ namespace
 
 DLL_HANDLE load_library(const std::string& libName)
 {
-#ifdef WIN32
-    return LoadLibrary(libName.c_str());
+    std::string dllDirectory;
+
+#ifdef _WIN32
+    fmi4cpp::fs::path path(libName);
+    if (path.has_parent_path()) {
+        dllDirectory = path.parent_path().string();
+    }
+
+    DLL_DIRECTORY_COOKIE dllDirectoryCookie = nullptr;
+    if (!dllDirectory.empty()) {
+        std::wstring wDllDirectory(dllDirectory.begin(), dllDirectory.end());
+        dllDirectoryCookie = AddDllDirectory(wDllDirectory.c_str());
+    }
+
+    DLL_HANDLE handle = LoadLibrary(libName.c_str());
+
+    if (dllDirectoryCookie) {
+        RemoveDllDirectory(dllDirectoryCookie);
+    }
+
+    return handle;
+
 #else
     return dlopen(libName.c_str(), RTLD_NOW | RTLD_LOCAL);
 #endif
