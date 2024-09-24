@@ -61,6 +61,20 @@ fmi2_library::fmi2_library(const std::string& modelIdentifier, const std::shared
 
     MLOG_DEBUG("Loading shared library '" + fs::path(libName).stem().string() + get_shared_library_extension() + "'");
 
+#ifdef _WIN32
+    std::string dllDirectory;
+    fmi4cpp::fs::path path(libName);
+
+    if (path.has_parent_path()) {
+        dllDirectory = path.parent_path().string();
+    }
+
+    if (!dllDirectory.empty()) {
+        std::wstring wDllDirectory(dllDirectory.begin(), dllDirectory.end());
+        dllDirectoryCookie_ = AddDllDirectory(wDllDirectory.c_str());
+    }
+#endif
+
     handle_ = load_library(libName);
 
     if (!handle_) {
@@ -420,6 +434,13 @@ void fmi2_library::free_instance(fmi2Component c)
 
 fmi2_library::~fmi2_library()
 {
+#ifdef _WIN32
+    if (dllDirectoryCookie_) {
+        RemoveDllDirectory(dllDirectoryCookie_);
+        dllDirectoryCookie_ = nullptr;
+    }
+#endif
+
     if (handle_) {
         if (!free_library(handle_)) {
             MLOG_ERROR(getLastError());
