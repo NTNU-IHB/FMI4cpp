@@ -1,9 +1,7 @@
-
 #ifndef FMI4CPP_LIBRARYHELPER_HPP
 #define FMI4CPP_LIBRARYHELPER_HPP
 
 #include <fmi4cpp/dll_handle.hpp>
-#include <fmi4cpp/fs_portability.hpp>
 #include <sstream>
 
 namespace
@@ -11,7 +9,7 @@ namespace
 
 DLL_HANDLE load_library(const std::string& libName)
 {
-#ifdef _WIN32
+#ifdef WIN32
     return LoadLibrary(libName.c_str());
 #else
     return dlopen(libName.c_str(), RTLD_NOW | RTLD_LOCAL);
