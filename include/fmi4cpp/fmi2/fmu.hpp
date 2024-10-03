@@ -22,13 +22,13 @@ class fmu : public virtual fmu_provider<model_description, cs_fmu, me_fmu>
 
 private:
     std::shared_ptr<fmu_resource> resource_;
-    std::shared_ptr<const fmi4cpp::fmi2::model_description> modelDescription_;
+    std::shared_ptr<const model_description> modelDescription_;
 
 public:
     explicit fmu(const std::filesystem::path& fmuPath);
 
     [[nodiscard]] std::string get_model_description_xml() const;
-    [[nodiscard]] std::shared_ptr<const fmi4cpp::fmi2::model_description> get_model_description() const override;
+    [[nodiscard]] std::shared_ptr<const model_description> get_model_description() const override;
 
     [[nodiscard]] bool supports_me() const override;
     [[nodiscard]] bool supports_cs() const override;

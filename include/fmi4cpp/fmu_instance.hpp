@@ -28,7 +28,7 @@ public:
 
     [[nodiscard]] virtual DLL_HANDLE handle() const = 0;
 
-    [[nodiscard]] virtual fmi4cpp::status last_status() const = 0;
+    [[nodiscard]] virtual status last_status() const = 0;
 
     virtual std::shared_ptr<const ModelDescription> get_model_description() const = 0;
 
@@ -56,7 +56,7 @@ public:
         const std::vector<fmi4cppReal>& dvKnownRef,
         std::vector<fmi4cppReal>& dvUnknownRef) = 0;
 
-    virtual ~fmu_instance() = default;
+    ~fmu_instance() override = default;
 };
 
 } // namespace fmi4cpp

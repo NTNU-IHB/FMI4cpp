@@ -48,7 +48,7 @@ public:
 
     [[nodiscard]] DLL_HANDLE handle() const override;
 
-    [[nodiscard]] fmi4cpp::status last_status() const override;
+    [[nodiscard]] status last_status() const override;
 };
 
 } // namespace fmi4cpp::fmi2

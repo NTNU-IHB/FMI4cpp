@@ -24,6 +24,8 @@ public:
     }
 
     virtual std::shared_ptr<const ModelDescription> get_model_description() const = 0;
+
+    virtual ~fmu_base() = default;
 };
 
 template<class model_description, class cs_fmu, class me_fmu>
