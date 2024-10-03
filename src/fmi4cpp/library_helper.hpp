@@ -3,18 +3,19 @@
 #define FMI4CPP_LIBRARYHELPER_HPP
 
 #include <fmi4cpp/dll_handle.hpp>
-#include <fmi4cpp/fs_portability.hpp>
+
+#include <filesystem>
 #include <sstream>
 
-namespace
+namespace fmi4cpp
 {
 
-DLL_HANDLE load_library(const std::string& libName)
+inline DLL_HANDLE load_library(const std::string& libName)
 {
     std::string dllDirectory;
 
 #ifdef _WIN32
-    fmi4cpp::fs::path path(libName);
+    std::filesystem::path path(libName);
     if (path.has_parent_path()) {
         dllDirectory = path.parent_path().string();
     }
@@ -48,7 +49,7 @@ T load_function(DLL_HANDLE handle, const char* function_name)
 #endif
 }
 
-bool free_library(DLL_HANDLE handle)
+inline bool free_library(DLL_HANDLE handle)
 {
 #ifdef WIN32
     return static_cast<bool>(FreeLibrary(handle));
@@ -57,7 +58,7 @@ bool free_library(DLL_HANDLE handle)
 #endif
 }
 
-std::string getLastError()
+inline std::string getLastError()
 {
 #ifdef WIN32
     std::ostringstream os;

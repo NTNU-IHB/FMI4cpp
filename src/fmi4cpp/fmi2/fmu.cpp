@@ -11,7 +11,7 @@
 using namespace fmi4cpp;
 using namespace fmi4cpp::fmi2;
 
-fmu::fmu(const fs::path& fmuPath)
+fmu::fmu(const std::filesystem::path& fmuPath)
 {
 
     if (!exists(fmuPath)) {
@@ -21,7 +21,7 @@ fmu::fmu(const fs::path& fmuPath)
     }
 
     const std::string fmuName = fmuPath.stem().string();
-    fs::path tmpPath(fs::temp_directory_path() /= fs::path("fmi4cpp_" + fmuName + "_" + generate_simple_id(8)));
+    std::filesystem::path tmpPath(std::filesystem::temp_directory_path() /= std::filesystem::path("fmi4cpp_" + fmuName + "_" + generate_simple_id(8)));
 
     if (!create_directories(tmpPath)) {
         const auto err = "Failed to create temporary directory '" + tmpPath.string() + "' !";
