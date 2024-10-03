@@ -24,6 +24,8 @@ public:
 
     virtual bool read_boolean(fmi4cppValueReference vr, fmi4cppBoolean& ref) = 0;
     virtual bool read_boolean(const std::vector<fmi4cppValueReference>& vr, std::vector<fmi4cppBoolean>& ref) = 0;
+
+    virtual ~fmu_reader() = default;
 };
 
 class fmu_writer
@@ -49,6 +51,8 @@ public:
     virtual bool write_boolean(
         const std::vector<fmi4cppValueReference>& vr,
         const std::vector<fmi4cppBoolean>& values) = 0;
+
+    virtual ~fmu_writer() = default;
 };
 
 class fmu_variable_accessor : public fmu_reader, public fmu_writer

@@ -5,7 +5,7 @@
 using namespace fmi4cpp::fmi2;
 
 me_instance::me_instance(fmi2Component c,
-    const std::shared_ptr<fmi4cpp::fmu_resource>& resource,
+    const std::shared_ptr<fmu_resource>& resource,
     const std::shared_ptr<me_library>& library,
     const std::shared_ptr<const me_model_description>& modelDescription)
     : fmu_instance_base<me_library, me_model_description>(c, resource, library, modelDescription)
