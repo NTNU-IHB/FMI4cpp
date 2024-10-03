@@ -4,11 +4,10 @@
 
 #include <fmi4cpp/fmi2/cs_fmu.hpp>
 #include <fmi4cpp/fmi2/me_fmu.hpp>
-#include <fmi4cpp/fmi2/xml/cs_model_description.hpp>
 #include <fmi4cpp/fmi2/xml/me_model_description.hpp>
 #include <fmi4cpp/fmu_base.hpp>
-#include <fmi4cpp/fs_portability.hpp>
 
+#include <filesystem>
 #include <memory>
 #include <string>
 
@@ -26,7 +25,7 @@ private:
     std::shared_ptr<const fmi4cpp::fmi2::model_description> modelDescription_;
 
 public:
-    explicit fmu(const fs::path& fmuPath);
+    explicit fmu(const std::filesystem::path& fmuPath);
 
     [[nodiscard]] std::string get_model_description_xml() const;
     [[nodiscard]] std::shared_ptr<const fmi4cpp::fmi2::model_description> get_model_description() const override;
