@@ -4,10 +4,10 @@
 #include <fmi4cpp/dll_handle.hpp>
 #include <sstream>
 
-namespace
+namespace fmi4cpp
 {
 
-DLL_HANDLE load_library(const std::string& libName)
+inline DLL_HANDLE load_library(const std::string& libName)
 {
 #ifdef WIN32
     return LoadLibrary(libName.c_str());
@@ -26,7 +26,7 @@ T load_function(DLL_HANDLE handle, const char* function_name)
 #endif
 }
 
-bool free_library(DLL_HANDLE handle)
+inline bool free_library(DLL_HANDLE handle)
 {
 #ifdef WIN32
     return static_cast<bool>(FreeLibrary(handle));
@@ -35,7 +35,7 @@ bool free_library(DLL_HANDLE handle)
 #endif
 }
 
-std::string getLastError()
+inline std::string getLastError()
 {
 #ifdef WIN32
     std::ostringstream os;

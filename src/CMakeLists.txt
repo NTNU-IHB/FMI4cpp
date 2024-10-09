@@ -14,7 +14,6 @@ set(publicHeaders
     "fmi4cpp/fmu_variable_accessor.hpp"
 
     "fmi4cpp/dll_handle.hpp"
-    "fmi4cpp/fs_portability.hpp"
 
     "fmi4cpp/fmi2/fmi2.hpp"
     "fmi4cpp/fmi2/fmu.hpp"
@@ -111,7 +110,7 @@ target_link_libraries(fmi4cpp
 if(WIN32)
     target_link_libraries(fmi4cpp PRIVATE "Bcrypt")
 elseif(UNIX)
-    target_link_libraries(fmi4cpp PRIVATE stdc++fs dl)
+    target_link_libraries(fmi4cpp PRIVATE dl)
 endif()
 
 

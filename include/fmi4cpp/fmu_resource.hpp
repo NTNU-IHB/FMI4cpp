@@ -2,8 +2,7 @@
 #ifndef FMI4CPP_FMURESOURCE_HPP
 #define FMI4CPP_FMURESOURCE_HPP
 
-#include <fmi4cpp/fs_portability.hpp>
-
+#include <filesystem>
 #include <string>
 
 namespace fmi4cpp
@@ -13,10 +12,10 @@ class fmu_resource
 {
 
 private:
-    const fs::path path_;
+    std::filesystem::path path_;
 
 public:
-    explicit fmu_resource(fs::path path);
+    explicit fmu_resource(std::filesystem::path path);
 
     [[nodiscard]] std::string resource_path() const;
 
