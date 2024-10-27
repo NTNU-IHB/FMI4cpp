@@ -47,6 +47,8 @@ set(publicHeaders
     "fmi4cpp/fmi2/xml/scalar_variable.hpp"
     "fmi4cpp/fmi2/xml/typed_scalar_variable.hpp"
 
+    "fmi4cpp/tools/unzipper.hpp"
+
 )
 
 set(privateHeaders
@@ -58,7 +60,6 @@ set(privateHeaders
 
     "fmi4cpp/tools/simple_id.hpp"
     "fmi4cpp/tools/os_util.hpp"
-    "fmi4cpp/tools/unzipper.hpp"
 
 )
 
@@ -81,6 +82,8 @@ set(sources
     "fmi4cpp/fmi2/xml/model_description_parser.cpp"
     "fmi4cpp/fmi2/xml/model_variables.cpp"
     "fmi4cpp/fmi2/xml/scalar_variable.cpp"
+
+    "fmi4cpp/tools/unzipper.cpp"
 
 )
 

@@ -1,17 +1,12 @@
 
-#ifndef FMI4CPP_UNZIPPER_HPP
-#define FMI4CPP_UNZIPPER_HPP
+#include "fmi4cpp/tools/unzipper.hpp"
 
 #include <zip.h>
 
-#include <filesystem>
 #include <fstream>
 #include <string>
 
-namespace fmi4cpp
-{
-
-inline bool unzip(const std::filesystem::path& zip_file, const std::filesystem::path& tmp_path)
+bool fmi4cpp::unzip(const std::filesystem::path& zip_file, const std::filesystem::path& tmp_path)
 {
     int* err = nullptr;
     zip* za = zip_open(absolute(zip_file).string().c_str(), 0, err);
@@ -24,7 +19,7 @@ inline bool unzip(const std::filesystem::path& zip_file, const std::filesystem::
     struct zip_stat sb{};
     // clang-format on
 
-    const int bufferSize = 1000;
+    constexpr int bufferSize = 1000;
     std::vector<char> contents(bufferSize);
     zip_int64_t sum;
     zip_int64_t len;
@@ -63,7 +58,3 @@ inline bool unzip(const std::filesystem::path& zip_file, const std::filesystem::
 
     return true;
 }
-
-} // namespace fmi4cpp
-
-#endif // FMI4CPP_UNZIPPER_HPP
