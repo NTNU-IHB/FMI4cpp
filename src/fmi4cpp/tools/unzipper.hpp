@@ -2,19 +2,16 @@
 #ifndef FMI4CPP_UNZIPPER_HPP
 #define FMI4CPP_UNZIPPER_HPP
 
-#include <fmi4cpp/fs_portability.hpp>
-
 #include <zip.h>
 
+#include <filesystem>
 #include <fstream>
-#include <iostream>
-#include <sstream>
 #include <string>
 
-namespace
+namespace fmi4cpp
 {
 
-bool unzip(const fmi4cpp::fs::path& zip_file, const fmi4cpp::fs::path& tmp_path)
+inline bool unzip(const std::filesystem::path& zip_file, const std::filesystem::path& tmp_path)
 {
     int* err = nullptr;
     zip* za = zip_open(absolute(zip_file).string().c_str(), 0, err);
@@ -34,13 +31,13 @@ bool unzip(const fmi4cpp::fs::path& zip_file, const fmi4cpp::fs::path& tmp_path)
     for (int i = 0; i < zip_get_num_entries(za, 0); i++) {
         if (zip_stat_index(za, i, 0, &sb) == 0) {
 
-            const fmi4cpp::fs::path newFile = tmp_path / sb.name;
+            const std::filesystem::path newFile = tmp_path / sb.name;
 
             if (sb.size == 0) {
-                fmi4cpp::fs::create_directories(newFile);
+                create_directories(newFile);
             } else {
                 const auto containingDirectory = newFile.parent_path();
-                if (!fmi4cpp::fs::exists(containingDirectory) && !fmi4cpp::fs::create_directories(containingDirectory)) {
+                if (!exists(containingDirectory) && !create_directories(containingDirectory)) {
                     return false;
                 }
                 zf = zip_fopen_index(za, i, 0);
@@ -67,6 +64,6 @@ bool unzip(const fmi4cpp::fs::path& zip_file, const fmi4cpp::fs::path& tmp_path)
     return true;
 }
 
-} // namespace
+} // namespace fmi4cpp
 
 #endif // FMI4CPP_UNZIPPER_HPP

@@ -14,7 +14,6 @@ set(publicHeaders
     "fmi4cpp/fmu_variable_accessor.hpp"
 
     "fmi4cpp/dll_handle.hpp"
-    "fmi4cpp/fs_portability.hpp"
 
     "fmi4cpp/fmi2/fmi2.hpp"
     "fmi4cpp/fmi2/fmu.hpp"
@@ -55,7 +54,7 @@ set(privateHeaders
     "fmi4cpp/mlog.hpp"
     "fmi4cpp/library_helper.hpp"
 
-        "fmi4cpp/fmi2/status_converter.hpp"
+    "fmi4cpp/fmi2/status_converter.hpp"
 
     "fmi4cpp/tools/simple_id.hpp"
     "fmi4cpp/tools/os_util.hpp"
@@ -92,7 +91,6 @@ endforeach()
 
 add_library(fmi4cpp ${publicHeadersFull} ${privateHeaders} ${sources})
 add_library(fmi4cpp::fmi4cpp ALIAS fmi4cpp)
-target_compile_definitions(fmi4cpp PRIVATE "BOOST_ALL_DYN_LINK=1" "BOOST_ALL_NO_LIB=1" "BOOST_CONFIG_SUPPRESS_OUTDATED_MESSAGE=1")
 target_compile_features(fmi4cpp PUBLIC "cxx_std_17")
 
 target_include_directories(fmi4cpp
@@ -105,14 +103,14 @@ target_include_directories(fmi4cpp
 
 target_link_libraries(fmi4cpp
     PRIVATE
-        pugixml
         libzip::libzip
+        pugixml::pugixml
 )
 
 if(WIN32)
     target_link_libraries(fmi4cpp PRIVATE "Bcrypt")
 elseif(UNIX)
-    target_link_libraries(fmi4cpp PRIVATE stdc++fs dl)
+    target_link_libraries(fmi4cpp PRIVATE dl)
 endif()
 
 
@@ -143,4 +141,3 @@ install(
     DIRECTORY "${publicHeaderDir}/fmi4cpp"
     DESTINATION "${FMI4CPP_HEADER_INSTALL_DIR}"
 )
-

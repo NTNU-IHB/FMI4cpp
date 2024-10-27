@@ -11,14 +11,14 @@
 using namespace fmi4cpp;
 using namespace fmi4cpp::fmi2;
 
-fmu::fmu(const fs::path& fmuPath, bool unzipFmu)
+fmu::fmu(const std::filesystem::path& fmuPath, bool unzipFmu)
 {
-    if ( fs::is_directory(fmuPath) && fs::exists(fmuPath / "modelDescription.xml") ) {
+    if ( std::filesystem::is_directory(fmuPath) && fs::exists(fmuPath / "modelDescription.xml") ) {
         MLOG_DEBUG("fmuPath is a directory, assuming it is an unzipped FMU");
         unzipFmu = false;
     }
     if (unzipFmu) {
-        if (!exists(fmuPath)) {
+        if (!std::filesystem::exists(fmuPath)) {
             const auto err = "No such file '" + absolute(fmuPath).string() + "'!";
             MLOG_FATAL(err);
             throw std::runtime_error(err);

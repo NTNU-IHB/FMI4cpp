@@ -1,6 +1,5 @@
 
 #include <fmi4cpp/fmi2/fmi2_library.hpp>
-#include <fmi4cpp/fs_portability.hpp>
 #include <fmi4cpp/library_helper.hpp>
 #include <fmi4cpp/mlog.hpp>
 #include <fmi4cpp/tools/os_util.hpp>
@@ -59,7 +58,7 @@ fmi2_library::fmi2_library(const std::string& modelIdentifier, const std::shared
 {
     const std::string libName = resource->absolute_library_path(modelIdentifier);
 
-    MLOG_DEBUG("Loading shared library '" + fs::path(libName).stem().string() + get_shared_library_extension() + "'");
+    MLOG_DEBUG("Loading shared library '" + std::filesystem::path(libName).stem().string() + get_shared_library_extension() + "'");
 
     handle_ = load_library(libName);
 

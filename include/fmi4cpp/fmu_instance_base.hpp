@@ -70,19 +70,13 @@ public:
         return library_->reset(c_);
     }
 
-    bool terminate() override
-    {
-        return terminate(true);
-    }
-
-    bool terminate(bool freeInstance)
+    bool terminate()
     {
         if (!this->terminated_) {
             this->terminated_ = true;
             if (!library_->terminate(c_)) {
                 return false;
             }
-            this->free_instance();
         }
         return true;
     }
@@ -257,6 +251,7 @@ public:
     ~fmu_instance_base()
     {
         terminate();
+        free_instance();
     }
 };
 

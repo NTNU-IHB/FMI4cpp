@@ -9,7 +9,7 @@
 
 using namespace fmi4cpp;
 
-fmu_resource::fmu_resource(fs::path path)
+fmu_resource::fmu_resource(std::filesystem::path path)
     : path_(std::move(path))
 {}
 
@@ -37,7 +37,7 @@ std::string fmu_resource::get_model_description_xml() const
 fmu_resource::~fmu_resource()
 {
     std::error_code success;
-    fs::remove_all(path_, success);
+    remove_all(path_, success);
 
     if (!success) {
         MLOG_DEBUG("Deleted temporal folder '" + path_.string() + "'");

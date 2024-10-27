@@ -4,11 +4,10 @@
 
 #include <fmi4cpp/fmi2/cs_fmu.hpp>
 #include <fmi4cpp/fmi2/me_fmu.hpp>
-#include <fmi4cpp/fmi2/xml/cs_model_description.hpp>
 #include <fmi4cpp/fmi2/xml/me_model_description.hpp>
 #include <fmi4cpp/fmu_base.hpp>
-#include <fmi4cpp/fs_portability.hpp>
 
+#include <filesystem>
 #include <memory>
 #include <string>
 
@@ -23,13 +22,13 @@ class fmu : public virtual fmu_provider<model_description, cs_fmu, me_fmu>
 
 private:
     std::shared_ptr<fmu_resource> resource_;
-    std::shared_ptr<const fmi4cpp::fmi2::model_description> modelDescription_;
+    std::shared_ptr<const model_description> modelDescription_;
 
 public:
-    explicit fmu(const fs::path& fmuPath, bool unzipFmu = true);
+    explicit fmu(const std::filesystem::path& fmuPath, bool unzipFmu = true);
 
     [[nodiscard]] std::string get_model_description_xml() const;
-    [[nodiscard]] std::shared_ptr<const fmi4cpp::fmi2::model_description> get_model_description() const override;
+    [[nodiscard]] std::shared_ptr<const model_description> get_model_description() const override;
 
     [[nodiscard]] bool supports_me() const override;
     [[nodiscard]] bool supports_cs() const override;

@@ -4,15 +4,36 @@
 
 #include <fmi4cpp/dll_handle.hpp>
 
+#include <filesystem>
 #include <sstream>
 
-namespace
+namespace fmi4cpp
 {
 
-DLL_HANDLE load_library(const std::string& libName)
+inline DLL_HANDLE load_library(const std::string& libName)
 {
-#ifdef WIN32
-    return LoadLibrary(libName.c_str());
+    std::string dllDirectory;
+
+#ifdef _WIN32
+    std::filesystem::path path(libName);
+    if (path.has_parent_path()) {
+        dllDirectory = path.parent_path().string();
+    }
+
+    DLL_DIRECTORY_COOKIE dllDirectoryCookie = nullptr;
+    if (!dllDirectory.empty()) {
+        std::wstring wDllDirectory(dllDirectory.begin(), dllDirectory.end());
+        dllDirectoryCookie = AddDllDirectory(wDllDirectory.c_str());
+    }
+
+    DLL_HANDLE handle = LoadLibrary(libName.c_str());
+
+    if (dllDirectoryCookie) {
+        RemoveDllDirectory(dllDirectoryCookie);
+    }
+
+    return handle;
+
 #else
     return dlopen(libName.c_str(), RTLD_NOW | RTLD_LOCAL);
 #endif
@@ -28,7 +49,7 @@ T load_function(DLL_HANDLE handle, const char* function_name)
 #endif
 }
 
-bool free_library(DLL_HANDLE handle)
+inline bool free_library(DLL_HANDLE handle)
 {
 #ifdef WIN32
     return static_cast<bool>(FreeLibrary(handle));
@@ -37,7 +58,7 @@ bool free_library(DLL_HANDLE handle)
 #endif
 }
 
-std::string getLastError()
+inline std::string getLastError()
 {
 #ifdef WIN32
     std::ostringstream os;
