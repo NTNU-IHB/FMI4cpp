@@ -1,0 +1,32 @@
+cff-version: 1.2.0
+title: FMI4cpp
+message: >-
+  If you use FMI4cpp in your research, please cite it using
+  the following metadata.
+type: software
+authors:
+  - family-names: Hatledal
+    given-names: Lars Ivar
+    orcid: 'https://orcid.org/0000-0001-6436-7213'
+    email: larsivarhatledal@gmail.com
+    affiliation: 'NTNU Aalesund, Norway'
+repository-code: 'https://github.com/NTNU-IHB/FMI4cpp'
+url: 'https://github.com/NTNU-IHB/FMI4cpp'
+abstract: >-
+  FMI4cpp is a modern C++ library that provides support for
+  the Functional Mock-up Interface (FMI) 2.0 standard. It
+  enables the integration and simulation of Functional
+  Mock-up Units (FMUs) within C++ applications, facilitating
+  model exchange and co-simulation.
+keywords:
+  - FMI
+  - FMU
+  - C++
+  - Simulation
+  - Co-simulation
+  - Model Exchange
+  - Functional Mock-up Interface
+license: MIT
+commit: 1c6f77b
+version: 0.8.3
+date-released: '2022-06-29'
