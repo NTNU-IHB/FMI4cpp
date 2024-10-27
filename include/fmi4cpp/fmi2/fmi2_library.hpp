@@ -55,10 +55,10 @@ private:
 
     fmi2FreeInstanceTYPE* fmi2FreeInstance_;
 
-private:
 #ifdef _WIN32
     DLL_DIRECTORY_COOKIE dllDirectoryCookie_ = nullptr;
 #endif
+
 protected:
     fmi2Status lastStatus_;
     DLL_HANDLE handle_ = nullptr;

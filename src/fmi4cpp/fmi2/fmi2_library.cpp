@@ -33,7 +33,7 @@ std::string to_string(fmi2Status status)
     }
 }
 
-void logger(void* fmi2ComponentEnvironment, fmi2String instance_name, fmi2Status status, fmi2String category,
+void logger(void* /*fmi2ComponentEnvironment*/, fmi2String instance_name, fmi2Status status, fmi2String category,
     fmi2String message, ...)
 {
     char msg[1000];
@@ -62,7 +62,7 @@ fmi2_library::fmi2_library(const std::string& modelIdentifier, const std::shared
 
 #ifdef _WIN32
     std::string dllDirectory;
-    fmi4cpp::fs::path path(libName);
+    std::filesystem::path path(libName);
 
     if (path.has_parent_path()) {
         dllDirectory = path.parent_path().string();
