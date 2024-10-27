@@ -5,6 +5,7 @@
 
 #include <fstream>
 #include <string>
+#include <vector>
 
 bool fmi4cpp::unzip(const std::filesystem::path& zip_file, const std::filesystem::path& tmp_path)
 {
@@ -21,8 +22,6 @@ bool fmi4cpp::unzip(const std::filesystem::path& zip_file, const std::filesystem
 
     constexpr int bufferSize = 1000;
     std::vector<char> contents(bufferSize);
-    zip_int64_t sum;
-    zip_int64_t len;
     for (int i = 0; i < zip_get_num_entries(za, 0); i++) {
         if (zip_stat_index(za, i, 0, &sb) == 0) {
 
@@ -40,9 +39,9 @@ bool fmi4cpp::unzip(const std::filesystem::path& zip_file, const std::filesystem
                 std::ofstream file;
                 file.open(newFile, std::ios::out | std::ios::binary);
 
-                sum = 0;
+                zip_int64_t sum = 0;
                 while (sum != sb.size) {
-                    len = zip_fread(zf, contents.data(), bufferSize);
+                    zip_int64_t len = zip_fread(zf, contents.data(), bufferSize);
                     file.write(contents.data(), len);
                     sum += len;
                 }
