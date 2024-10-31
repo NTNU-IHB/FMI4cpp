@@ -108,13 +108,17 @@ target_include_directories(fmi4cpp
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>
     PRIVATE
         "${CMAKE_CURRENT_SOURCE_DIR}"
-        "${CMAKE_CURRENT_SOURCE_DIR}/external/pugixml"
 )
 
 if (FMI4CPP_USE_EXTERNAL_PUGIXML)
     target_link_libraries(fmi4cpp
         PRIVATE
             pugixml::pugixml
+    )
+else ()
+    target_include_directories(fmi4cpp
+        PRIVATE
+            "${CMAKE_CURRENT_SOURCE_DIR}/external/pugixml"
     )
 endif ()
 
