@@ -18,7 +18,7 @@ jobs:
       - name: Install prerequisites
         run: |
           sudo apt-get update && sudo apt-get install -y --no-install-recommends \
-          gcc g++ cmake libpugixml-dev
+          gcc g++ cmake unzip libpugixml-dev
 
       - name: Configure and build
         run: |
