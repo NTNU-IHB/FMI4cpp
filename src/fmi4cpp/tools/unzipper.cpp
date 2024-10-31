@@ -23,6 +23,8 @@ bool fmi4cpp::unzip(const std::filesystem::path& zip_file, const std::filesystem
     std::string command = "unzip -o \"" + zip_file.string() + "\" -d \"" + tmp_path.string() + "\" > /dev/null 2>&1";
 #endif
 
+    MLOG_DEBUG("Attempting unzip with command: " + command);
+
     // Execute the command
     int result = std::system(command.c_str());
 
