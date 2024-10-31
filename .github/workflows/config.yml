@@ -18,11 +18,11 @@ jobs:
       - name: Install prerequisites
         run: |
           sudo apt-get update && sudo apt-get install -y --no-install-recommends \
-          gcc g++ cmake libzip-dev libpugixml-dev
+          gcc g++ cmake libpugixml-dev
 
       - name: Configure and build
         run: |
-          cmake . -B build -DFMI4CPP_BUILD_TESTS=ON -DFMI4CPP_BUILD_EXAMPLES=ON -DCMAKE_BUILD_TYPE=Release
+          cmake . -B build -DFMI4CPP_BUILD_TESTS=ON -DFMI4CPP_USE_EXTERNAL_PUGIXML=ON -DFMI4CPP_BUILD_EXAMPLES=ON -DCMAKE_BUILD_TYPE=Release
           cmake --build build
 
       - name: Test
@@ -45,18 +45,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Restore artifacts, or run vcpkg, build (and cache artifacts as post step)
-        uses: lukka/run-vcpkg@v10
-        id: runvcpkg
-        with:
-          vcpkgDirectory: '${{ github.workspace }}/vcpkg'
-          vcpkgGitCommitId: '4cac260c4b7331538d31886f57739fea0bffa27e'
-          vcpkgJsonGlob: 'vcpkg.json'
-          appendedCacheKey: vcpkginstall
-
       - name: Configure and build
         run: |
-          cmake . -B build -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake" -DFMI4CPP_BUILD_TESTS=ON -DFMI4CPP_BUILD_EXAMPLES=ON -DCMAKE_BUILD_TYPE=Release
+          cmake . -B build -DFMI4CPP_BUILD_TESTS=ON -DFMI4CPP_BUILD_EXAMPLES=ON -DCMAKE_BUILD_TYPE=Release
           cmake --build build
 
       - name: Test
@@ -75,18 +66,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Restore artifacts, or run vcpkg, build (and cache artifacts as post step)
-        uses: lukka/run-vcpkg@v10
-        id: runvcpkg
-        with:
-          vcpkgDirectory: '${{ github.workspace }}/vcpkg'
-          vcpkgGitCommitId: '4cac260c4b7331538d31886f57739fea0bffa27e'
-          vcpkgJsonGlob: 'vcpkg.json'
-          appendedCacheKey: vcpkginstall
-
       - name: Configure and build
         run: |
-          cmake . -B build -A x64 -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake" -DFMI4CPP_BUILD_TESTS=ON -DFMI4CPP_BUILD_EXAMPLES=ON -DCMAKE_BUILD_TYPE=Release
+          cmake . -B build -A x64 -DFMI4CPP_BUILD_TESTS=ON -DFMI4CPP_BUILD_EXAMPLES=ON -DCMAKE_BUILD_TYPE=Release
           cmake --build build --config Release
         shell: bash
 
