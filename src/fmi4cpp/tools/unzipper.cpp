@@ -16,17 +16,15 @@ bool fmi4cpp::unzip(const std::filesystem::path& zip_file, const std::filesystem
     }
 
 #ifdef _WIN32
-    // Windows: Use the built-in unzip command via PowerShell
-    std::string command = "tar -xf \"" + relative(zip_file).string() + "\" -C \"" + tmp_path.string() + "\"";
+    // Windows: Use the built-in tar command
+    std::string command = "tar -xf \"" + zip_file.string() + "\" -C \"" + tmp_path.string() + "\"";
 #else
     // Linux: Use the unzip command
     std::string command = "unzip -o \"" + zip_file.string() + "\" -d \"" + tmp_path.string() + "\" > /dev/null 2>&1";
 #endif
 
-    MLOG_ERROR("Attempting unzip with command: " + command);
-
     // Execute the command
-    int result = std::system(command.c_str());
+    const int result = std::system(command.c_str());
 
     if (result != 0) {
         MLOG_ERROR("Error: Unzipping failed with code " + result);
