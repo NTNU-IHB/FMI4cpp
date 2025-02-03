@@ -6,6 +6,7 @@
 #include <fmi4cpp/fmi2/xml/fmu_attributes.hpp>
 #include <fmi4cpp/fmi2/xml/model_structure.hpp>
 #include <fmi4cpp/fmi2/xml/model_variables.hpp>
+#include <fmi4cpp/fmi2/xml/unit_definitions.hpp>
 
 #include <memory>
 #include <optional>
@@ -33,6 +34,7 @@ struct model_description_base
     std::shared_ptr<const fmi2::model_structure> model_structure;
 
     std::optional<fmi2::default_experiment> default_experiment;
+    std::optional<fmi2::unit_definitions> unit_definitions;
 
     size_t number_of_event_indicators;
     [[nodiscard]] size_t number_of_continuous_states() const;

@@ -148,6 +148,59 @@ std::unique_ptr<const model_structure> parse_model_structure(const pugi::xml_nod
     return std::make_unique<const model_structure>(outputs, derivatives, initial_unknowns);
 }
 
+base_unit parse_base_unit(const pugi::xml_node& node)
+{
+    base_unit baseUnit;
+    baseUnit.kg = parse_attribute<int>(node, "kg");
+    baseUnit.m = parse_attribute<int>(node, "m");
+    baseUnit.s = parse_attribute<int>(node, "s");
+    baseUnit.A = parse_attribute<int>(node, "A");
+    baseUnit.K = parse_attribute<int>(node, "K");
+    baseUnit.mol = parse_attribute<int>(node, "mol");
+    baseUnit.cd = parse_attribute<int>(node, "cd");
+    baseUnit.rad = parse_attribute<int>(node, "rad");
+    baseUnit.factor = parse_attribute<double>(node, "factor");
+    baseUnit.offset = parse_attribute<double>(node, "offset");
+
+    return baseUnit;
+}
+
+display_unit parse_display_unit(const pugi::xml_node& node)
+{
+    display_unit displayUnit;
+    displayUnit.name = parse_attribute<std::string>(node, "name");
+    displayUnit.factor = parse_attribute<double>(node, "factor");
+    displayUnit.offset = parse_attribute<double>(node, "offset");
+
+    return displayUnit;
+}
+
+unit parse_unit(const pugi::xml_node& node)
+{
+    unit Unit;
+    for (const pugi::xml_node& v : node) {
+        if (std::string("BaseUnit") == v.name()) {
+            Unit.base_unit = parse_base_unit(v);
+        } else if (std::string("DisplayUnit") == v.name()) {
+            Unit.display_units.push_back(parse_display_unit(v));
+        }
+    }
+    Unit.name = parse_attribute<std::string>(node, "name");
+
+    return Unit;
+}
+
+unit_definitions parse_unit_definitions(const pugi::xml_node& node)
+{
+    unit_definitions unitDefs;
+    for (const pugi::xml_node& v : node) {
+        if (std::string("Unit") == v.name()) {
+            unitDefs.units.push_back(parse_unit(v));
+        }
+    }
+    return unitDefs;
+}
+
 fmu_attributes parse_fmu_attributes(const pugi::xml_node& node)
 {
 
@@ -322,6 +375,8 @@ std::unique_ptr<const model_description> fmi4cpp::fmi2::parse_model_description(
             base.model_variables = std::move(parse_model_variables(v));
         } else if (std::string("ModelStructure") == v.name()) {
             base.model_structure = std::move(parse_model_structure(v));
+        } else if (std::string("UnitDefinitions") == v.name()) {
+            base.unit_definitions = std::move(parse_unit_definitions(v));
         }
     }
 
