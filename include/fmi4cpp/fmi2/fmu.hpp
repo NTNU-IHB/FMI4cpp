@@ -25,7 +25,7 @@ private:
     std::shared_ptr<const model_description> modelDescription_;
 
 public:
-    explicit fmu(const std::filesystem::path& fmuPath);
+    explicit fmu(const std::filesystem::path& fmuPath, bool unzipFmu = true);
 
     [[nodiscard]] std::string get_model_description_xml() const;
     [[nodiscard]] std::shared_ptr<const model_description> get_model_description() const override;
