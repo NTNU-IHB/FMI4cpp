@@ -33,6 +33,7 @@ set(publicHeaders
 
     "fmi4cpp/fmi2/xml/enums.hpp"
     "fmi4cpp/fmi2/xml/source_files.hpp"
+    "fmi4cpp/fmi2/xml/unit_definitions.hpp"
 
     "fmi4cpp/fmi2/xml/default_experiment.hpp"
     "fmi4cpp/fmi2/xml/fmu_attributes.hpp"
