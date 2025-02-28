@@ -88,6 +88,12 @@ set(sources
 
 )
 
+if (NOT FMI4CPP_USE_EXTERNAL_PUGIXML)
+    list(APPEND sources
+            "external/pugixml/pugixml.cpp"
+    )
+endif ()
+
 set(publicHeadersFull)
 foreach(header IN LISTS publicHeaders)
     list(APPEND publicHeadersFull "${publicHeaderDir}/${header}")
@@ -102,14 +108,20 @@ target_include_directories(fmi4cpp
         $<INSTALL_INTERFACE:include>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>
     PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}
+        "${CMAKE_CURRENT_SOURCE_DIR}"
 )
 
-target_link_libraries(fmi4cpp
-    PRIVATE
-        libzip::libzip
-        pugixml::pugixml
-)
+if (FMI4CPP_USE_EXTERNAL_PUGIXML)
+    target_link_libraries(fmi4cpp
+        PRIVATE
+            pugixml::pugixml
+    )
+else ()
+    target_include_directories(fmi4cpp
+        PRIVATE
+            "${CMAKE_CURRENT_SOURCE_DIR}/external/pugixml"
+    )
+endif ()
 
 if(WIN32)
     target_link_libraries(fmi4cpp PRIVATE "Bcrypt")
