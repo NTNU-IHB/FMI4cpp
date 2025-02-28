@@ -27,7 +27,13 @@ bool fmi4cpp::unzip(const std::filesystem::path& zip_file, const std::filesystem
     const int result = std::system(command.c_str());
 
     if (result != 0) {
-        MLOG_ERROR("Error: Unzipping failed with code " + result);
+        MLOG_ERROR("Error: Unzipping failed with code " + std::to_string(result));
+#ifdef __linux__
+        if (result == 32512) {
+            MLOG_ERROR("Unzipping failed. Is unzip system package installed?");
+        }
+#endif
+
         return false;
     }
 
