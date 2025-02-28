@@ -13,6 +13,9 @@ For XML handling, it ships with a version of pugiXML. If you want to use an exte
 #### External pgiXML (Optional) 
 To get an external pugiXML version you may use `vcpkg` or `apt-get`.
 
+##### vcpkg
+Call CMake with `-DCMAKE_TOOLCHAIN_FILE=[path to vcpkg]/scripts/buildsystems/vcpkg.cmake`
+
 ##### apt-get
 
 ```bash
