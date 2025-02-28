@@ -40,7 +40,7 @@ struct display_unit
 struct unit
 {
     std::string name;
-    base_unit base_unit;
+    ::fmi4cpp::fmi2::base_unit base_unit;
     std::vector<display_unit> display_units;
 };
 
