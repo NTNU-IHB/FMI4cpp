@@ -10,6 +10,7 @@ message("Current fmi4cpp version: ${projectVersion}\n")
 
 option(FMI4CPP_BUILD_TESTS "Build tests" OFF)
 option(FMI4CPP_BUILD_EXAMPLES "Build examples" OFF)
+option(FMI4CPP_USE_EXTERNAL_PUGIXML "Use external pugiXML" OFF)
 option(BUILD_SHARED_LIBS "Build shared libraries instead of static libraries" ON)
 
 set(FMI4CPP_LOG_LEVEL "DEFAULT" CACHE STRING "FMI4cpp logging level")
@@ -54,8 +55,9 @@ set(FMI4CPP_EXPORT_TARGET "${PROJECT_NAME}-targets")
 # Dependencies
 # ==============================================================================
 
-find_package(LIBZIP REQUIRED)
-find_package(PugiXML REQUIRED)
+if (FMI4CPP_USE_EXTERNAL_PUGIXML)
+    find_package(PugiXML REQUIRED)
+endif ()
 
 if (FMI4CPP_BUILD_TESTS)
 
@@ -124,7 +126,6 @@ install(FILES "${versionFile}" DESTINATION "${FMI4CPP_CMAKE_INSTALL_DIR}")
 
 # Install custom find modules
 install(FILES
-        ${PROJECT_SOURCE_DIR}/cmake/FindLIBZIP.cmake
         ${PROJECT_SOURCE_DIR}/cmake/FindPugiXML.cmake
         DESTINATION
         ${FMI4CPP_CMAKE_INSTALL_DIR}
