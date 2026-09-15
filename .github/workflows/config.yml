@@ -2,10 +2,14 @@ name: FMI4cpp CI
 
 on: [ push, workflow_dispatch ]
 
+permissions:
+  contents: read
+
 jobs:
 
   cmake-on-linux:
-
+    permissions:
+      contents: read
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -31,7 +35,8 @@ jobs:
 
 
   vcpkg-on-linux:
-
+    permissions:
+      contents: read
     runs-on: ${{ matrix.os }}
     env:
       CC: gcc-${{ matrix.compiler_version }}
@@ -65,7 +70,8 @@ jobs:
 
 
   vcpkg-on-windows:
-
+    permissions:
+      contents: read
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
