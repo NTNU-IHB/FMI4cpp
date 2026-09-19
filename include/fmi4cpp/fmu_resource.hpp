@@ -14,9 +14,13 @@ class fmu_resource
 
 private:
     const fs::path path_;
+    const bool removeOnDestruction_;
 
 public:
+    // Own the directory by default, as for an extraction made by fmi4cpp.
     explicit fmu_resource(fs::path path);
+    // Borrowed directories remain under the caller's lifetime management.
+    fmu_resource(fs::path path, bool removeOnDestruction);
 
     [[nodiscard]] std::string resource_path() const;
 

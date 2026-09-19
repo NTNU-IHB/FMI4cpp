@@ -44,7 +44,9 @@ fmu::fmu(const fs::path& fmuPath, bool unzipFmu)
         resource_ = std::make_shared<fmu_resource>(tmpPath);
         modelDescription_ = std::move(parse_model_description(resource_->model_description_path()));
     } else {
-        resource_ = std::make_shared<fmu_resource>(fmuPath);
+        // A caller-supplied extraction may be shared by multiple MPI ranks.
+        // Only the caller owns its lifetime; readers must never remove it.
+        resource_ = std::make_shared<fmu_resource>(fmuPath, false);
         modelDescription_ = std::move(parse_model_description(resource_->model_description_path()));
     }
 }

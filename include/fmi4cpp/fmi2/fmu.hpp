@@ -26,6 +26,8 @@ private:
     std::shared_ptr<const fmi4cpp::fmi2::model_description> modelDescription_;
 
 public:
+    // Archives are extracted into owned temporary storage. Existing FMU
+    // directories (also auto-detected with unzipFmu=true) are borrowed.
     explicit fmu(const fs::path& fmuPath, bool unzipFmu = true);
 
     [[nodiscard]] std::string get_model_description_xml() const;
