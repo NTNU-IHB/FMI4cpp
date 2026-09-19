@@ -10,7 +10,11 @@
 using namespace fmi4cpp;
 
 fmu_resource::fmu_resource(std::filesystem::path path)
-    : path_(std::move(path))
+    : fmu_resource(std::move(path), true)
+{}
+
+fmu_resource::fmu_resource(std::filesystem::path path, bool removeOnDestruction)
+    : path_(std::move(path)), removeOnDestruction_(removeOnDestruction)
 {}
 
 std::string fmu_resource::model_description_path() const
@@ -36,6 +40,9 @@ std::string fmu_resource::get_model_description_xml() const
 
 fmu_resource::~fmu_resource()
 {
+    if (!removeOnDestruction_) {
+        return;
+    }
     std::error_code success;
     remove_all(path_, success);
 
